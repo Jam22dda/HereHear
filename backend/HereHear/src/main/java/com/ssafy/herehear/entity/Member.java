@@ -36,9 +36,8 @@ public class Member {
         this.nickname = nickname;
     }
 
-    // 동적으로 변경이 가능할 수 있으니 updateNickname 메서드를 만들어서 setter 역할을 준다 (@Setter 사용 지양)
     public void updateNickname(String nickname) {
-        this.nickname = nickname;
+    	this.nickname = nickname;
     }
 
 }
