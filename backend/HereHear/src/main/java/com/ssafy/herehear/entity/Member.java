@@ -30,10 +30,6 @@ public class Member {
 
     private LocalDateTime removeDate;
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Follow> follows = new ArrayList<>();
-
-
     @Builder
     public Member(String email, String nickname) {
         this.email = email;
