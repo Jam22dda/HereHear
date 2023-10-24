@@ -1,10 +1,8 @@
-import './App.css';
-
-export default function App() {
+export default function Like() {
     return (
         <div id='display'>
             <div className='container'>
-                <h1>App</h1>
+                <h1>Like</h1>
             </div>
         </div>
     );
