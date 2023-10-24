@@ -19,6 +19,4 @@ public class ResponseService {
         dataResponse.setData(data);
         return dataResponse;
     }
-
-    public CommonResponse failureCommmonResponse(ResponseStatus responseStatus)
 }
