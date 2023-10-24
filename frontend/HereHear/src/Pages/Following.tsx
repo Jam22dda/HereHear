@@ -1,10 +1,8 @@
-import './App.css';
-
-export default function App() {
+export default function Following() {
     return (
         <div id='display'>
             <div className='container'>
-                <h1>App</h1>
+                <h1>Follow</h1>
             </div>
         </div>
     );
