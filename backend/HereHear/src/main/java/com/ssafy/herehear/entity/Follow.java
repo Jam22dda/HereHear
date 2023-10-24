@@ -2,6 +2,7 @@ package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,15 +22,9 @@ public class Follow {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
-
+    @Builder
     public Follow(Long followMemberId, Member member) {
         this.followMemberId = followMemberId;
         this.member = member;
-    }
-
-    public Follow(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
     }
 }

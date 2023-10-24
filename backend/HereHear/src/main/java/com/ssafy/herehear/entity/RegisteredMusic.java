@@ -2,6 +2,7 @@ package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,12 +35,14 @@ public class RegisteredMusic {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @Builder
     public RegisteredMusic(Double lng, Double lat, String comment) {
         this.lng = lng;
         this.lat = lat;
         this.comment = comment;
     }
 
+    @Builder
     public RegisteredMusic(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }

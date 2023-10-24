@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Getter
@@ -12,7 +11,7 @@ import org.springframework.data.annotation.Id;
 public class MusicOccasion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long MusicOccasionId;
+    private Long musicOccasionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "occasion_code")
