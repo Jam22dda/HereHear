@@ -42,8 +42,7 @@ public class RegisteredMusic {
         this.comment = comment;
     }
 
-    @Builder
-    public RegisteredMusic(Boolean isDeleted) {
+    public void updateRegisteredMusic(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 }
