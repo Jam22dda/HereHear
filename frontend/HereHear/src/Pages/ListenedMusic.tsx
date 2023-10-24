@@ -1,10 +1,8 @@
-import './App.css';
-
-export default function App() {
+export default function ListenedMusic() {
     return (
         <div id='display'>
             <div className='container'>
-                <h1>App</h1>
+                <h1>ListenedMusic</h1>
             </div>
         </div>
     );
