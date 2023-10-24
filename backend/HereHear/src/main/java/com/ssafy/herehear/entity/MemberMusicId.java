@@ -2,6 +2,7 @@ package com.ssafy.herehear.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -16,10 +17,11 @@ public class MemberMusicId implements Serializable {
     private Long memberId;
 
     @Column(name = "registered_music_id")
-    private Long RegisteredMusicId;
+    private Long registeredMusicId;
 
+    @Builder
     public MemberMusicId(Long memberId, Long registeredMusicId) {
         this.memberId = memberId;
-        RegisteredMusicId = registeredMusicId;
+        this.registeredMusicId = registeredMusicId;
     }
 }

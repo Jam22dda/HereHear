@@ -1,17 +1,12 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Transactional
-@IdClass(MemberMusicId.class)
+@Getter
+@NoArgsConstructor
 public class MemberReadList {
 
     @EmbeddedId
@@ -19,7 +14,7 @@ public class MemberReadList {
 
     @MapsId("occasionCode")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "occasion_code")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @MapsId("registeredMusicId")
