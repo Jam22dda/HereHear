@@ -1,16 +1,13 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Transactional
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Occasion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

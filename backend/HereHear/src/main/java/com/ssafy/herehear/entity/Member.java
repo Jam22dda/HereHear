@@ -1,23 +1,22 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Transactional
+@Getter
+@NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Member {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
@@ -29,14 +28,19 @@ public class Member {
     private String nickname;
 
     @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime registDate = LocalDateTime.now();
+    private LocalDateTime registDate;
 
-    @CreatedDate
-    private LocalDateTime removeDate = LocalDateTime.now();
+    private LocalDateTime removeDate;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Follow> follows = new ArrayList<>();
+    @Builder
+    public Member(String email, String nickname) {
+        this.email = email;
+        this.nickname = nickname;
+    }
 
+    // 동적으로 변경이 가능할 수 있으니 updateNickname 메서드를 만들어서 setter 역할을 준다 (@Setter 사용 지양)
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
 }

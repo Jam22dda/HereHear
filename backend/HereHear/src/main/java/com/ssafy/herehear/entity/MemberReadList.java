@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.transaction.annotation.Transactional;
 
 @Data
@@ -12,18 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Entity
 @Transactional
-@IdClass(MemberMusicPK.class)
+@IdClass(MemberMusicId.class)
 public class MemberReadList {
 
-    @Id
-    @MapsId("memberId")
-    @ManyToOne
-    @JoinColumn(name = "member_id")
+    @EmbeddedId
+    private MemberMusicId id;
+
+    @MapsId("occasionCode")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "occasion_code")
     private Member member;
 
-    @Id
     @MapsId("registeredMusicId")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "registered_music_id")
     private RegisteredMusic registeredMusic;
 

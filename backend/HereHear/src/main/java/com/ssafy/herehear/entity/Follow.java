@@ -1,17 +1,14 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Transactional
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +17,19 @@ public class Follow {
     @Column(nullable = false)
     private Long followMemberId;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
+    public Follow(Long followMemberId, Member member) {
+        this.followMemberId = followMemberId;
+        this.member = member;
+    }
+
+    public Follow(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

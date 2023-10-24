@@ -1,20 +1,18 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Transactional
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class RegisteredMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +29,18 @@ public class RegisteredMusic {
 
     @CreatedDate
     @Column(nullable = false)
-    private LocalDateTime registerTime = LocalDateTime.now();
+    private LocalDateTime registerTime;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    public RegisteredMusic(Double lng, Double lat, String comment) {
+        this.lng = lng;
+        this.lat = lat;
+        this.comment = comment;
+    }
+
+    public RegisteredMusic(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }
