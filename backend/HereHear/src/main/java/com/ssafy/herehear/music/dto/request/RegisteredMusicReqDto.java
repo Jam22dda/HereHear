@@ -1,9 +1,13 @@
 package com.ssafy.herehear.music.dto.request;
 
-import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@ToString
 public class RegisteredMusicReqDto {
     private Double lng;
     private Double lat;
     private String comment;
+
 }
