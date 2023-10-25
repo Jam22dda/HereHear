@@ -2,6 +2,7 @@ package com.ssafy.herehear.achievement.mapper;
 
 import com.ssafy.herehear.achievement.dto.AchievementDto;
 import com.ssafy.herehear.achievement.dto.BorderCodeDto;
+import com.ssafy.herehear.achievement.dto.MemberAchievementDto;
 import com.ssafy.herehear.achievement.dto.TitleCodeDto;
 import com.ssafy.herehear.entity.Achievement;
 import com.ssafy.herehear.entity.BorderCode;
@@ -22,5 +23,11 @@ public interface AchievementMapper {
     BorderCodeDto toBorderCodeDto(BorderCode borderCode);
 
     TitleCodeDto toTitleCodeDto(TitleCode titleCode);
+
+    @Mapping(source = "achievement.borderCode", target = "border")
+    @Mapping(source = "achievement.titleCode", target = "title")
+    @Mapping(source = "clearTime", target = "clearTime")
+    @Mapping(source = "userId", target = "userId")
+    MemberAchievementDto toMemberAchievementDto(Achievement achievement, Long userId, String clearTime);
 
 }
