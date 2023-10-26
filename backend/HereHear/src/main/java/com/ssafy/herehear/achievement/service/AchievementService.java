@@ -9,4 +9,6 @@ public interface AchievementService {
     List<AchievementDto> getAchievementList();
 
     List<MemberAchievementDto> getMyAchievementList(Long userId);
+
+    int getAchievementCount(Long memberId);
 }

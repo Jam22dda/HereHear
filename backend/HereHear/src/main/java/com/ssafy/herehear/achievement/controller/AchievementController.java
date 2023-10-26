@@ -10,6 +10,7 @@ import com.ssafy.herehear.global.util.TimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -74,6 +75,15 @@ public class AchievementController {
                 .toList();
 
         return new DataResponse<>("200", "내 테두리 목록 조회", myBorderList);
+    }
+
+    @GetMapping("/{memberId}")
+    public DataResponse<Integer> getAchievement(@PathVariable Long memberId) {
+        log.info("[달성한 칭호 개수 조회] 조회 memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+
+        int count = achievementService.getAchievementCount(memberId);
+
+        return new DataResponse<>("200", "달성한 칭호 개수 조회", count);
     }
 
 }
