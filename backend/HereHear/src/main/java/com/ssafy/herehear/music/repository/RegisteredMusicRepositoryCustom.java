@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface RegisteredMusicRepositoryCustom {
 
-    //유저의 등록 음악 목록
     List<RegisteredMusic> findByMyRegisterMusics(long memberId);
 
 }
