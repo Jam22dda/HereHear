@@ -72,26 +72,6 @@ button:focus-visible {
 /* 특이한 일이 없는 이상 App.css 또는 각 컴포넌트별 CSS를 사용하세요! */
 
 /* Init */
-@font-face {
-    font-family: 'GmarketSans';
-    src: url('/fonts/GmarketSansBold.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'GmarketSans';
-    src: url('/fonts/GmarketSansLight.otf') format('opentype');
-    font-weight: 300; /* light는 일반적으로 300의 폰트 가중치에 해당합니다. */
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'GmarketSans';
-    src: url('/fonts/GmarketSansMedium.otf') format('opentype');
-    font-weight: 500; /* medium은 일반적으로 500의 폰트 가중치에 해당합니다. */
-    font-style: normal;
-}
 
 * {
     margin: 0;
