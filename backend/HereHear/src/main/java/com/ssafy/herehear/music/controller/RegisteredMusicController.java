@@ -4,11 +4,13 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.music.dto.request.RegisteredMusicReqDto;
+import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/music")
@@ -20,25 +22,35 @@ public class RegisteredMusicController {
 
     @PostMapping
     public CommonResponse registerMusic(@RequestHeader("Member-id") Long memberId, @RequestBody RegisteredMusicReqDto registeredMusicReqDto) {
-        log.info("[음악 등록] memberId: "+memberId+", registeredMusicReqDto: "+registeredMusicReqDto);
+        log.info("[음악 등록 param] memberId: "+memberId+", registeredMusicReqDto: "+registeredMusicReqDto);
 
-        registeredMusicService.registerMusic(memberId, registeredMusicReqDto);
-
-        return new CommonResponse("200", "음악 등록 성공");
+        return registeredMusicService.registerMusic(memberId, registeredMusicReqDto);
     }
 
-    @GetMapping("/{musicId}")
-    public DataResponse<RegisteredMusic> getMusic(@PathVariable long musicId) {
-        log.info("[음악 조회] musicId: "+musicId);
+    @GetMapping("/{registeredMusicId}")
+    public DataResponse<RegisteredMusicResDto> getMusic(@PathVariable long registeredMusicId) {
+        log.info("[음악 상세 조회 param] musicId: "+registeredMusicId);
 
-        log.info("[음악 조회] findMusic: "+registeredMusicService.getMusic(musicId).getComment());
-        return new DataResponse<>();
+        return registeredMusicService.getRegisteredMusic(registeredMusicId);
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Void> getMusicList() {
-        log.info("[음악 전체 조회] findMusicList: "+registeredMusicService.getMusicList());
-        return ResponseEntity.ok().build();
+    public DataResponse<List<RegisteredMusicResDto>> getMusicList() {
+        return registeredMusicService.getMusicList();
+    }
+
+    @GetMapping("/myList")
+    public DataResponse<List<RegisteredMusicResDto>> getMyMusicList(@RequestHeader("Member-id") Long memberId) {
+        log.info("[내 음악 전체 조회 param] memberId: "+memberId);
+
+        return registeredMusicService.getMyMusicList(memberId);
+    }
+
+    @PutMapping("/myList/{musicId}")
+    public CommonResponse updateMyMusicList(@RequestHeader("Member-id") Long memberId) {
+        log.info("[등록한 음악 삭제(수정) param] memberId: "+memberId);
+
+        return registeredMusicService.updateMusic(memberId);
     }
 
 //    //상황에 따른 음악 조회
@@ -47,10 +59,5 @@ public class RegisteredMusicController {
 //    //재상 음악 조회
 //    @GetMapping("/play/list")
 //
-//    //등록한 음악 조회
-//    @GetMapping("/registered")
-//
-//    //등록한 음악 삭제(수정)
-//    @PutMapping("/registered/{musicId}")
 
 }
