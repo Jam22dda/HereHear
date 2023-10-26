@@ -12,8 +12,35 @@ export default function Landing() {
     return (
         <div id='display'>
             <div className='container'>
-                <h1>Landing</h1>
+                <h1>제목 : 700</h1>
+                <h2>부제목 : 500</h2>
+                <h3>부제목 : 300</h3>
 
+                <p className='p1 b'>p1 b</p>
+                <p className='p1 m'>p1 m</p>
+                <p className='p1 l'>p1 l</p>
+                <p className='p2'>p2 m</p>
+                <p className='s1'>s1 m</p>
+                <p className='s2'>s2 m</p>
+                <p className='s3'>s3 m</p>
+                <Link to='app'>App</Link>
+                <br />
+                <Link to={`/member/${id}`}>Member</Link>
+                <br />
+                <button onClick={moveAppHandler}>Go to App</button>
+            </div>
+            <div className='container'>
+                <h1>제목 : 700</h1>
+                <h2>부제목 : 500</h2>
+                <h3>부제목 : 300</h3>
+
+                <p className='p1 b'>p1 b</p>
+                <p className='p1 m'>p1 m</p>
+                <p className='p1 l'>p1 l</p>
+                <p className='p2'>p2 m</p>
+                <p className='s1'>s1 m</p>
+                <p className='s2'>s2 m</p>
+                <p className='s3'>s3 m</p>
                 <Link to='app'>App</Link>
                 <br />
                 <Link to={`/member/${id}`}>Member</Link>
