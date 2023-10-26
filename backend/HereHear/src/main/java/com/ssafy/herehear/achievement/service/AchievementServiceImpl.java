@@ -37,4 +37,9 @@ public class AchievementServiceImpl implements AchievementService {
                 .map(item -> AchievementMapper.INSTANCE.toMemberAchievementDto(item.getAchievement(), memberId, TimeFormatUtil.formatTime(item.getClearTime())))
                 .toList();
     }
+
+    @Override
+    public int getAchievementCount(Long memberId) {
+        return memberAchievementRepository.countByMember_MemberId(memberId);
+    }
 }
