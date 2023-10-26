@@ -111,7 +111,7 @@ a {
 
 /* font */
 h1 {
-    font-size: 36px;
+    font-size: 40px;
     font-weight: 700;
 }
 
@@ -121,17 +121,44 @@ h2 {
 }
 
 h3 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 300;
 }
 
 .p1 {
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 24px;
+    /* font-size: 20px; */
 }
 
 .p2 {
+    font-size: 22px;
+    /* font-size: 18px; */
+}
+
+.s1 {
+    font-size: 20px;
+    /* font-size: 16px; */
+}
+
+.s2 {
     font-size: 18px;
+    /* font-size: 14px; */
+}
+
+.s3 {
+    font-size: 16px;
+    /* font-size: 12px; */
+}
+
+.b {
+    font-weight: 700;
+}
+
+.m {
+    font-weight: 500;
+}
+
+.l {
     font-weight: 300;
 }
 
@@ -202,6 +229,7 @@ body {
 }
 
 /* Tablet + Mobile Large, default 값, 여기에다가 디자인하세요!!!!!!! */
+/* 글자크기 : width: 390px 기준 자동 크기 변경 */
 @media screen and (max-width: 425px) {
     .container {
         margin: 10px;
@@ -209,27 +237,45 @@ body {
     }
 
     h1 {
-        font-size: 34px;
+        font-size: 9.2vw;
+        /* font-size: 36px; */
         font-weight: 700;
     }
 
     h2 {
-        font-size: 26px;
+        font-size: 6.1vw;
+        /* font-size: 24px; */
         font-weight: 500;
     }
 
     h3 {
-        font-size: 22px;
+        font-size: 6.1vw;
+        /* font-size: 24px; */
         font-weight: 300;
     }
 
     .p1 {
-        font-size: 18px;
-        font-weight: 500;
+        font-size: 5.1vw;
+        /* font-size: 20px; */
     }
 
     .p2 {
-        font-size: 16px;
-        font-weight: 300;
+        font-size: 4.7vw;
+        /* font-size: 18px; */
+    }
+
+    .s1 {
+        font-size: 4.1vw;
+        /* font-size: 16px; */
+    }
+
+    .s2 {
+        font-size: 3.6vw;
+        /* font-size: 14px; */
+    }
+
+    .s3 {
+        font-size: 3.1vw;
+        /* font-size: 12px; */
     }
 }
