@@ -16,7 +16,9 @@ public enum ExceptionStatus {
 
     MEMBER_NOT_FOUND("-2000", "사용자를 찾을 수 없습니다."),
 
-    NOT_FOUND_MUSIC("-3000","등록된 음악을 찾을 수 없습니다.");
+    NOT_FOUND_REGISTERED_MUSIC("-3000","등록된 음악을 찾을 수 없습니다."),
+    NOT_FOUND_MUSIC("-3001","음악을 찾을 수 없습니다."),
+    DUPLICATE_MUSIC("-3002","중복된 음악입니다.");
 
     private final String code;
     private final String message;
