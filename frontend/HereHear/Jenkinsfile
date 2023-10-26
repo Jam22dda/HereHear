@@ -49,7 +49,7 @@ pipeline {
         stage("fe container run") {
             steps {
                 script {
-                    sh "docker run -d -p 3001:3000 --name ${CONTAINER_NAME_FE} ${IMAGE_NAME_FE}"
+                    sh "docker run -d -p 3000:3000 --name ${CONTAINER_NAME_FE} ${IMAGE_NAME_FE}"
                 }
             }
         }
