@@ -1,9 +1,7 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -23,4 +21,8 @@ public class LikeMusic {
     @JoinColumn(name = "registered_music_id")
     private RegisteredMusic registeredMusic;
 
+    @MapsId("musicId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "music_id")
+    private Music music;
 }

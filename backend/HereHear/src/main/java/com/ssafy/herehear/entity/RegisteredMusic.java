@@ -19,6 +19,10 @@ public class RegisteredMusic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long registeredMusicId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "music_id", nullable = false)
+    private Music music;
+
     @Column(nullable = false)
     private Double lng;
 
@@ -36,7 +40,8 @@ public class RegisteredMusic {
     private Boolean isDeleted;
 
     @Builder
-    public RegisteredMusic(Double lng, Double lat, String comment) {
+    public RegisteredMusic(Music music, Double lng, Double lat, String comment) {
+        this.music = music;
         this.lng = lng;
         this.lat = lat;
         this.comment = comment;
