@@ -16,6 +16,7 @@ pipeline {
         stage("copy yml") {
             steps {
                 sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/main/resources"
+                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/test/resources"
             }
         }
 
@@ -26,8 +27,6 @@ pipeline {
                 sh """
                 cd ${PROJECT_DIR_BE}
                 chmod 777 ./gradlew
-                ls -al
-                pwd
                 ./gradlew clean build
                 """
             }
@@ -51,20 +50,17 @@ pipeline {
         // 도커 이미지 빌드
         stage("be image build") {
             steps {
-                dir("${PROJECT_DIR_BE}") {
-                    script {
-                        sh "docker build --no-cache -t ${IMAGE_NAME_BE} ."
-                    }
-                }
+                sh """
+                cd ${PROJECT_DIR_BE}
+                docker build --no-cache -t ${IMAGE_NAME_BE} .
+                """
             }
         }
 
         // 컨테이너 실행
         stage("be container run") {
             steps {
-                script {
-                    sh "docker run -d -p 8180:8180 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE} -e TZ=Asia/Seoul"
-                }
+                sh "docker run -d -p 8180:8180 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
             }
         }
     }
