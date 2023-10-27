@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LoginLog {
+public class LocationLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long loginLogId;
+    private Long locationLogId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -26,7 +26,7 @@ public class LoginLog {
     private LocalDateTime createTime;
 
     @Builder
-    public LoginLog(Member member, double lng, double lat, LocalDateTime createTime) {
+    public LocationLog(Member member, double lng, double lat, LocalDateTime createTime) {
         this.member = member;
         this.lng = lng;
         this.lat = lat;
