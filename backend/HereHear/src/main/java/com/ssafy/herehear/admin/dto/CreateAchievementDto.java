@@ -9,16 +9,16 @@ public class CreateAchievementDto {
     private String mission;
     private String icon;
     private String titleName;
-    private String borderName;
-    private String borderImg;
+    private String badgeName;
+    private String badgeImg;
 
     @Builder
     public CreateAchievementDto(String mission, String icon, String titleName, String borderName, String borderImg) {
         this.mission = mission;
         this.icon = icon;
         this.titleName = titleName;
-        this.borderName = borderName;
-        this.borderImg = borderImg;
+        this.badgeName = borderName;
+        this.badgeImg = borderImg;
     }
 
 }
