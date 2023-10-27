@@ -1,6 +1,7 @@
 package com.ssafy.herehear.music.mapper;
 
 import com.ssafy.herehear.entity.*;
+import com.ssafy.herehear.music.dto.request.RegisteredMusicReqDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import org.mapstruct.Mapper;
 
@@ -8,11 +9,11 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface RegisterMusicMapper {
 
-    Music toMusic(String subject, String singer, String albumImg);
+    Music toMusic(RegisteredMusicReqDto req);
 
-    RegisteredMusic toRegisteredMusic(Music music, Double lng, Double lat, String comment);
+    RegisteredMusic toRegisteredMusic(Music music, RegisteredMusicReqDto req);
 
-    MemberReadList registeredMusicToMemberReadList(Member member, RegisteredMusic registeredMusic, Music music);
+    MemberReadList registeredMusicToMemberReadList(MemberMusicId id, Member member, RegisteredMusic registeredMusic, Music music);
 
     RegisteredMusicResDto toRegisteredMusicResDto(RegisteredMusic registeredMusic, Music music);
 }
