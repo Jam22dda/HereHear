@@ -29,4 +29,10 @@ public class MemberAchievement {
     @CreatedDate
     private LocalDateTime clearTime;
 
+    @Builder
+    public MemberAchievement(MemberAchievementId id, Member member, Achievement achievement) {
+        this.id = id;
+        this.member = member;
+        this.achievement = achievement;
+    }
 }
