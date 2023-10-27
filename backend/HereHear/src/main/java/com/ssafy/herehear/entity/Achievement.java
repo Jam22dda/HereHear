@@ -13,8 +13,8 @@ public class Achievement {
     private Long achievementId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "border_code")
-    private BorderCode borderCode;
+    @JoinColumn(name = "badge_code")
+    private BadgeCode badgeCode;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "title_code")
@@ -23,15 +23,11 @@ public class Achievement {
     @Column(columnDefinition = "TEXT")
     private String mission;
 
-    @Column(length = 255)
-    private String icon;
-
     @Builder
-    public Achievement(BorderCode borderCode, TitleCode titleCode, String mission, String icon) {
-        this.borderCode = borderCode;
+    public Achievement(BadgeCode badgeCode, TitleCode titleCode, String mission) {
+        this.badgeCode = badgeCode;
         this.titleCode = titleCode;
         this.mission = mission;
-        this.icon = icon;
     }
 
 }
