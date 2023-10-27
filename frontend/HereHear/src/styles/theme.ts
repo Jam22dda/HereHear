@@ -46,6 +46,7 @@ const shadow = {
     shadow_play1: "-1px -1px 2px 0px #EDF2FF, 2px 2px 4px 0px #CACDEE;",
     shadow_play2: "4px 4px 8px 0px #C4CEF2, -4px -4px 8px 0px #E9EDFF;",
     shadow_nav: "2px 2px 4px 0px #F4F8FF inset;",
+    shadow_itembox: "-3px -3px 4px 0px #FFF, 2px 2px 4px 0px #CACDEE;",
 } as const;
 
 const gradient = {

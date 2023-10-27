@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.0.5",
+    "@tanstack/react-query-devtools": "^5.4.2",
     "@types/react-router-dom": "^5.3.3",
     "env-cmd": "^10.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",
+    "recoil": "^0.7.7",
     "styled-components": "^6.1.0",
     "v6": "^0.0.0"
   },
