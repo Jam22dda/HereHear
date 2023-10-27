@@ -6,12 +6,11 @@ import com.ssafy.herehear.admin.repository.AdminAchievementRepository;
 import com.ssafy.herehear.admin.repository.AdminBorderCodeRepository;
 import com.ssafy.herehear.admin.repository.AdminTitleCodeRepository;
 import com.ssafy.herehear.entity.Achievement;
-import com.ssafy.herehear.entity.BorderCode;
+import com.ssafy.herehear.entity.BadgeCode;
 import com.ssafy.herehear.entity.TitleCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +24,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void createAchievement(CreateAchievementDto createAchievementDto) {
         TitleCode titleCode = CreateAchievementMapper.INSTANCE.toTitleCodeEntity(createAchievementDto);
-        BorderCode borderCode = CreateAchievementMapper.INSTANCE.toBorderCodeEntity(createAchievementDto);
-        Achievement achievement = CreateAchievementMapper.INSTANCE.toAchievementEntity(createAchievementDto, titleCode, borderCode);
+        BadgeCode badgeCode = CreateAchievementMapper.INSTANCE.toBadgeCodeEntity(createAchievementDto);
+        Achievement achievement = CreateAchievementMapper.INSTANCE.toAchievementEntity(createAchievementDto, titleCode, badgeCode);
 
         adminTitleCodeRepository.save(titleCode);
-        adminBorderCodeRepository.save(borderCode);
+        adminBorderCodeRepository.save(badgeCode);
         adminAchievementRepository.save(achievement);
     }
 }
