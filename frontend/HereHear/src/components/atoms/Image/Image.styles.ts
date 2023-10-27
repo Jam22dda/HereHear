@@ -5,9 +5,10 @@ export interface ImageProps extends ComponentPropsWithRef<"img"> {
     width?: number;
     height?: number;
     $margin?: string;
-    $boxShadow?: boolean;
+    $boxShadow?: string;
     $unit?: "rem" | "px" | "em" | "%";
     alignItems?: string;
+    $borderRadius?: string;
 }
 
 const ImageConatiner = styled.img<ImageProps>`
@@ -17,7 +18,8 @@ const ImageConatiner = styled.img<ImageProps>`
     &.invert {
         filter: invert(1);
     }
-    box-shadow: ${(props) => (props.$boxShadow ? props.theme.shadow.shadow1 : "none")};
+    box-shadow: ${(props) => (props.$boxShadow ? props.theme.shadow[props.$boxShadow] : "none")};
+    border-radius: ${(props) => props.$borderRadius};
 `;
 
 export { ImageConatiner };
