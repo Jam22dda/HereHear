@@ -1,6 +1,7 @@
 // import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import Button from "../components/atoms/Button/Button";
+import CircleButton from "../components/atoms/CircleButton/CircleButton";
 
 export default function Landing() {
     // const id = "angel";
@@ -31,6 +32,7 @@ export default function Landing() {
                 <br />
                 <button onClick={moveAppHandler}>Go to App</button> */}
                 <Button>버튼</Button>
+                <CircleButton>원</CircleButton>
                 {/* </div>
             <div className="container">
                 <h1>제목 : 700</h1>
