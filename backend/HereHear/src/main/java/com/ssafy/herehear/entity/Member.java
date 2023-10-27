@@ -35,8 +35,8 @@ public class Member {
     private TitleCode titleCode;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "border_code")
-    private BorderCode borderCode;
+    @JoinColumn(name = "badge_code")
+    private BadgeCode badgeCode;
 
     @Builder
     public Member(String email, String nickname) {
@@ -52,8 +52,8 @@ public class Member {
         this.titleCode = titleCode;
     }
 
-    public void updateBorderCode(BorderCode borderCode) {
-        this.borderCode = borderCode;
+    public void updateBorderCode(BadgeCode badgeCode) {
+        this.badgeCode = badgeCode;
     }
 
 }

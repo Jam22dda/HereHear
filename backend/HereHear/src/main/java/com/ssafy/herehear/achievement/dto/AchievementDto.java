@@ -1,7 +1,5 @@
 package com.ssafy.herehear.achievement.dto;
 
-import com.ssafy.herehear.entity.BorderCode;
-import com.ssafy.herehear.entity.TitleCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +12,6 @@ public class AchievementDto {
     private String mission;
     private String icon;
 
-    private BorderCodeDto border;
+    private BadgeCodeDto badge;
     private TitleCodeDto title;
 }

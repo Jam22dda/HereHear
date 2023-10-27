@@ -40,37 +40,37 @@ public class AchievementController {
         return new DataResponse<>("200", "달성한 업적 조회", myAchievementList);
     }
 
-    @GetMapping("/mytitle")
-    public DataResponse<List<TitleCodeDto>> getMyAchievement() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+//    @GetMapping("/mytitle")
+//    public DataResponse<List<TitleCodeDto>> getMyAchievement() {
+//        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
+//        Long memberId = 1L;
+//
+//        log.info("[내 칭호 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+//
+//        List<MemberAchievementDto> myAchievementList = achievementService.getMyAchievementList(memberId);
+//
+//        List<TitleCodeDto> myTitleList = myAchievementList.stream()
+//                .map(MemberAchievementDto::getTitle)
+//                .toList();
+//
+//        return new DataResponse<>("200", "내 칭호 목록 조회", myTitleList);
+//    }
 
-        log.info("[내 칭호 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
-
-        List<MemberAchievementDto> myAchievementList = achievementService.getMyAchievementList(memberId);
-
-        List<TitleCodeDto> myTitleList = myAchievementList.stream()
-                .map(MemberAchievementDto::getTitle)
-                .toList();
-
-        return new DataResponse<>("200", "내 칭호 목록 조회", myTitleList);
-    }
-
-    @GetMapping("/myborder")
-    public DataResponse<List<BorderCodeDto>> getMyBorder() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
-
-        log.info("[내 테두리 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
-
-        List<MemberAchievementDto> myAchievementList = achievementService.getMyAchievementList(memberId);
-
-        List<BorderCodeDto> myBorderList = myAchievementList.stream()
-                .map(MemberAchievementDto::getBorder)
-                .toList();
-
-        return new DataResponse<>("200", "내 테두리 목록 조회", myBorderList);
-    }
+//    @GetMapping("/myborder")
+//    public DataResponse<List<BadgeCodeDto>> getMyBorder() {
+//        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
+//        Long memberId = 1L;
+//
+//        log.info("[내 테두리 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+//
+//        List<MemberAchievementDto> myAchievementList = achievementService.getMyAchievementList(memberId);
+//
+//        List<BadgeCodeDto> myBorderList = myAchievementList.stream()
+//                .map(MemberAchievementDto::getBorder)
+//                .toList();
+//
+//        return new DataResponse<>("200", "내 테두리 목록 조회", myBorderList);
+//    }
 
     @GetMapping("/{memberId}")
     public DataResponse<Integer> getAchievement(@PathVariable Long memberId) {
@@ -86,7 +86,7 @@ public class AchievementController {
         // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
         Long memberId = 1L;
 
-        log.info("[칭호, 테두리 장착] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+        log.info("[칭호, 뱃지 장착] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
         achievementService.equipAchievement(memberId, equipAchievementDto);
 
