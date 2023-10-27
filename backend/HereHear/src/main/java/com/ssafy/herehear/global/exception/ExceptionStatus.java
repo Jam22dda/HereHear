@@ -25,7 +25,7 @@ public enum ExceptionStatus {
     NOT_FOUND_REGISTERED_MUSIC("-3000","등록된 음악을 찾을 수 없습니다."),
     NOT_FOUND_MUSIC("-3001","음악을 찾을 수 없습니다."),
     DUPLICATE_MUSIC("-3002","중복된 음악입니다."),
-
+    NOT_FOUND_OCCASION("-3010","상황 태그를 찾을 수 없습니다."),
 
     /**
      * 업적 관련 STATUS CODE
