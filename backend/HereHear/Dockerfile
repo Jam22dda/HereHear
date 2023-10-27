@@ -3,9 +3,6 @@
 # 경량화 버전 사용
 FROM openjdk:17-alpine
 
-# 보안을 위해 설정파일을 복사하는 과정으로, 젠킨스에서 수행하기 때문에 주석 처리
-# COPY usr/spring/resources ./resources
-
 # 젠킨스가 빌드한 백엔드 프로젝트 Jar 파일을 컨테이너 외부에서 컨테이너 내부로 복사한다.
 COPY build/libs/*.jar application.jar
 
