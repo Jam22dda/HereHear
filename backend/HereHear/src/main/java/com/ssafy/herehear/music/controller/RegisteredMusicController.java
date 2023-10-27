@@ -1,5 +1,7 @@
 package com.ssafy.herehear.music.controller;
 
+import com.ssafy.herehear.entity.MusicOccasion;
+import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
@@ -29,6 +31,11 @@ public class RegisteredMusicController {
         registeredMusicService.registerMusic(memberId, registeredMusicReqDto);
 
         return new CommonResponse("200", "음악 등록");
+    }
+
+    @GetMapping("/tag")
+    public DataResponse<List<Occasion>> readTag() {
+        return new DataResponse<>("200", "음악 태그 조회", registeredMusicService.getTag());
     }
 
 //    @GetMapping("/{registeredMusicId}")
