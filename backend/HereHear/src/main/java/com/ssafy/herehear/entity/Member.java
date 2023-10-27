@@ -30,6 +30,14 @@ public class Member {
 
     private LocalDateTime removeDate;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "title_code")
+    private TitleCode titleCode;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "border_code")
+    private BorderCode borderCode;
+
     @Builder
     public Member(String email, String nickname) {
         this.email = email;
@@ -37,7 +45,15 @@ public class Member {
     }
 
     public void updateNickname(String nickname) {
-    	this.nickname = nickname;
+        this.nickname = nickname;
+    }
+
+    public void updateTitleCode(TitleCode titleCode) {
+        this.titleCode = titleCode;
+    }
+
+    public void updateBorderCode(BorderCode borderCode) {
+        this.borderCode = borderCode;
     }
 
 }
