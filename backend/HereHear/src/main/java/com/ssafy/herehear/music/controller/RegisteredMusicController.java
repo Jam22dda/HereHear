@@ -26,7 +26,7 @@ public class RegisteredMusicController {
     public CommonResponse registerMusic(@RequestHeader("Member-id") Long memberId, @RequestBody RegisteredMusicReqDto registeredMusicReqDto) {
         log.info("[음악 등록 param] memberId: "+memberId+", registeredMusicReqDto: "+registeredMusicReqDto);
 
-//        registeredMusicService.registerMusic(memberId, registeredMusicReqDto);
+        registeredMusicService.registerMusic(memberId, registeredMusicReqDto);
 
         return new CommonResponse("200", "음악 등록");
     }
