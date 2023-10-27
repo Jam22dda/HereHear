@@ -57,25 +57,28 @@ public class AchievementServiceImpl implements AchievementService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
-        // 0이면 장착 해제
-        Long zero = 0L;
-        if (zero.equals(equipAchievementDto.getBadgeCode())) {
-            member.updateBorderCode(null);
-            equipAchievementDto.setBadgeCode(null);
-        }
-        if (zero.equals(equipAchievementDto.getTitleCode())) {
-            member.updateTitleCode(null);
-            equipAchievementDto.setTitleCode(null);
-        }
-
-        // 그 외의 숫자면 장착, null 이면 기존 장착된 것 그대로
-        if (equipAchievementDto.getBadgeCode() != null && equipAchievementDto.getTitleCode() != null) {
-            equipTitleAndBorder(member, equipAchievementDto);
-        } else if (equipAchievementDto.getBadgeCode() != null) {
-            equipBorder(member, equipAchievementDto);
-        } else if (equipAchievementDto.getTitleCode() != null) {
-            equipTitle(member, equipAchievementDto);
-        }
+        /*
+        * 여기 수정해 줘야 댐!!
+        *  */
+//        // 0이면 장착 해제
+//        Long zero = 0L;
+//        if (zero.equals(equipAchievementDto.getBadgeCode())) {
+//            member.updateBorderCode(null);
+//            equipAchievementDto.setBadgeCode(null);
+//        }
+//        if (zero.equals(equipAchievementDto.getTitleCode())) {
+//            member.updateTitleCode(null);
+//            equipAchievementDto.setTitleCode(null);
+//        }
+//
+//        // 그 외의 숫자면 장착, null 이면 기존 장착된 것 그대로
+//        if (equipAchievementDto.getBadgeCode() != null && equipAchievementDto.getTitleCode() != null) {
+//            equipTitleAndBorder(member, equipAchievementDto);
+//        } else if (equipAchievementDto.getBadgeCode() != null) {
+//            equipBorder(member, equipAchievementDto);
+//        } else if (equipAchievementDto.getTitleCode() != null) {
+//            equipTitle(member, equipAchievementDto);
+//        }
 
         memberRepository.save(member);
     }
@@ -87,22 +90,29 @@ public class AchievementServiceImpl implements AchievementService {
         BadgeCode badgeCode = badgeCodeRepository.findById(equipAchievementDto.getBadgeCode())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.BORDER_CODE_NOT_FOUND));
 
-        member.updateTitleCode(titleCode);
-        member.updateBorderCode(badgeCode);
+        /*
+        여기도!!!
+         */
+//        member.updateTitleCode(titleCode);
+//        member.updateBorderCode(badgeCode);
     }
 
     private void equipTitle(Member member, EquipAchievementDto equipAchievementDto) {
         TitleCode titleCode = titleCodeRepository.findById(equipAchievementDto.getTitleCode())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TITLE_CODE_NOT_FOUND));
-
-        member.updateTitleCode(titleCode);
+        /*
+        여기도!!!
+         */
+//        member.updateTitleCode(titleCode);
     }
 
     private void equipBorder(Member member, EquipAchievementDto equipAchievementDto) {
         BadgeCode badgeCode = badgeCodeRepository.findById(equipAchievementDto.getBadgeCode())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.BORDER_CODE_NOT_FOUND));
-
-        member.updateBorderCode(badgeCode);
+        /*
+        여기도!!!
+         */
+//        member.updateBorderCode(badgeCode);
     }
 
 }
