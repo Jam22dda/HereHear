@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { ButtonProps } from "./Button";
 import theme from "../../../styles/theme";
 
-const getOptionStyling = (option: Required<ButtonProps>["option"], props: ButtonProps) => {
+const getOptionStyling = (option: Required<ButtonProps>["option"]) => {
     const style = {
         tag1: css`
             background: ${({ theme }) => theme.gradient.gradient2};
@@ -32,7 +32,7 @@ const getOptionStyling = (option: Required<ButtonProps>["option"], props: Button
         `,
         follow: css`
             background: ${({ theme }) => theme.gradient.gradient4};
-            color: ${({ theme }) => theme.color.white};
+            color: ${({ theme }) => theme.color.white1};
             box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
         `,
         unfollow: css`
@@ -41,11 +41,7 @@ const getOptionStyling = (option: Required<ButtonProps>["option"], props: Button
             box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
         `,
     };
-    return props.$backgroundColor
-        ? css`
-              background: ${props.$backgroundColor};
-          `
-        : style[option];
+    return style[option];
 };
 
 const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
@@ -54,35 +50,43 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
             height: 20px;
             font-size: ${({ theme }) => theme.fontSize.small3};
             border-radius: 24px;
+            border: none;
+            line-height: 22px;
         `,
         medium: css`
             height: 32px;
             font-size: ${({ theme }) => theme.fontSize.small2};
             border-radius: 32px;
+            border: none;
+            line-height: 34px;
         `,
         mediumplus: css`
             height: 36px;
             font-size: ${({ theme }) => theme.fontSize.small1};
             border-radius: 20px;
+            border: none;
+            line-height: 38px;
         `,
         large: css`
             height: 40px;
             font-size: ${({ theme }) => theme.fontSize.body2};
             font-weight: bold;
             border-radius: 28px;
+            border: none;
+            line-height: 42px;
         `,
     };
     return style[size];
 };
 
 const Button = styled.button<ButtonProps>`
-    width: ${(props) => props.$width || "100%"};
+    width: ${(props) => props.$width};
     text-align: ${(props) => props.$textAlign || "center"};
     color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
-    border-radius: ${(props) => props.$borderRadius || "24px"};
+    border-radius: ${(props) => props.$borderRadius};
     ${({ size = "large" }) => getSizeStyling(size)};
-    ${({ option = "save", ...props }) => getOptionStyling(option, props)};
-    font-size: ${(props) => props.$fontSize || "20px"};
+    ${({ option = "save" }) => getOptionStyling(option)};
+    font-size: ${(props) => props.$fontSize};
     background-color: ${(props) => props.$backgroundColor};
     box-shadow: ${(props) => props.$shadow};
 `;

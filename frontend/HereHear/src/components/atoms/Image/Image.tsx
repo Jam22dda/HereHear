@@ -1,6 +1,14 @@
-import * as S from "../../../components/atoms/Image/Image.styles";
+import * as S from "./Image.styles";
 
-const Image = ({ width, height, $margin, $boxShadow, $unit = "rem", ...attributes }: S.ImageProps) => {
+const Image = ({
+    width,
+    height,
+    $margin,
+    $boxShadow,
+    $unit = "rem",
+    $borderRadius,
+    ...attributes
+}: S.ImageProps) => {
     return (
         <S.ImageConatiner
             width={width}
@@ -8,13 +16,10 @@ const Image = ({ width, height, $margin, $boxShadow, $unit = "rem", ...attribute
             $margin={$margin}
             $unit={$unit}
             $boxShadow={$boxShadow}
-            // $justifyContent={$justifyContent}
+            $borderRadius={$borderRadius}
             {...attributes}
         />
     );
 };
 
 export { Image };
-
-// 활용 예시
-// <Image src={backArrow} width={1} />
