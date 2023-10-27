@@ -1,5 +1,6 @@
 package com.ssafy.herehear.entity;
 
+import com.ssafy.herehear.domain.member.dto.SignUpDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,14 +31,39 @@ public class Member {
 
     private LocalDateTime removeDate;
 
+    private String role;
+    private String provider;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_character_id")
+    private ProfileCharacter profileCharacter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "achievement_id")
+    private Achievement achievement;
+
+
     @Builder
     public Member(String email, String nickname) {
         this.email = email;
         this.nickname = nickname;
     }
 
+    public void updateCharacter(ProfileCharacter profileCharacter) {
+        this.profileCharacter = profileCharacter;
+    }
+
     public void updateNickname(String nickname) {
-    	this.nickname = nickname;
+        this.nickname = nickname;
+    }
+
+    public void deleteMember() {
+        this.removeDate = LocalDateTime.now();
+    }
+
+    public void resignUp() {
+        this.registDate = LocalDateTime.now();
+        this.removeDate = null;
     }
 
 }
