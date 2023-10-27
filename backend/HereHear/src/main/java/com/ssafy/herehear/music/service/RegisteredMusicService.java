@@ -1,11 +1,14 @@
 package com.ssafy.herehear.music.service;
 
+import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.music.dto.request.RegisteredMusicReqDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
+import com.ssafy.herehear.music.repository.MusicOccasionRepository;
+import com.ssafy.herehear.music.repository.OccasionRepository;
 import com.ssafy.herehear.music.repository.RegisteredMusicRepository;
 import com.ssafy.herehear.music.repository.RegisteredMusicRepositoryImpl;
 import jakarta.transaction.Transactional;
@@ -22,28 +25,27 @@ import java.util.List;
 public class RegisteredMusicService {
     private final RegisteredMusicRepository registeredMusicRepository;
     private final RegisterMusicMapper registerMusicMapper;
-//
-//    private final MemberReadListRepository memberReadListRepository;
-//    private final MemberRepository memberRepository;
+
+    private final OccasionRepository occasionRepository;
+    private final MusicOccasionRepository musicOccasionRepository;
+
+    private final MemberRepository memberRepository;
 
     private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
 
     @Transactional
     public void registerMusic(Long memberId, RegisteredMusicReqDto registeredMusicReqDto) {
+        Member member = findMember(memberId);
 
-//        RegisteredMusic registeredMusicMapping = registerMusicMapper.toRegisteredMusic(registeredMusicReqDto);
-//        RegisteredMusic registeredMusic = registeredMusicRepository.save(registeredMusicMapping);
-//        log.info("registeredMusicId: "+registeredMusic.getRegisteredMusicId());
-//
-//        Member member = findMember(memberId);
-//
-//        MemberMusicId memberMusicId = new MemberMusicId( memberId, registeredMusic.getRegisteredMusicId(), music.getMusicId());
-//        Me memberReadListMapping = registerMusicMapper.registeredMusicToMemberReadList(memberMusicId, member, registeredMusic);
-//        memberReadListRepository.save(memberReadListMapping);
-//
-//        log.info("[사용자 음악 등록 완료]");
+        RegisteredMusic registeredMusic = registeredMusicRepository.save(registerMusicMapper.toRegisteredMusic(member, registeredMusicReqDto));
+        log.info("registeredMusicId: "+registeredMusic.getRegisteredMusicId());
+
+        for (long occasionId: registeredMusicReqDto.getMusicOccasionIds()) {
+            musicOccasionRepository.save(registerMusicMapper.toMusicOccasion(findOccasion(occasionId), registeredMusic));
+        }
+        log.info("[사용자 음악 등록 완료]");
     }
-//
+
 //    @Transactional
 //    public RegisteredMusicResDto getRegisteredMusic(long registeredMusicId) {
 //        RegisteredMusic findRegisteredMusic = findRegisteredMusic(registeredMusicId);
@@ -88,13 +90,19 @@ public class RegisteredMusicService {
 //        registeredMusicRepository.save(findRegisteredMusic);
 //        log.info("[내가 등록 음악 삭제(수정)]");
     }
-//
-//    public Member findMember(long memberId){
-//        return memberRepository.findByMemberId(memberId).orElseThrow(
-//                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-//        );
-//    }
-//
+
+    public Member findMember(long memberId){
+        return memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+        );
+    }
+
+    public Occasion findOccasion(long musicOccasionId){
+        return occasionRepository.findById(musicOccasionId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.NOT_FOUND_OCCASION)
+        );
+    }
+
 //    public RegisteredMusic findRegisteredMusic(long registeredMusicId){
 //        return registeredMusicRepositoryImpl.findByRegisterMusic(registeredMusicId).orElseThrow(
 //                () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)

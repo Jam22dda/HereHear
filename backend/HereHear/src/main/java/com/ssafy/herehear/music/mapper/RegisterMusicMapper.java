@@ -9,9 +9,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface RegisterMusicMapper {
 
-    RegisteredMusic toRegisteredMusic(RegisteredMusicReqDto req);
+    RegisteredMusic toRegisteredMusic(Member member, RegisteredMusicReqDto req);
 
-//    MemberReadList registeredMusicToMemberReadList(MemberMusicId id, Member member, RegisteredMusic registeredMusic);
-
+    MusicOccasion toMusicOccasion(Occasion occasion, RegisteredMusic registeredMusic);
     RegisteredMusicResDto toRegisteredMusicResDto(RegisteredMusic registeredMusic);
 }
