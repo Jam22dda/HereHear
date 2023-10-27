@@ -30,13 +30,17 @@ public class Member {
 
     private LocalDateTime removeDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "title_code")
-    private TitleCode titleCode;
+    private String role;
+    private String provider;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "badge_code")
-    private BadgeCode badgeCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_character_id")
+    private ProfileCharacter profileCharacter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "achievement_id")
+    private Achievement achievement;
+
 
     @Builder
     public Member(String email, String nickname) {
@@ -44,16 +48,21 @@ public class Member {
         this.nickname = nickname;
     }
 
+    public void updateCharacter(ProfileCharacter profileCharacter) {
+        this.profileCharacter = profileCharacter;
+    }
+
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
 
-    public void updateTitleCode(TitleCode titleCode) {
-        this.titleCode = titleCode;
+    public void deleteMember() {
+        this.removeDate = LocalDateTime.now();
     }
 
-    public void updateBorderCode(BadgeCode badgeCode) {
-        this.badgeCode = badgeCode;
+    public void resignUp() {
+        this.registDate = LocalDateTime.now();
+        this.removeDate = null;
     }
 
 }
