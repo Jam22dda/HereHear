@@ -34,14 +34,14 @@ const getOptionStyling = (
       font-weight: bold;
     `,
     follow: css`
-    background: ${({ theme }) => theme.gradient.gradient4};
-    color: ${({ theme }) => theme.color.white};
-    box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
+      background: ${({ theme }) => theme.gradient.gradient4};
+      color: ${({ theme }) => theme.color.white};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
     `,
     unfollow: css`
-    background: ${({ theme }) => theme.gradient.gradient1};
-    color: ${({ theme }) => theme.color.main1};
-    box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
+      background: ${({ theme }) => theme.gradient.gradient1};
+      color: ${({ theme }) => theme.color.main1};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
     `,
   };
   return props.$backgroundColor
@@ -82,8 +82,8 @@ const Button = styled.button<ButtonProps>`
   width: ${(props) => props.$width || "100%"};
   text-align: ${(props) => props.$textAlign || "center"};
   color: ${(props) =>
-    props.color ? props.theme.color[props.color] : theme.color.black1};
-  border-radius: ${(props) => props.$borderRadius || "23px"};
+    props.color ? props.theme.color[props.color] : theme.color.main1};
+  border-radius: ${(props) => props.$borderRadius || "24px"};
   ${({ size = "large" }) => getSizeStyling(size)};
   ${({ option = "save", ...props }) => getOptionStyling(option, props)};
   font-size: ${(props) => props.$fontSize || "20px"};
