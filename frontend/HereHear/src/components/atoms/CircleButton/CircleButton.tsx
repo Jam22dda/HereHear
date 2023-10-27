@@ -8,57 +8,40 @@ import type { ForwardedRef } from "react";
 // //  *는 해당 모듈에서 export된 모든 것들
 import * as S from "./CircleButton.styles";
 
-export interface CircleButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  // option?:
-  //   | "default"
-  //   | "activated"
-  //   | "deActivated"
-  //   | "dashed"
-  //   | "danger"
-  //   | "keypad";
-  size?: "small" | "medium1" | "medium2" | "large";
-  $fontSize?: string;
-  $backgroundColor?: string;
-  $borderColor?: string;
-  $border?: string;
-  $borderRadius?: string;
-  $textAlign?: string; // 기본으로 center으로하면 상관없?
-  $color?: string;
-  $width?: string;
+export interface CircleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    option?: "default" | "pinkActivated" | "pinkDeActivated" | "gradActivated" | "gradDeActivated";
+    size?: "small" | "medium" | "mediumplus" | "large";
+    $fontSize?: string;
+    $backgroundColor?: string;
+    $borderColor?: string;
+    $border?: string;
+    $borderRadius?: string;
+    $textAlign?: string; // 기본으로 center으로하면 상관없?
+    $color?: string;
+    $width?: string;
+    $shadow?: string;
 }
 
 const CircleButton = (
-  {
-    // option,
-    size,
-    $backgroundColor,
-    $borderColor,
-    $borderRadius,
-    $border,
-    $color,
-    $width,
-    children,
-    ...attributes
-  }: CircleButtonProps,
-  ref: ForwardedRef<HTMLButtonElement>
+    { option, size, $backgroundColor, $borderColor, $borderRadius, $border, $color, $width, children, ...attributes }: CircleButtonProps,
+    ref: ForwardedRef<HTMLButtonElement>
 ) => {
-  return (
-    <S.Button
-      ref={ref}
-      size={size}
-      // option={option}
-      $border={$border}
-      $backgroundColor={$backgroundColor}
-      $borderColor={$borderColor}
-      $color={$color}
-      $borderRadius={$borderRadius}
-      $width={$width}
-      {...attributes}
-    >
-      {children}
-    </S.Button>
-  );
+    return (
+        <S.Button
+            ref={ref}
+            size={size}
+            option={option}
+            $border={$border}
+            $backgroundColor={$backgroundColor}
+            $borderColor={$borderColor}
+            $color={$color}
+            $borderRadius={$borderRadius}
+            $width={$width}
+            {...attributes}
+        >
+            {children}
+        </S.Button>
+    );
 };
 
 export default forwardRef(CircleButton);
