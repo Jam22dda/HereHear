@@ -5,7 +5,7 @@ import com.ssafy.herehear.achievement.dto.EquipAchievementDto;
 import com.ssafy.herehear.achievement.dto.MemberAchievementDto;
 import com.ssafy.herehear.achievement.mapper.AchievementMapper;
 import com.ssafy.herehear.achievement.repository.*;
-import com.ssafy.herehear.entity.BorderCode;
+import com.ssafy.herehear.entity.BadgeCode;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberAchievement;
 import com.ssafy.herehear.entity.TitleCode;
@@ -24,7 +24,7 @@ public class AchievementServiceImpl implements AchievementService {
 
     private final AchievementRepository achievementRepository;
     private final MemberAchievementRepository memberAchievementRepository;
-    private final BorderCodeRepository borderCodeRepository;
+    private final BadgeCodeRepository badgeCodeRepository;
     private final TitleCodeRepository titleCodeRepository;
     private final MemberRepository memberRepository;
 
@@ -59,9 +59,9 @@ public class AchievementServiceImpl implements AchievementService {
 
         // 0이면 장착 해제
         Long zero = 0L;
-        if (zero.equals(equipAchievementDto.getBorderCode())) {
+        if (zero.equals(equipAchievementDto.getBadgeCode())) {
             member.updateBorderCode(null);
-            equipAchievementDto.setBorderCode(null);
+            equipAchievementDto.setBadgeCode(null);
         }
         if (zero.equals(equipAchievementDto.getTitleCode())) {
             member.updateTitleCode(null);
@@ -69,9 +69,9 @@ public class AchievementServiceImpl implements AchievementService {
         }
 
         // 그 외의 숫자면 장착, null 이면 기존 장착된 것 그대로
-        if (equipAchievementDto.getBorderCode() != null && equipAchievementDto.getTitleCode() != null) {
+        if (equipAchievementDto.getBadgeCode() != null && equipAchievementDto.getTitleCode() != null) {
             equipTitleAndBorder(member, equipAchievementDto);
-        } else if (equipAchievementDto.getBorderCode() != null) {
+        } else if (equipAchievementDto.getBadgeCode() != null) {
             equipBorder(member, equipAchievementDto);
         } else if (equipAchievementDto.getTitleCode() != null) {
             equipTitle(member, equipAchievementDto);
@@ -84,11 +84,11 @@ public class AchievementServiceImpl implements AchievementService {
         TitleCode titleCode = titleCodeRepository.findById(equipAchievementDto.getTitleCode())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.TITLE_CODE_NOT_FOUND));
 
-        BorderCode borderCode = borderCodeRepository.findById(equipAchievementDto.getBorderCode())
+        BadgeCode badgeCode = badgeCodeRepository.findById(equipAchievementDto.getBadgeCode())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.BORDER_CODE_NOT_FOUND));
 
         member.updateTitleCode(titleCode);
-        member.updateBorderCode(borderCode);
+        member.updateBorderCode(badgeCode);
     }
 
     private void equipTitle(Member member, EquipAchievementDto equipAchievementDto) {
@@ -99,10 +99,10 @@ public class AchievementServiceImpl implements AchievementService {
     }
 
     private void equipBorder(Member member, EquipAchievementDto equipAchievementDto) {
-        BorderCode borderCode = borderCodeRepository.findById(equipAchievementDto.getBorderCode())
+        BadgeCode badgeCode = badgeCodeRepository.findById(equipAchievementDto.getBadgeCode())
                 .orElseThrow(() -> new CustomException(ExceptionStatus.BORDER_CODE_NOT_FOUND));
 
-        member.updateBorderCode(borderCode);
+        member.updateBorderCode(badgeCode);
     }
 
 }

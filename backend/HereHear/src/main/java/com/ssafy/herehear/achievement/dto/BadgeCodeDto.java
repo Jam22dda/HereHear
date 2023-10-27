@@ -5,9 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EquipAchievementDto {
+public class BadgeCodeDto {
 
-    private Long titleCode;
     private Long badgeCode;
+    private String badgeName;
+    private String badgeImg;
 
 }

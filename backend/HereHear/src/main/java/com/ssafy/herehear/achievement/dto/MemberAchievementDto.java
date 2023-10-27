@@ -10,9 +10,8 @@ public class MemberAchievementDto {
     private Long userId;
     private Long achievementId;
     private String mission;
-    private String icon;
 
-    private BorderCodeDto border;
+    private BadgeCodeDto badge;
     private TitleCodeDto title;
     private String clearTime;
 
