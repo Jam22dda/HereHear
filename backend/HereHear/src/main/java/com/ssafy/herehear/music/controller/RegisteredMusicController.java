@@ -26,17 +26,17 @@ public class RegisteredMusicController {
     public CommonResponse registerMusic(@RequestHeader("Member-id") Long memberId, @RequestBody RegisteredMusicReqDto registeredMusicReqDto) {
         log.info("[음악 등록 param] memberId: "+memberId+", registeredMusicReqDto: "+registeredMusicReqDto);
 
-        registeredMusicService.registerMusic(memberId, registeredMusicReqDto);
+//        registeredMusicService.registerMusic(memberId, registeredMusicReqDto);
 
         return new CommonResponse("200", "음악 등록");
     }
 
-    @GetMapping("/{registeredMusicId}")
-    public DataResponse<RegisteredMusicResDto> getMusic(@PathVariable long registeredMusicId) {
-        log.info("[음악 상세 조회 param] registeredMusicId: "+registeredMusicId);
-
-        return new DataResponse<>("200", "음악 상세 조회", registeredMusicService.getRegisteredMusic(registeredMusicId));
-    }
+//    @GetMapping("/{registeredMusicId}")
+//    public DataResponse<RegisteredMusicResDto> getMusic(@PathVariable long registeredMusicId) {
+//        log.info("[음악 상세 조회 param] registeredMusicId: "+registeredMusicId);
+//
+//        return new DataResponse<>("200", "음악 상세 조회", registeredMusicService.getRegisteredMusic(registeredMusicId));
+//    }
 
     @GetMapping("/list")
     public DataResponse<List<RegisteredMusicResDto>> getMusicList() {

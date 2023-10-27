@@ -19,13 +19,9 @@ public class MemberMusicId implements Serializable {
     @Column(name = "registered_music_id")
     private Long registeredMusicId;
 
-    @Column(name = "music_id")
-    private Long musicId;
-
     @Builder
-    public MemberMusicId(Long memberId, Long registeredMusicId, Long musicId) {
+    public MemberMusicId(Long memberId, Long registeredMusicId) {
         this.memberId = memberId;
         this.registeredMusicId = registeredMusicId;
-        this.musicId = musicId;
     }
 }

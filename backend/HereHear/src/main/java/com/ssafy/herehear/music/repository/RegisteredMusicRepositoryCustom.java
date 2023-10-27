@@ -7,12 +7,12 @@ import java.util.Optional;
 
 public interface RegisteredMusicRepositoryCustom {
 
-    List<RegisteredMusic> findByRegisterMusics();
-
-    Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId);
-
-    List<RegisteredMusic> findByMyRegisterMusics(long memberId);
-
-    Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);
+//    List<RegisteredMusic> findByRegisterMusics();
+//
+//    Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId);
+//
+//    List<RegisteredMusic> findByMyRegisterMusics(long memberId);
+//
+//    Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);
 
 }

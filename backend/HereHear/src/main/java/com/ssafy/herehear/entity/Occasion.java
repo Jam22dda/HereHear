@@ -15,5 +15,4 @@ public class Occasion {
 
     @Column(length = 50, nullable = false)
     private String occasionName;
-
 }

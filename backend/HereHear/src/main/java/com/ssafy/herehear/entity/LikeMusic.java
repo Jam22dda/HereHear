@@ -2,6 +2,9 @@ package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,8 +24,7 @@ public class LikeMusic {
     @JoinColumn(name = "registered_music_id")
     private RegisteredMusic registeredMusic;
 
-    @MapsId("musicId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "music_id")
-    private Music music;
+    @CreatedDate
+    @Column(nullable = false)
+    private LocalDateTime createTime;
 }

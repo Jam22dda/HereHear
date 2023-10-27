@@ -1,17 +1,18 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class MemberReadList {
+@EntityListeners(AuditingEntityListener.class)
+public class MusicHistory {
 
     @EmbeddedId
     private MemberMusicId id;
@@ -26,9 +27,7 @@ public class MemberReadList {
     @JoinColumn(name = "registered_music_id")
     private RegisteredMusic registeredMusic;
 
-    @MapsId("musicId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "music_id")
-    private Music music;
-
+    @CreatedDate
+    @Column(nullable = false)
+    private LocalDateTime createTime;
 }
