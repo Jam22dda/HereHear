@@ -1,6 +1,5 @@
 package com.ssafy.herehear.entity;
 
-import com.ssafy.herehear.domain.member.dto.SignUpDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
