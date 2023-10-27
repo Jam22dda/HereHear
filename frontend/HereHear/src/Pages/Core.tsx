@@ -1,7 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Core.css';
+import testImage from '../assets/Core/test.png';
 
 export default function Core() {
+    const [isUpdate, setIsUpdate] = useState(false);
+
     useEffect(() => {
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         const script = document.createElement('script');
@@ -18,6 +21,21 @@ export default function Core() {
             };
 
             const map = new naver.maps.Map('map', mapOptions);
+
+            const arr = [];
+            let w = 37.4867995957995;
+            for (let i = 0; i < 10000; i++) {
+                arr[i] = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(37.4867995957995 + i * 0.1, 126.982211871752),
+                    map: map,
+                    icon: {
+                        content: `
+                        
+                        <img alt='img' src='${testImage}' />
+                        `,
+                    },
+                });
+            }
         };
 
         document.body.appendChild(script);
@@ -26,11 +44,14 @@ export default function Core() {
         return () => {
             document.body.removeChild(script);
         };
-    }, []);
+    }, [isUpdate]);
 
     return (
         <div id='map__display'>
             <div id='map'></div>
         </div>
+        // <div>
+        //     <img alt={`${testImage}`} src={`${testImage}`} />
+        // </div>
     );
 }

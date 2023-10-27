@@ -1,10 +1,10 @@
 // import { Link, useNavigate } from "react-router-dom";
-import React from "react";
+// import React from "react";
 import Button from "../components/atoms/Button/Button";
 import Input from "../components/atoms/Input/Input";
 import MusicItem from "../components/molcules/MusicItem/MusicItem";
 import ItemBox from "../components/molcules/ItemBox/ItemBox";
-
+import CircleButton from "../components/atoms/CircleButton/CircleButton";
 export default function Landing() {
     // const id = "angel";
 
@@ -34,6 +34,8 @@ export default function Landing() {
                 <br />
                 <button onClick={moveAppHandler}>Go to App</button> */}
                 <Button $width="130px">저장하기</Button>
+                <CircleButton></CircleButton>
+
                 <Button option="tag_selected" size="small" $width="56px">
                     감성
                 </Button>
