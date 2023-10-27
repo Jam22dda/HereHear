@@ -8,41 +8,40 @@ const getOptionStyling = (
 ) => {
   const style = {
     tag1: css`
-      background: ${({ theme }) => theme.gradient.gradient1};
-      color: ${({ theme }) => theme.color.main};
-      font-weight: bold;
+      background: ${({ theme }) => theme.gradient.gradient2};
+      color: ${({ theme }) => theme.color.main1};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
     `,
     tag_selected: css`
-      background: ${({ theme }) => theme.color.blue};
-      color: ${({ theme }) => theme.color.white};
-      border-color: ${({ theme }) => theme.color.white};
-      font-weight: bold;
+      background: ${({ theme }) => theme.gradient.gradient4};
+      color: ${({ theme }) => theme.color.white1};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_play1};
     `,
     tag_unselected: css`
-      background: ${({ theme }) => theme.color.grey5};
-      border: none;
-      color: ${({ theme }) => theme.color.grey2};
+      background: ${({ theme }) => theme.gradient.gradient1};
+      color: ${({ theme }) => theme.color.main1};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_play1};
     `,
     tag_plus: css`
-      background: ${({ theme }) => theme.color.white};
-      border: 0.1em dashed;
-      border-color: ${({ theme }) => theme.color.grey3};
-      color: ${({ theme }) => theme.color.grey1};
+      background: ${({ theme }) => theme.color.white1};
+      color: ${({ theme }) => theme.color.main1};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_btn};
     `,
     save: css`
-      background: ${({ theme }) => theme.color.danger};
-      border: none;
-      color: ${({ theme }) => theme.color.white};
+      background: ${({ theme }) => theme.gradient.gradient4};
+      color: ${({ theme }) => theme.color.white1};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
+      font-weight: bold;
     `,
     follow: css`
-    background: ${({ theme }) => theme.color.danger};
-    border: none;
-    color: ${({ theme }) => theme.color.white};
+      background: ${({ theme }) => theme.gradient.gradient4};
+      color: ${({ theme }) => theme.color.white};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
     `,
     unfollow: css`
-    background: ${({ theme }) => theme.color.danger};
-    border: none;
-    color: ${({ theme }) => theme.color.white};
+      background: ${({ theme }) => theme.gradient.gradient1};
+      color: ${({ theme }) => theme.color.main1};
+      box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
     `,
   };
   return props.$backgroundColor
@@ -55,19 +54,25 @@ const getOptionStyling = (
 const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
   const style = {
     small: css`
-      height: 40px;
-      font-size: ${({ theme }) => theme.fontSize.subtitle1};
-      border-radius: 12px;
+      height: 20px;
+      font-size: ${({ theme }) => theme.fontSize.small3};
+      border-radius: 24px;
     `,
     medium: css`
-      height: 55px;
-      font-size: ${({ theme }) => theme.fontSize.body2};
-      border-radius: 14px;
+      height: 32px;
+      font-size: ${({ theme }) => theme.fontSize.small2};
+      border-radius: 32px;
     `,
+    mediumplus: css`
+    height: 36px;
+    font-size: ${({ theme }) => theme.fontSize.small1};
+    border-radius: 20px;
+  `,
     large: css`
-      height: 67px;
-      font-size: ${({ theme }) => theme.fontSize.body1};
-      border-radius: 23px;
+      height: 40px;
+      font-size: ${({ theme }) => theme.fontSize.body2};
+      font-weight: bold;
+      border-radius: 28px;
     `,
   };
   return style[size];
@@ -77,15 +82,13 @@ const Button = styled.button<ButtonProps>`
   width: ${(props) => props.$width || "100%"};
   text-align: ${(props) => props.$textAlign || "center"};
   color: ${(props) =>
-    props.color ? props.theme.color[props.color] : theme.color.black1};
-  border: ${(props) =>
-    props.$border ||
-    `1.5px solid ${props.$borderColor || props.theme.color.blue}`};
-  border-radius: ${(props) => props.$borderRadius || "23px"};
+    props.color ? props.theme.color[props.color] : theme.color.main1};
+  border-radius: ${(props) => props.$borderRadius || "24px"};
   ${({ size = "large" }) => getSizeStyling(size)};
-  ${({ option = "default", ...props }) => getOptionStyling(option, props)};
+  ${({ option = "save", ...props }) => getOptionStyling(option, props)};
   font-size: ${(props) => props.$fontSize || "20px"};
   background-color: ${(props) => props.$backgroundColor};
+  box-shadow: ${(props) => props.$shadow};
 `;
 
 export { Button };

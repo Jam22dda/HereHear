@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import Button from '../components/atoms/Button/Button';
 
 export default function Landing() {
     const id = 'angel';
@@ -28,6 +29,7 @@ export default function Landing() {
                 <Link to={`/member/${id}`}>Member</Link>
                 <br />
                 <button onClick={moveAppHandler}>Go to App</button>
+                <Button>버튼</Button>
             </div>
             <div className='container'>
                 <h1>제목 : 700</h1>
