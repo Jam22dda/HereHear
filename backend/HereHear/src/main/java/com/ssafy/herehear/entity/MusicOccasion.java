@@ -20,5 +20,4 @@ public class MusicOccasion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "registered_music_id")
     private RegisteredMusic registeredMusic;
-
 }
