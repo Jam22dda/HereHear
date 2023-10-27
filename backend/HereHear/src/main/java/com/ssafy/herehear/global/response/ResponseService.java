@@ -12,7 +12,7 @@ public class ResponseService {
         return successResponse;
     }
 
-    public <T> DataResponse<?> successDataResponse(ResponseStatus responseStatus, T data){
+    public <T> DataResponse<T> successDataResponse(ResponseStatus responseStatus, T data){
         DataResponse dataResponse = new DataResponse<>();
         dataResponse.setCode(responseStatus.getCode());
         dataResponse.setMessage(responseStatus.getMessage());
