@@ -16,6 +16,11 @@ import SelectMusic from './Pages/SelectMusic.tsx';
 import Stats from './Pages/Stats.tsx';
 import App from './App.tsx';
 
+// declare global {
+//     interface Window {
+//         naver: any;
+//     }
+// }
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <BrowserRouter>
