@@ -46,6 +46,11 @@ public class RegisteredMusicService {
         log.info("[사용자 음악 등록 완료]");
     }
 
+    @Transactional
+    public List<Occasion> getTag() {
+        return occasionRepository.findAll();
+    }
+
 //    @Transactional
 //    public RegisteredMusicResDto getRegisteredMusic(long registeredMusicId) {
 //        RegisteredMusic findRegisteredMusic = findRegisteredMusic(registeredMusicId);
