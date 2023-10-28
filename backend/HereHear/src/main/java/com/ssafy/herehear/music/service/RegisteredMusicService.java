@@ -4,8 +4,8 @@ import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
-import com.ssafy.herehear.music.dto.request.RegisteredMusicReqDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
+import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.MusicOccasionRepository;
 import com.ssafy.herehear.music.repository.OccasionRepository;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,67 +33,72 @@ public class RegisteredMusicService {
     private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
 
     @Transactional
-    public void registerMusic(Long memberId, RegisteredMusicReqDto registeredMusicReqDto) {
+    public void registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
         Member member = findMember(memberId);
 
-        RegisteredMusic registeredMusic = registeredMusicRepository.save(registerMusicMapper.toRegisteredMusic(member, registeredMusicReqDto));
+        RegisteredMusic registeredMusic = registeredMusicRepository.save(registerMusicMapper.toRegisteredMusic(member, registerMusicReqDto));
         log.info("registeredMusicId: "+registeredMusic.getRegisteredMusicId());
 
-        for (long occasionId: registeredMusicReqDto.getMusicOccasionIds()) {
+        for (long occasionId: registerMusicReqDto.getMusicOccasionIds()) {
             musicOccasionRepository.save(registerMusicMapper.toMusicOccasion(findOccasion(occasionId), registeredMusic));
         }
         log.info("[사용자 음악 등록 완료]");
     }
 
-    @Transactional
     public List<Occasion> getTag() {
         return occasionRepository.findAll();
     }
 
+    @Transactional
+    public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
+        Member member = findMember(memberId);
+
+        RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicResDto(
+                findByRegisterMusicDetails(registeredMusicId),
+                findRegisteredMusicLike(memberId, registeredMusicId),
+                member.getNickname(),
+                registeredMusicRepositoryImpl.findByOccasion(registeredMusicId)
+        );
+        log.info("RegisteredMusicResDto: "+ registeredMusicDetailsResDto);
+
+        return registeredMusicDetailsResDto;
+    }
+//
 //    @Transactional
-//    public RegisteredMusicResDto getRegisteredMusic(long registeredMusicId) {
-//        RegisteredMusic findRegisteredMusic = findRegisteredMusic(registeredMusicId);
-//        RegisteredMusicResDto registeredMusicResDto = registerMusicMapper.toRegisteredMusicResDto(findRegisteredMusic);
-//        log.info("RegisteredMusicResDto: "+registeredMusicResDto);
+//    public List<RegisteredMusicDetailsResDto> getMusicList() {
 //
-//        return registeredMusicResDto;
+////        List<RegisteredMusicResDto> registeredMusicResDtoList = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+////                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicResDto(findRegisteredMusic))
+////                .toList();
+////        log.info("List<RegisteredMusicResDto>: "+registeredMusicResDtoList);
+//
+//        return new ArrayList<>();
 //    }
-
-    @Transactional
-    public List<RegisteredMusicResDto> getMusicList() {
-
-//        List<RegisteredMusicResDto> registeredMusicResDtoList = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-//                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicResDto(findRegisteredMusic))
-//                .toList();
-//        log.info("List<RegisteredMusicResDto>: "+registeredMusicResDtoList);
-
-        return new ArrayList<>();
-    }
-
-    @Transactional
-    public List<RegisteredMusicResDto> getMyMusicList(long memberId) {
-//        findMember(memberId);
-
-//        List<RegisteredMusicResDto> registeredMusicResDtoList = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
-//                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicResDto(findRegisteredMusic))
-//                .toList();
-//        log.info("List<RegisteredMusicResDto>: "+registeredMusicResDtoList);
-
-        return new ArrayList<>();
-    }
-
-    @Transactional
-    public void updateMusic(long memberId, long registeredMusicId) {
-//        findMember(memberId);
 //
-//        RegisteredMusic findRegisteredMusic = registeredMusicRepositoryImpl.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
-//                () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
-//        );
+//    @Transactional
+//    public List<RegisteredMusicDetailsResDto> getMyMusicList(long memberId) {
+////        findMember(memberId);
 //
-//        findRegisteredMusic.updateRegisteredMusic(true);
-//        registeredMusicRepository.save(findRegisteredMusic);
-//        log.info("[내가 등록 음악 삭제(수정)]");
-    }
+////        List<RegisteredMusicResDto> registeredMusicResDtoList = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
+////                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicResDto(findRegisteredMusic))
+////                .toList();
+////        log.info("List<RegisteredMusicResDto>: "+registeredMusicResDtoList);
+//
+//        return new ArrayList<>();
+//    }
+//
+//    @Transactional
+//    public void updateMusic(long memberId, long registeredMusicId) {
+////        findMember(memberId);
+////
+////        RegisteredMusic findRegisteredMusic = registeredMusicRepositoryImpl.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
+////                () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
+////        );
+////
+////        findRegisteredMusic.updateRegisteredMusic(true);
+////        registeredMusicRepository.save(findRegisteredMusic);
+////        log.info("[내가 등록 음악 삭제(수정)]");
+//    }
 
     public Member findMember(long memberId){
         return memberRepository.findById(memberId).orElseThrow(
@@ -108,10 +112,14 @@ public class RegisteredMusicService {
         );
     }
 
-//    public RegisteredMusic findRegisteredMusic(long registeredMusicId){
-//        return registeredMusicRepositoryImpl.findByRegisterMusic(registeredMusicId).orElseThrow(
-//                () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
-//        );
-//    }
+    public RegisteredMusic findByRegisterMusicDetails(long registeredMusicId){
+        return registeredMusicRepositoryImpl.findByRegisterMusicDetails(registeredMusicId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
+        );
+    }
+
+    public boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
+        return registeredMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
+    }
 
 }

@@ -1,16 +1,19 @@
 package com.ssafy.herehear.music.mapper;
 
 import com.ssafy.herehear.entity.*;
-import com.ssafy.herehear.music.dto.request.RegisteredMusicReqDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
+import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import org.mapstruct.Mapper;
+
+import java.util.List;
 
 
 @Mapper(componentModel = "spring")
 public interface RegisterMusicMapper {
 
-    RegisteredMusic toRegisteredMusic(Member member, RegisteredMusicReqDto req);
+    RegisteredMusic toRegisteredMusic(Member member, RegisterMusicReqDto req);
 
     MusicOccasion toMusicOccasion(Occasion occasion, RegisteredMusic registeredMusic);
-    RegisteredMusicResDto toRegisteredMusicResDto(RegisteredMusic registeredMusic);
+
+    RegisteredMusicDetailsResDto toRegisteredMusicResDto(RegisteredMusic registeredMusic, boolean like, String nickname, List<Occasion> occasions);
 }
