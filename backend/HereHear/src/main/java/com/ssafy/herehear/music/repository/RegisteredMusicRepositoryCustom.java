@@ -9,8 +9,6 @@ import java.util.Optional;
 
 public interface RegisteredMusicRepositoryCustom {
 
-//    List<RegisteredMusic> findByRegisterMusics();
-
     Optional<RegisteredMusic> findByRegisterMusicDetails(long registeredMusicId);
 
 //    Long countLikesByRegisteredMusic(long registeredMusicId);
@@ -18,6 +16,8 @@ public interface RegisteredMusicRepositoryCustom {
     List<Occasion> findByOccasion(long registeredMusicId);
 
     Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId);
+
+    List<RegisteredMusic> findByRegisterMusics();
 
 //    List<RegisteredMusic> findByMyRegisterMusics(long memberId);
 //

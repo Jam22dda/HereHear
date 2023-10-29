@@ -6,7 +6,7 @@ import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicListResDto;
+import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.MusicOccasionRepository;
 import com.ssafy.herehear.music.repository.OccasionRepository;
@@ -67,17 +67,16 @@ public class RegisteredMusicService {
 
         return registeredMusicDetailsResDto;
     }
-//
-//    @Transactional
-//    public List<RegisteredMusicDetailsResDto> getMusicList() {
-//
-////        List<RegisteredMusicResDto> registeredMusicResDtoList = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-////                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicResDto(findRegisteredMusic))
-////                .toList();
-////        log.info("List<RegisteredMusicResDto>: "+registeredMusicResDtoList);
-//
-//        return new ArrayList<>();
-//    }
+
+    @Transactional
+    public List<RegisteredMusicResDto> getRegisteredMusicList() {
+        List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicListResDto(findRegisteredMusic, registeredMusicRepositoryImpl.findByOccasion(findRegisteredMusic.getRegisteredMusicId())))
+                .toList();
+        log.info("List<RegisteredMusicResDto>: "+ registeredMusicResDtos);
+
+        return registeredMusicResDtos;
+    }
 //
 //    @Transactional
 //    public List<RegisteredMusicDetailsResDto> getMyMusicList(long memberId) {
