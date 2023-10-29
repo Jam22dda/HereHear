@@ -22,16 +22,15 @@ public enum ExceptionStatus {
     /**
      * 음악악 관련 STATUS CODE
      */
-    NOT_FOUND_REGISTERED_MUSIC("-3000","등록된 음악을 찾을 수 없습니다."),
-    NOT_FOUND_MUSIC("-3001","음악을 찾을 수 없습니다."),
-    DUPLICATE_MUSIC("-3002","중복된 음악입니다."),
+    NOT_FOUND_REGISTERED_MUSIC("-3000", "등록된 음악을 찾을 수 없습니다."),
+    NOT_FOUND_MUSIC("-3001", "음악을 찾을 수 없습니다."),
+    DUPLICATE_MUSIC("-3002", "중복된 음악입니다."),
 
 
     /**
      * 업적 관련 STATUS CODE
      */
-    BORDER_CODE_NOT_FOUND("-4001", "테두리를 찾을 수 없습니다."),
-    TITLE_CODE_NOT_FOUND("-4002", "타이틀을 찾을 수 없습니다.");
+    ACHIEVEMENT_NOT_FOUND("-4003", "업적을 찾을 수 업습니다.");
 
 
     private final String code;
