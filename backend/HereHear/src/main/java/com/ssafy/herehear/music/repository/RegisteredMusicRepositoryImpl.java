@@ -71,23 +71,14 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
         );
     }
 
-//    @Override
-//    public Long countLikesByRegisteredMusic(long registeredMusicId) {
-//        return jpaQueryFactory.select(likeMusic.count())
-//                .from(likeMusic)
-//                .where(likeMusic.registeredMusic.registeredMusicId.eq(registeredMusicId))
-//                .fetchOne();
-//    }
-//
-//
-//    @Override
-//    public List<RegisteredMusic> findByMyRegisterMusics(long memberId) {//내 음악 전체 조회
-//        return jpaQueryFactory.select(memberReadList.registeredMusic)
-//                .from(memberReadList)
-//                .where(memberReadList.member.memberId.eq(memberId)
-//                        .and(memberReadList.registeredMusic.isDeleted.isNull()))
-//                .fetch();
-//    }
-//
+    @Override
+    public List<RegisteredMusic> findByMyRegisterMusics(long memberId) {
+        return jpaQueryFactory.selectFrom(registeredMusic)
+                .where(registeredMusic.member.memberId.eq(memberId)
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
+                )
+                .fetch();
+    }
+
 
 }
