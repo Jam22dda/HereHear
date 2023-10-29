@@ -1,6 +1,5 @@
 package com.ssafy.herehear.history.service;
 
-import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
@@ -8,7 +7,6 @@ import com.ssafy.herehear.history.mapper.MusicHistoryMapper;
 import com.ssafy.herehear.history.repository.MusicHistoryRepositoryImpl;
 import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.history.repository.MusicHistoryRepository;
-import com.ssafy.herehear.music.repository.RegisteredMusicRepositoryImpl;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

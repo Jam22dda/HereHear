@@ -1,10 +1,11 @@
 package com.ssafy.herehear.like.service;
 
-import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.like.mapper.LikeMusicMapper;
 import com.ssafy.herehear.like.repository.LikeMusicRepository;
+import com.ssafy.herehear.like.repository.LikeMusicRepositoryImpl;
 import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import jakarta.transaction.Transactional;
@@ -22,7 +23,11 @@ import java.util.Optional;
 public class LikeMusicService {
 
     private final LikeMusicRepository likeMusicRepository;
+    private final LikeMusicRepositoryImpl likeMusicRepositoryImpl;
+
     private final RegisteredMusicService registeredMusicService;
+
+    private final LikeMusicMapper likeMusicMapper;
 
     public void registerlikeMusic(Long memberId, Long registeredMusicId){
         log.info(registeredMusicService.logComment("좋아요 등록",memberId,registeredMusicId));
@@ -58,21 +63,21 @@ public class LikeMusicService {
                 );
         log.info("deletelikeMusic success");
     }
-//
-//    @Transactional
-//    public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
-//        registeredMusicService.findMember(memberId);
-//
-//        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = musicHistoryRepositoryImpl.findByMusicHistorys(memberId).stream()
-//                .map(findRegisteredMusic -> musicHistoryMapper.toLikeRegisteredMusicResDto(
-//                        findRegisteredMusic,
-//                        registeredMusicService.findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId()))
-//                )
-//                .toList();
-//        log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
-//
-//        return likeRegisteredMusicResDtos;
-//    }
+
+    @Transactional
+    public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
+        registeredMusicService.findMember(memberId);
+
+        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicRepositoryImpl.findByLikeMusics(memberId).stream()
+                .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
+                        findRegisteredMusic,
+                        registeredMusicService.findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId()))
+                )
+                .toList();
+        log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
+
+        return likeRegisteredMusicResDtos;
+    }
 
     public Optional<LikeMusic> findLikeMusic(long memberId, long registeredMusicId){
         return likeMusicRepository.findById(registeredMusicService.findMemberMusicId(memberId, registeredMusicId));
