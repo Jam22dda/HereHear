@@ -24,16 +24,15 @@ DROP TABLE IF EXISTS `achievement`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `achievement` (
   `achievement_id` bigint NOT NULL AUTO_INCREMENT,
-  `border_code` bigint DEFAULT NULL,
+  `badge_code` bigint DEFAULT NULL,
   `title_code` bigint DEFAULT NULL,
-  `icon` varchar(255) DEFAULT NULL,
   `mission` text,
   PRIMARY KEY (`achievement_id`),
-  UNIQUE KEY `UK_8lg1fxby7qd2qx42doswwojuc` (`border_code`),
+  UNIQUE KEY `UK_qfymwe7ow9ttl6g4tslagcx72` (`badge_code`),
   UNIQUE KEY `UK_a4rqla4g9erquq57ipom3vww9` (`title_code`),
   CONSTRAINT `FK30qlvyojsgtab6qp7hbub44ma` FOREIGN KEY (`title_code`) REFERENCES `title_code` (`title_code`),
-  CONSTRAINT `FKf1q4gi2qd15qixhjeevy1tbxn` FOREIGN KEY (`border_code`) REFERENCES `border_code` (`border_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK6ljp5u4l7fjjnj06hnwjhh5ho` FOREIGN KEY (`badge_code`) REFERENCES `badge_code` (`badge_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +41,7 @@ CREATE TABLE `achievement` (
 
 LOCK TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (1,1,1,'','사용자가 최초로 음악을 등록 했을 때'),(2,2,2,'','사용자가 10곡을 등록했을 때'),(3,3,3,'','사용자가 50곡을 등록했을 때'),(4,4,4,'','사용자가 100곡 등록했을 때'),(5,5,5,'','사용자가 200곡 등록했을 때'),(6,6,6,'','사용자가 등록한 음악이 좋아요를 10개 받았을 때'),(7,7,7,'','사용자가 등록한 음악이 좋아요를 500개 받았을 때'),(8,8,8,'','내가 등록한 음악의 누적합 최초 100개 좋아요를 받았을 때'),(9,9,9,'','팔로워가 10명 돌파 했을 때'),(10,10,10,'','팔로워가 50명 돌파 했을 때'),(11,11,11,'','팔로워가 100명 돌파 했을 때'),(12,12,13,'','팔로워가 500명 돌파 했을 때');
+INSERT INTO `achievement` VALUES (1,1,1,'사용자가 최초로 음악을 등록 했을 때'),(2,2,2,'사용자가 10곡을 등록했을 때'),(3,3,3,'사용자가 50곡을 등록했을 때'),(4,4,4,'사용자가 100곡을 등록했을 때'),(5,5,5,'사용자가 200곡을 등록했을 때'),(6,6,6,'사용자가 등록한 음악이 좋아요를 10개 받았을 때'),(7,7,7,'사용자가 등록한 음악이 좋아요를 100개 받았을 때'),(8,8,8,'사용자가 등록한 음악이 좋아요를 500개 받았을 때'),(9,9,9,'팔로워가 10명 돌파 했을 때'),(10,10,10,'팔로워가 50명 돌파 했을 때'),(11,11,11,'팔로워가 100명 돌파 했을 때'),(12,12,12,'팔로워가 500명 돌파 했을 때'),(13,13,13,'내가 등록한 음악의 누적합 최초 100개 좋아요를 받았을 때 ');
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-25 20:42:53
+-- Dump completed on 2023-10-29 19:38:38

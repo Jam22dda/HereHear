@@ -56,6 +56,10 @@ public class Member {
         this.nickname = nickname;
     }
 
+    public void updateAchievement(Achievement achievement) {
+        this.achievement = achievement;
+    }
+
     public void deleteMember() {
         this.removeDate = LocalDateTime.now();
     }

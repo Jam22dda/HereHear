@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class EquipAchievementDto {
 
-    private Long titleCode;
-    private Long badgeCode;
+    private Long achievementId;
 
 }
