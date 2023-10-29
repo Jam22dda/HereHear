@@ -14,6 +14,7 @@ import java.util.Optional;
 import static com.ssafy.herehear.entity.QLikeMusic.likeMusic;
 import static com.ssafy.herehear.entity.QMusicOccasion.musicOccasion;
 import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
+import static com.ssafy.herehear.entity.QMusicHistory.musicHistory;
 
 @Component
 @RequiredArgsConstructor
@@ -80,5 +81,13 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
                 .fetch();
     }
 
-
+    @Override
+    public List<RegisteredMusic> findByMusicHistorys(long memberId) {
+        return jpaQueryFactory.select(registeredMusic)
+                .from(musicHistory)
+                .join(musicHistory.registeredMusic, registeredMusic)
+                .where(musicHistory.member.memberId.eq(memberId))
+                .orderBy(musicHistory.createTime.desc())
+                .fetch();
+    }
 }
