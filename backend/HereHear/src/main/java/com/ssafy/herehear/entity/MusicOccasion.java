@@ -2,6 +2,7 @@ package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,10 @@ public class MusicOccasion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "registered_music_id")
     private RegisteredMusic registeredMusic;
+
+    @Builder
+    public MusicOccasion(Occasion occasion, RegisteredMusic registeredMusic) {
+        this.occasion = occasion;
+        this.registeredMusic = registeredMusic;
+    }
 }

@@ -1,59 +1,93 @@
 package com.ssafy.herehear.music.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.herehear.entity.LikeMusic;
+import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-//import static com.ssafy.herehear.entity.QMemberReadList.memberReadList;
-//import static com.ssafy.herehear.entity.QMusic.music;
-//import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
+import static com.ssafy.herehear.entity.QLikeMusic.likeMusic;
+import static com.ssafy.herehear.entity.QMusicOccasion.musicOccasion;
+import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
+import static com.ssafy.herehear.entity.QMusicHistory.musicHistory;
 
 @Component
 @RequiredArgsConstructor
 public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
-//
-//    @Override
-//    public List<RegisteredMusic> findByRegisterMusics() {//음악 전체 조회
-//        return jpaQueryFactory.selectFrom(registeredMusic)
-//                .innerJoin(registeredMusic.music, music).fetchJoin()
-//                .where(registeredMusic.isDeleted.isNull())
-//                .fetch();
-//    }
-//
-//    @Override
-//    public Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId) {//음악 상세 조회
-//        return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
-//                .innerJoin(registeredMusic.music, music).fetchJoin()
-//                .where(
-//                        registeredMusic.registeredMusicId.eq(registeredMusicId)
-//                                .and(registeredMusic.isDeleted.isNull())
-//                )
-//                .fetchOne()
-//        );
-//    }
-//
-//    @Override
-//    public List<RegisteredMusic> findByMyRegisterMusics(long memberId) {//내 음악 전체 조회
-//        return jpaQueryFactory.select(memberReadList.registeredMusic)
-//                .from(memberReadList)
-//                .where(memberReadList.member.memberId.eq(memberId)
-//                        .and(memberReadList.registeredMusic.isDeleted.isNull()))
-//                .fetch();
-//    }
-//
-//    @Override
-//    public Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId) {//내 음악 상세 조회(update)
-//        return Optional.ofNullable( jpaQueryFactory.select(memberReadList.registeredMusic)
-//                .from(memberReadList)
-//                .where(memberReadList.member.memberId.eq(memberId)
-//                        .and(memberReadList.registeredMusic.registeredMusicId.eq(registeredMusicId)))
-//                .fetchOne()
-//        );
-//    }
+
+    @Override
+    public Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId) {
+        return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
+                .where(
+                        registeredMusic.registeredMusicId.eq(registeredMusicId)
+                                .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
+                )
+                .fetchOne()
+        );
+    }
+
+    @Override
+    public Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId) {
+        return Optional.ofNullable( jpaQueryFactory.select(likeMusic)
+                .from(likeMusic)
+                .where(likeMusic.registeredMusic.registeredMusicId.eq(registeredMusicId)
+                        .and(likeMusic.member.memberId.eq(memberId)))
+                .fetchOne()
+        );
+    }
+
+    @Override
+    public List<Occasion> findByOccasion(long registeredMusicId) {
+        return jpaQueryFactory.select(musicOccasion.occasion)
+                .from(musicOccasion)
+                .where(musicOccasion.registeredMusic.registeredMusicId.eq(registeredMusicId))
+                .fetch();
+    }
+
+    @Override
+    public List<RegisteredMusic> findByRegisterMusics() {
+        return jpaQueryFactory.selectFrom(registeredMusic)
+                .where(registeredMusic.createTime.between(LocalDateTime.now().minusHours(3),  LocalDateTime.now().plusHours(3))
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
+                )
+                .fetch();
+    }
+
+    @Override
+    public Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId) {
+        return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
+                .where(
+                        registeredMusic.member.memberId.eq(memberId)
+                                .and(registeredMusic.registeredMusicId.eq(registeredMusicId))
+                                .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
+                )
+                .fetchOne()
+        );
+    }
+
+    @Override
+    public List<RegisteredMusic> findByMyRegisterMusics(long memberId) {
+        return jpaQueryFactory.selectFrom(registeredMusic)
+                .where(registeredMusic.member.memberId.eq(memberId)
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<RegisteredMusic> findByMusicHistorys(long memberId) {
+        return jpaQueryFactory.select(registeredMusic)
+                .from(musicHistory)
+                .join(musicHistory.registeredMusic, registeredMusic)
+                .where(musicHistory.member.memberId.eq(memberId))
+                .orderBy(musicHistory.createTime.desc())
+                .fetch();
+    }
 }
