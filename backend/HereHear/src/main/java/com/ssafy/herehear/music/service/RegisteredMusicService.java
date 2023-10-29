@@ -5,6 +5,7 @@ import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
+import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
@@ -45,7 +46,7 @@ public class RegisteredMusicService {
         for (long occasionId: registerMusicReqDto.getMusicOccasionIds()) {
             musicOccasionRepository.save(registerMusicMapper.toMusicOccasion(findOccasion(occasionId), registeredMusic));
         }
-        log.info("[사용자 음악 등록 완료]");
+        log.info("registerMusic success");
     }
 
     public List<Occasion> getTag() {
@@ -63,7 +64,7 @@ public class RegisteredMusicService {
                 registeredMusicRepositoryImpl.findByOccasion(registeredMusicId)
         );
         registeredMusicDetailsResDto.setCreateTime(convertAndSetCreateTime(registeredMusicDetailsResDto.getCreateTime()));
-        log.info("RegisteredMusicResDto: "+ registeredMusicDetailsResDto);
+        log.info("getRegisteredMusicDetails: "+ registeredMusicDetailsResDto);
 
         return registeredMusicDetailsResDto;
     }
@@ -73,7 +74,7 @@ public class RegisteredMusicService {
         List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicListResDto(findRegisteredMusic, registeredMusicRepositoryImpl.findByOccasion(findRegisteredMusic.getRegisteredMusicId())))
                 .toList();
-        log.info("List<RegisteredMusicResDto>: "+ registeredMusicResDtos);
+        log.info("getRegisteredMusicList: "+ registeredMusicResDtos);
 
         return registeredMusicResDtos;
     }
@@ -87,7 +88,8 @@ public class RegisteredMusicService {
         );
         findRegisteredMusic.updateRegisteredMusic(true);
         registeredMusicRepository.save(findRegisteredMusic);
-        log.info("[내가 등록 음악 삭제(수정)]");
+
+        log.info("updateMyRegisteredMusic success");
     }
 
 
@@ -98,7 +100,7 @@ public class RegisteredMusicService {
         List<MyRegisteredMusicResDto> myRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
                 .map(registerMusicMapper::toMyRegisteredMusicResDto)
                 .toList();
-        log.info("List<MyRegisteredMusicResDto>: "+ myRegisteredMusicResDtos);
+        log.info("getMyRegisteredMusicList: "+ myRegisteredMusicResDtos);
 
         return myRegisteredMusicResDtos;
     }
@@ -119,7 +121,7 @@ public class RegisteredMusicService {
                 }
         );
 
-        log.info("[최근 들은 음악 등록 완료]");
+        log.info("registerPlayMusic success");
     }
 
     public void deletePlayMusic(long memberId, long registeredMusicId){
@@ -132,19 +134,19 @@ public class RegisteredMusicService {
                             throw new CustomException(ExceptionStatus.NOT_FOUND_HISTORY_MUSIC);
                         }
                 );
-        log.info("[최근 들은 음악 삭제 완료]");
+        log.info("deletePlayMusic success");
     }
 
-//    public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
-//        findMember(memberId);
-//
-//        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
-//                .map(findRegisteredMusic -> registerMusicMapper.toLikeRegisteredMusicResDto(findRegisteredMusic, findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId())))
-//                .toList();
-//        log.info("List<LikeRegisteredMusicResDto>: "+ likeRegisteredMusicResDtos);
-//
-//        return likeRegisteredMusicResDtos;
-//    }
+    public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
+        findMember(memberId);
+
+        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
+                .map(findRegisteredMusic -> registerMusicMapper.toLikeRegisteredMusicResDto(findRegisteredMusic, findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId())))
+                .toList();
+        log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
+
+        return likeRegisteredMusicResDtos;
+    }
 
 
 
