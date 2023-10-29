@@ -3,8 +3,8 @@ package com.ssafy.herehear.music.controller;
 import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
-import com.ssafy.herehear.global.response.ResponseService;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
+import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
@@ -38,6 +38,8 @@ public class RegisteredMusicController {
 
     @GetMapping("/{registeredMusicId}")
     public DataResponse<RegisteredMusicDetailsResDto> registeredMusicDetails(@RequestHeader("Member-id") Long memberId, @PathVariable long registeredMusicId) {
+        log.info("[음악 상세 조회 param] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
+
         return new DataResponse<>("200", "음악 상세 조회", registeredMusicService.getRegisteredMusicDetails(memberId,registeredMusicId));
     }
 
@@ -46,7 +48,7 @@ public class RegisteredMusicController {
         return new DataResponse<>("200", "전체 음악 조회", registeredMusicService.getRegisteredMusicList());
     }
 
-    @PutMapping("/myList/{registeredMusicId}")
+    @PutMapping("/my/list/{registeredMusicId}")
     public CommonResponse updateMyRegisteredMusic(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId) {
         log.info("[등록한 음악 삭제(수정) param] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
 
@@ -54,21 +56,15 @@ public class RegisteredMusicController {
 
         return new CommonResponse("200", "등록한 음악 삭제");
     }
-//
-//    @GetMapping("/myList")
-//    public DataResponse<List<RegisteredMusicResDto>> getMyMusicList(@RequestHeader("Member-id") Long memberId) {
-//        log.info("[내 음악 전체 조회 param] memberId: "+memberId);
-//
-//        return new DataResponse<>("200", "내 음악 전체 조회", registeredMusicService.getMyMusicList(memberId));
+
+    @GetMapping("/my/list")
+    public DataResponse<List<MyRegisteredMusicResDto>> getMyRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
+        return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
+    }
+
+//    @GetMapping("/history/list")
+//    public DataResponse<List<MusicHistoryResDto>> getHistoryList(@RequestHeader("Member-id") Long memberId) {
+//        return new DataResponse<>("200", "최근 들은 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
 //    }
-//
-
-
-//    //상황에 따른 음악 조회
-//    @GetMapping("/ocation")
-//
-//    //재상 음악 조회
-//    @GetMapping("/play/list")
-//
 
 }

@@ -5,6 +5,7 @@ import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
+import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
@@ -90,19 +91,19 @@ public class RegisteredMusicService {
         log.info("[내가 등록 음악 삭제(수정)]");
     }
 
-//
-//    @Transactional
-//    public List<RegisteredMusicDetailsResDto> getMyMusicList(long memberId) {
-////        findMember(memberId);
-//
-////        List<RegisteredMusicResDto> registeredMusicResDtoList = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
-////                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicResDto(findRegisteredMusic))
-////                .toList();
-////        log.info("List<RegisteredMusicResDto>: "+registeredMusicResDtoList);
-//
-//        return new ArrayList<>();
-//    }
-//
+
+    @Transactional
+    public List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId) {
+        findMember(memberId);
+
+        List<MyRegisteredMusicResDto> myRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
+                .map(registerMusicMapper::toMyRegisteredMusicResDto)
+                .toList();
+        log.info("List<MyRegisteredMusicResDto>: "+ myRegisteredMusicResDtos);
+
+        return myRegisteredMusicResDtos;
+    }
+
 
 
     public Member findMember(long memberId){

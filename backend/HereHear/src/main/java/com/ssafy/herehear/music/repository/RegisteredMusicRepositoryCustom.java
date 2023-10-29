@@ -11,8 +11,6 @@ public interface RegisteredMusicRepositoryCustom {
 
     Optional<RegisteredMusic> findByRegisterMusicDetails(long registeredMusicId);
 
-//    Long countLikesByRegisteredMusic(long registeredMusicId);
-
     List<Occasion> findByOccasion(long registeredMusicId);
 
     Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId);
@@ -21,7 +19,7 @@ public interface RegisteredMusicRepositoryCustom {
 
     Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);
 
-    //    List<RegisteredMusic> findByMyRegisterMusics(long memberId);
+    List<RegisteredMusic> findByMyRegisterMusics(long memberId);
 
 
 }
