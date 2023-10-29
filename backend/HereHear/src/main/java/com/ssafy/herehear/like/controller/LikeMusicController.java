@@ -28,10 +28,10 @@ public class LikeMusicController {
         likeMusicService.deletelikeMusic(memberId, req.getRegisteredMusicId());
         return new CommonResponse("200", "좋아요 취소");
     }
-//
-//    @GetMapping("/list")
-//    public DataResponse<List<LikeRegisteredMusicResDto>> likeMusicList(@RequestHeader("Member-id") Long memberId) {
-//        return new DataResponse<>("200", "좋아요 음악 목록 조회", likeMusicService.likeMusicList(memberId));
-//    }
+
+    @GetMapping("/list")
+    public DataResponse<List<LikeRegisteredMusicResDto>> likeMusicList(@RequestHeader("Member-id") Long memberId) {
+        return new DataResponse<>("200", "좋아요 음악 목록 조회", likeMusicService.likeMusicList(memberId));
+    }
 
 }
