@@ -6,6 +6,7 @@ import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.response.ResponseService;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
+import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,12 +42,10 @@ public class RegisteredMusicController {
         return new DataResponse<>("200", "음악 상세 조회", registeredMusicService.getRegisteredMusicDetails(memberId,registeredMusicId));
     }
 
-//    @GetMapping("/list")
-//    public DataResponse<List<RegisteredMusicResDto>> getMusicList() {
-//        log.info("[음악 전체 조회]");
-//
-//        return new DataResponse<>("200", "음악 전체 목록 조회", registeredMusicService.getMusicList());
-//    }
+    @GetMapping("/list")
+    public DataResponse<List<RegisteredMusicResDto>> getRegisteredMusicList() {
+        return new DataResponse<>("200", "전체 음악 조회", registeredMusicService.getRegisteredMusicList());
+    }
 //
 //    @GetMapping("/myList")
 //    public DataResponse<List<RegisteredMusicResDto>> getMyMusicList(@RequestHeader("Member-id") Long memberId) {

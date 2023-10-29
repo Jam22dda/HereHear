@@ -7,6 +7,7 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,21 +50,21 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
                 .fetch();
     }
 
+    @Override
+    public List<RegisteredMusic> findByRegisterMusics() {
+        return jpaQueryFactory.selectFrom(registeredMusic)
+                .where(registeredMusic.createTime.between(LocalDateTime.now().minusHours(3),  LocalDateTime.now().plusHours(3))
+                        .and(registeredMusic.isDeleted.isNull())
+                )
+                .fetch();
+    }
+
 //    @Override
 //    public Long countLikesByRegisteredMusic(long registeredMusicId) {
 //        return jpaQueryFactory.select(likeMusic.count())
 //                .from(likeMusic)
 //                .where(likeMusic.registeredMusic.registeredMusicId.eq(registeredMusicId))
 //                .fetchOne();
-//    }
-
-
-//    @Override
-//    public List<RegisteredMusic> findByRegisterMusics() {//음악 전체 조회
-//        return jpaQueryFactory.selectFrom(registeredMusic)
-//                .innerJoin(registeredMusic.music, music).fetchJoin()
-//                .where(registeredMusic.isDeleted.isNull())
-//                .fetch();
 //    }
 //
 //
