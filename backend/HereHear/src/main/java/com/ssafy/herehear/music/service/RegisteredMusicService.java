@@ -38,11 +38,15 @@ public class RegisteredMusicService {
 
     @Transactional
     public void registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
+        log.info(logComment("음악 등록",memberId,registerMusicReqDto));
+
         Member member = findMember(memberId);
 
+        //음악 등록
         RegisteredMusic registeredMusic = registeredMusicRepository.save(registerMusicMapper.toRegisteredMusic(member, registerMusicReqDto));
         log.info("registeredMusicId: "+registeredMusic.getRegisteredMusicId());
 
+        //상황 태그 등록
         for (long occasionId: registerMusicReqDto.getMusicOccasionIds()) {
             musicOccasionRepository.save(registerMusicMapper.toMusicOccasion(findOccasion(occasionId), registeredMusic));
         }
@@ -55,6 +59,8 @@ public class RegisteredMusicService {
 
     @Transactional
     public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
+        log.info(logComment("음악 상세 조회",memberId,registeredMusicId));
+
         Member member = findMember(memberId);
 
         RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicResDto(
@@ -63,6 +69,7 @@ public class RegisteredMusicService {
                 member.getNickname(),
                 registeredMusicRepositoryImpl.findByOccasion(registeredMusicId)
         );
+
         registeredMusicDetailsResDto.setCreateTime(convertAndSetCreateTime(registeredMusicDetailsResDto.getCreateTime()));
         log.info("getRegisteredMusicDetails: "+ registeredMusicDetailsResDto);
 
@@ -72,7 +79,10 @@ public class RegisteredMusicService {
     @Transactional
     public List<RegisteredMusicResDto> getRegisteredMusicList() {
         List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicListResDto(findRegisteredMusic, registeredMusicRepositoryImpl.findByOccasion(findRegisteredMusic.getRegisteredMusicId())))
+                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicListResDto(
+                        findRegisteredMusic,
+                        registeredMusicRepositoryImpl.findByOccasion(findRegisteredMusic.getRegisteredMusicId()))
+                )
                 .toList();
         log.info("getRegisteredMusicList: "+ registeredMusicResDtos);
 
@@ -81,6 +91,8 @@ public class RegisteredMusicService {
 
     @Transactional
     public void updateMyRegisteredMusic(long memberId, long registeredMusicId) {
+        log.info(logComment("등록한 음악 삭제",memberId,registeredMusicId));
+
         findMember(memberId);
 
         RegisteredMusic findRegisteredMusic = registeredMusicRepositoryImpl.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
@@ -106,6 +118,8 @@ public class RegisteredMusicService {
     }
 
     public void registerPlayMusic(long memberId, long registeredMusicId) {
+        log.info(logComment("최근 들은 음악 등록",memberId,registeredMusicId));
+
         findMusicHistory(memberId, registeredMusicId).ifPresentOrElse(
                 existingMusicHistory -> {
                     existingMusicHistory.updateCreatTime(LocalDateTime.now());
@@ -125,6 +139,8 @@ public class RegisteredMusicService {
     }
 
     public void deletePlayMusic(long memberId, long registeredMusicId){
+        log.info(logComment("최근 들은 음악 삭제",memberId,registeredMusicId));
+
         findMember(memberId);
 
         findMusicHistory(memberId, registeredMusicId)
@@ -140,8 +156,11 @@ public class RegisteredMusicService {
     public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
         findMember(memberId);
 
-        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
-                .map(findRegisteredMusic -> registerMusicMapper.toLikeRegisteredMusicResDto(findRegisteredMusic, findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId())))
+        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMusicHistorys(memberId).stream()
+                .map(findRegisteredMusic -> registerMusicMapper.toLikeRegisteredMusicResDto(
+                        findRegisteredMusic,
+                        findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId()))
+                )
                 .toList();
         log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
 
@@ -183,5 +202,9 @@ public class RegisteredMusicService {
     public String convertAndSetCreateTime(String createTime) {
         LocalDateTime dateTime = LocalDateTime.parse(createTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"));
         return dateTime.format(DateTimeFormatter.ofPattern("MM월 dd일 HH시"));
+    }
+
+    public String logComment(String title, long memberId, Object req){
+        return "["+title+"[ param] memberId: "+memberId+", registeredMusicId: "+req;
     }
 }
