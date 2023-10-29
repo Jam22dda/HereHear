@@ -26,7 +26,7 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
         return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
                 .where(
                         registeredMusic.registeredMusicId.eq(registeredMusicId)
-                                .and(registeredMusic.isDeleted.isNull())
+                                .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
                 )
                 .fetchOne()
         );
@@ -54,9 +54,21 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
     public List<RegisteredMusic> findByRegisterMusics() {
         return jpaQueryFactory.selectFrom(registeredMusic)
                 .where(registeredMusic.createTime.between(LocalDateTime.now().minusHours(3),  LocalDateTime.now().plusHours(3))
-                        .and(registeredMusic.isDeleted.isNull())
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
                 )
                 .fetch();
+    }
+
+    @Override
+    public Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId) {
+        return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
+                .where(
+                        registeredMusic.member.memberId.eq(memberId)
+                                .and(registeredMusic.registeredMusicId.eq(registeredMusicId))
+                                .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
+                )
+                .fetchOne()
+        );
     }
 
 //    @Override
@@ -77,13 +89,5 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
 //                .fetch();
 //    }
 //
-//    @Override
-//    public Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId) {//내 음악 상세 조회(update)
-//        return Optional.ofNullable( jpaQueryFactory.select(memberReadList.registeredMusic)
-//                .from(memberReadList)
-//                .where(memberReadList.member.memberId.eq(memberId)
-//                        .and(memberReadList.registeredMusic.registeredMusicId.eq(registeredMusicId)))
-//                .fetchOne()
-//        );
-//    }
+
 }

@@ -19,8 +19,9 @@ public interface RegisteredMusicRepositoryCustom {
 
     List<RegisteredMusic> findByRegisterMusics();
 
-//    List<RegisteredMusic> findByMyRegisterMusics(long memberId);
-//
-//    Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);
+    Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);
+
+    //    List<RegisteredMusic> findByMyRegisterMusics(long memberId);
+
 
 }
