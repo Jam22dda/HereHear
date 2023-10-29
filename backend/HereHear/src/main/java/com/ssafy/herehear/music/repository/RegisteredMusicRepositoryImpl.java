@@ -22,7 +22,7 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Optional<RegisteredMusic> findByRegisterMusicDetails(long registeredMusicId) {
+    public Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId) {
         return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
                 .where(
                         registeredMusic.registeredMusicId.eq(registeredMusicId)

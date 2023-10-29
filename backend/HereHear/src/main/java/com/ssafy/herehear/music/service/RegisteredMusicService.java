@@ -104,22 +104,35 @@ public class RegisteredMusicService {
     }
 
     public void registerPlayMusic(long memberId, long registeredMusicId) {
-        MemberMusicId memberMusicId = MemberMusicId.builder().memberId(memberId).registeredMusicId(registeredMusicId).build();
-        Optional<MusicHistory> existingMusicHistory = musicHistoryRepository.findById(memberMusicId);
-
-        if (existingMusicHistory.isPresent()) {
-            existingMusicHistory.get().updateCreatTime(LocalDateTime.now());
-            musicHistoryRepository.save(existingMusicHistory.get());
-        } else {
-            MusicHistory musicHistory = MusicHistory.builder()
-                    .id(memberMusicId)
-                    .member(findMember(memberId))
-                    .registeredMusic(findByRegisterMusic(registeredMusicId))
-                    .build();
-            musicHistoryRepository.save(musicHistory);
-        }
+        findMusicHistory(memberId, registeredMusicId).ifPresentOrElse(
+                existingMusicHistory -> {
+                    existingMusicHistory.updateCreatTime(LocalDateTime.now());
+                    musicHistoryRepository.save(existingMusicHistory);
+                },
+                () -> {
+                    MusicHistory musicHistory = MusicHistory.builder()
+                            .id(findMemberMusicId(memberId,registeredMusicId))
+                            .member(findMember(memberId))
+                            .registeredMusic(findByRegisterMusic(registeredMusicId))
+                            .build();
+                    musicHistoryRepository.save(musicHistory);
+                }
+        );
 
         log.info("[최근 들은 음악 등록 완료]");
+    }
+
+    public void deletePlayMusic(long memberId, long registeredMusicId){
+        findMember(memberId);
+
+        findMusicHistory(memberId, registeredMusicId)
+                .ifPresentOrElse(
+                        musicHistoryRepository::delete,
+                        () -> {
+                            throw new CustomException(ExceptionStatus.NOT_FOUND_HISTORY_MUSIC);
+                        }
+                );
+        log.info("[최근 들은 음악 삭제 완료]");
     }
 
 //    public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
@@ -155,6 +168,14 @@ public class RegisteredMusicService {
 
     public boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
         return registeredMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
+    }
+
+    public Optional<MusicHistory> findMusicHistory(long memberId, long registeredMusicId){
+        return musicHistoryRepository.findById(findMemberMusicId(memberId, registeredMusicId));
+    }
+
+    public MemberMusicId findMemberMusicId(long memberId, long registeredMusicId){
+        return MemberMusicId.builder().memberId(memberId).registeredMusicId(registeredMusicId).build();
     }
 
     public String convertAndSetCreateTime(String createTime) {

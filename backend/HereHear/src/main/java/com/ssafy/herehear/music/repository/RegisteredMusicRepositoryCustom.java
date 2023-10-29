@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface RegisteredMusicRepositoryCustom {
 
-    Optional<RegisteredMusic> findByRegisterMusicDetails(long registeredMusicId);
+    Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId);
 
     List<Occasion> findByOccasion(long registeredMusicId);
 
