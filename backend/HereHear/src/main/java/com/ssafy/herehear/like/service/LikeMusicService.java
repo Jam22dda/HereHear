@@ -41,25 +41,23 @@ public class LikeMusicService {
                     likeMusicRepository.save(likeMusic);
                 }
         );
-
         log.info("registerLike success");
     }
 
-//    @Transactional
-//    public void deletelikeMusic(long memberId, long registeredMusicId){
-//        log.info(registeredMusicService.logComment("최근 들은 음악 삭제",memberId,registeredMusicId));
-//
-//        registeredMusicService.findMember(memberId);
-//
-//        findLikeMusic(memberId, registeredMusicId)
-//                .ifPresentOrElse(
-//                        musicHistoryRepository::delete,
-//                        () -> {
-//                            throw new CustomException(ExceptionStatus.NOT_FOUND_HISTORY_MUSIC);
-//                        }
-//                );
-//        log.info("deletePlayMusic success");
-//    }
+    @Transactional
+    public void deletelikeMusic(long memberId, long registeredMusicId){
+        log.info(registeredMusicService.logComment("좋아요 취소",memberId,registeredMusicId));
+        registeredMusicService.findMember(memberId);
+
+        findLikeMusic(memberId, registeredMusicId)
+                .ifPresentOrElse(
+                        likeMusicRepository::delete,
+                        () -> {
+                            throw new CustomException(ExceptionStatus.NOT_FOUND_LIKE_MUSIC);
+                        }
+                );
+        log.info("deletelikeMusic success");
+    }
 //
 //    @Transactional
 //    public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){

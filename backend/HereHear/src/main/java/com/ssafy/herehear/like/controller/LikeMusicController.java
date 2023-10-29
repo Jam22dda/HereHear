@@ -23,11 +23,11 @@ public class LikeMusicController {
         return new CommonResponse("200","좋아요 등록");
     }
 
-//    @DeleteMapping
-//    public CommonResponse deletelikeMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req){
-//        likeMusicService.deletelikeMusic(memberId, req.getRegisteredMusicId());
-//        return new CommonResponse("200", "좋아요 취소");
-//    }
+    @DeleteMapping
+    public CommonResponse deletelikeMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req){
+        likeMusicService.deletelikeMusic(memberId, req.getRegisteredMusicId());
+        return new CommonResponse("200", "좋아요 취소");
+    }
 //
 //    @GetMapping("/list")
 //    public DataResponse<List<LikeRegisteredMusicResDto>> likeMusicList(@RequestHeader("Member-id") Long memberId) {
