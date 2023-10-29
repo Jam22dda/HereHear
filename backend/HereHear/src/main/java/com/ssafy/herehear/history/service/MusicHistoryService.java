@@ -3,8 +3,8 @@ package com.ssafy.herehear.history.service;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
-import com.ssafy.herehear.history.mapper.MusicHistoryMapper;
 import com.ssafy.herehear.history.repository.MusicHistoryRepositoryImpl;
+import com.ssafy.herehear.like.mapper.LikeMusicMapper;
 import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.history.repository.MusicHistoryRepository;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
@@ -26,7 +26,7 @@ public class MusicHistoryService {
     private final MusicHistoryRepositoryImpl musicHistoryRepositoryImpl;
 
     private final RegisteredMusicService registeredMusicService;
-    private final MusicHistoryMapper musicHistoryMapper;
+    private final LikeMusicMapper likeMusicMapper;
 
     @Transactional
     public void registerPlayMusic(long memberId, long registeredMusicId) {
@@ -71,7 +71,7 @@ public class MusicHistoryService {
         registeredMusicService.findMember(memberId);
 
         List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = musicHistoryRepositoryImpl.findByMusicHistorys(memberId).stream()
-                .map(findRegisteredMusic -> musicHistoryMapper.toLikeRegisteredMusicResDto(
+                .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
                         findRegisteredMusic,
                         registeredMusicService.findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId()))
                 )
