@@ -44,7 +44,7 @@ public class RegisteredMusicController {
     }
 
     @GetMapping("/list")
-    public DataResponse<List<RegisteredMusicResDto>> getRegisteredMusicList() {
+    public DataResponse<List<RegisteredMusicResDto>> registeredMusicList() {
         return new DataResponse<>("200", "전체 음악 조회", registeredMusicService.getRegisteredMusicList());
     }
 
@@ -58,13 +58,23 @@ public class RegisteredMusicController {
     }
 
     @GetMapping("/my/list")
-    public DataResponse<List<MyRegisteredMusicResDto>> getMyRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
+    public DataResponse<List<MyRegisteredMusicResDto>> myRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
         return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
     }
 
-//    @GetMapping("/history/list")
-//    public DataResponse<List<MusicHistoryResDto>> getHistoryList(@RequestHeader("Member-id") Long memberId) {
-//        return new DataResponse<>("200", "최근 들은 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
+    @PostMapping("/play/{registeredMusicId}")
+    public CommonResponse playRegisteredMusic(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId) {
+        log.info("[들은 음악 등록 param] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
+
+        registeredMusicService.registerPlayMusic(memberId, registeredMusicId);
+
+        return new CommonResponse("200", "최근 들은 음악 등록");
+    }
+
+//    @GetMapping("/play/list")
+//    public DataResponse<List<LikeRegisteredMusicResDto>> playRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
+//        return new DataResponse<>("200", "최근 들은 음악 조회", registeredMusicService.getPlayMusicList(memberId));
 //    }
+
 
 }
