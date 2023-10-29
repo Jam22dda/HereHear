@@ -36,7 +36,7 @@ public class AchievementServiceImpl implements AchievementService {
     @Override
     @Transactional
     public List<MemberAchievementDto> getMyAchievementList(Long memberId) {
-        List<MemberAchievement> memberAchievementList = memberAchievementRepository.finaByMemberId(memberId);
+        List<MemberAchievement> memberAchievementList = memberAchievementRepository.findByMemberId(memberId);
 
         return memberAchievementList.stream()
                 .map(item -> AchievementMapper.INSTANCE.toMemberAchievementDto(item.getAchievement(), memberId, TimeFormatUtil.formatTime(item.getClearTime())))

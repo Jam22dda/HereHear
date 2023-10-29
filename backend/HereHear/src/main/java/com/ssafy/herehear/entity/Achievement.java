@@ -1,5 +1,6 @@
 package com.ssafy.herehear.entity;
 
+import com.ssafy.herehear.entity.type.AchievementCategoryType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,11 +24,18 @@ public class Achievement {
     @Column(columnDefinition = "TEXT")
     private String mission;
 
+    private int count;
+
+    @Enumerated(EnumType.STRING)
+    private AchievementCategoryType category;
+
     @Builder
-    public Achievement(BadgeCode badgeCode, TitleCode titleCode, String mission) {
+    public Achievement(BadgeCode badgeCode, TitleCode titleCode, String mission, int count, AchievementCategoryType category) {
         this.badgeCode = badgeCode;
         this.titleCode = titleCode;
         this.mission = mission;
+        this.count = count;
+        this.category = category;
     }
 
 }
