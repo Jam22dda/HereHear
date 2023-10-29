@@ -3,6 +3,6 @@ package com.ssafy.herehear.music.dto.request;
 import lombok.Getter;
 
 @Getter
-public class PlayMusicReqDto {
+public class MusicRegisteredIdReqDto {
     Long registeredMusicId;
 }

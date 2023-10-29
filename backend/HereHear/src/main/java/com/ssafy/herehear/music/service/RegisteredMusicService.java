@@ -117,6 +117,7 @@ public class RegisteredMusicService {
         return myRegisteredMusicResDtos;
     }
 
+    @Transactional
     public void registerPlayMusic(long memberId, long registeredMusicId) {
         log.info(logComment("최근 들은 음악 등록",memberId,registeredMusicId));
 
@@ -138,6 +139,7 @@ public class RegisteredMusicService {
         log.info("registerPlayMusic success");
     }
 
+    @Transactional
     public void deletePlayMusic(long memberId, long registeredMusicId){
         log.info(logComment("최근 들은 음악 삭제",memberId,registeredMusicId));
 
@@ -153,6 +155,7 @@ public class RegisteredMusicService {
         log.info("deletePlayMusic success");
     }
 
+    @Transactional
     public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
         findMember(memberId);
 
@@ -166,8 +169,6 @@ public class RegisteredMusicService {
 
         return likeRegisteredMusicResDtos;
     }
-
-
 
     public Member findMember(long memberId){
         return memberRepository.findById(memberId).orElseThrow(
