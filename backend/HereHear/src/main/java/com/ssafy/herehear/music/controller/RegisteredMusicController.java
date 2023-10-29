@@ -21,7 +21,6 @@ import java.util.List;
 public class RegisteredMusicController {
 
     private final RegisteredMusicService registeredMusicService;
-    private final ResponseService responseService;
 
     @PostMapping
     public CommonResponse registerMusic(@RequestHeader("Member-id") Long memberId, @RequestBody RegisterMusicReqDto registerMusicReqDto) {
@@ -46,6 +45,15 @@ public class RegisteredMusicController {
     public DataResponse<List<RegisteredMusicResDto>> getRegisteredMusicList() {
         return new DataResponse<>("200", "전체 음악 조회", registeredMusicService.getRegisteredMusicList());
     }
+
+    @PutMapping("/myList/{registeredMusicId}")
+    public CommonResponse updateMyRegisteredMusic(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId) {
+        log.info("[등록한 음악 삭제(수정) param] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
+
+        registeredMusicService.updateMyRegisteredMusic(memberId, registeredMusicId);
+
+        return new CommonResponse("200", "등록한 음악 삭제");
+    }
 //
 //    @GetMapping("/myList")
 //    public DataResponse<List<RegisteredMusicResDto>> getMyMusicList(@RequestHeader("Member-id") Long memberId) {
@@ -54,14 +62,7 @@ public class RegisteredMusicController {
 //        return new DataResponse<>("200", "내 음악 전체 조회", registeredMusicService.getMyMusicList(memberId));
 //    }
 //
-//    @PutMapping("/myList/{registeredMusicId}")
-//    public CommonResponse updateMyMusicList(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId) {
-//        log.info("[등록한 음악 삭제(수정) param] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
-//
-//        registeredMusicService.updateMusic(memberId, registeredMusicId);
-//
-//        return new CommonResponse("200", "등록한 음악 삭제");
-//    }
+
 
 //    //상황에 따른 음악 조회
 //    @GetMapping("/ocation")

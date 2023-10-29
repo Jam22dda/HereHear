@@ -77,6 +77,19 @@ public class RegisteredMusicService {
 
         return registeredMusicResDtos;
     }
+
+    @Transactional
+    public void updateMyRegisteredMusic(long memberId, long registeredMusicId) {
+        findMember(memberId);
+
+        RegisteredMusic findRegisteredMusic = registeredMusicRepositoryImpl.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
+        );
+        findRegisteredMusic.updateRegisteredMusic(true);
+        registeredMusicRepository.save(findRegisteredMusic);
+        log.info("[내가 등록 음악 삭제(수정)]");
+    }
+
 //
 //    @Transactional
 //    public List<RegisteredMusicDetailsResDto> getMyMusicList(long memberId) {
@@ -90,18 +103,7 @@ public class RegisteredMusicService {
 //        return new ArrayList<>();
 //    }
 //
-//    @Transactional
-//    public void updateMusic(long memberId, long registeredMusicId) {
-////        findMember(memberId);
-////
-////        RegisteredMusic findRegisteredMusic = registeredMusicRepositoryImpl.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
-////                () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
-////        );
-////
-////        findRegisteredMusic.updateRegisteredMusic(true);
-////        registeredMusicRepository.save(findRegisteredMusic);
-////        log.info("[내가 등록 음악 삭제(수정)]");
-//    }
+
 
     public Member findMember(long memberId){
         return memberRepository.findById(memberId).orElseThrow(
