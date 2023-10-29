@@ -1,7 +1,7 @@
 package com.ssafy.herehear.achievement.observer.events;
 
 import com.ssafy.herehear.achievement.observer.EventListener;
-import com.ssafy.herehear.achievement.repository.AchievementRegisteredMusicRepository;
+import com.ssafy.herehear.achievement.repository.RegisteredMusicRepository;
 import com.ssafy.herehear.achievement.repository.AchievementRepository;
 import com.ssafy.herehear.achievement.repository.MemberAchievementRepository;
 import com.ssafy.herehear.achievement.repository.MemberRepository;
@@ -24,7 +24,7 @@ public class MusicRegistrationEvent implements EventListener {
     private final MemberRepository memberRepository;
     private final AchievementRepository achievementRepository;
     private final MemberAchievementRepository memberAchievementRepository;
-    private final AchievementRegisteredMusicRepository registeredMusicRepository;
+    private final RegisteredMusicRepository registeredMusicRepository;
 
     @Override
     @Transactional
