@@ -21,5 +21,4 @@ public interface RegisteredMusicRepositoryCustom {
 
     List<RegisteredMusic> findByMyRegisterMusics(long memberId);
 
-    List<RegisteredMusic> findByMusicHistorys(long memberId);
 }
