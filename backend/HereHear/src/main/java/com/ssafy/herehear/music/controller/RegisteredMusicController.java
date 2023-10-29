@@ -3,6 +3,7 @@ package com.ssafy.herehear.music.controller;
 import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
+import com.ssafy.herehear.music.dto.request.PlayMusicReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
@@ -55,9 +56,9 @@ public class RegisteredMusicController {
         return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
     }
 
-    @PostMapping("/play/{registeredMusicId}")
-    public CommonResponse playRegisteredMusic(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId) {
-        registeredMusicService.registerPlayMusic(memberId, registeredMusicId);
+    @PostMapping("/play")
+    public CommonResponse playRegisteredMusic(@RequestHeader("Member-id") Long memberId, @RequestBody PlayMusicReqDto playMusicReqDto) {
+        registeredMusicService.registerPlayMusic(memberId, playMusicReqDto.getRegisteredMusicId());
         return new CommonResponse("200", "최근 들은 음악 등록");
     }
 
