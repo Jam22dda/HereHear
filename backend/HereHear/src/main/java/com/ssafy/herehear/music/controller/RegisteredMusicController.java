@@ -71,6 +71,15 @@ public class RegisteredMusicController {
         return new CommonResponse("200", "최근 들은 음악 등록");
     }
 
+    @DeleteMapping("/play/{registeredMusicId}")
+    public CommonResponse playRegisteredMusicDelete(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId){
+        log.info("[들은 음악 등록 param] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
+
+        registeredMusicService.deletePlayMusic(memberId, registeredMusicId);
+
+        return new CommonResponse("200", "최근 들은 음악 삭제");
+    }
+
 //    @GetMapping("/play/list")
 //    public DataResponse<List<LikeRegisteredMusicResDto>> playRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
 //        return new DataResponse<>("200", "최근 들은 음악 조회", registeredMusicService.getPlayMusicList(memberId));
