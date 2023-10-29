@@ -3,7 +3,7 @@ package com.ssafy.herehear.music.controller;
 import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
-import com.ssafy.herehear.music.dto.request.PlayMusicReqDto;
+import com.ssafy.herehear.music.dto.request.MusicRegisteredIdReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
@@ -25,8 +25,8 @@ public class RegisteredMusicController {
     private final RegisteredMusicService registeredMusicService;
 
     @PostMapping
-    public CommonResponse registerMusic(@RequestHeader("Member-id") Long memberId, @RequestBody RegisterMusicReqDto registerMusicReqDto) {
-        registeredMusicService.registerMusic(memberId, registerMusicReqDto);
+    public CommonResponse registerMusic(@RequestHeader("Member-id") Long memberId, @RequestBody RegisterMusicReqDto req) {
+        registeredMusicService.registerMusic(memberId, req);
         return new CommonResponse("200", "음악 등록");
     }
 
@@ -46,8 +46,8 @@ public class RegisteredMusicController {
     }
 
     @PutMapping("/my/list")
-    public CommonResponse updateMyRegisteredMusic(@RequestHeader("Member-id") Long memberId, @RequestBody PlayMusicReqDto playMusicReqDto) {
-        registeredMusicService.updateMyRegisteredMusic(memberId, playMusicReqDto.getRegisteredMusicId());
+    public CommonResponse updateMyRegisteredMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req) {
+        registeredMusicService.updateMyRegisteredMusic(memberId, req.getRegisteredMusicId());
         return new CommonResponse("200", "등록한 음악 삭제");
     }
 
@@ -57,14 +57,14 @@ public class RegisteredMusicController {
     }
 
     @PostMapping("/play")
-    public CommonResponse playRegisteredMusic(@RequestHeader("Member-id") Long memberId, @RequestBody PlayMusicReqDto playMusicReqDto) {
-        registeredMusicService.registerPlayMusic(memberId, playMusicReqDto.getRegisteredMusicId());
+    public CommonResponse playRegisteredMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req) {
+        registeredMusicService.registerPlayMusic(memberId, req.getRegisteredMusicId());
         return new CommonResponse("200", "최근 들은 음악 등록");
     }
 
     @DeleteMapping("/play")
-    public CommonResponse playRegisteredMusicDelete(@RequestHeader("Member-id") Long memberId, @RequestBody PlayMusicReqDto playMusicReqDto){
-        registeredMusicService.deletePlayMusic(memberId, playMusicReqDto.getRegisteredMusicId());
+    public CommonResponse playRegisteredMusicDelete(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req){
+        registeredMusicService.deletePlayMusic(memberId, req.getRegisteredMusicId());
         return new CommonResponse("200", "최근 들은 음악 삭제");
     }
 
