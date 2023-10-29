@@ -18,6 +18,7 @@ public enum ExceptionStatus {
     TOKEN_NOT_FOUND_IN_COOKIE("-1002", "토큰이 없습니다."),
 
     MEMBER_NOT_FOUND("-2000", "사용자를 찾을 수 없습니다."),
+    FOLLOW_NOT_FOUND("-2001", "팔로우를 찾을 수 없습니다."),
 
     /**
      * 음악악 관련 STATUS CODE
@@ -32,8 +33,7 @@ public enum ExceptionStatus {
     /**
      * 업적 관련 STATUS CODE
      */
-    BORDER_CODE_NOT_FOUND("-4001", "테두리를 찾을 수 없습니다."),
-    TITLE_CODE_NOT_FOUND("-4002", "타이틀을 찾을 수 없습니다.");
+    ACHIEVEMENT_NOT_FOUND("-4003", "업적을 찾을 수 업습니다.");
 
 
     private final String code;

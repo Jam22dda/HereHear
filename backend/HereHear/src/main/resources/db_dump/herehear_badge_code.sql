@@ -16,29 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `border_code`
+-- Table structure for table `badge_code`
 --
 
-DROP TABLE IF EXISTS `border_code`;
+DROP TABLE IF EXISTS `badge_code`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `border_code` (
-  `border_code` bigint NOT NULL AUTO_INCREMENT,
-  `border_name` varchar(50) NOT NULL,
-  `border_img` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`border_code`),
-  UNIQUE KEY `UK_n4vs4yhgucqamg2lc7lrdno35` (`border_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `badge_code` (
+  `badge_code` bigint NOT NULL AUTO_INCREMENT,
+  `badge_name` varchar(50) NOT NULL,
+  `badge_img` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`badge_code`),
+  UNIQUE KEY `UK_t5qey2100mv41hgd1x7whvpvm` (`badge_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `border_code`
+-- Dumping data for table `badge_code`
 --
 
-LOCK TABLES `border_code` WRITE;
-/*!40000 ALTER TABLE `border_code` DISABLE KEYS */;
-INSERT INTO `border_code` VALUES (1,'씨앗 DJ 테두리',''),(2,'새싹 DJ 테두리',''),(3,'잎새 DJ 테두리',''),(4,'열매 DJ 테두리',''),(5,'나무 DJ 테두리',''),(6,'콩닥콩닥 테두리',''),(7,'하트비트 테두리',''),(8,'Here ? Hear! 테두리',''),(9,'00스타(색깔)-연핑크 테두리',''),(10,'00스타(색깔)-연빨강 테두리',''),(11,'00스타(색깔)-연블루 테두리',''),(12,'00스타(색깔)-연보라 테두리','');
-/*!40000 ALTER TABLE `border_code` ENABLE KEYS */;
+LOCK TABLES `badge_code` WRITE;
+/*!40000 ALTER TABLE `badge_code` DISABLE KEYS */;
+INSERT INTO `badge_code` VALUES (1,'씨앗 DJ 배지',''),(2,'새싹 DJ 배지',''),(3,'잎새 DJ 배지',''),(4,'열매 DJ 배지',''),(5,'나무 DJ 배지',''),(6,'콩닥콩닥 배지',''),(7,'두근두근 배지',''),(8,'하트비트 배지',''),(9,'00스타(색깔)-연핑크 배지',''),(10,'00스타(색깔)-연빨강 배지',''),(11,'00스타(색깔)-연블루 배지',''),(12,'00스타(색깔)-퍼플 배지',''),(13,'Here? Hear! 배지','');
+/*!40000 ALTER TABLE `badge_code` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-25 20:42:56
+-- Dump completed on 2023-10-29 19:38:41
