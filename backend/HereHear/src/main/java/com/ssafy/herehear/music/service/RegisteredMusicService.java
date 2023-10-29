@@ -4,8 +4,8 @@ import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.history.repository.MusicHistoryRepository;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
-import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
@@ -25,16 +25,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class RegisteredMusicService {
+    private final MemberRepository memberRepository;
     private final RegisteredMusicRepository registeredMusicRepository;
-    private final RegisterMusicMapper registerMusicMapper;
+    private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
 
     private final OccasionRepository occasionRepository;
     private final MusicOccasionRepository musicOccasionRepository;
 
-    private final MemberRepository memberRepository;
-    private final MusicHistoryRepository musicHistoryRepository;
-
-    private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
+    private final RegisterMusicMapper registerMusicMapper;
 
     @Transactional
     public void registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
@@ -117,58 +115,6 @@ public class RegisteredMusicService {
         return myRegisteredMusicResDtos;
     }
 
-    public void registerPlayMusic(long memberId, long registeredMusicId) {
-        log.info(logComment("최근 들은 음악 등록",memberId,registeredMusicId));
-
-        findMusicHistory(memberId, registeredMusicId).ifPresentOrElse(
-                existingMusicHistory -> {
-                    existingMusicHistory.updateCreatTime(LocalDateTime.now());
-                    musicHistoryRepository.save(existingMusicHistory);
-                },
-                () -> {
-                    MusicHistory musicHistory = MusicHistory.builder()
-                            .id(findMemberMusicId(memberId,registeredMusicId))
-                            .member(findMember(memberId))
-                            .registeredMusic(findByRegisterMusic(registeredMusicId))
-                            .build();
-                    musicHistoryRepository.save(musicHistory);
-                }
-        );
-
-        log.info("registerPlayMusic success");
-    }
-
-    public void deletePlayMusic(long memberId, long registeredMusicId){
-        log.info(logComment("최근 들은 음악 삭제",memberId,registeredMusicId));
-
-        findMember(memberId);
-
-        findMusicHistory(memberId, registeredMusicId)
-                .ifPresentOrElse(
-                        musicHistoryRepository::delete,
-                        () -> {
-                            throw new CustomException(ExceptionStatus.NOT_FOUND_HISTORY_MUSIC);
-                        }
-                );
-        log.info("deletePlayMusic success");
-    }
-
-    public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
-        findMember(memberId);
-
-        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMusicHistorys(memberId).stream()
-                .map(findRegisteredMusic -> registerMusicMapper.toLikeRegisteredMusicResDto(
-                        findRegisteredMusic,
-                        findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId()))
-                )
-                .toList();
-        log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
-
-        return likeRegisteredMusicResDtos;
-    }
-
-
-
     public Member findMember(long memberId){
         return memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
@@ -189,10 +135,6 @@ public class RegisteredMusicService {
 
     public boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
         return registeredMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
-    }
-
-    public Optional<MusicHistory> findMusicHistory(long memberId, long registeredMusicId){
-        return musicHistoryRepository.findById(findMemberMusicId(memberId, registeredMusicId));
     }
 
     public MemberMusicId findMemberMusicId(long memberId, long registeredMusicId){
