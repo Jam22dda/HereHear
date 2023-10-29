@@ -1,4 +1,4 @@
-package com.ssafy.herehear.music.repository;
+package com.ssafy.herehear.history.repository;
 
 import com.ssafy.herehear.entity.MemberMusicId;
 import com.ssafy.herehear.entity.MusicHistory;

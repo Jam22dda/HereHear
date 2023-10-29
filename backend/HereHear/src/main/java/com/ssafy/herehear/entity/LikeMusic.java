@@ -36,4 +36,8 @@ public class LikeMusic {
         this.member = member;
         this.registeredMusic = registeredMusic;
     }
+
+    public void updateCreateTime(LocalDateTime createTime){
+        this.createTime = createTime;
+    }
 }
