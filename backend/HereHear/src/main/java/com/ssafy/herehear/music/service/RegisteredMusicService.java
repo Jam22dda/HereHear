@@ -6,6 +6,7 @@ import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
+import com.ssafy.herehear.music.dto.response.RegisteredMusicListResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.MusicOccasionRepository;
 import com.ssafy.herehear.music.repository.OccasionRepository;
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -59,6 +62,7 @@ public class RegisteredMusicService {
                 member.getNickname(),
                 registeredMusicRepositoryImpl.findByOccasion(registeredMusicId)
         );
+        registeredMusicDetailsResDto.setCreateTime(convertAndSetCreateTime(registeredMusicDetailsResDto.getCreateTime()));
         log.info("RegisteredMusicResDto: "+ registeredMusicDetailsResDto);
 
         return registeredMusicDetailsResDto;
@@ -122,4 +126,8 @@ public class RegisteredMusicService {
         return registeredMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
     }
 
+    public String convertAndSetCreateTime(String createTime) {
+        LocalDateTime dateTime = LocalDateTime.parse(createTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"));
+        return dateTime.format(DateTimeFormatter.ofPattern("MM월 dd일 HH시"));
+    }
 }
