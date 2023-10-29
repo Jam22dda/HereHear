@@ -1,6 +1,8 @@
 package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class MusicHistory {
 
@@ -30,4 +32,15 @@ public class MusicHistory {
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createTime;
+
+    @Builder
+    public MusicHistory(MemberMusicId id, Member member, RegisteredMusic registeredMusic) {
+        this.id = id;
+        this.member = member;
+        this.registeredMusic = registeredMusic;
+    }
+
+    public void updateCreatTime(LocalDateTime createTime){
+        this.createTime = createTime;
+    }
 }
