@@ -31,8 +31,7 @@ public enum ExceptionStatus {
     /**
      * 업적 관련 STATUS CODE
      */
-    BORDER_CODE_NOT_FOUND("-4001", "테두리를 찾을 수 없습니다."),
-    TITLE_CODE_NOT_FOUND("-4002", "타이틀을 찾을 수 없습니다.");
+    ACHIEVEMENT_NOT_FOUND("-4003", "업적을 찾을 수 업습니다.");
 
 
     private final String code;

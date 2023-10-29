@@ -36,7 +36,7 @@ CREATE TABLE `title_code` (
 
 LOCK TABLES `title_code` WRITE;
 /*!40000 ALTER TABLE `title_code` DISABLE KEYS */;
-INSERT INTO `title_code` VALUES (13,'00스타(색깔)-연보라'),(11,'00스타(색깔)-연블루'),(10,'00스타(색깔)-연빨강'),(9,'00스타(색깔)-연핑크'),(8,'Here ? Hear!'),(5,'나무 DJ'),(2,'새싹 DJ'),(1,'씨앗 DJ'),(4,'열매 DJ'),(3,'잎새 DJ'),(6,'콩닥콩닥'),(7,'하트비트');
+INSERT INTO `title_code` VALUES (11,'00스타(색깔)-연블루'),(10,'00스타(색깔)-연빨강'),(9,'00스타(색깔)-연핑크'),(12,'00스타(색깔)-퍼플'),(13,'Here ? Hear!'),(5,'나무 DJ'),(7,'두근두근'),(2,'새싹 DJ'),(1,'씨앗 DJ'),(4,'열매 DJ'),(3,'잎새 DJ'),(6,'콩닥콩닥'),(8,'하트비트');
 /*!40000 ALTER TABLE `title_code` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-25 20:42:55
+-- Dump completed on 2023-10-29 19:38:40

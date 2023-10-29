@@ -10,8 +10,6 @@ import lombok.ToString;
 public class AchievementDto {
     private Long achievementId;
     private String mission;
-    private String icon;
-
     private BadgeCodeDto badge;
     private TitleCodeDto title;
 }
