@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.ssafy.herehear.entity.QMusicHistory.musicHistory;
+import static com.ssafy.herehear.entity.QLikeMusic.likeMusic;
 import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
 
 @Component
@@ -18,10 +18,11 @@ public class LikeMusicRepositoryImpl {
 
     public List<RegisteredMusic> findByLikeMusics(long memberId) {
         return jpaQueryFactory.select(registeredMusic)
-                .from(musicHistory)
-                .join(musicHistory.registeredMusic, registeredMusic)
-                .where(musicHistory.member.memberId.eq(memberId))
-                .orderBy(musicHistory.createTime.desc())
+                .from(likeMusic)
+                .join(likeMusic.registeredMusic, registeredMusic)
+                .where(likeMusic.member.memberId.eq(memberId)
+                        .and(registeredMusic.isDeleted.isNull()))
+                .orderBy(likeMusic.createTime.desc())
                 .fetch();
     }
 }
