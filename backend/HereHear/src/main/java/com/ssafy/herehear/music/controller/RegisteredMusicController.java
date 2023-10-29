@@ -5,13 +5,11 @@ import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.music.dto.request.MusicRegisteredIdReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
-import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/music")
 @RequiredArgsConstructor
-@Slf4j
 public class RegisteredMusicController {
 
     private final RegisteredMusicService registeredMusicService;
@@ -54,23 +51,6 @@ public class RegisteredMusicController {
     @GetMapping("/my/list")
     public DataResponse<List<MyRegisteredMusicResDto>> myRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
         return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
-    }
-
-    @PostMapping("/play")
-    public CommonResponse playRegisteredMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req) {
-        registeredMusicService.registerPlayMusic(memberId, req.getRegisteredMusicId());
-        return new CommonResponse("200", "최근 들은 음악 등록");
-    }
-
-    @DeleteMapping("/play")
-    public CommonResponse playRegisteredMusicDelete(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req){
-        registeredMusicService.deletePlayMusic(memberId, req.getRegisteredMusicId());
-        return new CommonResponse("200", "최근 들은 음악 삭제");
-    }
-
-    @GetMapping("/play/list")
-    public DataResponse<List<LikeRegisteredMusicResDto>> playRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
-        return new DataResponse<>("200", "최근 들은 음악 조회", registeredMusicService.getMusicHistoryList(memberId));
     }
 
 }

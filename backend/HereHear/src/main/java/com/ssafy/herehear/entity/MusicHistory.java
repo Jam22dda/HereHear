@@ -40,7 +40,7 @@ public class MusicHistory {
         this.registeredMusic = registeredMusic;
     }
 
-    public void updateCreatTime(LocalDateTime createTime){
+    public void updateCreateTime(LocalDateTime createTime){
         this.createTime = createTime;
     }
 }
