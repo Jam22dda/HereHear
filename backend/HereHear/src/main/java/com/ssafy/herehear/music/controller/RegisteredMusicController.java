@@ -45,9 +45,9 @@ public class RegisteredMusicController {
         return new DataResponse<>("200", "전체 음악 조회", registeredMusicService.getRegisteredMusicList());
     }
 
-    @PutMapping("/my/list/{registeredMusicId}")
-    public CommonResponse updateMyRegisteredMusic(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId) {
-        registeredMusicService.updateMyRegisteredMusic(memberId, registeredMusicId);
+    @PutMapping("/my/list")
+    public CommonResponse updateMyRegisteredMusic(@RequestHeader("Member-id") Long memberId, @RequestBody PlayMusicReqDto playMusicReqDto) {
+        registeredMusicService.updateMyRegisteredMusic(memberId, playMusicReqDto.getRegisteredMusicId());
         return new CommonResponse("200", "등록한 음악 삭제");
     }
 
@@ -62,9 +62,9 @@ public class RegisteredMusicController {
         return new CommonResponse("200", "최근 들은 음악 등록");
     }
 
-    @DeleteMapping("/play/{registeredMusicId}")
-    public CommonResponse playRegisteredMusicDelete(@RequestHeader("Member-id") Long memberId, @PathVariable Long registeredMusicId){
-        registeredMusicService.deletePlayMusic(memberId, registeredMusicId);
+    @DeleteMapping("/play")
+    public CommonResponse playRegisteredMusicDelete(@RequestHeader("Member-id") Long memberId, @RequestBody PlayMusicReqDto playMusicReqDto){
+        registeredMusicService.deletePlayMusic(memberId, playMusicReqDto.getRegisteredMusicId());
         return new CommonResponse("200", "최근 들은 음악 삭제");
     }
 
