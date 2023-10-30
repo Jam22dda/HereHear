@@ -10,7 +10,7 @@ export default function Message() {
             <Text size="small3" fontWeight="medium">
                 0월 0일 00시
             </Text>
-            {/* TODO: 캐릭터 넣기, 날짜랑 작성자 묶기 */}
+            //TODO: 캐릭터 넣기, 날짜랑 작성자 묶기
             <Text size="small3" fontWeight="medium">
                 {"000"}님
             </Text>
