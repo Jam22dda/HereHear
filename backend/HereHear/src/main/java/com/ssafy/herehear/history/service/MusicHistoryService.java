@@ -3,6 +3,7 @@ package com.ssafy.herehear.history.service;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.history.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.history.mapper.MusicHistoryMapper;
 import com.ssafy.herehear.history.repository.MusicHistoryRepositoryImpl;
@@ -38,7 +39,7 @@ public class MusicHistoryService {
                 () -> {
                     MusicHistory musicHistory = MusicHistory.builder()
                             .id(findMemberMusicId(memberId,registeredMusicId))
-                            .member(findMember(memberId))
+                            .member(MemberUtil.findMember(memberId))
                             .registeredMusic(findByRegisterMusic(registeredMusicId))
                             .build();
                     musicHistoryRepository.save(musicHistory);
@@ -51,7 +52,7 @@ public class MusicHistoryService {
     @Transactional
     public void deletePlayMusic(long memberId, long registeredMusicId){
         log.info(logComment("최근 들은 음악 삭제",memberId,registeredMusicId));
-        findMember(memberId);
+        MemberUtil.findMember(memberId);
 
         findMusicHistory(memberId, registeredMusicId)
                 .ifPresentOrElse(
@@ -65,7 +66,7 @@ public class MusicHistoryService {
 
     @Transactional
     public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
-        findMember(memberId);
+        MemberUtil.findMember(memberId);
 
         List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = musicHistoryRepositoryImpl.findByMusicHistorys(memberId).stream()
                 .map(findRegisteredMusic -> musicHistoryMapper.toLikeRegisteredMusicResDto(

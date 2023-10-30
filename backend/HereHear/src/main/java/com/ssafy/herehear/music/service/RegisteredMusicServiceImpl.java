@@ -6,6 +6,7 @@ import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
@@ -39,7 +40,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
     public void registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
         log.info(logComment("음악 등록",memberId,registerMusicReqDto));
 
-        Member member = findMember(memberId);
+        Member member = MemberUtil.findMember(memberId);
 
         //음악 등록
         RegisteredMusic registeredMusic = registeredMusicRepository.save(registerMusicMapper.toRegisteredMusic(member, registerMusicReqDto));
@@ -60,7 +61,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
     public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
         log.info(logComment("음악 상세 조회",memberId,registeredMusicId));
 
-        Member member = findMember(memberId);
+        Member member = MemberUtil.findMember(memberId);
 
         RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicResDto(
                 findByRegisterMusic(registeredMusicId),
@@ -92,7 +93,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
     public void updateMyRegisteredMusic(long memberId, long registeredMusicId) {
         log.info(logComment("등록한 음악 삭제",memberId,registeredMusicId));
 
-        findMember(memberId);
+        MemberUtil.findMember(memberId);
 
         RegisteredMusic findRegisteredMusic = registeredMusicRepositoryImpl.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
@@ -106,7 +107,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
 
     @Transactional
     public List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId) {
-        findMember(memberId);
+        MemberUtil.findMember(memberId);
 
         List<MyRegisteredMusicResDto> myRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
                 .map(registerMusicMapper::toMyRegisteredMusicResDto)

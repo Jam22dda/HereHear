@@ -3,6 +3,7 @@ package com.ssafy.herehear.like.service;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.like.mapper.LikeMusicMapper;
 import com.ssafy.herehear.like.repository.LikeMusicRepository;
 import com.ssafy.herehear.like.repository.LikeMusicRepositoryImpl;
@@ -35,7 +36,7 @@ public class LikeMusicService {
                 () -> {
                     LikeMusic likeMusic = LikeMusic.builder()
                             .id(findMemberMusicId(memberId,registeredMusicId))
-                            .member(findMember(memberId))
+                            .member(MemberUtil.findMember(memberId))
                             .registeredMusic(findByRegisterMusic(registeredMusicId))
                             .build();
                     likeMusicRepository.save(likeMusic);
@@ -47,7 +48,7 @@ public class LikeMusicService {
     @Transactional
     public void deletelikeMusic(long memberId, long registeredMusicId){
         log.info(logComment("좋아요 취소",memberId,registeredMusicId));
-        findMember(memberId);
+        MemberUtil.findMember(memberId);
 
         findLikeMusic(memberId, registeredMusicId)
                 .ifPresentOrElse(
@@ -61,7 +62,7 @@ public class LikeMusicService {
 
     @Transactional
     public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
-        findMember(memberId);
+        MemberUtil.findMember(memberId);
 
         List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicRepositoryImpl.findByLikeMusics(memberId).stream()
                 .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
