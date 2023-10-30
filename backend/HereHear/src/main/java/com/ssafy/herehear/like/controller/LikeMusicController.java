@@ -20,7 +20,7 @@ public class LikeMusicController {
     @PostMapping
     public CommonResponse registerlikeMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req){
         likeMusicService.registerlikeMusic(memberId,req.getRegisteredMusicId());
-        return new CommonResponse("200","좋아요 등록");
+        return new CommonResponse("200","좋아요 등록 및 취소");
     }
 
     @GetMapping("/list")

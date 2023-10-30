@@ -37,7 +37,8 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
         return Optional.ofNullable( jpaQueryFactory.select(likeMusic)
                 .from(likeMusic)
                 .where(likeMusic.registeredMusic.registeredMusicId.eq(registeredMusicId)
-                        .and(likeMusic.member.memberId.eq(memberId)))
+                        .and(likeMusic.member.memberId.eq(memberId))
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
                 .fetchOne()
         );
     }
