@@ -98,7 +98,7 @@ body {
 
 #display {
     /* 이후 조정 필요 */
-    /* max-width: 415px; */
+    max-width: 415px;
     background-color: white;
 
     display: flex;
@@ -113,7 +113,7 @@ body {
 }
 
 .container {
-    width: calc(50% - 40px);
+    width: 390px;
     box-sizing: border-box;
     margin: 20px;
     padding: 20px;
