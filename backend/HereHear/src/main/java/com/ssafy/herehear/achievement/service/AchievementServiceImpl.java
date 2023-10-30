@@ -5,7 +5,9 @@ import com.ssafy.herehear.achievement.dto.EquipAchievementDto;
 import com.ssafy.herehear.achievement.dto.MemberAchievementDto;
 import com.ssafy.herehear.achievement.mapper.AchievementMapper;
 import com.ssafy.herehear.achievement.repository.*;
-import com.ssafy.herehear.entity.*;
+import com.ssafy.herehear.entity.Achievement;
+import com.ssafy.herehear.entity.Member;
+import com.ssafy.herehear.entity.MemberAchievement;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
@@ -21,8 +23,6 @@ public class AchievementServiceImpl implements AchievementService {
 
     private final AchievementRepository achievementRepository;
     private final MemberAchievementRepository memberAchievementRepository;
-    private final BadgeCodeRepository badgeCodeRepository;
-    private final TitleCodeRepository titleCodeRepository;
     private final MemberRepository memberRepository;
 
     @Override

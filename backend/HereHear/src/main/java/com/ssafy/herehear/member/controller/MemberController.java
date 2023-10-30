@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/dev/api")
 public class MemberController {
 
     private final MemberService memberService;
