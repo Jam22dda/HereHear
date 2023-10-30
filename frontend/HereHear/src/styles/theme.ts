@@ -14,7 +14,7 @@ const color = {
     lightblue2: "#D1DCFE",
     pink1: "#F8E3F294",
     pink2: "#FD8C8A",
-    nav: "#FFFFFF33",
+    nav: "rgba(246, 245, 246, 0.50)",
     white2: "#F4F8FE",
 } as const;
 
