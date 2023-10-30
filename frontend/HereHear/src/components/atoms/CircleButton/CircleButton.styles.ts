@@ -30,6 +30,16 @@ const getOptionStyling = (option: Required<CircleButtonProps>["option"], props: 
             box-shadow: ${({ theme }) => theme.shadow.shadow_play1};
             font-weight: bold;
         `,
+        playBtn: css`
+            background: ${({ theme }) => theme.gradient.gradient4};
+            color: ${({ theme }) => theme.color.white1};
+            box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
+        `,
+        playNextBtn: css`
+            background: ${({ theme }) => theme.color.lightblue3};
+            color: ${({ theme }) => theme.color.main1};
+            box-shadow: ${({ theme }) => theme.shadow.shadow_goback};
+        `,
     };
     return props.$backgroundColor
         ? css`
@@ -59,6 +69,11 @@ const getSizeStyling = (size: Required<CircleButtonProps>["size"]) => {
             height: 50px;
             width: 50px;
             border-radius: 25px;
+        `,
+        largePlus: css`
+            height: 68px;
+            width: 68px;
+            border-radius: 34px;
         `,
     };
     return style[size];
