@@ -13,10 +13,9 @@ const color = {
     lightpurple: "#E6E7FD",
     lightblue1: "#DCE4F8",
     lightblue2: "#D1DCFE",
-    lightblue3: "#E6E7FD",
     pink1: "#F8E3F294",
     pink2: "#FD8C8A",
-    nav: "#FFFFFF33",
+    nav: "rgba(246, 245, 246, 0.50)",
     white2: "#F4F8FE",
 } as const;
 
