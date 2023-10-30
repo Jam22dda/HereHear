@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/dev/api/achievement")
+@RequestMapping("/achievement")
 @Slf4j
 public class AchievementController {
 
