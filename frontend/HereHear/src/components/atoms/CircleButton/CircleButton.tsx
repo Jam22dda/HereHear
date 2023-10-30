@@ -17,7 +17,7 @@ export interface CircleButtonProps
         | "pinkDeActivated"
         | "gradActivated"
         | "gradDeActivated";
-    size?: "small" | "medium" | "mediumplus" | "large" | "largeplus";
+    size?: "small" | "medium" | "mediumplus" | "large";
     $fontSize?: string;
     $backgroundColor?: string;
     $borderColor?: string;

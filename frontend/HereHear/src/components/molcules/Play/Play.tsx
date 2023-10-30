@@ -7,19 +7,19 @@ export default function PlayBtn() {
         <S.PlayWrapper>
             <CircleButton
                 background-color="lightblue3"
-                size="largeplus"
+                size="68px"
                 box-shadow="shadow_goback"
             >
                 {/* <Text></Text> */}
             </CircleButton>
             <CircleButton
                 background-color="gradient4"
-                size="largeplus"
+                size="68px"
                 box-shadow="shadow_play2"
             ></CircleButton>
             <CircleButton
                 background-color="lightblue3"
-                size="largeplus"
+                size="68px"
                 box-shadow="shadow_goback"
             ></CircleButton>
         </S.PlayWrapper>
