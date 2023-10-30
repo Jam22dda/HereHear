@@ -1,9 +1,5 @@
 import * as S from "./MessagePlus.styles";
 
-export default function Message() {
-  return (
-    <S.MessagePlus
-      style={{ placeholder: "이곳에 멘트를 적어주세요" }}
-    ></S.MessagePlus>
-  );
+export default function MessagePlus() {
+    return <S.MessagePlus type="text" name="message" id="message" placeholder="원하는 플레이스 홀더 텍스트" />;
 }
