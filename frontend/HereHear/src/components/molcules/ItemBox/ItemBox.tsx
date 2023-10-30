@@ -1,16 +1,30 @@
+// ItemBox.tsx
 import React from "react";
 import * as S from "./ItemBox.styles";
 import { Image } from "../../atoms/Image/Image";
-import IconHeartBeat from "../../../assets/ItemBox/icon-heartbeat.png";
 import { Text } from "../../atoms/Text/Text.styles";
 
-export default function ItemBox() {
+interface ItemBoxProps {
+    src: string;
+    title: string;
+    isSelected?: boolean;
+    onClick?: () => void;
+}
+
+const ItemBox: React.FC<ItemBoxProps> = ({
+    src,
+    title,
+    isSelected = false, // 기본값 설정
+    onClick = () => {}, // 기본값 설정
+}) => {
     return (
-        <S.ItemBoxWrapper>
-            <Image src={IconHeartBeat} width={80} $unit="px"></Image>
+        <S.ItemBoxWrapper onClick={onClick} isSelected={isSelected}>
+            <Image src={src} width={72} $unit="px" $margin="0 0 8px 0" />
             <S.ItemBoxTextWrapper>
-                <Text size="small2">하트비트</Text>
+                <Text size="small2">{title}</Text>
             </S.ItemBoxTextWrapper>
         </S.ItemBoxWrapper>
     );
-}
+};
+
+export default ItemBox;
