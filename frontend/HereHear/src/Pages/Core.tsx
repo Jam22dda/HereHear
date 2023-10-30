@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import './Core.css';
-import testImage from '../assets/Core/Union.png';
+import { useEffect, useState } from "react";
+import "./Core.styles";
+import testImage from "../assets/Core/Union.png";
 
 export default function Core() {
     const [isUpdate, setIsUpdate] = useState(false);
@@ -9,40 +9,40 @@ export default function Core() {
             registeredMusicId: 3,
             lng: 45.2,
             lat: 424.4,
-            comment: 'ddd',
-            subject: 'subject2',
-            singer: 'singer',
-            albumImg: 'albumImg',
+            comment: "ddd",
+            subject: "subject2",
+            singer: "singer",
+            albumImg: "albumImg",
         },
         {
             registeredMusicId: 4,
             lng: 45.2,
             lat: 424.4,
-            comment: 'ddd',
-            subject: 'subject2',
-            singer: 'singer',
-            albumImg: 'albumImg',
+            comment: "ddd",
+            subject: "subject2",
+            singer: "singer",
+            albumImg: "albumImg",
         },
     ]);
 
     let naver: any;
 
-  useEffect(() => {
-    const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
+    useEffect(() => {
+        const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
 
         script.onload = () => {
             // 전역 변수 naver 사용
             naver = window.naver;
 
-      const mapOptions = {
-        center: new naver.maps.LatLng(37.3595704, 127.105399),
-        zoom: 10,
-      };
+            const mapOptions = {
+                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                zoom: 10,
+            };
 
-      const map = new naver.maps.Map("map", mapOptions);
+            const map = new naver.maps.Map("map", mapOptions);
 
             const arr: any[] = [];
 
@@ -60,7 +60,7 @@ export default function Core() {
                 });
 
                 // 마커 클릭 시 발생하는 이벤트
-                naver.maps.Event.addListener(arr[i], 'click', function (e: any) {
+                naver.maps.Event.addListener(arr[i], "click", function (e: any) {
                     alert(`marker${i} clicked`);
                 });
             }
@@ -93,13 +93,13 @@ export default function Core() {
             }, 11000); // 10초 후에 실행
         };
 
-    document.body.appendChild(script);
+        document.body.appendChild(script);
 
-    // 컴포넌트 언마운트 시 스크립트 제거
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [isUpdate]);
+        // 컴포넌트 언마운트 시 스크립트 제거
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, [isUpdate]);
 
     // useEffect(() => {
     //     const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
@@ -122,8 +122,8 @@ export default function Core() {
     // }, []);
 
     return (
-        <div id='map__display'>
-            <div id='map'></div>
+        <div id="map__display">
+            <div id="map"></div>
         </div>
         // <div>
         //     <img alt={`${testImage}`} src={`${testImage}`} />
