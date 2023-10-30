@@ -49,6 +49,7 @@ public class RegisteredMusicService {
             musicOccasionRepository.save(registerMusicMapper.toMusicOccasion(findOccasion(occasionId), registeredMusic));
         }
         log.info("registerMusic success");
+
     }
 
     public List<Occasion> getTag() {

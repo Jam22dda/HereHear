@@ -5,8 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
-@ToString
 public class AchievementDto {
     private Long achievementId;
     private String mission;
