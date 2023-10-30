@@ -1,6 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const ItemBoxWrapper = styled.div`
+interface ItemBoxWrapperProps {
+    isSelected: boolean;
+}
+
+const ItemBoxWrapper = styled.div<ItemBoxWrapperProps>`
     width: 128px;
     height: 128px;
     background: ${({ theme }) => theme.gradient.gradient1};
@@ -9,14 +13,21 @@ const ItemBoxWrapper = styled.div`
     flex-direction: column;
     justify-content: end;
     align-items: center;
-    box-shadow: ${({ theme }) => theme.shadow.shadow_itembox};
+    ${({ isSelected, theme }) =>
+        isSelected
+            ? css`
+                  box-shadow: ${theme.shadow.shadow_itembox_selected};
+              `
+            : css`
+                  box-shadow: ${theme.shadow.shadow_itembox};
+              `}
 `;
 
 const ItemBoxTextWrapper = styled.div`
     width: 128px;
     height: 40px;
     background: ${({ theme }) => theme.gradient.gradient2};
-    border-radius: 0 0 20px 20px;
+    border-radius: 0 0 30px 30px;
     text-align: center;
     line-height: 40px;
 `;

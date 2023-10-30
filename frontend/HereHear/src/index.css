@@ -105,7 +105,6 @@ body {
     flex-wrap: wrap;
     justify-content: center;
 
-    
     box-sizing: content-box;
 
     width: 100%;
@@ -116,7 +115,7 @@ body {
     width: calc(50% - 48px);
     box-sizing: border-box;
     margin: 24px;
-    
+
     background-color: antiquewhite;
 }
 
@@ -144,7 +143,6 @@ body {
 @media screen and (max-width: 425px) {
     .container {
         margin: 24px;
-    
     }
 
     h1 {
