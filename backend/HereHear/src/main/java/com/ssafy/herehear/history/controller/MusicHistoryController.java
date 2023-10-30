@@ -2,9 +2,9 @@ package com.ssafy.herehear.history.controller;
 
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
+import com.ssafy.herehear.history.dto.request.MusicRegisteredIdReqDto;
+import com.ssafy.herehear.history.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.history.service.MusicHistoryService;
-import com.ssafy.herehear.music.dto.request.MusicRegisteredIdReqDto;
-import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
