@@ -98,14 +98,14 @@ body {
 
 #display {
     /* 이후 조정 필요 */
-    max-width: 415px;
-    background-color: white;
+    /* max-width: 415px;
+    background-color: white; */
 
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 
-    padding: 20px;
+    
     box-sizing: content-box;
 
     width: 100%;
@@ -113,10 +113,10 @@ body {
 }
 
 .container {
-    width: 390px;
+    width: calc(50% - 48px);
     box-sizing: border-box;
-    margin: 20px;
-    padding: 20px;
+    margin: 24px;
+    
     background-color: antiquewhite;
 }
 
@@ -143,8 +143,8 @@ body {
 /* 글자크기 : width: 390px 기준 자동 크기 변경 */
 @media screen and (max-width: 425px) {
     .container {
-        margin: 10px;
-        padding: 20px;
+        margin: 24px;
+    
     }
 
     h1 {
