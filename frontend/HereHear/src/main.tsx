@@ -24,7 +24,7 @@ import "../src/styles/font.css";
 import GlobalStyle from "../src/styles/GlobalStyle.tsx";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
-
+import SearchRegistMusic from "./Pages/SearchRegistMusic/SearchRegistMusic";
 // declare global {
 //     interface Window {
 //         naver: any;
@@ -49,58 +49,28 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                         <GlobalStyle />
                         <Routes>
                             <Route path="/" element={<Landing />}></Route>
-                            <Route
-                                path="/nickname"
-                                element={<NicknamePage />}
-                            ></Route>
+                            <Route path="/nickname" element={<NicknamePage />}></Route>
                             // 닉네임 설정
-                            <Route
-                                path="/character"
-                                element={<CharacterPage />}
-                            ></Route>
+                            <Route path="/character" element={<CharacterPage />}></Route>
                             // 캐릭터 설정
-                            <Route path="/core" element={<Core />}></Route> //
-                            map 화면
-                            <Route
-                                path="/achievement"
-                                element={<Achievement />}
-                            ></Route>
+                            <Route path="/core" element={<Core />}></Route> // map 화면
+                            <Route path="/achievement" element={<Achievement />}></Route>
                             // 뱃지 화면
-                            <Route
-                                path="/registMusic"
-                                element={<RegistMusic />}
-                            ></Route>
+                            <Route path="/registMusic" element={<SearchRegistMusic />}></Route>
                             // 음악 등록
-                            <Route
-                                path="/selectMusic"
-                                element={<SelectMusic />}
-                            ></Route>
+                            <Route path="/selectMusic" element={<SelectMusic />}></Route>
                             // 음악 상세
-                            <Route path="/stats" element={<Stats />}></Route> //
-                            통계 화면
+                            <Route path="/stats" element={<Stats />}></Route> // 통계 화면
                             <Route path="/follow" element={<Follow />}></Route>
                             // 팔로우
-                            <Route
-                                path="/following"
-                                element={<Following />}
-                            ></Route>
+                            <Route path="/following" element={<Following />}></Route>
                             // 팔로잉
-                            <Route path="/like" element={<Like />}></Route> //
-                            좋아요한 음악
-                            <Route
-                                path="/listenedMusic"
-                                element={<ListenedMusic />}
-                            ></Route>
+                            <Route path="/like" element={<Like />}></Route> // 좋아요한 음악
+                            <Route path="/listenedMusic" element={<ListenedMusic />}></Route>
                             // 들었던 음악
-                            <Route
-                                path="/mypage/:id"
-                                element={<MyPage />}
-                            ></Route>
+                            <Route path="/mypage/:id" element={<MyPage />}></Route>
                             // 마이페이지
-                            <Route
-                                path="/myRegist"
-                                element={<MyRegist />}
-                            ></Route>
+                            <Route path="/myRegist" element={<MyRegist />}></Route>
                             // 내가 등록한 음악
                             {/* 출시 시 제거해야 함, 테스트용 */}
                             <Route path="/app" element={<App />}></Route>
