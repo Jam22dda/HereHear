@@ -15,8 +15,8 @@ pipeline {
         // 설정 파일 참조
         stage("copy yml") {
             steps {
-                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/main/resources"
-                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/test/resources"
+                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/main"
+                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/test"
             }
         }
 
