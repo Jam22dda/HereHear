@@ -9,7 +9,7 @@ import type { ForwardedRef } from "react";
 import * as S from "./CircleButton.styles";
 
 export interface CircleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    option?: "default" | "pinkActivated" | "pinkDeActivated" | "gradActivated" | "gradDeActivated";
+    option?: "default" | "pinkActivated" | "pinkDeActivated" | "gradActivated" | "gradDeActivated" | "playNextBtn" | "playBtn";
     size?: "small" | "medium" | "mediumplus" | "large" | "largePlus";
     $fontSize?: string;
     $backgroundColor?: string;
