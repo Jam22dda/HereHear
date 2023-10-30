@@ -5,23 +5,11 @@ import * as S from "./Play.styles";
 export default function PlayBtn() {
     return (
         <S.PlayWrapper>
-            <CircleButton
-                background-color="lightblue3"
-                size="68px"
-                box-shadow="shadow_goback"
-            >
-                {/* <Text></Text> */}
+            <CircleButton option="playNextBtn" size="largePlus"></CircleButton>
+            <CircleButton option="playBtnOuter" size="largePlus">
+                <CircleButton option="playBtn" size="large60"></CircleButton>
             </CircleButton>
-            <CircleButton
-                background-color="gradient4"
-                size="68px"
-                box-shadow="shadow_play2"
-            ></CircleButton>
-            <CircleButton
-                background-color="lightblue3"
-                size="68px"
-                box-shadow="shadow_goback"
-            ></CircleButton>
+            <CircleButton option="playNextBtn" size="largePlus"></CircleButton>
         </S.PlayWrapper>
     );
 }
