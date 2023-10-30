@@ -75,6 +75,13 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
             border: none;
             line-height: 42px;
         `,
+        largeplus: css`
+            height: 42px;
+            font-size: ${({ theme }) => theme.fontSize.small1};
+            border-radius: 30px;
+            border: none;
+            line-height: 44px;
+        `,
     };
     return style[size];
 };
@@ -82,13 +89,15 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
 const Button = styled.button<ButtonProps>`
     width: ${(props) => props.$width};
     text-align: ${(props) => props.$textAlign || "center"};
-    color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
+    color: ${(props) =>
+        props.color ? props.theme.color[props.color] : theme.color.main1};
     border-radius: ${(props) => props.$borderRadius};
     ${({ size = "large" }) => getSizeStyling(size)};
     ${({ option = "save" }) => getOptionStyling(option)};
     font-size: ${(props) => props.$fontSize};
     background-color: ${(props) => props.$backgroundColor};
     box-shadow: ${(props) => props.$shadow};
+    margin: ${(props) => props.$margin};
 `;
 
 export { Button };
