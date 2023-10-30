@@ -1,8 +1,6 @@
 FROM node:18-alpine AS build
 
-# ENV NODE_ENV=production
-
-WORKDIR /frontend
+WORKDIR /frontend/HereHear
 
 COPY package.json .
 
@@ -13,24 +11,20 @@ RUN npm install -g typescript vite
 
 RUN npm install @vitejs/plugin-react-swc
 
-# ENV NODE_ENV=development
-
 RUN npm install
 
 ENV NODE_ENV=production
 
 COPY . .
 
-RUN vite build
-
-# RUN npm run build
+RUN npm run build
 
 FROM nginx:1.21.3-alpine
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build /frontend/dist /usr/share/nginx/html
+COPY --from=build /frontend/HereHear/dist /usr/share/nginx/html
 
-EXPOSE 3001
+EXPOSE 3000
 
 CMD [ "nginx", "-g", "daemon off;" ]
