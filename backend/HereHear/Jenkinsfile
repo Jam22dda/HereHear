@@ -60,7 +60,7 @@ pipeline {
         // 컨테이너 실행
         stage("be container run") {
             steps {
-                sh "docker run -d -p 8180:8180 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
+                sh "docker run -d -p 8180:8080 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
             }
         }
     }
