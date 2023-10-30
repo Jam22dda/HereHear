@@ -1,12 +1,12 @@
 // import React from "react";
-import * as S from "./MusicItem.styles";
+import * as S from "./MusicBox.styles";
 import { Image } from "../../atoms/Image/Image";
 import BTS_answer from "../../../assets/MusicItem/BTS_answer.jpg";
 import { Text } from "../../atoms/Text/Text.styles";
-
-export default function MusicItem() {
+import Button from "../Button/Button";
+export default function MusicBox() {
   return (
-    <S.MusicItemWrapper>
+    <S.MusicBox>
       <Image
         src={BTS_answer}
         width={50}
@@ -16,11 +16,17 @@ export default function MusicItem() {
         $borderRadius="10px"
       ></Image>
       <S.MusicTextWrapper>
-        <Text size="small2" fontWeight="bold">
+        <Text size="body2" fontWeight="bold">
           Answer : Love Myself
         </Text>
-        <Text size="small3">방탄소년단</Text>
+        <Text size="body2" fontWeight="medium">
+          방탄소년단
+        </Text>
+        {/* TODO:버튼 크기 다시확인(아톰 버튼에 없음?) */}
+        <Button option="tag_selected" size="small" $fontSize="10px">
+          공부
+        </Button>
       </S.MusicTextWrapper>
-    </S.MusicItemWrapper>
+    </S.MusicBox>
   );
 }
