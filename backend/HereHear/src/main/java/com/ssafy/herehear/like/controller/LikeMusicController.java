@@ -3,8 +3,8 @@ package com.ssafy.herehear.like.controller;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.like.service.LikeMusicService;
-import com.ssafy.herehear.music.dto.request.MusicRegisteredIdReqDto;
-import com.ssafy.herehear.music.dto.response.LikeRegisteredMusicResDto;
+import com.ssafy.herehear.like.dto.request.MusicRegisteredIdReqDto;
+import com.ssafy.herehear.like.dto.response.LikeRegisteredMusicResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +21,6 @@ public class LikeMusicController {
     public CommonResponse registerlikeMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req){
         likeMusicService.registerlikeMusic(memberId,req.getRegisteredMusicId());
         return new CommonResponse("200","좋아요 등록");
-    }
-
-    @DeleteMapping
-    public CommonResponse deletelikeMusic(@RequestHeader("Member-id") Long memberId, @RequestBody MusicRegisteredIdReqDto req){
-        likeMusicService.deletelikeMusic(memberId, req.getRegisteredMusicId());
-        return new CommonResponse("200", "좋아요 취소");
     }
 
     @GetMapping("/list")

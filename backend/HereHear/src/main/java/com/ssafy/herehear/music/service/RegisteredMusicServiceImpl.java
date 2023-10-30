@@ -1,6 +1,5 @@
 package com.ssafy.herehear.music.service;
 
-import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberMusicId;
 import com.ssafy.herehear.entity.Occasion;
@@ -30,7 +29,6 @@ import java.util.List;
 @Slf4j
 public class RegisteredMusicServiceImpl implements RegisteredMusicService{
 
-    private final MemberRepository memberRepository;
     private final RegisteredMusicRepository registeredMusicRepository;
     private final OccasionRepository occasionRepository;
     private final MusicOccasionRepository musicOccasionRepository;
@@ -116,12 +114,6 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         log.info("getMyRegisteredMusicList: "+ myRegisteredMusicResDtos);
 
         return myRegisteredMusicResDtos;
-    }
-
-    public Member findMember(long memberId){
-        return memberRepository.findById(memberId).orElseThrow(
-                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-        );
     }
 
     public Occasion findOccasion(long musicOccasionId){
