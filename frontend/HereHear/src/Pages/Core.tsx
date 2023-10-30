@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import "./Core.styles";
-import testImage from "../assets/Core/Union.png";
+import { useEffect, useState } from 'react';
+import './Core.styles';
+import testImage from '../assets/Core/Union.png';
 
 export default function Core() {
     const [isUpdate, setIsUpdate] = useState(false);
@@ -9,19 +9,19 @@ export default function Core() {
             registeredMusicId: 3,
             lng: 45.2,
             lat: 424.4,
-            comment: "ddd",
-            subject: "subject2",
-            singer: "singer",
-            albumImg: "albumImg",
+            comment: 'ddd',
+            subject: 'subject2',
+            singer: 'singer',
+            albumImg: 'albumImg',
         },
         {
             registeredMusicId: 4,
             lng: 45.2,
             lat: 424.4,
-            comment: "ddd",
-            subject: "subject2",
-            singer: "singer",
-            albumImg: "albumImg",
+            comment: 'ddd',
+            subject: 'subject2',
+            singer: 'singer',
+            albumImg: 'albumImg',
         },
     ]);
 
@@ -29,8 +29,8 @@ export default function Core() {
 
     useEffect(() => {
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
-        const script = document.createElement("script");
-        script.type = "text/javascript";
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
         script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
 
         script.onload = () => {
@@ -42,7 +42,7 @@ export default function Core() {
                 zoom: 10,
             };
 
-            const map = new naver.maps.Map("map", mapOptions);
+            const map = new naver.maps.Map('map', mapOptions);
 
             const arr: any[] = [];
 
@@ -60,7 +60,7 @@ export default function Core() {
                 });
 
                 // 마커 클릭 시 발생하는 이벤트
-                naver.maps.Event.addListener(arr[i], "click", function (e: any) {
+                naver.maps.Event.addListener(arr[i], 'click', function () {
                     alert(`marker${i} clicked`);
                 });
             }
@@ -122,8 +122,8 @@ export default function Core() {
     // }, []);
 
     return (
-        <div id="map__display">
-            <div id="map"></div>
+        <div id='map__display'>
+            <div id='map'></div>
         </div>
         // <div>
         //     <img alt={`${testImage}`} src={`${testImage}`} />
