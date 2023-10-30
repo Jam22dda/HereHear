@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import './Core.styles';
+// import './Core.styles';
+import * as S from './Core.styles';
 import testImage from '../assets/Core/Union.png';
 
 export default function Core() {
@@ -46,15 +47,21 @@ export default function Core() {
 
             const arr: any[] = [];
 
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 1; i++) {
                 // 마커 표시
                 arr[i] = new naver.maps.Marker({
                     position: new naver.maps.LatLng(37.4867995957995 + i * 0.1, 126.982211871752),
                     map: map,
                     icon: {
                         content: `
-
-                        <img alt='img' src='${testImage}' />
+                        <div style="position: relative">
+                            <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
+                            <img
+                            src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
+                            alt="pin-album"
+                            style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5px; top: 5px"
+                            />
+                        </div>
                         `,
                     },
                 });
@@ -70,27 +77,34 @@ export default function Core() {
                     map: map,
                     icon: {
                         content: `
+                        <div style="position: relative">
+                            <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
+                            <img
+                            src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
+                            alt="pin-album"
+                            style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5px; top: 5px"
+                            />
+                        </div>
 
-                        <img alt='img' src='${testImage}' />
                         `,
                     },
                 });
                 arr[0].setMap(null);
             }, 10000); // 10초 후에 실행
 
-            setTimeout(() => {
-                const hello = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(37.4867995957995, 126.972211871752),
-                    map: map,
-                    icon: {
-                        content: `
+            // setTimeout(() => {
+            //     const hello = new naver.maps.Marker({
+            //         position: new naver.maps.LatLng(37.4867995957995, 126.972211871752),
+            //         map: map,
+            //         icon: {
+            //             content: `
 
-                        <img alt='img' src='${testImage}' />
-                        `,
-                    },
-                });
-                arr[0].setMap(null);
-            }, 11000); // 10초 후에 실행
+            //             <img alt='img' src='${testImage}' />
+            //             `,
+            //         },
+            //     });
+            //     arr[0].setMap(null);
+            // }, 11000); // 10초 후에 실행
         };
 
         document.body.appendChild(script);
@@ -101,33 +115,13 @@ export default function Core() {
         };
     }, [isUpdate]);
 
-    // useEffect(() => {
-    //     const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
-    //     const script = document.createElement('script');
-    //     script.type = 'text/javascript';
-    //     script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
-
-    //     // let map: naver.maps.Map;
-
-    //     script.onload = () => {
-    //         let map = null;
-    //         const initMap = () => {
-    //             const map = new naver.maps.Map('map', {
-    //                 center: new naver.maps.LatLng(37.511337, 127.012084),
-    //                 zoom: 13,
-    //             });
-    //             initMap();
-    //         };
-    //     };
-    // }, []);
-
     return (
-        <div id='map__display'>
-            <div id='map'></div>
-        </div>
-        // <div>
-        //     <img alt={`${testImage}`} src={`${testImage}`} />
+        // <div id='map__display'>
+        //     <div id='map'></div>
         // </div>
+        <S.MapDisplay>
+            <S.Map id='map'></S.Map>
+        </S.MapDisplay>
     );
 }
 
