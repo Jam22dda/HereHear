@@ -8,6 +8,8 @@ import CircleButton from "../components/atoms/CircleButton/CircleButton";
 import AlBumCover from "../components/atoms/AlbumCover/AlbumCover";
 import Nav from "../components/molcules/Navbar/Navbar";
 import Message from "../components/atoms/Message/Message";
+import Play from "../components/molcules/Play/Play";
+
 export default function Landing() {
     // const id = "angel";
 
@@ -63,6 +65,7 @@ export default function Landing() {
                 <AlBumCover></AlBumCover>
                 <Nav></Nav>
                 <Message></Message>
+                <Play></Play>
             </div>
         </div>
     );
