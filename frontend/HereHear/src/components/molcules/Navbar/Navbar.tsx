@@ -44,8 +44,8 @@ export default function ItemBox() {
                                 key={path}
                                 src={path === "/" ? (nowPath === path ? src[1] : src[0]) : nowPath.substring(0, path.length) === path ? src[1] : src[0]}
                                 onClick={() => navigatePage(path)}
-                                width={path === "/registMusic" ? 64 : 40}
-                                $unit="px"
+                                width={path === "/registMusic" ? 20 : 15}
+                                $unit="%"
                             />
                         );
                     })}

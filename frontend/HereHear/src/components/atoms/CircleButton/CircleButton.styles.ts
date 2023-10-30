@@ -60,6 +60,11 @@ const getSizeStyling = (size: Required<CircleButtonProps>["size"]) => {
             width: 50px;
             border-radius: 25px;
         `,
+        largePlus: css`
+            height: 68px;
+            width: 68px;
+            border-radius: 34px;
+        `,
     };
     return style[size];
 };
