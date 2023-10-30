@@ -13,6 +13,9 @@ public class Occasion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long occasionCode;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 20, nullable = false)
     private String occasionName;
+
+    @Column(length = 20, nullable = false)
+    private String category;
 }
