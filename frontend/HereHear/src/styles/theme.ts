@@ -7,6 +7,7 @@ const color = {
     grey1: "#838383",
     grey2: "#AEAEAE",
     white1: "#F6F5F6",
+    Linear: "E7EEFF",
 
     // main color
     lightpurple: "#E6E7FD",
