@@ -5,8 +5,8 @@ import Input from "../components/atoms/Input/Input";
 import MusicItem from "../components/molcules/MusicItem/MusicItem";
 import ItemBox from "../components/molcules/ItemBox/ItemBox";
 import CircleButton from "../components/atoms/CircleButton/CircleButton";
-import Message from "../components/atoms/Message/Message";
-import { MessagePlus } from "../components/atoms/MessagePlus/MessagePlus.styles";
+import AlBumCover from "../components/atoms/AlbumCover/AlbumCover";
+import Nav from "../components/molcules/Navbar/Navbar";
 
 export default function Landing() {
     // const id = "angel";
@@ -60,8 +60,8 @@ export default function Landing() {
                 <Input></Input>
                 <MusicItem></MusicItem>
                 <ItemBox></ItemBox>
-                <Message></Message>
-                <MessagePlus></MessagePlus>
+                <AlBumCover></AlBumCover>
+                <Nav></Nav>
             </div>
         </div>
     );
