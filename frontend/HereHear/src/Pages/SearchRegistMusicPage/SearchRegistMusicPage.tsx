@@ -1,4 +1,4 @@
-import * as S from "./SearchRegistMusic.styles";
+import * as S from "./SearchRegistMusicPage.styles";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
 // import * as S from "./SearchRegistMusic.styles";
@@ -26,8 +26,16 @@ export default function SearchRegistMusic() {
 
                 {searchregistmusic.map((item, index) => (
                     <S.MusicItemWrapper>
-                        <MusicItem key={index} src={item.src} title={item.title} artist={item.artist} />
-                        <CircleButton option="gradDeActivated" size="mediumplus"></CircleButton>
+                        <MusicItem
+                            key={index}
+                            src={item.src}
+                            title={item.title}
+                            artist={item.artist}
+                        />
+                        <CircleButton
+                            option="gradDeActivated"
+                            size="mediumplus"
+                        ></CircleButton>
                         {/* TODO: 버튼 클릭이벤트- 음악 저장하고 음악 등록페이지로 이동 */}
                     </S.MusicItemWrapper>
                 ))}
