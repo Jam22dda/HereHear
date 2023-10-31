@@ -26,10 +26,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     $width?: string;
     $shadow?: string;
     $margin?: string;
+    tag?: string | null;
 }
 
 const Button = (
-    { option, size, $backgroundColor, $borderRadius, $color, $width, $shadow, $margin, children, ...attributes }: ButtonProps,
+    { option, size, $backgroundColor, $borderRadius, $color, $width, $shadow, $margin, tag, children, ...attributes }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
 ) => {
     return (
@@ -46,6 +47,7 @@ const Button = (
             {...attributes}
         >
             {children}
+            {tag} {/* 태그를 버튼 내용으로 출력 */}
         </S.Button>
     );
 };
