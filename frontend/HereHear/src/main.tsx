@@ -8,10 +8,8 @@ import Achievement from "./Pages/Achievement.tsx";
 import Core from "./Pages/Core.tsx";
 import Follow from "./Pages/Follow.tsx";
 import Following from "./Pages/Following.tsx";
-import Like from "./Pages/Like.tsx";
-import ListenedMusic from "./Pages/ListenedMusic.tsx";
+import ListenedMusicPage from "./Pages/ListenedMusicPage/ListenedMusicPage.tsx";
 import MyPage from "./Pages/MyPage/MyPage.tsx";
-import MyRegist from "./Pages/MyRegist.tsx";
 import RegistMusic from "./Pages/RegistMusic.tsx";
 import SelectMusic from "./Pages/SelectMusic.tsx";
 import Stats from "./Pages/Stats.tsx";
@@ -24,6 +22,8 @@ import "../src/styles/font.css";
 import GlobalStyle from "../src/styles/GlobalStyle.tsx";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
+import LikePage from "./Pages/LikePage/LikePage.tsx";
+import MyRegistPage from "./Pages/MyRegistPage/MyRegistPage.tsx";
 
 // declare global {
 //     interface Window {
@@ -85,11 +85,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                                 element={<Following />}
                             ></Route>
                             // 팔로잉
-                            <Route path="/like" element={<Like />}></Route> //
-                            좋아요한 음악
+                            <Route
+                                path="/like"
+                                element={<LikePage />}
+                            ></Route>{" "}
+                            // 좋아요한 음악
                             <Route
                                 path="/listenedMusic"
-                                element={<ListenedMusic />}
+                                element={<ListenedMusicPage />}
                             ></Route>
                             // 들었던 음악
                             <Route
@@ -99,7 +102,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                             // 마이페이지
                             <Route
                                 path="/myRegist"
-                                element={<MyRegist />}
+                                element={<MyRegistPage />}
                             ></Route>
                             // 내가 등록한 음악
                             {/* 출시 시 제거해야 함, 테스트용 */}
