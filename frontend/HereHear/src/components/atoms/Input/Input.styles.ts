@@ -7,6 +7,7 @@ const Input = styled.input`
     background-color: ${({ theme }) => theme.color.white1};
     border-radius: 14px;
     box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
+    margin-top: 20px;
     margin-bottom: 40px;
 `;
 

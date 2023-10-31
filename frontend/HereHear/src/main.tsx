@@ -10,6 +10,10 @@ import Follow from "./Pages/Follow.tsx";
 import Following from "./Pages/Following.tsx";
 import ListenedMusicPage from "./Pages/ListenedMusicPage/ListenedMusicPage.tsx";
 import MyPage from "./Pages/MyPage/MyPage.tsx";
+
+import MyRegist from "./Pages/MyRegist.tsx";
+
+
 import SelectMusic from "./Pages/SelectMusic.tsx";
 import Stats from "./Pages/Stats.tsx";
 import NicknamePage from "./Pages/NicknamePage/NicknamePage.tsx";
@@ -21,9 +25,14 @@ import "../src/styles/font.css";
 import GlobalStyle from "../src/styles/GlobalStyle.tsx";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
+
+// import SearchRegistMusic from "./Pages/SearchRegistMusic/SearchRegistMusic";
+import RegistMusicMent from "./Pages/RegistMusicMent/RegistMusicMent.tsx";
+
 import LikePage from "./Pages/LikePage/LikePage.tsx";
 import MyRegistPage from "./Pages/MyRegistPage/MyRegistPage.tsx";
 import SearchRegistMusicPage from "./Pages/SearchRegistMusicPage/SearchRegistMusicPage.tsx";
+
 // declare global {
 //     interface Window {
 //         naver: any;
@@ -70,10 +79,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                                 element={<SearchRegistMusicPage />}
                             ></Route>
                             // 음악 등록
-                            <Route
-                                path="/selectMusic"
-                                element={<SelectMusic />}
-                            ></Route>
+
+                            <Route path="/registMusicMent" element={<RegistMusicMent />}></Route>
+                            //음악 등록 후 멘트태그 작성
+
+
+                            <Route path="/selectMusic" element={<SelectMusic />}></Route>
                             // 음악 상세
                             <Route path="/stats" element={<Stats />}></Route> //
                             통계 화면
