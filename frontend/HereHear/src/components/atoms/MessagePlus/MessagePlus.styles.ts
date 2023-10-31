@@ -9,6 +9,8 @@ const MessagePlus = styled.input`
     /* color: ${({ theme }) => theme.color.grey2}; */
     &::placeholder {
         color: ${({ theme }) => theme.color.grey2};
+        text-align: left;
+        padding-left: 12px;
     }
 `;
 
