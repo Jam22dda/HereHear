@@ -7,11 +7,9 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.MemberUtil;
+import com.ssafy.herehear.music.dto.request.AroundMusicReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
-import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
-import com.ssafy.herehear.music.dto.response.OccasionResDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.response.*;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.MusicOccasionRepository;
 import com.ssafy.herehear.music.repository.OccasionRepository;
@@ -38,6 +36,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
     private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
     private final RegisterMusicMapper registerMusicMapper;
 
+    @Override
     @Transactional
     public void registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
         log.info(logComment("음악 등록",memberId,registerMusicReqDto));
@@ -55,6 +54,8 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         log.info("registerMusic success");
     }
 
+    @Override
+    @Transactional
     public List<OccasionResDto> getTag() {
         List<Occasion> occasions = occasionRepository.findAll();
 
@@ -66,6 +67,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         return occasionResDtos;
     }
 
+    @Override
     @Transactional
     public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
         log.info(logComment("음악 상세 조회",memberId,registeredMusicId));
@@ -85,6 +87,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         return registeredMusicDetailsResDto;
     }
 
+    @Override
     @Transactional
     public List<RegisteredMusicResDto> getRegisteredMusicList() {
         List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
@@ -98,6 +101,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         return registeredMusicResDtos;
     }
 
+    @Override
     @Transactional
     public void updateMyRegisteredMusic(long memberId, long registeredMusicId) {
         log.info(logComment("등록한 음악 삭제",memberId,registeredMusicId));
@@ -113,7 +117,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         log.info("updateMyRegisteredMusic success");
     }
 
-
+    @Override
     @Transactional
     public List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId) {
         MemberUtil.findMember(memberId);
@@ -124,6 +128,12 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         log.info("getMyRegisteredMusicList: "+ myRegisteredMusicResDtos);
 
         return myRegisteredMusicResDtos;
+    }
+
+    @Override
+    @Transactional
+    public List<AroundMusicResDto> getAroundMusicList(AroundMusicReqDto aroundMusicReqDto) {
+        return null;
     }
 
     public Occasion findOccasion(long musicOccasionId){
@@ -148,6 +158,6 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
     }
 
     public String logComment(String title, long memberId, Object req){
-        return "["+title+"[ param] memberId: "+memberId+", registeredMusicId: "+req;
+        return "["+title+"] memberId: "+memberId+", registeredMusicId: "+req;
     }
 }
