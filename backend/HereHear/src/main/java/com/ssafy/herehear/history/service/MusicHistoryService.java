@@ -1,6 +1,6 @@
 package com.ssafy.herehear.history.service;
 
-import com.ssafy.herehear.history.dto.response.LikeRegisteredMusicResDto;
+import com.ssafy.herehear.history.dto.response.PlayRegisteredMusicResDto;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ public interface MusicHistoryService {
 
     void deletePlayMusic(long memberId, long registeredMusicId);
 
-    List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId);
+    List<PlayRegisteredMusicResDto> getMusicHistoryList(long memberId);
 }

@@ -1,10 +1,8 @@
 package com.ssafy.herehear.music.service;
 
+import com.ssafy.herehear.music.dto.request.AroundMusicReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
-import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
-import com.ssafy.herehear.music.dto.response.OccasionResDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.response.*;
 
 import java.util.List;
 
@@ -22,5 +20,5 @@ public interface RegisteredMusicService {
 
     List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId);
 
-
+    List<AroundMusicResDto> getAroundMusicList(AroundMusicReqDto aroundMusicReqDto);
 }
