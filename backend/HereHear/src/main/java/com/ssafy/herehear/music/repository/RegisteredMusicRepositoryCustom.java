@@ -15,6 +15,8 @@ public interface RegisteredMusicRepositoryCustom {
 
     Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId);
 
+    List<String> findByOccasionName(long registeredMusicId);
+
     List<RegisteredMusic> findByRegisterMusics();
 
     Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);

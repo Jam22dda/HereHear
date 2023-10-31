@@ -23,7 +23,7 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
 
     @Override
     public Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId) {
-        return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
+        return Optional.ofNullable(jpaQueryFactory.selectFrom(registeredMusic)
                 .where(
                         registeredMusic.registeredMusicId.eq(registeredMusicId)
                                 .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
@@ -34,7 +34,7 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
 
     @Override
     public Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId) {
-        return Optional.ofNullable( jpaQueryFactory.select(likeMusic)
+        return Optional.ofNullable(jpaQueryFactory.select(likeMusic)
                 .from(likeMusic)
                 .where(likeMusic.registeredMusic.registeredMusicId.eq(registeredMusicId)
                         .and(likeMusic.member.memberId.eq(memberId))
@@ -52,9 +52,17 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
     }
 
     @Override
+    public List<String> findByOccasionName(long registeredMusicId) {
+        return jpaQueryFactory.select(musicOccasion.occasion.occasionName)
+                .from(musicOccasion)
+                .where(musicOccasion.registeredMusic.registeredMusicId.eq(registeredMusicId))
+                .fetch();
+    }
+
+    @Override
     public List<RegisteredMusic> findByRegisterMusics() {
         return jpaQueryFactory.selectFrom(registeredMusic)
-                .where(registeredMusic.createTime.between(LocalDateTime.now().minusHours(3),  LocalDateTime.now().plusHours(3))
+                .where(registeredMusic.createTime.between(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3))
                         .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
                 )
                 .fetch();
@@ -62,7 +70,7 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
 
     @Override
     public Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId) {
-        return Optional.ofNullable( jpaQueryFactory.selectFrom(registeredMusic)
+        return Optional.ofNullable(jpaQueryFactory.selectFrom(registeredMusic)
                 .where(
                         registeredMusic.member.memberId.eq(memberId)
                                 .and(registeredMusic.registeredMusicId.eq(registeredMusicId))
