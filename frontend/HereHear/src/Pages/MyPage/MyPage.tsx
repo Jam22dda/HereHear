@@ -7,19 +7,19 @@ import monziSleeping from "../../../public/images/monzi-sleeping.png";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import iconEdit from "../../assets/MyPage/icon-edit.png";
 import Button from "../../components/atoms/Button/Button";
-import monziExercising from "../../../public/images/monzi-exercising.png";
-import monziFighting from "../../../public/images/monzi-fighting.png";
-import monziHerehear from "../../../public/images/monzi-herehear.png";
-import monziHippop from "../../../public/images/monzi-hippop.png";
+import iconHeartbeat from "../../../public/images/icon-heartbeat.png";
+import iconLp from "../../assets/MyPage/icon-lp.png";
 import ItemBox from "../../components/molcules/ItemBox/ItemBox";
 import Navbar from "../../components/molcules/Navbar/Navbar";
-import iconHeartbeat from "../../../public/images/icon-heartbeat.png";
+import iconLikemusic from "../../assets/MyPage/icon-likemusic.png";
+import iconBadge from "../../assets/MyPage/icon-badge.png";
+import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 
 const mypage = [
-    { src: monziExercising, name: "좋아요한 노래" },
-    { src: monziFighting, name: "등록한 노래" },
-    { src: monziHerehear, name: "뱃지" },
-    { src: monziHippop, name: "개인 통계" },
+    { src: iconLikemusic, name: "좋아요한 노래" },
+    { src: iconLp, name: "등록한 노래" },
+    { src: iconBadge, name: "뱃지" },
+    { src: iconMystatistics, name: "개인 통계" },
 ];
 
 export default function MyPage() {
