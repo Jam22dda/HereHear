@@ -19,7 +19,6 @@ const getSizeStyling = (size: Required<TextProps>["size"] = "heading1") => {
         `,
         subtitle1: css`
             font-size: ${({ theme }) => theme.fontSize.subtitle1};
-            margin-bottom: 13px;
         `,
         body1: css`
             font-size: ${({ theme }) => theme.fontSize.body1};
