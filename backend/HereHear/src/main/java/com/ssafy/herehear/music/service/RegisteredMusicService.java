@@ -1,6 +1,7 @@
 package com.ssafy.herehear.music.service;
 
 import com.ssafy.herehear.music.dto.request.AroundMusicReqDto;
+import com.ssafy.herehear.music.dto.request.AroundSearchReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.*;
 
@@ -21,4 +22,6 @@ public interface RegisteredMusicService {
     List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId);
 
     List<AroundMusicResDto> getAroundMusicList(AroundMusicReqDto aroundMusicReqDto);
+
+    List<AroundMusicResDto> getAroundSearchMusic(AroundSearchReqDto aroundSearchReqDto);
 }
