@@ -89,8 +89,7 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
 const Button = styled.button<ButtonProps>`
     width: ${(props) => props.$width};
     text-align: ${(props) => props.$textAlign || "center"};
-    color: ${(props) =>
-        props.color ? props.theme.color[props.color] : theme.color.main1};
+    color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
     border-radius: ${(props) => props.$borderRadius};
     ${({ size = "large" }) => getSizeStyling(size)};
     ${({ option = "save" }) => getOptionStyling(option)};
