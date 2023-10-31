@@ -19,7 +19,7 @@ const ItemBox: React.FC<ItemBoxProps> = ({
 }) => {
     return (
         <S.ItemBoxWrapper onClick={onClick} $isselected={$isselected}>
-            <Image src={src} width={72} $unit="px" $margin="0 0 8px 0" />
+            <Image src={src} width={80} $unit="px" $margin="0 0 4px 0" />
             <S.ItemBoxTextWrapper>
                 <Text size="small2">{title}</Text>
             </S.ItemBoxTextWrapper>
