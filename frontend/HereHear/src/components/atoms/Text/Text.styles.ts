@@ -2,8 +2,15 @@ import theme from "../../../styles/theme";
 import styled, { css } from "styled-components";
 
 export interface TextProps {
-    size?: "heading1" | "subtitle1" | "body1" | "body2" | "small1" | "small2" | "small3";
-    color?: typeof theme.color;
+    size?:
+        | "heading1"
+        | "subtitle1"
+        | "body1"
+        | "body2"
+        | "small1"
+        | "small2"
+        | "small3";
+    color?: keyof typeof theme.color;
     //width 단위는 픽셀
     width?: number;
     fontWeight?: "bold" | "medium" | "light";
@@ -55,7 +62,10 @@ const Text = styled.p<TextProps>`
     margin-left: ${(props) => props.$marginLeft};
     margin-top: ${(props) => props.$marginTop};
     ${({ size = "subtitle1" }) => getSizeStyling(size)};
-    color: ${(props) => (props.color ? props.theme.color[props.color] : props.theme.color.main1)};
+    color: ${(props) =>
+        props.color
+            ? props.theme.color[props.color as keyof typeof theme.color]
+            : props.theme.color.main1};
     font-weight: ${(props) => getFontWeightStyling(props.fontWeight)};
 `;
 

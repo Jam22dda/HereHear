@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 interface ItemBoxWrapperProps {
-    isSelected: boolean;
+    $isselected: boolean;
 }
 
 const ItemBoxWrapper = styled.div<ItemBoxWrapperProps>`
@@ -13,8 +13,8 @@ const ItemBoxWrapper = styled.div<ItemBoxWrapperProps>`
     flex-direction: column;
     justify-content: end;
     align-items: center;
-    ${({ isSelected, theme }) =>
-        isSelected
+    ${({ $isselected, theme }) =>
+        $isselected
             ? css`
                   box-shadow: ${theme.shadow.shadow_itembox_selected};
               `
