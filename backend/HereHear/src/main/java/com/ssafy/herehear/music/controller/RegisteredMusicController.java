@@ -3,6 +3,7 @@ package com.ssafy.herehear.music.controller;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.music.dto.request.AroundMusicReqDto;
+import com.ssafy.herehear.music.dto.request.AroundSearchReqDto;
 import com.ssafy.herehear.music.dto.request.MusicRegisteredIdReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.*;
@@ -54,6 +55,11 @@ public class RegisteredMusicController {
     @GetMapping("/around/list")
     public DataResponse<List<AroundMusicResDto>> aroundMusicList(@RequestBody AroundMusicReqDto aroundMusicReqDto) {
         return new DataResponse<>("200", "주변 음악 조회", registeredMusicService.getAroundMusicList(aroundMusicReqDto));
+    }
+
+    @GetMapping("/around/search")
+    public DataResponse<List<AroundMusicResDto>> aroundSearchMusic(@RequestBody AroundSearchReqDto aroundSearchReqDto) {
+        return new DataResponse<>("200", "주변 음악 검색", registeredMusicService.getAroundSearchMusic(aroundSearchReqDto));
     }
 
 }

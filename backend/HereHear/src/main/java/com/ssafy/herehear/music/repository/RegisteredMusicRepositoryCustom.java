@@ -23,4 +23,5 @@ public interface RegisteredMusicRepositoryCustom {
 
     List<RegisteredMusic> findByMyRegisterMusics(long memberId);
 
+    List<RegisteredMusic> findByAroundSearchMusics(String keyword, List<Long> occasions);
 }

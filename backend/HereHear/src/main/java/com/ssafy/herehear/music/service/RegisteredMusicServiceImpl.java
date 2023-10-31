@@ -6,6 +6,7 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.MemberUtil;
+import com.ssafy.herehear.music.dto.request.AroundSearchReqDto;
 import com.ssafy.herehear.music.util.GeoUtils;
 import com.ssafy.herehear.music.dto.request.AroundMusicReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
@@ -21,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -90,6 +93,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Transactional
     public List<RegisteredMusicResDto> getRegisteredMusicList() {
         List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+                .filter(this::findHourFilter)
                 .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicListResDto(
                         findRegisteredMusic,
                         registeredMusicRepositoryImpl.findByOccasion(findRegisteredMusic.getRegisteredMusicId()))
@@ -136,8 +140,10 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
         List<AroundMusicResDto> aroundMusicResDtos = findByAroundMusics(
                         aroundMusicReqDto.getLat(),
-                        aroundMusicReqDto.getLng()
+                        aroundMusicReqDto.getLng(),
+                        registeredMusicRepositoryImpl.findByRegisterMusics()
                 ).stream()
+                .filter(this::findHourFilter)
                 .map(registeredMusic -> registerMusicMapper.toAroundMusicResDto(
                                 registeredMusic,
                                 registeredMusicRepositoryImpl.findByOccasionName(registeredMusic.getRegisteredMusicId())
@@ -148,8 +154,37 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
         return aroundMusicResDtos;
     }
 
-    public List<RegisteredMusic> findByAroundMusics(double lat, double lng) {
-        List<RegisteredMusic> allMusics = registeredMusicRepository.findAll();
+    @Override
+    public List<AroundMusicResDto> getAroundSearchMusic(AroundSearchReqDto aroundSearchReqDto) {
+        log.info("[주변 음악 검색] AroundSearchReqDto: " + aroundSearchReqDto);
+
+        List<AroundMusicResDto> aroundMusicResDtos = findByAroundMusics(
+                        aroundSearchReqDto.getLat(),
+                        aroundSearchReqDto.getLng(),
+                        registeredMusicRepositoryImpl.findByAroundSearchMusics(aroundSearchReqDto.getKeyword(),aroundSearchReqDto.getOccasions())
+                ).stream()
+                .filter(this::findHourFilter)
+                .map(registeredMusic -> registerMusicMapper.toAroundMusicResDto(
+                                registeredMusic,
+                                registeredMusicRepositoryImpl.findByOccasionName(registeredMusic.getRegisteredMusicId())
+                        )
+                ).toList();
+        log.info("getAroundMusicList: " + aroundMusicResDtos);
+
+        return aroundMusicResDtos;
+    }
+
+    public boolean findHourFilter(RegisteredMusic findRegisteredMusic){
+        LocalTime currentTime = LocalDateTime.now().toLocalTime();
+        log.info("currentTime: "+currentTime);
+
+        // 현재 시간으로부터 +3h 이내 또는 -3h 이내인 데이터만 필터링
+        long hoursDifference = ChronoUnit.HOURS.between(currentTime, findRegisteredMusic.getCreateTime());
+        log.info("getRegisteredMusicId: "+findRegisteredMusic.getRegisteredMusicId()+", hoursDifference: "+hoursDifference);
+        return hoursDifference >= -3 && hoursDifference <= 3 || hoursDifference >= 21;
+    }
+
+    public List<RegisteredMusic> findByAroundMusics(double lat, double lng, List<RegisteredMusic> allMusics) {
         double radiusInKm = 0.6; // 500미터를 킬로미터로 변환
         return allMusics.stream()
                 .filter(music -> {
