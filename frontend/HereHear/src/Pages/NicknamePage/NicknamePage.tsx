@@ -26,13 +26,7 @@ export default function NicknamePage() {
                     본인의 닉네임을 정해주세요!
                 </Text>
                 <Input></Input>
-                <Button
-                    option="save"
-                    size="large"
-                    $width="132px"
-                    $margin="150px 0 0 0"
-                    onClick={() => navigatePage("/character")}
-                >
+                <Button option="save" size="large" $width="132px" $margin="150px 0 0 0" onClick={() => navigatePage("/character")}>
                     저장하기
                 </Button>
             </S.NicknamePageWrapper>
