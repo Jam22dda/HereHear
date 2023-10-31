@@ -1,7 +1,6 @@
-// import React from "react";
+import React from "react";
 import * as S from "./MusicItem.styles";
 import { Image } from "../../atoms/Image/Image";
-// import BTS_answer from "../../../assets/MusicItem/BTS_answer.jpg";
 import { Text } from "../../atoms/Text/Text.styles";
 
 interface MusicItemProps {
@@ -10,10 +9,17 @@ interface MusicItemProps {
     artist: string;
 }
 
-const MusicItem: React.FC<MusicItemProps> = ({ src, title, artist }) => {
+function MusicItem({ src, title, artist }: MusicItemProps) {
     return (
         <S.MusicItemWrapper>
-            <Image src={src} width={50} height={50} $unit="px" $boxShadow="shadow_goback" $borderRadius="10px"></Image>
+            <Image
+                src={src}
+                width={50}
+                height={50}
+                $unit="px"
+                $boxShadow="shadow_goback"
+                $borderRadius="10px"
+            ></Image>
             <S.MusicTextWrapper>
                 <Text size="small2" fontWeight="bold">
                     {title}
@@ -22,6 +28,6 @@ const MusicItem: React.FC<MusicItemProps> = ({ src, title, artist }) => {
             </S.MusicTextWrapper>
         </S.MusicItemWrapper>
     );
-};
+}
 
 export default MusicItem;
