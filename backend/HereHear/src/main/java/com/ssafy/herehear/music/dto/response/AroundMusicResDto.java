@@ -1,6 +1,5 @@
 package com.ssafy.herehear.music.dto.response;
 
-import com.ssafy.herehear.entity.Occasion;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,5 +14,5 @@ public class AroundMusicResDto {
     private String subject;
     private String singer;
     private String albumImg;
-    private List<Occasion> occasions;
+    private List<String> occasionName;
 }
