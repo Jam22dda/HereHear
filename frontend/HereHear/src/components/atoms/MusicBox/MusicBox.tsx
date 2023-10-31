@@ -7,12 +7,19 @@ import Button from "../Button/Button";
 export default function MusicBox() {
     return (
         <S.MusicBox>
-            <Image src={BTS_answer} width={50} height={50} $unit="px" $boxShadow="shadow_goback" $borderRadius="10px"></Image>
+            <Image
+                src={BTS_answer}
+                width={50}
+                height={50}
+                $unit="px"
+                $boxShadow="shadow_goback"
+                $borderRadius="10px"
+            ></Image>
             <S.MusicTextWrapper>
-                <Text size="body2" fontWeight="bold">
+                <Text size="body2" fontWeight="bold" color="main2">
                     Answer : Love Myself
                 </Text>
-                <Text size="body2" fontWeight="medium">
+                <Text size="body2" fontWeight="medium" color="main2">
                     방탄소년단
                 </Text>
                 {/* TODO:버튼 크기 다시확인(아톰 버튼에 없음?) */}
