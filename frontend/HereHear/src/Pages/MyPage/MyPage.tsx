@@ -13,6 +13,7 @@ import monziHerehear from "../../../public/images/monzi-herehear.png";
 import monziHippop from "../../../public/images/monzi-hippop.png";
 import ItemBox from "../../components/molcules/ItemBox/ItemBox";
 import Navbar from "../../components/molcules/Navbar/Navbar";
+import iconHeartbeat from "../../../public/images/icon-heartbeat.png";
 
 const mypage = [
     { src: monziExercising, name: "좋아요한 노래" },
@@ -43,6 +44,14 @@ export default function MyPage() {
                             height={140}
                             $unit="px"
                         ></Image>
+                        <S.OverlappingImageWrapper>
+                            <Image
+                                src={iconHeartbeat}
+                                width={60}
+                                height={72}
+                                $unit="px"
+                            ></Image>
+                        </S.OverlappingImageWrapper>
                     </S.Profile>
                     <S.MydataWrapper>
                         <Text size="body1" fontWeight="bold">
