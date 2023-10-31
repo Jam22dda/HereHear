@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 const PlayWrapper = styled.div`
-  display: flex;
-  justify-content: space-evenly;
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
 `;
 
 export { PlayWrapper };
