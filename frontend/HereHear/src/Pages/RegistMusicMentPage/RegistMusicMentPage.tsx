@@ -1,4 +1,4 @@
-import * as S from "./RegistMusicMent.styles";
+import * as S from "./RegistMusicMentPage.styles";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import AlbumCover from "../../components/atoms/AlbumCover/AlbumCover";
