@@ -22,10 +22,10 @@ import java.util.List;
 @EnableScheduling
 public class SpotifyMusicService implements MusicService {
 
-    @Value("${musicApi.spotify.authUrl}")
+    @Value("${musicApi.spotify.url.authUrl}")
     private String authUrl;
 
-    @Value("${musicApi.spotify.searchUrl}")
+    @Value("${musicApi.spotify.url.searchUrl}")
     private String searchUrl;
 
     @Value("${musicApi.spotify.key.clientId}")
