@@ -8,8 +8,7 @@ import type { ForwardedRef } from "react";
 // //  *는 해당 모듈에서 export된 모든 것들
 import * as S from "./Button.styles";
 
-export interface ButtonProps
-    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     option?:
         | "tag1" // 음악 페이지 태그
         | "tag_selected" // 태그 페이지 선택된 태그
@@ -27,21 +26,11 @@ export interface ButtonProps
     $width?: string;
     $shadow?: string;
     $margin?: string;
+    tag?: string | null;
 }
-// TODO: borderRadius값이 적용 안됨 ..
+
 const Button = (
-    {
-        option,
-        size,
-        $backgroundColor,
-        $borderRadius,
-        $color,
-        $width,
-        $shadow,
-        $margin,
-        children,
-        ...attributes
-    }: ButtonProps,
+    { option, size, $backgroundColor, $borderRadius, $color, $width, $shadow, $margin, tag, children, ...attributes }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
 ) => {
     return (
@@ -58,6 +47,7 @@ const Button = (
             {...attributes}
         >
             {children}
+            {tag} {/* 태그를 버튼 내용으로 출력 */}
         </S.Button>
     );
 };
