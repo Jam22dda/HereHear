@@ -9,6 +9,7 @@ import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.response.OccasionResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +55,15 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
         log.info("registerMusic success");
     }
 
-    public List<Occasion> getTag() {
-        return occasionRepository.findAll();
+    public List<OccasionResDto> getTag() {
+        List<Occasion> occasions = occasionRepository.findAll();
+
+        List<OccasionResDto> occasionResDtos = occasions.stream()
+                .map(registerMusicMapper::toOccasionResDto)
+                .collect(Collectors.toList());
+        log.info("getTag: "+occasionResDtos);
+
+        return occasionResDtos;
     }
 
     @Transactional
@@ -131,10 +140,6 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService{
 
     public boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
         return registeredMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
-    }
-
-    public MemberMusicId findMemberMusicId(long memberId, long registeredMusicId){
-        return MemberMusicId.builder().memberId(memberId).registeredMusicId(registeredMusicId).build();
     }
 
     public String convertAndSetCreateTime(String createTime) {

@@ -6,6 +6,7 @@ import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.music.dto.request.MusicRegisteredIdReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.response.OccasionResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
@@ -28,7 +29,7 @@ public class RegisteredMusicController {
     }
 
     @GetMapping("/tag")
-    public DataResponse<List<Occasion>> readTag() {
+    public DataResponse<List<OccasionResDto>> readTag() {
         return new DataResponse<>("200", "전체 태그 조회", registeredMusicService.getTag());
     }
 
