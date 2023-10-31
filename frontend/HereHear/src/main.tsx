@@ -12,7 +12,7 @@ import Like from "./Pages/Like.tsx";
 import ListenedMusic from "./Pages/ListenedMusic.tsx";
 import MyPage from "./Pages/MyPage/MyPage.tsx";
 import MyRegist from "./Pages/MyRegist.tsx";
-import RegistMusic from "./Pages/RegistMusic.tsx";
+// import RegistMusic from "./Pages/RegistMusic.tsx";
 import SelectMusic from "./Pages/SelectMusic.tsx";
 import Stats from "./Pages/Stats.tsx";
 import NicknamePage from "./Pages/NicknamePage/NicknamePage.tsx";
