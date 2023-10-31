@@ -7,41 +7,46 @@ export default function Core() {
     const [isUpdate, setIsUpdate] = useState(false);
     const [lat, setLat] = useState(0); // 위도
     const [lng, setLng] = useState(0); // 경도
+
+    // 외부로부터 입력된 데이터
     const [musicList, setMusicList] = useState([
         {
             registeredMusicId: 3,
-            lng: 45.2,
-            lat: 424.4,
+            lat: 36.3528192,
+            lng: 127.3102336,
             comment: 'ddd',
             subject: 'subject2',
             singer: 'singer',
-            albumImg: 'albumImg',
+            albumImg: 'https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg',
         },
         {
             registeredMusicId: 4,
-            lng: 45.2,
-            lat: 424.4,
+            lat: 36.3528192,
+            lng: 127.3202336,
             comment: 'ddd',
             subject: 'subject2',
             singer: 'singer',
-            albumImg: 'albumImg',
+            albumImg: 'https://i.namu.wiki/i/T74peTI9G97pbLNLGK7H8XawCFQl9-0-GmJPIlrX7h1pg7N9C6Tm0QfKtTcd5XXEGCyUBjIqNgCYzfGyJj0lwA.webp',
         },
     ]);
 
+    const [musicMap, setMusicMap] = useState({});
+    const [musicPin, setMusicPin] = useState({});
+
     let naver: any;
     let map: typeof naver;
-    // let userPin: any;
+    let userPin: any;
     let script: any;
-    const [userPin, setUserPin] = useState('');
 
     useEffect(() => {
+        // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
 
+        // 지도 초기화 완료 시 최초 1회 실행
         script.onload = () => {
-            // 전역 변수 naver 사용
             naver = window.naver;
 
             const mapOptions = {
@@ -51,19 +56,35 @@ export default function Core() {
 
             map = new naver.maps.Map('map', mapOptions);
 
-            const arr: any[] = [];
+            // 음악 데이터를 Map 형태로 변경하여 저장
+            const musicMapIns: MusicMap = musicList.reduce((map: MusicMap, music: Music) => {
+                const { registeredMusicId, ...otherProps } = music;
+                map[registeredMusicId] = otherProps;
+                return map;
+            }, {});
 
-            for (let i = 0; i < 3; i++) {
+            setMusicMap(musicMapIns);
+
+            const arr: any[] = [];
+            const pinIns: any = {};
+
+            for (const key in musicMapIns) {
+                console.log('KEEEEEEEEEY');
+                console.log(key);
+                console.log('MMMAAAAAAAAAPP');
+                console.log(musicMapIns);
+                console.log(musicMapIns[key].lat);
+
                 // 마커 표시
-                arr[i] = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(37.4867995957995 + i * 0.1, 126.982211871752),
+                pinIns[key] = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(musicMapIns[key].lat, musicMapIns[key].lng),
                     map: map,
                     icon: {
                         content: `
                         <div style="position: relative">
                             <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
                             <img
-                            src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
+                            src="${musicMapIns[key].albumImg}"
                             alt="pin-album"
                             style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
                             />
@@ -73,12 +94,39 @@ export default function Core() {
                 });
 
                 // 마커 클릭 시 발생하는 이벤트
-                naver.maps.Event.addListener(arr[i], 'click', function () {
-                    console.log(`marker${i} clicked`);
-                    alert(`marker${i} clicked`);
+                naver.maps.Event.addListener(pinIns[key], 'click', function () {
+                    console.log(`marker${key} clicked`);
+                    alert(`marker${key} clicked`);
                 });
                 console.log(arr.length);
             }
+
+            // for (let i = 0; i < 2; i++) {
+            //     // 마커 표시
+            //     arr[i] = new naver.maps.Marker({
+            //         position: new naver.maps.LatLng(37.4867995957995 + i * 0.1, 126.982211871752),
+            //         map: map,
+            //         icon: {
+            //             content: `
+            //             <div style="position: relative">
+            //                 <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
+            //                 <img
+            //                 src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
+            //                 alt="pin-album"
+            //                 style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
+            //                 />
+            //             </div>
+            //             `,
+            //         },
+            //     });
+
+            //     // 마커 클릭 시 발생하는 이벤트
+            //     naver.maps.Event.addListener(arr[i], 'click', function () {
+            //         console.log(`marker${i} clicked`);
+            //         alert(`marker${i} clicked`);
+            //     });
+            //     console.log(arr.length);
+            // }
 
             if (!navigator.geolocation) {
                 console.error('Geolocation is not supported by your browser');
@@ -93,17 +141,15 @@ export default function Core() {
                     setLat(latitude);
                     setLng(longitude);
 
-                    setUserPin(
-                        new naver.maps.Marker({
-                            position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
-                            map: map,
-                            icon: {
-                                content: `
-                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
+                    userPin = new naver.maps.Marker({
+                        position: new naver.maps.LatLng(lat, lng),
+                        map: map,
+                        icon: {
+                            content: `
+                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; z-index: 999; border: 4px solid white;"></div>
                         `,
-                            },
-                        })
-                    );
+                        },
+                    });
                 },
                 error => {
                     console.error('Error getting location:', error);
@@ -115,41 +161,41 @@ export default function Core() {
             );
 
             // 지도 핀찍기 테스트
-            setTimeout(() => {
-                arr[0].setMap(null);
+            // setTimeout(() => {
+            //     arr[0].setMap(null);
 
-                arr[arr.length] = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
-                    map: map,
-                    icon: {
-                        content: `
-                        <div style="position: relative">
-                            <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
-                            <img
-                            src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
-                            alt="pin-album"
-                            style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
-                            />
-                        </div>
+            //     arr[arr.length] = new naver.maps.Marker({
+            //         position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
+            //         map: map,
+            //         icon: {
+            //             content: `
+            //             <div style="position: relative">
+            //                 <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
+            //                 <img
+            //                 src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
+            //                 alt="pin-album"
+            //                 style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
+            //                 />
+            //             </div>
 
-                        `,
-                    },
-                });
+            //             `,
+            //         },
+            //     });
 
-                setUserPin(
-                    new naver.maps.Marker({
-                        position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
-                        map: map,
-                        icon: {
-                            content: `
-                            <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
-                    `,
-                        },
-                    })
-                );
+            //     console.log(arr.length);
 
-                console.log(arr.length);
-            }, 10000); // 10초 후에 실행
+            //     userPin.setMap(null);
+
+            //     userPin = new naver.maps.Marker({
+            //         position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
+            //         map: map,
+            //         icon: {
+            //             content: `
+            //                 <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; z-index: 999; border: 4px solid white;"></div>
+            //         `,
+            //         },
+            //     });
+            // }, 3000); // 10초 후에 실행
         };
 
         document.body.appendChild(script);
@@ -159,6 +205,64 @@ export default function Core() {
             document.body.removeChild(script);
         };
     }, [isUpdate]);
+
+    // 정해진 시간마다 내 위치 정보 받아오는 기능
+    // useEffect(() => {
+    //     if (!navigator.geolocation) {
+    //         console.error('Geolocation is not supported by your browser');
+    //         return;
+    //     }
+
+    //     // 최초에 지도에 현재 위치 찍기
+    //     navigator.geolocation.getCurrentPosition(
+    //         position => {
+    //             const { latitude, longitude } = position.coords;
+    //             console.log('Latitude:', latitude, 'Longitude:', longitude);
+    //             setLat(latitude);
+    //             setLng(longitude);
+
+    //             userPin = new naver.maps.Marker({
+    //                 position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
+    //                 map: map,
+    //                 icon: {
+    //                     content: `
+    //                     <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; z-index: 999;"></div>
+    //                     `,
+    //                 },
+    //             });
+    //         },
+    //         error => {
+    //             console.error('Error getting location:', error);
+    //         },
+    //         {
+    //             enableHighAccuracy: true,
+    //             maximumAge: 0,
+    //         }
+    //     );
+
+    //     const intervalId = setInterval(() => {
+    //         navigator.geolocation.getCurrentPosition(
+    //             position => {
+    //                 const { latitude, longitude } = position.coords;
+    //                 console.log('Latitude:', latitude, 'Longitude:', longitude);
+    //                 setLat(latitude);
+    //                 setLng(longitude);
+    //             },
+    //             error => {
+    //                 console.error('Error getting location:', error);
+    //             },
+    //             // 위치 정보 업데이트 관련 설정 (건들일 필요 x)
+    //             {
+    //                 enableHighAccuracy: true,
+    //                 maximumAge: 0,
+    //             }
+    //         );
+    //     }, 3000);
+
+    //     return () => {
+    //         clearInterval(intervalId);
+    //     };
+    // }, []);
 
     return (
         // <div id='map__display'>
@@ -174,4 +278,18 @@ declare global {
     interface Window {
         naver: any;
     }
+}
+
+interface Music {
+    registeredMusicId: number;
+    lng: number;
+    lat: number;
+    comment: string;
+    subject: string;
+    singer: string;
+    albumImg: string;
+}
+
+interface MusicMap {
+    [key: number]: Omit<Music, 'registeredMusicId'>;
 }
