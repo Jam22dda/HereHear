@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 
 // // 자식 컴포넌트의 DOM 요소에 접근하려 할 때 forwardRef 사용
 // // 부모 컴포넌트로부터 전달받은 ref를 자식 컴포넌트의 DOM 요소에 연결
@@ -8,16 +8,10 @@ import type { ForwardedRef } from "react";
 // //  *는 해당 모듈에서 export된 모든 것들
 import * as S from "./CircleButton.styles";
 
-export interface CircleButtonProps
-    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    option?:
-        | "default"
-        | "default2"
-        | "pinkActivated"
-        | "pinkDeActivated"
-        | "gradActivated"
-        | "gradDeActivated";
-    size?: "small" | "medium" | "mediumplus" | "large";
+export interface CircleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    option?: "default" | "default2" | "pinkActivated" | "pinkDeActivated" | "gradActivated" | "gradDeActivated" | "playNextBtn" | "playBtn" | "playBtnOuter";
+    size?: "small" | "medium" | "mediumplus" | "large" | "largePlus" | "large60";
+
     $fontSize?: string;
     $backgroundColor?: string;
     $borderColor?: string;
@@ -30,18 +24,7 @@ export interface CircleButtonProps
 }
 
 const CircleButton = (
-    {
-        option,
-        size,
-        $backgroundColor,
-        $borderColor,
-        $borderRadius,
-        $border,
-        $color,
-        $width,
-        children,
-        ...attributes
-    }: CircleButtonProps,
+    { option, size, $backgroundColor, $borderColor, $borderRadius, $border, $color, $width, children, ...attributes }: CircleButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
 ) => {
     return (

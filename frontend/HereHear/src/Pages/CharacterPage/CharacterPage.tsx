@@ -40,7 +40,7 @@ export default function CharacterPage() {
                             key={index}
                             src={item.src}
                             title={item.name}
-                            isselected={item.name === selectedItem}
+                            $isselected={item.name === selectedItem}
                             onClick={() => handleItemClick(item.name)}
                         />
                     ))}

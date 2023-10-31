@@ -10,7 +10,6 @@ import Follow from "./Pages/Follow.tsx";
 import Following from "./Pages/Following.tsx";
 import ListenedMusicPage from "./Pages/ListenedMusicPage/ListenedMusicPage.tsx";
 import MyPage from "./Pages/MyPage/MyPage.tsx";
-import RegistMusic from "./Pages/RegistMusic.tsx";
 import SelectMusic from "./Pages/SelectMusic.tsx";
 import Stats from "./Pages/Stats.tsx";
 import NicknamePage from "./Pages/NicknamePage/NicknamePage.tsx";
@@ -24,7 +23,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
 import LikePage from "./Pages/LikePage/LikePage.tsx";
 import MyRegistPage from "./Pages/MyRegistPage/MyRegistPage.tsx";
-
+import SearchRegistMusicPage from "./Pages/SearchRegistMusicPage/SearchRegistMusicPage.tsx";
 // declare global {
 //     interface Window {
 //         naver: any;
@@ -68,7 +67,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                             // 뱃지 화면
                             <Route
                                 path="/registMusic"
-                                element={<RegistMusic />}
+                                element={<SearchRegistMusicPage />}
                             ></Route>
                             // 음악 등록
                             <Route

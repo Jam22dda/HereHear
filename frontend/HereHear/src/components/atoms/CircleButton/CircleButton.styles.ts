@@ -2,10 +2,7 @@ import styled, { css } from "styled-components";
 import { CircleButtonProps } from "./CircleButton";
 import theme from "../../../styles/theme";
 
-const getOptionStyling = (
-    option: Required<CircleButtonProps>["option"],
-    props: CircleButtonProps
-) => {
+const getOptionStyling = (option: Required<CircleButtonProps>["option"], props: CircleButtonProps) => {
     const style = {
         default: css`
             background: ${({ theme }) => theme.color.white2};
@@ -61,6 +58,11 @@ const getOptionStyling = (
             color: ${({ theme }) => theme.color.white1};
             box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
         `,
+        playBtnOuter: css`
+            background: ${({ theme }) => theme.gradient.gradient5};
+            color: ${({ theme }) => theme.color.white1};
+            box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
+        `,
         playNextBtn: css`
             background: ${({ theme }) => theme.color.lightblue3};
             color: ${({ theme }) => theme.color.main1};
@@ -96,7 +98,12 @@ const getSizeStyling = (size: Required<CircleButtonProps>["size"]) => {
             width: 50px;
             border-radius: 25px;
         `,
-        largeplus: css`
+        large60: css`
+            height: 60px;
+            width: 60px;
+            border-radius: 30px;
+        `,
+        largePlus: css`
             height: 68px;
             width: 68px;
             border-radius: 34px;
@@ -108,8 +115,7 @@ const getSizeStyling = (size: Required<CircleButtonProps>["size"]) => {
 const Button = styled.button<CircleButtonProps>`
     width: ${(props) => props.$width || "100%"};
     text-align: ${(props) => props.$textAlign || "center"};
-    color: ${(props) =>
-        props.color ? props.theme.color[props.color] : theme.color.main1};
+    color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
     border-radius: ${(props) => props.$borderRadius || "24px"};
     ${({ size = "large" }) => getSizeStyling(size)};
     ${({ option = "default", ...props }) => getOptionStyling(option, props)};
