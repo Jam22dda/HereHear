@@ -1,20 +1,19 @@
 import * as S from "./SearchRegistMusicPage.styles";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
-// import * as S from "./SearchRegistMusic.styles";
 import Input from "../../components/atoms/Input/Input";
 import MusicItem from "../../components/molcules/MusicItem/MusicItem";
-import albumart1 from "../../../public/images/album1.png";
-import albumart2 from "../../../public/images/album2.png";
-import albumart3 from "../../../public/images/album3.png";
-
-const searchregistmusic = [
-    { src: albumart1, artist: "악동뮤지션", title: "LOVELEE" },
-    { src: albumart2, artist: "KOREANGROOVE", title: "BLACK GROOVE" },
-    { src: albumart3, artist: "권은비", title: "UnderWater" },
-];
+import Button from "../../components/atoms/Button/Button";
+import { useGetSearchMusic } from "../../apis/Music/Quries/useGetSearchMusic";
+import { MusicData } from "../../types/music";
 
 export default function SearchRegistMusic() {
+    const keyword = "NewJeans";
+
+    const SearchMusic = useGetSearchMusic(keyword);
+    console.log(SearchMusic.searchMusic.data, "음악검색되나여?");
+    const searchregistmusicList1 = SearchMusic.searchMusic.data;
+
     return (
         <div id="display">
             <div className="container">
@@ -22,20 +21,17 @@ export default function SearchRegistMusic() {
                 <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
                     음악 등록
                 </Text>
-                <Input></Input>
+                <S.InputWrapper>
+                    <Input $placeholder="🔍"></Input>
+                    <Button option="follow" $hight="44px" $width="60px" $borderRadius="12px" color="white1" size="mediumplus">
+                        검색
+                    </Button>
+                </S.InputWrapper>
 
-                {searchregistmusic.map((item, index) => (
-                    <S.MusicItemWrapper>
-                        <MusicItem
-                            key={index}
-                            src={item.src}
-                            title={item.title}
-                            artist={item.artist}
-                        />
-                        <CircleButton
-                            option="gradDeActivated"
-                            size="mediumplus"
-                        ></CircleButton>
+                {searchregistmusicList1.map((item: MusicData, index: number) => (
+                    <S.MusicItemWrapper key={index}>
+                        <MusicItem src={item.album_images[2].url} title={item.subject} artist={item.artists[0].name} />
+                        <CircleButton option="gradDeActivated" size="mediumplus"></CircleButton>
                         {/* TODO: 버튼 클릭이벤트- 음악 저장하고 음악 등록페이지로 이동 */}
                     </S.MusicItemWrapper>
                 ))}

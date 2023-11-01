@@ -87,16 +87,17 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
 };
 
 const Button = styled.button<ButtonProps>`
-    width: ${(props) => props.$width};
-    text-align: ${(props) => props.$textAlign || "center"};
-    color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
-    border-radius: ${(props) => props.$borderRadius};
     ${({ size = "large" }) => getSizeStyling(size)};
     ${({ option = "save" }) => getOptionStyling(option)};
+    width: ${(props) => props.$width};
+    height: ${(props) => props.$hight};
+    text-align: ${(props) => props.$textAlign || "center"};
+    color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
     font-size: ${(props) => props.$fontSize};
     background-color: ${(props) => props.$backgroundColor};
     box-shadow: ${(props) => props.$shadow};
     margin: ${(props) => props.$margin};
+    border-radius: ${(props) => props.$borderRadius}; //순서 중요
 `;
 
 export { Button };
