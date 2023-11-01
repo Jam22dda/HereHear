@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/music")
 @Slf4j
+@CrossOrigin("*")
 public class SearchMusicController {
 
     private final MusicService musicService;
