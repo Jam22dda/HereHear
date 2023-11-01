@@ -5,7 +5,9 @@ import com.ssafy.herehear.entity.MusicOccasion;
 import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
+import com.ssafy.herehear.music.dto.response.AroundMusicResDto;
 import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.response.OccasionResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
 import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-30T00:38:48+0900",
+    date = "2023-10-31T14:47:57+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Azul Systems, Inc.)"
 )
 @Component
@@ -127,5 +129,42 @@ public class RegisterMusicMapperImpl implements RegisterMusicMapper {
         myRegisteredMusicResDto.albumImg( registeredMusic.getAlbumImg() );
 
         return myRegisteredMusicResDto.build();
+    }
+
+    @Override
+    public OccasionResDto toOccasionResDto(Occasion occasion) {
+        if ( occasion == null ) {
+            return null;
+        }
+
+        OccasionResDto.OccasionResDtoBuilder occasionResDto = OccasionResDto.builder();
+
+        occasionResDto.occasionCode( occasion.getOccasionCode() );
+        occasionResDto.occasionName( occasion.getOccasionName() );
+        occasionResDto.category( occasion.getCategory() );
+
+        return occasionResDto.build();
+    }
+
+    @Override
+    public AroundMusicResDto toAroundMusicResDto(RegisteredMusic registeredMusic, List<String> occasionName) {
+        if ( registeredMusic == null && occasionName == null ) {
+            return null;
+        }
+
+        AroundMusicResDto.AroundMusicResDtoBuilder aroundMusicResDto = AroundMusicResDto.builder();
+
+        if ( registeredMusic != null ) {
+            aroundMusicResDto.registeredMusicId( registeredMusic.getRegisteredMusicId() );
+            aroundMusicResDto.subject( registeredMusic.getSubject() );
+            aroundMusicResDto.singer( registeredMusic.getSinger() );
+            aroundMusicResDto.albumImg( registeredMusic.getAlbumImg() );
+        }
+        List<String> list = occasionName;
+        if ( list != null ) {
+            aroundMusicResDto.occasionName( new ArrayList<String>( list ) );
+        }
+
+        return aroundMusicResDto.build();
     }
 }

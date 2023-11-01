@@ -2,9 +2,7 @@ package com.ssafy.herehear.music.mapper;
 
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
-import com.ssafy.herehear.music.dto.response.MyRegisteredMusicResDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicDetailsResDto;
-import com.ssafy.herehear.music.dto.response.RegisteredMusicResDto;
+import com.ssafy.herehear.music.dto.response.*;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -22,5 +20,9 @@ public interface RegisterMusicMapper {
     RegisteredMusicResDto toRegisteredMusicListResDto(RegisteredMusic registeredMusic, List<Occasion> occasions);
 
     MyRegisteredMusicResDto toMyRegisteredMusicResDto(RegisteredMusic registeredMusic);
+
+    OccasionResDto toOccasionResDto(Occasion occasion);
+
+    AroundMusicResDto toAroundMusicResDto(RegisteredMusic registeredMusic, List<String> occasionName);
 
 }
