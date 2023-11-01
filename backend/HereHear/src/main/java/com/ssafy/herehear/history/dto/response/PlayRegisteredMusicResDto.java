@@ -1,4 +1,4 @@
-package com.ssafy.herehear.music.dto.response;
+package com.ssafy.herehear.history.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class LikeRegisteredMusicResDto {
+public class PlayRegisteredMusicResDto {
     private Long registeredMusicId;
     private String subject;
     private String singer;

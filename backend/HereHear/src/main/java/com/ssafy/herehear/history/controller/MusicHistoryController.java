@@ -3,7 +3,7 @@ package com.ssafy.herehear.history.controller;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.history.dto.request.MusicRegisteredIdReqDto;
-import com.ssafy.herehear.history.dto.response.LikeRegisteredMusicResDto;
+import com.ssafy.herehear.history.dto.response.PlayRegisteredMusicResDto;
 import com.ssafy.herehear.history.service.MusicHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +30,7 @@ public class MusicHistoryController {
     }
 
     @GetMapping("/list")
-    public DataResponse<List<LikeRegisteredMusicResDto>> playRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
+    public DataResponse<List<PlayRegisteredMusicResDto>> playRegisteredMusicList(@RequestHeader("Member-id") Long memberId) {
         return new DataResponse<>("200", "최근 들은 음악 조회", musicHistoryService.getMusicHistoryList(memberId));
     }
 
