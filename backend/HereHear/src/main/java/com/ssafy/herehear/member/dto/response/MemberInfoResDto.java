@@ -1,9 +1,12 @@
 package com.ssafy.herehear.member.dto.response;
 
 import com.ssafy.herehear.entity.ProfileCharacter;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberInfoResDto {
     private String nickname;
     private ProfileCharacter profileCharacter;
