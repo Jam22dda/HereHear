@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
 --
 -- Host: k9b202.p.ssafy.io    Database: herehear
 -- ------------------------------------------------------
@@ -22,12 +22,13 @@
 DROP TABLE IF EXISTS `badge_code`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `badge_code` (
-  `badge_code` bigint NOT NULL AUTO_INCREMENT,
-  `badge_name` varchar(50) NOT NULL,
-  `badge_img` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`badge_code`),
-  UNIQUE KEY `UK_t5qey2100mv41hgd1x7whvpvm` (`badge_name`)
+CREATE TABLE `badge_code`
+(
+    `badge_code` bigint      NOT NULL AUTO_INCREMENT,
+    `badge_name` varchar(50) NOT NULL,
+    `badge_img`  varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`badge_code`),
+    UNIQUE KEY `UK_t5qey2100mv41hgd1x7whvpvm` (`badge_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -35,11 +36,26 @@ CREATE TABLE `badge_code` (
 -- Dumping data for table `badge_code`
 --
 
-LOCK TABLES `badge_code` WRITE;
+LOCK
+TABLES `badge_code` WRITE;
 /*!40000 ALTER TABLE `badge_code` DISABLE KEYS */;
-INSERT INTO `badge_code` VALUES (1,'씨앗 DJ 배지',''),(2,'새싹 DJ 배지',''),(3,'잎새 DJ 배지',''),(4,'열매 DJ 배지',''),(5,'나무 DJ 배지',''),(6,'콩닥콩닥 배지',''),(7,'두근두근 배지',''),(8,'하트비트 배지',''),(9,'00스타(색깔)-연핑크 배지',''),(10,'00스타(색깔)-연빨강 배지',''),(11,'00스타(색깔)-연블루 배지',''),(12,'00스타(색깔)-퍼플 배지',''),(13,'Here? Hear! 배지','');
+INSERT INTO `badge_code`
+VALUES (1, '씨앗 DJ 뱃지', ''),
+       (2, '새싹 DJ 뱃지', ''),
+       (3, '잎새 DJ 뱃지', ''),
+       (4, '열매 DJ 뱃지', ''),
+       (5, '나무 DJ 뱃지', ''),
+       (6, '콩닥콩닥 뱃지', ''),
+       (7, '두근두근 뱃지', ''),
+       (8, '하트비트 뱃지', ''),
+       (9, 'Here? Hear! 뱃지', ''),
+       (10, '00스타(색깔)-연핑크 뱃지', ''),
+       (11, '00스타(색깔)-연빨강 뱃지', ''),
+       (12, '00스타(색깔)-연블루 뱃지', ''),
+       (13, '00스타(색깔)-퍼플 뱃지', '');
 /*!40000 ALTER TABLE `badge_code` ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -50,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-29 19:38:41
+-- Dump completed on 2023-11-01  9:56:21
