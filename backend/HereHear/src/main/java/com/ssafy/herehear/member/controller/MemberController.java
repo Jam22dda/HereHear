@@ -4,23 +4,28 @@ import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import com.ssafy.herehear.member.dto.request.FollowReqDto;
+import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
 import com.ssafy.herehear.member.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
 @Slf4j
+@RestController
+@RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member/follower")
+    @GetMapping("/follower")
     public DataResponse<List<FollowResDto>> getFollowerList() {
         // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
         Long memberId = 1L;
@@ -32,7 +37,7 @@ public class MemberController {
         return new DataResponse<>("200", "팔로워 목록 조회", followerList);
     }
 
-    @GetMapping("/member/following")
+    @GetMapping("/following")
     public DataResponse<List<FollowResDto>> getFollowing() {
         // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
         Long memberId = 1L;
@@ -44,7 +49,7 @@ public class MemberController {
         return new DataResponse<>("200", "팔로잉 목록 조회", followingList);
     }
 
-    @PostMapping("/member/follow")
+    @PostMapping("/follow")
     public CommonResponse follow(@RequestBody FollowReqDto followReqDto) {
         // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
         Long memberId = 1L;
@@ -56,7 +61,7 @@ public class MemberController {
         return new CommonResponse("200", "팔로우 성공");
     }
 
-    @DeleteMapping("/member/follow")
+    @DeleteMapping("/follow")
     public CommonResponse unfollow(@RequestBody FollowReqDto followReqDto) {
         // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
         Long memberId = 1L;
@@ -66,5 +71,23 @@ public class MemberController {
         memberService.unfollow(memberId, followReqDto.getMemberId());
 
         return new CommonResponse("200", "언팔로우 성공");
+    }
+
+    @PostMapping("/signup")
+    public DataResponse signUp(@RequestBody SignUpReqDto req, HttpServletResponse response) {
+        String accessToken =  memberService.signUp(req, response);
+        return new DataResponse("200", "회원 가입이 완료되었습니다", accessToken);
+    }
+
+    @DeleteMapping("/logout")
+    public CommonResponse logout(HttpServletRequest request, HttpServletResponse response) {
+        memberService.logout(request, response);
+        return new CommonResponse("200", "로그인을 성공하였습니다");
+    }
+
+    @GetMapping("/info")
+    public DataResponse getMemberInfo(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        return new DataResponse("200", "멤버 정보 반환에 성공하였습니다", memberService.getMemberInfo(memberId));
     }
 }
