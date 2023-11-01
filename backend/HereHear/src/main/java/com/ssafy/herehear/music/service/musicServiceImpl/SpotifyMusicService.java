@@ -1,4 +1,4 @@
-package com.ssafy.herehear.music.service.searchmusicImpl;
+package com.ssafy.herehear.music.service.musicServiceImpl;
 
 import com.ssafy.herehear.global.util.JsonUtil;
 import com.ssafy.herehear.music.dto.response.MusicInfoResDto;
