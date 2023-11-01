@@ -46,10 +46,15 @@ public class MemberServiceImpl implements MemberService {
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
 
+        log.info("Sign Up memberId: {}", findMember.getMemberId());
+
         findMember.updateNickname(signUpDto.getNickname());
-        ProfileCharacter profileCharacter = profileCharacterMapper.profileCharacterIdToProfileCharacter(signUpDto.getProfileCharacterCode());
+        ProfileCharacter profileCharacter = profileCharacterRepository.findById(signUpDto.getProfileCharacterCode()).orElseThrow(
+                () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
+        );
         findMember.updateCharacter(profileCharacter);
         memberRepository.save(findMember);
+        log.info("{}", findMember.getProfileCharacter());
 
         String accessToken = jwtProvider.createAccessToken(findMember);
 
@@ -102,6 +107,7 @@ public class MemberServiceImpl implements MemberService {
 //        ProfileCharacter profileCharacter = profileCharacterRepository.findById(profileId).orElseThrow(
 //                () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
 //        );
+
 
         MemberInfoResDto res = memberMapper.toMemberInfoResDto(findMember);
         log.info("Member Info: {}", res);
