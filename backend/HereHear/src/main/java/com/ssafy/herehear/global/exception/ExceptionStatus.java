@@ -24,12 +24,14 @@ public enum ExceptionStatus {
     /**
      * 음악악 관련 STATUS CODE
      */
-    NOT_FOUND_REGISTERED_MUSIC("-3000","등록된 음악을 찾을 수 없습니다."),
-    NOT_FOUND_MUSIC("-3001","음악을 찾을 수 없습니다."),
-    DUPLICATE_MUSIC("-3002","중복된 음악입니다."),
-    NOT_FOUND_OCCASION("-3010","상황 태그를 찾을 수 없습니다."),
+    NOT_FOUND_REGISTERED_MUSIC("-3000", "등록된 음악을 찾을 수 없습니다."),
+    NOT_FOUND_MUSIC("-3001", "음악을 찾을 수 없습니다."),
+    DUPLICATE_MUSIC("-3002", "중복된 음악입니다."),
+    KEYWORD_NOT_FOUND("-3003", "검색 키워드를 입력해주세요."),
+    NOT_FOUND_OCCASION("-3010", "상황 태그를 찾을 수 없습니다."),
     NOT_FOUND_HISTORY_MUSIC("-3100", "최근 들은 음악을 찾을 수 없습니다."),
     NOT_FOUND_LIKE_MUSIC("-3200", "좋아요 한 음악을 찾을 수 없습니다."),
+    JSON_PARSE_ERROR("-3300", "JOSN 결과를 파싱할 수 없습니다."),
 
     /**
      * 업적 관련 STATUS CODE
