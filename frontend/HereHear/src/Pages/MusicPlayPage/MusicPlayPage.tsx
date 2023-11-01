@@ -16,11 +16,12 @@ export default function MusicPlay() {
                 <S.MusicPlayWrapper>
                     <S.SelectTagWrapper>
                         {tags.map((item, index) => (
-                            <Button option="unfollow" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item.tag}></Button>
+                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item.tag}></Button>
                         ))}
                     </S.SelectTagWrapper>
                     <AlbumCover></AlbumCover>
-                    <Text size="body2" fontWeight="bold" $marginTop="40px">
+                    <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }}></CircleButton>
+                    <Text size="body2" fontWeight="bold" $marginTop="10px">
                         {music.artist}
                     </Text>
                     <Text size="body2" fontWeight="medium" $marginTop="5px">
