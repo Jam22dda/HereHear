@@ -7,6 +7,7 @@ import Button from "../../atoms/Button/Button";
 const taglist1 = ["청량", "감성", "집중", "신나는", "우울", "이별", "힐링", "열정", "출근", "퇴근", "주말"];
 const taglist2 = ["봄", "여름", "가을", "겨울", "눈", "비", "맑음"];
 const taglist3 = ["운동", "산책", "수면", "독서", "공부", "운전", "샤워", "여행", "업무"];
+
 export default function TagSelect() {
     return (
         <S.TagSelectWrapper>

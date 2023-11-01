@@ -22,7 +22,7 @@ import GlobalStyle from "../src/styles/GlobalStyle.tsx";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
 import RegistMusicMentPage from "./Pages/RegistMusicMentPage/RegistMusicMentPage.tsx";
-
+import MusicPlayPage from "./Pages/MusicPlayPage/MusicPlayPage.tsx";
 import LikePage from "./Pages/LikePage/LikePage.tsx";
 import MyRegistPage from "./Pages/MyRegistPage/MyRegistPage.tsx";
 import SearchRegistMusicPage from "./Pages/SearchRegistMusicPage/SearchRegistMusicPage.tsx";
@@ -84,6 +84,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                                 element={<SelectMusic />}
                             ></Route>
                             // 음악 상세
+                            <Route
+                                path="/musicPlay"
+                                element={<MusicPlayPage />}
+                            ></Route>
+                            // 음악 실행 페이지
                             <Route path="/stats" element={<Stats />}></Route> //
                             통계 화면
                             <Route path="/follow" element={<Follow />}></Route>
