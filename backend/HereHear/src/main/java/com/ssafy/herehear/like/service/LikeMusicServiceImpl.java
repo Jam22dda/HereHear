@@ -28,8 +28,10 @@ public class LikeMusicServiceImpl implements LikeMusicService {
 
     private final LikeMusicMapper likeMusicMapper;
 
+    @Override
+    @Transactional
     public void registerlikeMusic(Long memberId, Long registeredMusicId){
-        log.info(logComment("좋아요 등록 및 취소",memberId,registeredMusicId));
+        log.info("[좋아요 등록 및 취소] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
 
         findLikeMusic(memberId, registeredMusicId).ifPresentOrElse(
                 likeMusicRepository::delete,
@@ -45,29 +47,19 @@ public class LikeMusicServiceImpl implements LikeMusicService {
         log.info("registerLike success");
     }
 
-    @Transactional
-    public void deletelikeMusic(long memberId, long registeredMusicId){
-        log.info(logComment("좋아요 취소",memberId,registeredMusicId));
-        MemberUtil.findMember(memberId);
-
-        findLikeMusic(memberId, registeredMusicId)
-                .ifPresentOrElse(
-                        likeMusicRepository::delete,
-                        () -> {
-                            throw new CustomException(ExceptionStatus.NOT_FOUND_LIKE_MUSIC);
-                        }
-                );
-        log.info("deletelikeMusic success");
-    }
-
+    @Override
     @Transactional
     public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
+        log.info("좋아요 음악 목록 조회: "+memberId);
         MemberUtil.findMember(memberId);
 
         List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicRepositoryImpl.findByLikeMusics(memberId).stream()
                 .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
                         findRegisteredMusic,
-                        findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId()))
+                        likeMusicRepositoryImpl.findByRegisteredMusicLike(
+                                memberId,
+                                findRegisteredMusic.getRegisteredMusicId()
+                        ).isPresent())
                 )
                 .toList();
         log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
@@ -85,16 +77,8 @@ public class LikeMusicServiceImpl implements LikeMusicService {
         );
     }
 
-    private boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
-        return likeMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
-    }
-
     private MemberMusicId findMemberMusicId(long memberId, long registeredMusicId){
         return MemberMusicId.builder().memberId(memberId).registeredMusicId(registeredMusicId).build();
-    }
-
-    public String logComment(String title, long memberId, Object req){
-        return "["+title+"[ param] memberId: "+memberId+", registeredMusicId: "+req;
     }
 
 }
