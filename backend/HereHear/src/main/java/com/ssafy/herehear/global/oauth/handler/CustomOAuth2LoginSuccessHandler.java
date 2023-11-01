@@ -37,17 +37,22 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     private final CookieUtil cookieUtil;
     private String redirectUrl;
 
+
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        log.info("오지도 않으면서 왜...?");
         log.info("member success handler");
         PrincipalUser principalUser = (PrincipalUser)authentication.getPrincipal();
         ProviderUser providerUser = principalUser.getProviderUser();
+        log.info("provider: {}", providerUser.getProvider());
 
         Optional<Member> member = memberRepository.findByEmailAndProvider(providerUser.getEmail(),
                 providerUser.getProvider());
-        // repository 만들어야 함
+
+        Optional<Member> test = memberRepository.findByEmailAndProvider("tkfkd122@naver.com",
+                "kakao");
+        log.info("test: {}", test);
+        log.info("member: {}", member);
 
         member.ifPresentOrElse(
                 tempMember -> {
@@ -73,7 +78,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                 },
                 () -> {
                     Member newMember = memberMapper.toMember(providerUser.getUserName(), providerUser.getEmail(), providerUser.getProvider());
-
+                    log.info("{}{}{}", newMember.getEmail(), newMember.getNickname(), providerUser.getProvider());
                     Member signupMember = memberRepository.save(newMember);
                     log.info("============ 최초 진입 {} ============", signupMember.getMemberId());
                     redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
