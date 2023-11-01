@@ -6,7 +6,7 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.MemberUtil;
-import com.ssafy.herehear.history.dto.response.LikeRegisteredMusicResDto;
+import com.ssafy.herehear.history.dto.response.PlayRegisteredMusicResDto;
 import com.ssafy.herehear.history.mapper.MusicHistoryMapper;
 import com.ssafy.herehear.history.repository.MusicHistoryRepository;
 import com.ssafy.herehear.history.repository.MusicHistoryRepositoryImpl;
@@ -29,9 +29,10 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
 
     private final MusicHistoryMapper musicHistoryMapper;
 
+    @Override
     @Transactional
     public void registerPlayMusic(long memberId, long registeredMusicId) {
-        log.info(logComment("최근 들은 음악 등록",memberId,registeredMusicId));
+        log.info("[최근 들은 음악 등록] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
 
         findMusicHistory(memberId, registeredMusicId).ifPresentOrElse(
                 existingMusicHistory -> {
@@ -51,9 +52,10 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
         log.info("registerPlayMusic success");
     }
 
+    @Override
     @Transactional
     public void deletePlayMusic(long memberId, long registeredMusicId){
-        log.info(logComment("최근 들은 음악 삭제",memberId,registeredMusicId));
+        log.info("[최근 들은 음악 삭제] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
         MemberUtil.findMember(memberId);
 
         findMusicHistory(memberId, registeredMusicId)
@@ -66,19 +68,23 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
         log.info("deletePlayMusic success");
     }
 
+    @Override
     @Transactional
-    public List<LikeRegisteredMusicResDto> getMusicHistoryList(long memberId){
+    public List<PlayRegisteredMusicResDto> getMusicHistoryList(long memberId){
         MemberUtil.findMember(memberId);
 
-        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = musicHistoryRepositoryImpl.findByMusicHistorys(memberId).stream()
-                .map(findRegisteredMusic -> musicHistoryMapper.toLikeRegisteredMusicResDto(
+        List<PlayRegisteredMusicResDto> playRegisteredMusicResDtos = musicHistoryRepositoryImpl.findByMusicHistorys(memberId).stream()
+                .map(findRegisteredMusic -> musicHistoryMapper.toPlayRegisteredMusicResDto(
                         findRegisteredMusic,
-                        findRegisteredMusicLike(memberId, findRegisteredMusic.getRegisteredMusicId()))
+                        musicHistoryRepositoryImpl.findByRegisteredMusicLike(
+                                memberId,
+                                findRegisteredMusic.getRegisteredMusicId()
+                        ).isPresent())
                 )
                 .toList();
-        log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
+        log.info("getMusicHistoryList: "+ playRegisteredMusicResDtos);
 
-        return likeRegisteredMusicResDtos;
+        return playRegisteredMusicResDtos;
     }
 
     public Optional<MusicHistory> findMusicHistory(long memberId, long registeredMusicId){
@@ -91,15 +97,7 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
         );
     }
 
-    private boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
-        return musicHistoryRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
-    }
-
     private MemberMusicId findMemberMusicId(long memberId, long registeredMusicId){
         return MemberMusicId.builder().memberId(memberId).registeredMusicId(registeredMusicId).build();
-    }
-
-    public String logComment(String title, long memberId, Object req){
-        return "["+title+"[ param] memberId: "+memberId+", registeredMusicId: "+req;
     }
 }
