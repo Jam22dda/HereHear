@@ -4,7 +4,7 @@ const Message = styled.div`
     height: 135px;
     width: 300px;
     border-radius: 30px;
-    margin: 40px 0;
+    margin: 32px 0;
     display: flex;
     flex-direction: column;
     padding: 16px;
