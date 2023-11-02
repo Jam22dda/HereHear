@@ -12,6 +12,7 @@ public interface MemberService {
     String signUp(SignUpReqDto signUpReqDto, HttpServletResponse response);
 
     void updateNickname(String nickname, Long memberId);
+    void updateCharacter(Long characterId, Long memberId);
 
     void logout(HttpServletRequest request, HttpServletResponse response);
 

@@ -82,12 +82,26 @@ public class MemberController {
     @DeleteMapping("/logout")
     public CommonResponse logout(HttpServletRequest request, HttpServletResponse response) {
         memberService.logout(request, response);
-        return new CommonResponse("200", "로그인을 성공하였습니다");
+        return new CommonResponse("200", "로그아웃을 성공하였습니다");
     }
 
     @GetMapping("/info")
     public DataResponse getMemberInfo(Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
         return new DataResponse("200", "멤버 정보 반환에 성공하였습니다", memberService.getMemberInfo(memberId));
+    }
+
+    @PostMapping("/update/nickname")
+    public CommonResponse updateNickname(@RequestBody String nickname, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        memberService.updateNickname(nickname, memberId);
+        return new CommonResponse("200", "닉네임 변경을 성공하였습니다");
+    }
+
+    @PostMapping("/update/character")
+    public CommonResponse updateCharacter(@RequestBody Long characterCode, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        memberService.updateCharacter(characterCode, memberId);
+        return new CommonResponse("200", "캐릭터 변경을 성공하였습니다");
     }
 }
