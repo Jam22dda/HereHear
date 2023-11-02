@@ -33,22 +33,22 @@ export default function Core() {
     const [musicMap, setMusicMap] = useState({});
     const [musicPin, setMusicPin] = useState({});
 
-    let naver: any;
-    let map: typeof naver;
-    let userPin: any;
-    let script: any;
-    let center: any;
+    const [naverState, setNaverState] = useState();
+    const [mapState, setMapState] = useState();
+    const [userPinState, setUserPinState] = useState();
+    const [centerState, setCenterState] = useState();
 
     useEffect(() => {
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
-        script = document.createElement('script');
+        const script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
 
         // 지도 초기화 완료 시 최초 1회 실행
         script.onload = () => {
-            naver = window.naver;
+            const naver = window.naver;
+            setNaverState(naver);
 
             // const mapOptions = {
             //     center: new naver.maps.LatLng(37.3595704, 127.105399),
@@ -57,10 +57,11 @@ export default function Core() {
 
             // map = new naver.maps.Map('map', mapOptions);
 
-            map = new naver.maps.Map('map', {
+            const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
                 zoom: 10,
             });
+            setMapState(map);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
             const musicMapIns: MusicMap = musicList.reduce((map: MusicMap, music: Music) => {
@@ -127,7 +128,7 @@ export default function Core() {
                     setLng(longitude);
 
                     // 최초에 지도에 현재 위치 찍기
-                    userPin = new naver.maps.Marker({
+                    const userPin = new naver.maps.Marker({
                         position: new naver.maps.LatLng(latitude, longitude),
                         map: map,
                         icon: {
@@ -137,18 +138,12 @@ export default function Core() {
                         },
                     });
 
-                    // 현재 위치로 맵 가운데를 변경시키기
-                    center = new naver.maps.LatLng(latitude, longitude);
-                    map.panTo(center);
+                    setUserPinState(userPin);
 
-                    // console.log('map');
-                    // console.log(map);
-                    // console.log(map.center);
-                    // console.log(map.center.x);
-                    // map.center.x = longitude;
-                    // map.center._lng = longitude;
-                    // console.log(map.center.x);
-                    // map.setZoom(6, true);
+                    // 현재 위치로 맵 가운데를 변경시키기
+                    const center = new naver.maps.LatLng(latitude, longitude);
+                    setCenterState(center);
+                    map.panTo(center);
                 },
                 error => {
                     console.error('Error getting location:', error);
@@ -158,8 +153,6 @@ export default function Core() {
                     maximumAge: 0,
                 }
             );
-
-            // map = new naver.maps.Map('map', mapOptions);
 
             // 지도 핀찍기 테스트
             // setTimeout(() => {
@@ -264,6 +257,22 @@ export default function Core() {
     //         clearInterval(intervalId);
     //     };
     // }, []);
+
+    // 지정한 시간마다 실행할 함수
+    useEffect(() => {
+        if (mapState) {
+            // mapState가 설정되었을 때만 인터벌을 시작합니다.
+            const intervalId = setInterval(() => {
+                console.log('naverState', naverState);
+                console.log('mapState', mapState);
+                console.log('userPinState', userPinState);
+                console.log('centerState', centerState);
+            }, 3000); // 3000ms = 3초
+
+            // 컴포넌트가 언마운트될 때 인터벌을 클리어
+            return () => clearInterval(intervalId);
+        }
+    }, [mapState, naverState, userPinState, centerState]);
 
     return (
         // <div id='map__display'>
