@@ -121,11 +121,8 @@ public class JwtProvider {
     }
 
     public String getAccessToken(HttpServletRequest request) {
-        log.info("getaccesstoken까지");
         String accessToken = request.getHeader("Authorization");
-        log.info("get 함수 안 token: {}", accessToken);
         accessToken = accessToken.replace("Bearer ", "");
-        log.info("여기도 안 들어오면서 왜... 애 안 와");
         return accessToken;
     }
 }
