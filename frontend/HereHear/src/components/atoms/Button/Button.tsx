@@ -24,7 +24,7 @@ export interface ButtonProps
     $borderRadius?: string;
     $textAlign?: string; // 기본으로 center으로하면 상관없?
     $width?: string;
-    $hight?: string;
+    $height?: string;
     $shadow?: string;
     $margin?: string;
     tag?: string | null;
@@ -36,6 +36,7 @@ const Button = (
         size,
         $backgroundColor,
         $borderRadius,
+        $color,
         $width,
         $hight,
         $shadow,
@@ -54,7 +55,7 @@ const Button = (
             $backgroundColor={$backgroundColor}
             $borderRadius={$borderRadius}
             $width={$width}
-            $hight={$hight}
+            $height={$height}
             $shadow={$shadow}
             $margin={$margin}
             {...attributes}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import * as S from "./Input.styles";
 
 interface InputProps {
@@ -15,8 +15,6 @@ export default function Input({ $placeholder, value, onChange }: InputProps) {
                 name="input"
                 id="input"
                 placeholder={$placeholder}
-                value={value}
-                onChange={onChange}
             />
         </div>
     );

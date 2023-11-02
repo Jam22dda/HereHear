@@ -12,12 +12,12 @@ pipeline {
             }
         }
 
-        // // 설정파일 참조
-        // stage("copy env") {
-        //     steps {
-        //         sh "cp ${APPLICATION_ENV_PATH}/.env ${PROJECT_DIR_FE}"
-        //     }
-        // }
+        // 설정파일 참조
+        stage("copy env") {
+            steps {
+                sh "cp ${APPLICATION_ENV_PATH}/.env ${PROJECT_DIR_FE}"
+            }
+        }
 
         // 컨테이너 클리닝
         stage("container cleaning") {
