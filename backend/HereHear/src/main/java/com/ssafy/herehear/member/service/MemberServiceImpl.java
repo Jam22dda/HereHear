@@ -46,6 +46,10 @@ public class MemberServiceImpl implements MemberService {
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
 
+        if(findMember.getNickname() != null && findMember.getProfileCharacter() != null){
+            throw new CustomException(ExceptionStatus.MEMBER_ALREADY_SIGNED);
+        }
+
         log.info("Sign Up memberId: {}", findMember.getMemberId());
 
         findMember.updateNickname(signUpDto.getNickname());
@@ -73,6 +77,21 @@ public class MemberServiceImpl implements MemberService {
         );
 
         findMember.updateNickname(nickname);
+        memberRepository.save(findMember);
+    }
+
+    @Override
+    @Transactional
+    public void updateCharacter(Long characterId, Long memberId) {
+        Member findMember = memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
+        );
+
+        ProfileCharacter findCharcter = profileCharacterRepository.findById(characterId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
+        );
+
+        findMember.updateCharacter(findCharcter);
         memberRepository.save(findMember);
     }
 
