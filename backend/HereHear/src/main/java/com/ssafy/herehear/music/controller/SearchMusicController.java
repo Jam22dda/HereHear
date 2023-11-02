@@ -44,7 +44,7 @@ public class SearchMusicController {
                 "limit", limit
         );
 
-        return new DataResponse<>("200", page + "검색 성공", result);
+        return new DataResponse<>("200", page + "페이지 검색 성공", result);
     }
 
 }
