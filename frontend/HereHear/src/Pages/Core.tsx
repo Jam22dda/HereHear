@@ -323,17 +323,17 @@ export default function Core() {
             console.log('화면 자동 업데이트 활성화');
             console.log(lat + ' ' + lng);
 
-            const center = new naverState.maps.LatLng(lat, lng);
+            const center = new (naverState as any).maps.LatLng(lat, lng);
             // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
             setCenterState(center);
-            mapState.panTo(center);
+            (mapState as any).panTo(center);
 
             intervalId = setInterval(() => {
                 // 현재 위치로 맵 가운데를 변경시키기
-                const center = new naverState.maps.LatLng(lat, lng);
+                const center = new (naverState as any).maps.LatLng(lat, lng);
                 // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
                 setCenterState(center);
-                mapState.panTo(center);
+                (mapState as any).panTo(center);
             }, 3000); // 3초마다 실행
         }
 
