@@ -270,7 +270,7 @@ export default function Core() {
             const intervalId = setInterval(() => {
                 console.log('setMap');
 
-                userPinState.setMap(null);
+                (userPinState as any).setMap(null);
 
                 let latitude: number;
                 let longitude: number;
@@ -287,8 +287,8 @@ export default function Core() {
                         setLng(longitude);
 
                         // 변경된 현재 위치 찍기
-                        const userPin = new naverState.maps.Marker({
-                            position: new naverState.maps.LatLng(latitude, longitude),
+                        const userPin = new (naverState as any).maps.Marker({
+                            position: new (naverState as any).maps.LatLng(latitude, longitude),
                             // position: new naverState.maps.LatLng(33.3590628, 126.534361), // 에졔로 제주도 이동하게 만듦
                             map: mapState,
                             icon: {
