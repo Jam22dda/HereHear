@@ -1,8 +1,13 @@
 import styled from "styled-components";
 
-const PlayWrapper = styled.div`
-  display: flex;
-  justify-content: space-evenly;
+export const PlayWrapper = styled.div`
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
 `;
-
-export { PlayWrapper };
+export const BtnWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+`;
