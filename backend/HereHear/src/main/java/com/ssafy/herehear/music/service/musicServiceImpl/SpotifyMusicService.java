@@ -42,7 +42,7 @@ public class SpotifyMusicService implements MusicService {
     }
 
     @Override
-    public List<MusicInfoResDto> getMusicInfoList(String keyword, Integer limit) {
+    public List<MusicInfoResDto> getMusicInfoList(String keyword, Integer limit, Integer offset) {
         WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
 
         Mono<String> response = webClient.get()
@@ -51,6 +51,7 @@ public class SpotifyMusicService implements MusicService {
                         .queryParam("type", "track")
                         .queryParam("limit", limit)
                         .queryParam("q", keyword)
+                        .queryParam("offset", offset)
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON)
