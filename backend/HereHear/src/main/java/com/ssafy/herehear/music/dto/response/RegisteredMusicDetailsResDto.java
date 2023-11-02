@@ -1,6 +1,5 @@
 package com.ssafy.herehear.music.dto.response;
 
-import com.ssafy.herehear.entity.Occasion;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +23,5 @@ public class RegisteredMusicDetailsResDto {
     private String createTime;
     private String nickname;
     private boolean like;
-    private List<Occasion> occasions;
+    private List<String> occasionName;
 }
