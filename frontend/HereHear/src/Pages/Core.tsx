@@ -270,7 +270,7 @@ export default function Core() {
             const intervalId = setInterval(() => {
                 console.log('setMap');
 
-                userPinState.setMap(null);
+                (userPinState as any).setMap(null);
 
                 let latitude: number;
                 let longitude: number;
@@ -287,8 +287,8 @@ export default function Core() {
                         setLng(longitude);
 
                         // 변경된 현재 위치 찍기
-                        const userPin = new naverState.maps.Marker({
-                            position: new naverState.maps.LatLng(latitude, longitude),
+                        const userPin = new (naverState as any).maps.Marker({
+                            position: new (naverState as any).maps.LatLng(latitude, longitude),
                             // position: new naverState.maps.LatLng(33.3590628, 126.534361), // 에졔로 제주도 이동하게 만듦
                             map: mapState,
                             icon: {
@@ -323,17 +323,17 @@ export default function Core() {
             console.log('화면 자동 업데이트 활성화');
             console.log(lat + ' ' + lng);
 
-            const center = new naverState.maps.LatLng(lat, lng);
+            const center = new (naverState as any).maps.LatLng(lat, lng);
             // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
             setCenterState(center);
-            mapState.panTo(center);
+            (mapState as any).panTo(center);
 
             intervalId = setInterval(() => {
                 // 현재 위치로 맵 가운데를 변경시키기
-                const center = new naverState.maps.LatLng(lat, lng);
+                const center = new (naverState as any).maps.LatLng(lat, lng);
                 // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
                 setCenterState(center);
-                mapState.panTo(center);
+                (mapState as any).panTo(center);
             }, 3000); // 3초마다 실행
         }
 
