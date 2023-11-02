@@ -4,6 +4,7 @@ import com.ssafy.herehear.entity.Follow;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.ProfileCharacter;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
+import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import com.ssafy.herehear.member.dto.response.ProfileCharacterResDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,4 +21,7 @@ public interface MemberMapper {
 
     Follow toFollow(Member member, Long followMemberId);
 
+    MemberInfoResDto toMemberInfoResDto(Member member);
+
+    Member toMember(String nickname, String email, String provider);
 }

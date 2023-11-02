@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,7 +31,10 @@ public class Member {
 
     private LocalDateTime removeDate;
 
+    @ColumnDefault("USER")
     private String role;
+
+    @Column(nullable = false)
     private String provider;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,9 +47,10 @@ public class Member {
 
 
     @Builder
-    public Member(String email, String nickname) {
+    public Member(String email, String nickname, String provider) {
         this.email = email;
         this.nickname = nickname;
+        this.provider = provider;
     }
 
     public void updateCharacter(ProfileCharacter profileCharacter) {
