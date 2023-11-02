@@ -34,6 +34,9 @@ public class LocalFileServiceImpl implements FileService {
     @Value("${localFileService.file.path}")
     private String BASE_FILE_PATH;
 
+    @Value("${localFileService.domain}")
+    private String DOMAIN;
+
     @Override
     public FilePathDto saveFile(MultipartFile file) throws IOException {
         if (file == null) {
@@ -62,10 +65,10 @@ public class LocalFileServiceImpl implements FileService {
                 localFileRepository.save(LocalFile.builder()
                         .savedFilePath(BASE_FILE_PATH + File.separator + today + File.separator + saveFileName)
                         .originalFileName(originalFileName)
-                        .savedFileName(saveFileName)
+                        .savedFileName(DOMAIN + File.separator + saveFileName)
                         .build());
 
-                return FilePathDto.builder().filePath(saveFileName).build();
+                return FilePathDto.builder().filePath(DOMAIN + "/" + saveFileName).build();
             }
         }
 
@@ -74,7 +77,7 @@ public class LocalFileServiceImpl implements FileService {
 
     @Override
     public ResponseEntity<Resource> getFile(String fileName) {
-        LocalFile savedFileEntity = localFileRepository.findBySavedFileName(fileName)
+        LocalFile savedFileEntity = localFileRepository.findBySavedFileNameContaining(fileName)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.FILE_NOT_FOUND));
 
         // 다운로드할 이미지 파일의 경로 생성
