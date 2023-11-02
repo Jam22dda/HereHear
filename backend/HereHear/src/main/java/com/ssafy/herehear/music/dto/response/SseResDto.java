@@ -2,26 +2,20 @@ package com.ssafy.herehear.music.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 
 @Getter
-@Setter
 @Builder
 @ToString
-public class RegisteredMusicDetailsResDto {
+public class SseResDto {
+    private int status;//0:삭제//1:등록
     private Long registeredMusicId;
     private Double lng;
     private Double lat;
-    private String comment;
     private String subject;
     private String singer;
     private String albumImg;
-    private String releaseTime;
-    private String createTime;
-    private String nickname;
-    private boolean like;
     private List<String> occasionName;
 }
