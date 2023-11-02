@@ -12,14 +12,7 @@ interface MusicItemProps {
 function MusicItem({ src, title, artist }: MusicItemProps) {
     return (
         <S.MusicItemWrapper>
-            <Image
-                src={src}
-                width={50}
-                height={50}
-                $unit="px"
-                $boxShadow="shadow_goback"
-                $borderRadius="10px"
-            ></Image>
+            <Image src={src} width={50} height={50} $unit="px" $boxShadow="shadow_goback" $borderRadius="10px"></Image>
             <S.MusicTextWrapper>
                 <Text size="small2" fontWeight="bold">
                     {title}

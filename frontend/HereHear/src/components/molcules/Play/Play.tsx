@@ -6,9 +6,11 @@ export default function PlayBtn() {
     return (
         <S.PlayWrapper>
             <CircleButton option="playNextBtn" size="largePlus"></CircleButton>
-            <CircleButton option="playBtnOuter" size="largePlus">
-                <CircleButton option="playBtn" size="large60"></CircleButton>
-            </CircleButton>
+            <S.BtnWrapper>
+                <CircleButton option="playBtnOuter" size="largePlus" />
+                <CircleButton style={{ position: "absolute" }} $shadow="none" option="playBtn" size="large60"></CircleButton>
+            </S.BtnWrapper>
+
             <CircleButton option="playNextBtn" size="largePlus"></CircleButton>
         </S.PlayWrapper>
     );

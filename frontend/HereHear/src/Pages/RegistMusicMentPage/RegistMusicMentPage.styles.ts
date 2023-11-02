@@ -5,6 +5,10 @@ export const RegistMusicWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-    padding-bottom: 56px;
-    /* justify-content: space-between; */
+    padding-bottom: 48px;
+`;
+
+export const SelectTagWrapper = styled.div`
+    display: flex;
+    margin: 10px;
 `;
