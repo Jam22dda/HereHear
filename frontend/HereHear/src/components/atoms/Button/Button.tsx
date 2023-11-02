@@ -8,7 +8,8 @@ import { forwardRef } from "react";
 // //  *는 해당 모듈에서 export된 모든 것들
 import * as S from "./Button.styles";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     option?:
         | "tag1" // 음악 페이지 태그
         | "tag_selected" // 태그 페이지 선택된 태그
@@ -22,7 +23,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     $backgroundColor?: string;
     $borderRadius?: string;
     $textAlign?: string; // 기본으로 center으로하면 상관없?
-    $color?: string;
     $width?: string;
     $height?: string;
     $shadow?: string;
@@ -31,7 +31,20 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = (
-    { option, size, $backgroundColor, $borderRadius, $color, $width, $height, $shadow, $margin, tag, children, ...attributes }: ButtonProps,
+    {
+        option,
+        size,
+        $backgroundColor,
+        $borderRadius,
+        $color,
+        $width,
+        $hight,
+        $shadow,
+        $margin,
+        tag,
+        children,
+        ...attributes
+    }: ButtonProps,
     ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
     return (
@@ -40,7 +53,6 @@ const Button = (
             size={size}
             option={option}
             $backgroundColor={$backgroundColor}
-            $color={$color}
             $borderRadius={$borderRadius}
             $width={$width}
             $height={$height}

@@ -14,7 +14,6 @@ const Input = styled.input`
     }
     &::placeholder {
         color: ${({ theme }) => theme.color.grey2};
-        text-align: right;
         padding: 0 16px;
     }
 `;
