@@ -31,7 +31,7 @@ public class FileController {
         return new DataResponse<>("200", "파일 업로드 성공", filePathDto);
     }
 
-    @GetMapping("/{fileName}")
+    @GetMapping("/download/{fileName}")
     public ResponseEntity<Resource> getFishSkin(@PathVariable String fileName) {
         log.info("[파일 다운로드] time: {}", TimeFormatUtil.formatTime(LocalDateTime.now()));
 
