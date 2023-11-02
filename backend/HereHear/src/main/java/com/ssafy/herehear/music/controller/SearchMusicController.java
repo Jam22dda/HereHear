@@ -32,7 +32,7 @@ public class SearchMusicController {
 
         // 페이징 처리
         int offset = 0;
-        if (page != null) offset = page * 10;
+        if (page != null) offset = (page - 1) * limit;
 
         List<MusicInfoResDto> musicInfoList = musicService.getMusicInfoList(keyword, limit, offset);
 
