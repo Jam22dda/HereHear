@@ -47,7 +47,7 @@ const getOptionStyling = (option: Required<CircleButtonProps>["option"], props: 
         gradDeActivated: css`
             background: ${({ theme }) => theme.gradient.gradient1};
             color: ${({ theme }) => theme.color.pink2};
-            box-shadow: ${({ theme }) => theme.shadow.shadow_play1};
+            box-shadow: ${({ theme }) => theme.shadow.shadow_play2};
             font-weight: bold;
             display: flex;
             justify-content: center;

@@ -7,19 +7,19 @@ import { Text } from "../../atoms/Text/Text.styles";
 interface ItemBoxProps {
     src: string;
     title: string;
-    isSelected?: boolean;
+    $isselected?: boolean;
     onClick?: () => void;
 }
 
 const ItemBox: React.FC<ItemBoxProps> = ({
     src,
     title,
-    isSelected = false, // 기본값 설정
+    $isselected = false, // 기본값 설정
     onClick = () => {}, // 기본값 설정
 }) => {
     return (
-        <S.ItemBoxWrapper onClick={onClick} isSelected={isSelected}>
-            <Image src={src} width={72} $unit="px" $margin="0 0 8px 0" />
+        <S.ItemBoxWrapper onClick={onClick} $isselected={$isselected}>
+            <Image src={src} width={80} $unit="px" $margin="0 0 4px 0" />
             <S.ItemBoxTextWrapper>
                 <Text size="small2">{title}</Text>
             </S.ItemBoxTextWrapper>
