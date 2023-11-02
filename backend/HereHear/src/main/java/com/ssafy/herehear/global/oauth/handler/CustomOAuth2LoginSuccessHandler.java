@@ -27,9 +27,9 @@ import java.util.Optional;
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     //    local
-    private static final String REDIRECT_ENDPOINT = "http://localhost:5173";
+//    private static final String REDIRECT_ENDPOINT = "http://localhost:5173";
 //    server
-//    private static final String REDIRECT_ENDPOINT = "https://k9b202.p.ssafy.io";
+    private static final String REDIRECT_ENDPOINT = "https://k9b202.p.ssafy.io";
 
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
