@@ -1,12 +1,12 @@
 package com.ssafy.herehear.member.dto.response;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class ProfileCharacterResDto {
-
-    private Long profileCharacterCode;
+    private Long profileCharacterId;
     private String characterName;
-    private String characterImg;
-
+    private String characterImage;
 }
