@@ -37,7 +37,9 @@ export default function Core() {
     const [mapState, setMapState] = useState();
     const [userPinState, setUserPinState] = useState();
     const [centerState, setCenterState] = useState();
+    // let userPin: any;
 
+    // 최초 1회 실행
     useEffect(() => {
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
@@ -49,18 +51,26 @@ export default function Core() {
         script.onload = () => {
             const naver = window.naver;
             setNaverState(naver);
-
-            // const mapOptions = {
-            //     center: new naver.maps.LatLng(37.3595704, 127.105399),
-            //     zoom: 10,
-            // };
-
-            // map = new naver.maps.Map('map', mapOptions);
+            console.log('naver');
+            console.log(naver);
 
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
-                zoom: 10,
+                zoom: 15,
             });
+
+            // naver.maps.Event.addListener(map, 'mousedown', function () {
+            //     console.log(setIsUpdate(false));
+            // });
+
+            // 마우스 이벤트가 발생하면 자동으로 따라가기 취소하는 이벤트 추가
+            // https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
+            window.addEventListener('touchstart', function () {
+                console.log(setIsUpdate(false));
+            });
+            // naver.maps.Event.addListener(map, 'click', function () {
+            //     console.log(setIsUpdate(false));
+            // });
             setMapState(map);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
@@ -76,12 +86,6 @@ export default function Core() {
             const pinIns: any = {};
 
             for (const key in musicMapIns) {
-                console.log('KEEEEEEEEEY');
-                console.log(key);
-                console.log('MMMAAAAAAAAAPP');
-                console.log(musicMapIns);
-                console.log(musicMapIns[key].lat);
-
                 // 마커 표시
                 pinIns[key] = new naver.maps.Marker({
                     position: new naver.maps.LatLng(musicMapIns[key].lat, musicMapIns[key].lng),
@@ -128,17 +132,17 @@ export default function Core() {
                     setLng(longitude);
 
                     // 최초에 지도에 현재 위치 찍기
-                    const userPin = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(latitude, longitude),
-                        map: map,
-                        icon: {
-                            content: `
+                    setUserPinState(
+                        new naver.maps.Marker({
+                            position: new naver.maps.LatLng(latitude, longitude),
+                            map: map,
+                            icon: {
+                                content: `
                                 <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
                         `,
-                        },
-                    });
-
-                    setUserPinState(userPin);
+                            },
+                        })
+                    );
 
                     // 현재 위치로 맵 가운데를 변경시키기
                     const center = new naver.maps.LatLng(latitude, longitude);
@@ -193,12 +197,13 @@ export default function Core() {
         };
 
         document.body.appendChild(script);
+        console.log('im 한번만이에요');
 
         // 컴포넌트 언마운트 시 스크립트 제거
         return () => {
             document.body.removeChild(script);
         };
-    }, [isUpdate]);
+    }, []);
 
     // 정해진 시간마다 내 위치 정보 받아오는 기능
     // useEffect(() => {
@@ -258,15 +263,51 @@ export default function Core() {
     //     };
     // }, []);
 
-    // 지정한 시간마다 실행할 함수
+    // 지도 가운데 변경 (3초마다)
     useEffect(() => {
-        if (mapState) {
+        if (mapState && naverState && userPinState && centerState) {
             // mapState가 설정되었을 때만 인터벌을 시작합니다.
             const intervalId = setInterval(() => {
-                console.log('naverState', naverState);
-                console.log('mapState', mapState);
-                console.log('userPinState', userPinState);
-                console.log('centerState', centerState);
+                console.log('setMap');
+
+                userPinState.setMap(null);
+
+                let latitude: number;
+                let longitude: number;
+
+                // 현재 위치 가져오기
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
+                        // const { latitude, longitude } = position.coords;
+
+                        // console.log('Latitude:', latitude, 'Longitude:', longitude);
+                        setLat(latitude);
+                        setLng(longitude);
+
+                        // 변경된 현재 위치 찍기
+                        const userPin = new naverState.maps.Marker({
+                            position: new naverState.maps.LatLng(latitude, longitude),
+                            // position: new naverState.maps.LatLng(33.3590628, 126.534361), // 에졔로 제주도 이동하게 만듦
+                            map: mapState,
+                            icon: {
+                                content: `
+                                    <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
+                            `,
+                            },
+                        });
+
+                        setUserPinState(userPin);
+                    },
+                    error => {
+                        console.error('Error getting location:', error);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                    }
+                );
             }, 3000); // 3000ms = 3초
 
             // 컴포넌트가 언마운트될 때 인터벌을 클리어
@@ -274,13 +315,60 @@ export default function Core() {
         }
     }, [mapState, naverState, userPinState, centerState]);
 
+    // 내가 이동할 때마다 위치 업데이트 시키기
+    useEffect(() => {
+        let intervalId: any;
+
+        if (isUpdate && centerState && naverState && mapState) {
+            console.log('화면 자동 업데이트 활성화');
+            console.log(lat + ' ' + lng);
+
+            const center = new naverState.maps.LatLng(lat, lng);
+            // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
+            setCenterState(center);
+            mapState.panTo(center);
+
+            intervalId = setInterval(() => {
+                // 현재 위치로 맵 가운데를 변경시키기
+                const center = new naverState.maps.LatLng(lat, lng);
+                // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
+                setCenterState(center);
+                mapState.panTo(center);
+            }, 3000); // 3초마다 실행
+        }
+
+        // isUpdate이 변경되면 return 실행됨
+        return () => {
+            if (intervalId) {
+                console.log('화면 자동 업데이트 비활성화');
+
+                clearInterval(intervalId);
+            }
+        };
+    }, [isUpdate]);
+
+    function handlerBtnClick() {
+        setIsUpdate(prev => !prev);
+    }
+
     return (
         // <div id='map__display'>
         //     <div id='map'></div>
         // </div>
-        <S.MapDisplay>
-            <S.Map id='map'></S.Map>
-        </S.MapDisplay>
+        <>
+            {isUpdate === true ? (
+                <button className='btn' onClick={handlerBtnClick}>
+                    해제
+                </button>
+            ) : (
+                <button className='btn' onClick={handlerBtnClick}>
+                    적용
+                </button>
+            )}
+            <S.MapDisplay>
+                <S.Map id='map'></S.Map>
+            </S.MapDisplay>
+        </>
     );
 }
 
