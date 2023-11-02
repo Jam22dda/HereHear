@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herehear.entity.RegisteredMusic;
+import com.ssafy.herehear.music.repository.AroundRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

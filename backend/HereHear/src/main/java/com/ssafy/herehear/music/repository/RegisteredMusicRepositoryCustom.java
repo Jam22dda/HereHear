@@ -1,4 +1,4 @@
-package com.ssafy.herehear.music.repository.musicRepositoryImpl;
+package com.ssafy.herehear.music.repository;
 
 import com.ssafy.herehear.entity.LikeMusic;
 import com.ssafy.herehear.entity.RegisteredMusic;
