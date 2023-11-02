@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface MusicService {
 
-    List<MusicInfoResDto> getMusicInfoList(String keyword, Integer limit);
+    List<MusicInfoResDto> getMusicInfoList(String keyword, Integer limit, Integer offset);
 
 }
