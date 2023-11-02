@@ -37,6 +37,7 @@ export default function Core() {
     let map: typeof naver;
     let userPin: any;
     let script: any;
+    let center: any;
 
     useEffect(() => {
         // 지도 초기화
@@ -49,12 +50,17 @@ export default function Core() {
         script.onload = () => {
             naver = window.naver;
 
-            const mapOptions = {
+            // const mapOptions = {
+            //     center: new naver.maps.LatLng(37.3595704, 127.105399),
+            //     zoom: 10,
+            // };
+
+            // map = new naver.maps.Map('map', mapOptions);
+
+            map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
                 zoom: 10,
-            };
-
-            map = new naver.maps.Map('map', mapOptions);
+            });
 
             // 음악 데이터를 Map 형태로 변경하여 저장
             const musicMapIns: MusicMap = musicList.reduce((map: MusicMap, music: Music) => {
@@ -101,46 +107,26 @@ export default function Core() {
                 console.log(arr.length);
             }
 
-            // for (let i = 0; i < 2; i++) {
-            //     // 마커 표시
-            //     arr[i] = new naver.maps.Marker({
-            //         position: new naver.maps.LatLng(37.4867995957995 + i * 0.1, 126.982211871752),
-            //         map: map,
-            //         icon: {
-            //             content: `
-            //             <div style="position: relative">
-            //                 <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
-            //                 <img
-            //                 src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
-            //                 alt="pin-album"
-            //                 style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
-            //                 />
-            //             </div>
-            //             `,
-            //         },
-            //     });
-
-            //     // 마커 클릭 시 발생하는 이벤트
-            //     naver.maps.Event.addListener(arr[i], 'click', function () {
-            //         console.log(`marker${i} clicked`);
-            //         alert(`marker${i} clicked`);
-            //     });
-            //     console.log(arr.length);
-            // }
-
             if (!navigator.geolocation) {
                 console.error('Geolocation is not supported by your browser');
                 return;
             }
 
-            // 최초에 지도에 현재 위치 찍기
+            let latitude: number;
+            let longitude: number;
+
+            // 현재 위치 가져오기
             navigator.geolocation.getCurrentPosition(
                 position => {
-                    const { latitude, longitude } = position.coords;
+                    latitude = position.coords.latitude;
+                    longitude = position.coords.longitude;
+                    // const { latitude, longitude } = position.coords;
+
                     console.log('Latitude:', latitude, 'Longitude:', longitude);
                     setLat(latitude);
                     setLng(longitude);
 
+                    // 최초에 지도에 현재 위치 찍기
                     userPin = new naver.maps.Marker({
                         position: new naver.maps.LatLng(latitude, longitude),
                         map: map,
@@ -150,6 +136,19 @@ export default function Core() {
                         `,
                         },
                     });
+
+                    // 현재 위치로 맵 가운데를 변경시키기
+                    center = new naver.maps.LatLng(latitude, longitude);
+                    map.panTo(center);
+
+                    // console.log('map');
+                    // console.log(map);
+                    // console.log(map.center);
+                    // console.log(map.center.x);
+                    // map.center.x = longitude;
+                    // map.center._lng = longitude;
+                    // console.log(map.center.x);
+                    // map.setZoom(6, true);
                 },
                 error => {
                     console.error('Error getting location:', error);
@@ -159,6 +158,8 @@ export default function Core() {
                     maximumAge: 0,
                 }
             );
+
+            // map = new naver.maps.Map('map', mapOptions);
 
             // 지도 핀찍기 테스트
             // setTimeout(() => {
