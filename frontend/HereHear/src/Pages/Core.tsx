@@ -142,11 +142,11 @@ export default function Core() {
                     setLng(longitude);
 
                     userPin = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(lat, lng),
+                        position: new naver.maps.LatLng(latitude, longitude),
                         map: map,
                         icon: {
                             content: `
-                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; z-index: 999; border: 4px solid white;"></div>
+                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
                         `,
                         },
                     });
