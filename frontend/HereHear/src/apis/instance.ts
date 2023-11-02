@@ -5,6 +5,8 @@ const APP_SERVER_URL = "https://k9b202.p.ssafy.io";
 const instance: AxiosInstance = axios.create({
     baseURL: `${APP_SERVER_URL}/api`,
     headers: {
+        Authorization:
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Imtha2FvIiwibWVtYmVySWQiOiIxNCIsInN1YiI6ImF1dGgiLCJpYXQiOjE2OTg4ODY2NjAsImV4cCI6MTY5ODk3MzA2MH0.jM200UVHBqfIfO8vtw8TTTfFMh8iMVxOAoJ5oqpuBFX8QzB3FxAbpQracD2BHYKTGTHB08lY9_SZtZvqTvZpyw",
         "Content-Type": "application/json",
     },
 });

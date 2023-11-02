@@ -24,14 +24,14 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     $textAlign?: string; // 기본으로 center으로하면 상관없?
     $color?: string;
     $width?: string;
-    $hight?: string;
+    $height?: string;
     $shadow?: string;
     $margin?: string;
     tag?: string | null;
 }
 
 const Button = (
-    { option, size, $backgroundColor, $borderRadius, $color, $width, $hight, $shadow, $margin, tag, children, ...attributes }: ButtonProps,
+    { option, size, $backgroundColor, $borderRadius, $color, $width, $height, $shadow, $margin, tag, children, ...attributes }: ButtonProps,
     ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
     return (
@@ -43,7 +43,7 @@ const Button = (
             $color={$color}
             $borderRadius={$borderRadius}
             $width={$width}
-            $hight={$hight}
+            $height={$height}
             $shadow={$shadow}
             $margin={$margin}
             {...attributes}
