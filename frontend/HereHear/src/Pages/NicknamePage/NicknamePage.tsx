@@ -22,17 +22,11 @@ export default function NicknamePage() {
                 <Text size="subtitle1" fontWeight="bold" $marginTop="108px">
                     서비스를 이용하기 전,
                 </Text>
-                <Text size="subtitle1" fontWeight="bold" $margin="0 0 8px 0">
+                <Text size="subtitle1" fontWeight="bold">
                     본인의 닉네임을 정해주세요!
                 </Text>
                 <Input></Input>
-                <Button
-                    option="save"
-                    size="large"
-                    $width="132px"
-                    $margin="150px 0 0 0"
-                    onClick={() => navigatePage("/character")}
-                >
+                <Button option="save" size="large" $width="132px" $margin="150px 0 0 0" onClick={() => navigatePage("/character")}>
                     저장하기
                 </Button>
             </S.NicknamePageWrapper>
