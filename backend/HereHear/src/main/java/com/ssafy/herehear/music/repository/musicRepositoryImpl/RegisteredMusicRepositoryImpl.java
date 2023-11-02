@@ -3,6 +3,7 @@ package com.ssafy.herehear.music.repository.musicRepositoryImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herehear.entity.LikeMusic;
 import com.ssafy.herehear.entity.RegisteredMusic;
+import com.ssafy.herehear.music.repository.RegisteredMusicRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
