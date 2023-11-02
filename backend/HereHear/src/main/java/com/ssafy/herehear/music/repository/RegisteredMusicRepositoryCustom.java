@@ -1,7 +1,6 @@
 package com.ssafy.herehear.music.repository;
 
 import com.ssafy.herehear.entity.LikeMusic;
-import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.entity.RegisteredMusic;
 
 import java.util.List;
@@ -10,8 +9,6 @@ import java.util.Optional;
 public interface RegisteredMusicRepositoryCustom {
 
     Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId);
-
-    List<Occasion> findByOccasion(long registeredMusicId);
 
     Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId);
 
@@ -23,5 +20,4 @@ public interface RegisteredMusicRepositoryCustom {
 
     List<RegisteredMusic> findByMyRegisterMusics(long memberId);
 
-    List<RegisteredMusic> findByAroundSearchMusics(String keyword, List<Long> occasions);
 }
