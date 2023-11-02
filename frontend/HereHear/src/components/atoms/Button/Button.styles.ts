@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { ButtonProps } from "./Button";
-import theme from "../../../styles/theme";
 
 const getOptionStyling = (option: Required<ButtonProps>["option"]) => {
     const style = {
@@ -92,7 +91,6 @@ const Button = styled.button<ButtonProps>`
     width: ${(props) => props.$width};
     height: ${(props) => props.$height};
     text-align: ${(props) => props.$textAlign || "center"};
-    color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
     font-size: ${(props) => props.$fontSize};
     background-color: ${(props) => props.$backgroundColor};
     box-shadow: ${(props) => props.$shadow};
