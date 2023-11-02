@@ -1,10 +1,7 @@
-package com.ssafy.herehear.music.repository;
+package com.ssafy.herehear.music.repository.musicRepositoryImpl;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herehear.entity.LikeMusic;
-import com.ssafy.herehear.entity.Occasion;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -45,14 +42,6 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
     }
 
     @Override
-    public List<Occasion> findByOccasion(long registeredMusicId) {
-        return jpaQueryFactory.select(musicOccasion.occasion)
-                .from(musicOccasion)
-                .where(musicOccasion.registeredMusic.registeredMusicId.eq(registeredMusicId))
-                .fetch();
-    }
-
-    @Override
     public List<String> findByOccasionName(long registeredMusicId) {
         return jpaQueryFactory.select(musicOccasion.occasion.occasionName)
                 .from(musicOccasion)
@@ -84,29 +73,6 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
         return jpaQueryFactory.selectFrom(registeredMusic)
                 .where(registeredMusic.member.memberId.eq(memberId)
                         .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
-                )
-                .fetch();
-    }
-
-    @Override
-    public List<RegisteredMusic> findByAroundSearchMusics(String keyword, List<Long> occasions) {
-        BooleanBuilder builder = new BooleanBuilder();
-
-        // occasions 배열이 비어있지 않으면 필터를 생성
-        if (!occasions.isEmpty()) {
-            builder.and(registeredMusic.registeredMusicId.in(
-                    JPAExpressions
-                            .select(musicOccasion.registeredMusic.registeredMusicId)
-                            .from(musicOccasion)
-                            .where(musicOccasion.occasion.occasionCode.in(occasions))
-            ));
-        }
-
-        return jpaQueryFactory.selectFrom(registeredMusic)
-                .where(
-                        registeredMusic.subject.contains(keyword).or(registeredMusic.singer.contains(keyword))
-                                .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
-                                .and(builder)
                 )
                 .fetch();
     }
