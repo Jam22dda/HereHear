@@ -53,7 +53,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                         <Routes>
                             <Route path="/" element={<Landing />}></Route>
                             <Route
-                                path="/nickname"
+                                path="/memberInfo"
                                 element={<NicknamePage />}
                             ></Route>
                             // 닉네임 설정
