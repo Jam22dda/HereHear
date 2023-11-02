@@ -90,7 +90,7 @@ const Button = styled.button<ButtonProps>`
     ${({ size = "large" }) => getSizeStyling(size)};
     ${({ option = "save" }) => getOptionStyling(option)};
     width: ${(props) => props.$width};
-    height: ${(props) => props.$hight};
+    height: ${(props) => props.$height};
     text-align: ${(props) => props.$textAlign || "center"};
     color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
     font-size: ${(props) => props.$fontSize};
