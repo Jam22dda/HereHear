@@ -19,6 +19,7 @@ public enum ExceptionStatus {
 
     MEMBER_NOT_FOUND("-2000", "사용자를 찾을 수 없습니다."),
     FOLLOW_NOT_FOUND("-2001", "팔로우를 찾을 수 없습니다."),
+    PROFILE_CHARACTER_NOT_FOUND("-2002", "프로필 캐릭터를 찾을 수 없습니다."),
 
     /**
      * 음악악 관련 STATUS CODE
