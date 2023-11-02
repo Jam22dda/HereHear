@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface LocalFileRepository extends JpaRepository<LocalFile, Long> {
 
-    Optional<LocalFile> findBySavedFileName(String fileName);
+    Optional<LocalFile> findBySavedFileNameContaining(String fileName);
 
 }
