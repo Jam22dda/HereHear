@@ -1,5 +1,5 @@
 // import theme from "../../../styles/theme";
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const MusicBox = styled.div`
     height: 149px;
@@ -10,6 +10,13 @@ const MusicBox = styled.div`
     justify-content: center;
     background-color: ${({ theme }) => theme.color.white1};
     box-shadow: ${({ theme }) => theme.shadow.shadow_dark};
+    position: absolute;
+    bottom: 150px;
+    z-index: 998;
+
+    /* @media screen and (max-width: 425px) {
+        width: 303px;
+    } */
 `;
 
 const BigWrapper = styled.div`

@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 // import './Core.styles';
 import * as S from './Core.styles';
-import testImage from '../assets/Core/Union.png';
+import markImage from '../assets/Core/Union.png';
+import MusicBox from '../components/molcules/MusicBox/MusicBox';
+import Navbar from '../components/molcules/Navbar/Navbar';
 
 export default function Core() {
     const [isUpdate, setIsUpdate] = useState(false);
     const [lat, setLat] = useState(0); // 위도
     const [lng, setLng] = useState(0); // 경도
+
+    const [selectMusic, setSelectMusic] = useState(0); // 경도
+    const [isSelect, setIsSelect] = useState(false); // 경도
 
     // 외부로부터 입력된 데이터
     const [musicList, setMusicList] = useState([
@@ -93,7 +98,7 @@ export default function Core() {
                     icon: {
                         content: `
                         <div style="position: relative">
-                            <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
+                            <img alt='img' src='${markImage}' className='pin' style="position: absolute" />
                             <img
                             src="${musicMapIns[key].albumImg}"
                             alt="pin-album"
@@ -138,7 +143,7 @@ export default function Core() {
                             map: map,
                             icon: {
                                 content: `
-                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
+                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white; box-shadow: 3px 3px 5px #8496B4;"></div>
                         `,
                             },
                         })
@@ -293,7 +298,7 @@ export default function Core() {
                             map: mapState,
                             icon: {
                                 content: `
-                                    <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
+                                    <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white; box-shadow: 3px 3px 5px #8496B4;"></div>
                             `,
                             },
                         });
@@ -326,6 +331,7 @@ export default function Core() {
             const center = new (naverState as any).maps.LatLng(lat, lng);
             // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
             setCenterState(center);
+            (mapState as any).setZoom(15, true);
             (mapState as any).panTo(center);
 
             intervalId = setInterval(() => {
@@ -367,6 +373,9 @@ export default function Core() {
             )}
             <S.MapDisplay>
                 <S.Map id='map'></S.Map>
+                {isSelect ? <MusicBox></MusicBox> : null}
+                <MusicBox></MusicBox>
+                <Navbar></Navbar>
             </S.MapDisplay>
         </>
     );
