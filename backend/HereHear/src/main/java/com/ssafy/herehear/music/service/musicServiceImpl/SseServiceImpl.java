@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SseServiceImpl implements SseService {
 
-    private static final Long SCHEDULE_TIME = 60L;// 스케쥴러 시간 * 1000 * 60
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;// timeout 12시간
     private final LocalTime currentTime = LocalDateTime.now().toLocalTime();// 현재 시간
 
@@ -83,7 +82,7 @@ public class SseServiceImpl implements SseService {
     }
 
     //처음에는 실행하지 않고 1시간 후부터 매 1시간마다 실행
-    @Scheduled(fixedRate = SCHEDULE_TIME, initialDelay = SCHEDULE_TIME)
+    @Scheduled(fixedRate =  3600000, initialDelay =  3600000)
     public void checkForDataChanges() {
         List<SseResDto> sseResDtos = new ArrayList<>();
 
