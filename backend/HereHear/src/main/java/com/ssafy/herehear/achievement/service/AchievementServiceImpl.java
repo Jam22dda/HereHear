@@ -85,9 +85,10 @@ public class AchievementServiceImpl implements AchievementService {
     }
 
     @Override
-    public AchievementDto getAchievement(Long memberId) {
-        Member member = MemberUtil.findMember(memberId);
-        return AchievementMapper.INSTANCE.toAchievementDto(member.getAchievement());
+    public AchievementDto getAchievement(Long achievementId) {
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.ACHIEVEMENT_NOT_FOUND));
+        return AchievementMapper.INSTANCE.toAchievementDto(achievement);
     }
 
 }
