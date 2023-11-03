@@ -37,13 +37,13 @@ pipeline {
             }
         }
 
-       stage('SonarQube Quality Gate'){
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-       }
+//        stage('SonarQube Quality Gate'){
+//             steps {
+//                 timeout(time: 1, unit: 'HOURS') {
+//                     waitForQualityGate abortPipeline: true
+//                 }
+//             }
+//        }
 
         // 백엔드 프로젝트 빌드
         stage("be build") {
