@@ -128,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
 //        );
 
 
-        MemberInfoResDto res = memberMapper.toMemberInfoResDto(findMember);
+        MemberInfoResDto res = memberMapper.toMemberInfoResDto(findMember, findMember.getAchievement());
         log.info("Member Info: {}", res);
 
         return res;

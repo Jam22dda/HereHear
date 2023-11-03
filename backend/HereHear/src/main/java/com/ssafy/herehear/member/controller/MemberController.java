@@ -91,6 +91,11 @@ public class MemberController {
         return new DataResponse("200", "멤버 정보 반환에 성공하였습니다", memberService.getMemberInfo(memberId));
     }
 
+    @GetMapping("/info/{memberId}")
+    public DataResponse getOtherMemberInfo(@PathVariable("memberId") Long memberId) {
+        return new DataResponse("200", "다른 멤버 정보 반환에 성공하였습니다", memberService.getMemberInfo(memberId));
+    }
+
     @PostMapping("/update/nickname")
     public CommonResponse updateNickname(@RequestBody String nickname, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
