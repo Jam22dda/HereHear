@@ -3,12 +3,14 @@ package com.ssafy.herehear.music.controller;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.response.DataResponse;
+import com.ssafy.herehear.global.util.TimeFormatUtil;
 import com.ssafy.herehear.music.dto.response.MusicInfoResDto;
 import com.ssafy.herehear.music.service.MusicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,9 @@ public class SearchMusicController {
     public DataResponse<Map<String, Object>> searchMusic(@RequestParam String keyword,
                                                          @RequestParam(required = false) Integer limit,
                                                          @RequestParam(required = false) Integer page) {
+
+        log.info("[음악 검색] keyword: {}, limit: {}, page: {}, time {} ", keyword, limit, page, TimeFormatUtil.formatTime(LocalDateTime.now()));
+
         // 검색어가 비었다면 에러
         if (keyword == null) throw new CustomException(ExceptionStatus.KEYWORD_NOT_FOUND);
 
