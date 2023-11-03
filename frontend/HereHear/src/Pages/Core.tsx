@@ -361,7 +361,7 @@ export default function Core() {
                 clearInterval(intervalId);
             }
         };
-    }, [lat, lng]);
+    }, [isUpdate, lat, lng]);
 
     function handlerBtnClick() {
         setIsUpdate(prev => !prev);
