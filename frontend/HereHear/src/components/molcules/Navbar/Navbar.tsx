@@ -15,7 +15,7 @@ const navBarInfo = [
     { src: iconMusiclist, path: "/achievement" },
     { src: iconMusicplus, path: "/registMusic" },
     { src: iconStatistics, path: "/selectMusic" },
-    { src: iconMypage, path: "/stats" },
+    { src: iconMypage, path: "/mypage" },
 ];
 
 export default function ItemBox() {

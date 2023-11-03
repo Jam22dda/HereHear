@@ -4,7 +4,7 @@ import "./index.css";
 // import { RecoilRoot } from "recoil";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Landing from "./Pages/LandingPage/LandingPage.tsx";
-import Achievement from "./Pages/Achievement.tsx";
+import AchievementPage from "./Pages/AchievementPage/AchievementPage.tsx";
 import Core from "./Pages/Core.tsx";
 import Follow from "./Pages/Follow.tsx";
 import Following from "./Pages/Following.tsx";
@@ -27,12 +27,8 @@ import LikePage from "./Pages/LikePage/LikePage.tsx";
 import MyRegistPage from "./Pages/MyRegistPage/MyRegistPage.tsx";
 import SearchRegistMusicPage from "./Pages/SearchRegistMusicPage/SearchRegistMusicPage.tsx";
 import MyStatisticsPage from "./Pages/MyStatisticsPage/MyStatisticsPage.tsx";
-
-// declare global {
-//     interface Window {
-//         naver: any;
-//     }
-// }
+import RedirectHandler from "./RedirectHandler.tsx";
+import YourPage from "./Pages/YourPage/YourPage.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -50,6 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <ThemeProvider theme={theme}>
                     <QueryClientProvider client={queryClient}>
                         <GlobalStyle />
+                        <RedirectHandler />
                         <Routes>
                             <Route path="/" element={<Landing />}></Route>
                             <Route
@@ -66,7 +63,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                             map 화면
                             <Route
                                 path="/achievement"
-                                element={<Achievement />}
+                                element={<AchievementPage />}
                             ></Route>
                             // 뱃지 화면
                             <Route
@@ -108,11 +105,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                                 element={<ListenedMusicPage />}
                             ></Route>
                             // 들었던 음악
+                            <Route path="/mypage" element={<MyPage />}></Route>
+                            // 마이페이지
                             <Route
                                 path="/mypage/:id"
-                                element={<MyPage />}
+                                element={<YourPage />}
                             ></Route>
-                            // 마이페이지
+                            // 다른사람 마이페이지
                             <Route
                                 path="/myRegist"
                                 element={<MyRegistPage />}
