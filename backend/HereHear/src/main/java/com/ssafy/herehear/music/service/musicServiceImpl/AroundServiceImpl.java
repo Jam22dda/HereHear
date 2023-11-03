@@ -26,14 +26,10 @@ public class AroundServiceImpl implements AroundService {
 
     @Override
     @Transactional
-    public List<AroundMusicResDto> getAroundMusicList(AroundMusicReqDto aroundMusicReqDto) {
-        log.info("[주변 음악 조회] AroundMusicReqDto: " + aroundMusicReqDto);
+    public List<AroundMusicResDto> getAroundMusicList(Double lat, Double lng) {
+        log.info("[주변 음악 조회] lat: " + lat+", lng: "+lng);
 
-        List<AroundMusicResDto> aroundMusicResDtos = findByAroundMusics(
-                        aroundMusicReqDto.getLat(),
-                        aroundMusicReqDto.getLng(),
-                        aroundRepositoryImpl.findByRegisterMusics()
-                ).stream()
+        List<AroundMusicResDto> aroundMusicResDtos = findByAroundMusics(lat, lng, aroundRepositoryImpl.findByRegisterMusics()).stream()
                 .filter(HourFilterUtils::findHourFilter)
                 .map(registeredMusic -> aroundMapper.toAroundMusicResDto(
                                 registeredMusic,
