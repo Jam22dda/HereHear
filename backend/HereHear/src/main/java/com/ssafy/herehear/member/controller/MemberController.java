@@ -26,9 +26,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/follower")
-    public DataResponse<List<FollowResDto>> getFollowerList() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public DataResponse<List<FollowResDto>> getFollowerList(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로워 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -38,9 +37,8 @@ public class MemberController {
     }
 
     @GetMapping("/following")
-    public DataResponse<List<FollowResDto>> getFollowing() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public DataResponse<List<FollowResDto>> getFollowing(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로잉 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -50,9 +48,8 @@ public class MemberController {
     }
 
     @PostMapping("/follow")
-    public CommonResponse follow(@RequestBody FollowReqDto followReqDto) {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public CommonResponse follow(@RequestBody FollowReqDto followReqDto, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로우] memberId: {}, followMemberId: {}, time: {}", memberId, followReqDto.getMemberId(), TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -62,9 +59,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/follow")
-    public CommonResponse unfollow(@RequestBody FollowReqDto followReqDto) {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public CommonResponse unfollow(@RequestBody FollowReqDto followReqDto, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[언팔로우] memberId: {}, followMemberId: {}, time: {}", memberId, followReqDto.getMemberId(), TimeFormatUtil.formatTime(LocalDateTime.now()));
 
