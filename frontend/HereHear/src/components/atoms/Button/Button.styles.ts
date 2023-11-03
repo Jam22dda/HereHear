@@ -46,6 +46,7 @@ const getOptionStyling = (option: Required<ButtonProps>["option"]) => {
 const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
     const style = {
         small: css`
+            // 태그
             height: 20px;
             font-size: ${({ theme }) => theme.fontSize.small3};
             border-radius: 24px;
@@ -53,6 +54,7 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
             line-height: 22px;
         `,
         medium: css`
+            // 팔로우 팔로잉
             height: 32px;
             font-size: ${({ theme }) => theme.fontSize.small2};
             border-radius: 32px;
@@ -60,6 +62,7 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
             line-height: 34px;
         `,
         mediumplus: css`
+            // 큰 태그
             height: 36px;
             font-size: ${({ theme }) => theme.fontSize.small1};
             border-radius: 20px;
@@ -67,6 +70,7 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
             line-height: 38px;
         `,
         large: css`
+            // 저장하기, 태그추가
             height: 40px;
             font-size: ${({ theme }) => theme.fontSize.body2};
             font-weight: bold;
@@ -75,6 +79,7 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
             line-height: 42px;
         `,
         largeplus: css`
+            // 마이페이지 팔로우 팔로잉
             height: 42px;
             font-size: ${({ theme }) => theme.fontSize.small1};
             border-radius: 30px;
