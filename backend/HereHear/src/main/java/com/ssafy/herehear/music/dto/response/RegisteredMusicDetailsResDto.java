@@ -21,6 +21,7 @@ public class RegisteredMusicDetailsResDto {
     private String albumImg;
     private String releaseTime;
     private String createTime;
+    private String memberId;
     private String nickname;
     private boolean like;
     private List<String> occasionName;
