@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository("achievementRegisteredMusicRepository")
 public interface RegisteredMusicRepository extends JpaRepository<RegisteredMusic, Long> {
 
-    @Query("select count(rm) from RegisteredMusic rm where rm.member.memberId = :memberId and rm.isDeleted = false")
+    @Query("select count(rm) from RegisteredMusic rm where rm.member.memberId = :memberId and rm.isDeleted = null")
     long countByMemberId(@Param("memberId") Long memberId);
 
 }
