@@ -110,6 +110,8 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
+        if(findMember.getRemoveDate() != null)
+            throw new CustomException(ExceptionStatus.MEMBER_IS_DELETED);
 
         findMember.deleteMember();
         memberRepository.save(findMember);
@@ -121,12 +123,8 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
-
-//        Long profileId = findMember.getProfileCharacter().getProfileCharacterId();
-//        ProfileCharacter profileCharacter = profileCharacterRepository.findById(profileId).orElseThrow(
-//                () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
-//        );
-
+        if(findMember.getRemoveDate() != null)
+            throw new CustomException(ExceptionStatus.MEMBER_IS_DELETED);
 
         MemberInfoResDto res = memberMapper.toMemberInfoResDto(findMember, findMember.getAchievement());
         log.info("Member Info: {}", res);

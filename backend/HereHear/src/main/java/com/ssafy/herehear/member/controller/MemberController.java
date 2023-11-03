@@ -109,4 +109,11 @@ public class MemberController {
         memberService.updateCharacter(characterCode, memberId);
         return new CommonResponse("200", "캐릭터 변경을 성공하였습니다");
     }
+
+    @DeleteMapping("/delete")
+    public CommonResponse deleteMember(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        memberService.deleteMember(memberId);
+        return new CommonResponse("200", "회원 탈퇴가 완료되었습니다");
+    }
 }
