@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 // import './Core.styles';
 import * as S from './Core.styles';
 import markImage from '../assets/Core/Union.png';
+import gpsPinActImage from '../assets/Core/gpsPinActivated.png';
+import gpsPinDeactImage from '../assets/Core/gpsPinDeactivated.png';
 import MusicBox from '../components/molcules/MusicBox/MusicBox';
 import Navbar from '../components/molcules/Navbar/Navbar';
 
@@ -70,7 +72,9 @@ export default function Core() {
 
             // 마우스 이벤트가 발생하면 자동으로 따라가기 취소하는 이벤트 추가
             // https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
-            window.addEventListener('touchstart', function () {
+            // touchstart
+            window.addEventListener('mousedown', function () {
+                console.log('화면 자동 업데이트 비활성화');
                 console.log(setIsUpdate(false));
             });
             // naver.maps.Event.addListener(map, 'click', function () {
@@ -313,7 +317,7 @@ export default function Core() {
                         maximumAge: 0,
                     }
                 );
-            }, 3000); // 3000ms = 3초
+            }, 500); // 3000ms = 3초
 
             // 컴포넌트가 언마운트될 때 인터벌을 클리어
             return () => clearInterval(intervalId);
@@ -362,16 +366,16 @@ export default function Core() {
         //     <div id='map'></div>
         // </div>
         <>
-            {isUpdate === true ? (
-                <button className='btn' onClick={handlerBtnClick}>
-                    해제
-                </button>
-            ) : (
-                <button className='btn' onClick={handlerBtnClick}>
-                    적용
-                </button>
-            )}
             <S.MapDisplay>
+                {isUpdate === true ? (
+                    <S.ImgOuter>
+                        <img src={gpsPinActImage} alt='gpsImage' onClick={handlerBtnClick} />
+                    </S.ImgOuter>
+                ) : (
+                    <S.ImgOuter>
+                        <img src={gpsPinDeactImage} alt='gpsImage' onClick={handlerBtnClick} />
+                    </S.ImgOuter>
+                )}
                 <S.Map id='map'></S.Map>
                 {isSelect ? <MusicBox></MusicBox> : null}
                 <MusicBox></MusicBox>
