@@ -37,11 +37,8 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("여기 지나가나?");
         try{
-            log.info("do filter try 안");
             String accessToken = jwtProvider.getAccessToken(request);
-            log.info("accessToken: {}", accessToken);
             if (StringUtils.hasText(accessToken) && jwtProvider.validatateToken(accessToken)) {
                 if (jwtProvider.isExpired(accessToken)) {
                     throw new CustomException(ExceptionStatus.TOKEN_EXPIRED);
