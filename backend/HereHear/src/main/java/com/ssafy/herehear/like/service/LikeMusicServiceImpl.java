@@ -50,16 +50,13 @@ public class LikeMusicServiceImpl implements LikeMusicService {
     @Override
     @Transactional
     public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
-        log.info("좋아요 음악 목록 조회: "+memberId);
         MemberUtil.findMember(memberId);
 
+        // 좋아요 목록 조회
         List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicRepositoryImpl.findByLikeMusics(memberId).stream()
                 .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
                         findRegisteredMusic,
-                        likeMusicRepositoryImpl.findByRegisteredMusicLike(
-                                memberId,
-                                findRegisteredMusic.getRegisteredMusicId()
-                        ).isPresent())
+                        likeMusicRepositoryImpl.findByRegisteredMusicLike(memberId,findRegisteredMusic.getRegisteredMusicId()).isPresent())
                 )
                 .toList();
         log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
