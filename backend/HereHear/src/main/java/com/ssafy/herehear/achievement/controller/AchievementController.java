@@ -40,15 +40,6 @@ public class AchievementController {
         return new DataResponse<>("200", "달성한 업적 조회", myAchievementList);
     }
 
-    @GetMapping("/{memberId}")
-    public DataResponse<Integer> getAchievement(@PathVariable Long memberId) {
-        log.info("[달성한 업적 개수 조회] 조회 memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
-
-        int count = achievementService.getAchievementCount(memberId);
-
-        return new DataResponse<>("200", "달성한 업적 개수 조회", count);
-    }
-
     @PutMapping("/equip")
     public CommonResponse equipAchievement(@RequestBody EquipAchievementDto equipAchievementDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
@@ -60,15 +51,13 @@ public class AchievementController {
         return new CommonResponse("200", "칭호, 테두리 장착 완료");
     }
 
-    @GetMapping("/equiped")
-    public DataResponse<AchievementDto> getEquipedAchievement(Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
+    @GetMapping("/{achievementId}")
+    public DataResponse<AchievementDto> getEquipedAchievement(@PathVariable Long achievementId) {
+        log.info("[칭호, 뱃지 조회] achievementId: {}, time: {}", achievementId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
-        log.info("[장착한 칭호, 뱃지 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+        AchievementDto equipedAchievementDto = achievementService.getAchievement(achievementId);
 
-        AchievementDto equipedAchievementDto = achievementService.getAchievement(memberId);
-
-        return new DataResponse<>("200", "장착한 칭호, 뱃지 조회", equipedAchievementDto);
+        return new DataResponse<>("200", "칭호, 뱃지 조회", equipedAchievementDto);
     }
 
 }
