@@ -9,5 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 public class MemberInfoResDto {
     private String nickname;
-    private ProfileCharacter profileCharacter;
+    private ProfileCharacterResDto profileCharacter;
 }
