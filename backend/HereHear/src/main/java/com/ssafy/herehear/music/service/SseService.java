@@ -12,4 +12,6 @@ public interface SseService {
     void sendToClient(Long memberId, Object data);
 
     SseEmitter createEmitter(Long memberId);
+
+    void sendAllClient(Object data);
 }

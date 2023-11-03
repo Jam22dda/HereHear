@@ -17,11 +17,11 @@ public interface RegisterMusicMapper {
 
     RegisteredMusicDetailsResDto toRegisteredMusicDetailsResDto(RegisteredMusic registeredMusic, boolean like, String nickname, List<String> occasionName);
 
-    RegisteredMusicResDto toRegisteredMusicListResDto(RegisteredMusic registeredMusic, List<String> occasionName);
+    RegisteredMusicResDto toRegisteredMusicListResDto(RegisteredMusic registeredMusic);
 
     MyRegisteredMusicResDto toMyRegisteredMusicResDto(RegisteredMusic registeredMusic);
 
     OccasionResDto toOccasionResDto(Occasion occasion);
 
-    SseResDto toSseResDto(int status, RegisteredMusic registeredMusic, List<String> occasionName);
+    SseResDto toSseResDto(int status, RegisteredMusic registeredMusic);
 }
