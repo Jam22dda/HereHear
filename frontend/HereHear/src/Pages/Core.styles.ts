@@ -13,3 +13,14 @@ export const MapDisplay = styled.div`
     width: 100%;
     height: 100%;
 `;
+
+export const ImgOuter = styled.div`
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 996;
+
+    img {
+        width: 50px;
+    }
+`;
