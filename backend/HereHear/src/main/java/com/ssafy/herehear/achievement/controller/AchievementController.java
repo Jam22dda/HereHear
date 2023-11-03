@@ -60,4 +60,15 @@ public class AchievementController {
         return new CommonResponse("200", "칭호, 테두리 장착 완료");
     }
 
+    @GetMapping("/equiped")
+    public DataResponse<AchievementDto> getEquipedAchievement(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+
+        log.info("[장착한 칭호, 뱃지 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+
+        AchievementDto equipedAchievementDto = achievementService.getAchievement(memberId);
+
+        return new DataResponse<>("200", "장착한 칭호, 뱃지 조회", equipedAchievementDto);
+    }
+
 }
