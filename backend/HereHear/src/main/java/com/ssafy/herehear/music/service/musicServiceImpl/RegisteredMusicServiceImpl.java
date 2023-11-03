@@ -25,9 +25,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
     private final OccasionRepository occasionRepository;
@@ -84,7 +84,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
         RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicDetailsResDto(
                 findByRegisterMusic(registeredMusicId),
                 findRegisteredMusicLike(memberId, registeredMusicId),
-                MemberUtil.findMember(memberId).getNickname(),
+                MemberUtil.findMember(memberId),
                 registeredMusicRepositoryImpl.findByOccasionName(registeredMusicId)
         );
         log.info("getRegisteredMusicDetails: " + registeredMusicDetailsResDto);
