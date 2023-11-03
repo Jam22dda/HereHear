@@ -10,4 +10,5 @@ import lombok.*;
 public class MemberInfoResDto {
     private String nickname;
     private ProfileCharacterResDto profileCharacter;
+    private Long achievementId;
 }
