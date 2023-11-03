@@ -30,7 +30,7 @@ pipeline {
                     ./gradlew sonar\
                      -Dsonar.projectKey=herehear_be \
                      -Dsonar.projectName='herehear_be' \
-                     -Dsonar.profile='SonarWay' \
+                     -Dsonar.profile=Sonar Way \
                      -Dsonar.host.url=http://3.34.42.38:9000 \
                      -Dsonar.token=sqp_b5d00bfede7c4457ff4818e28a22e09775b3a982
                     """
