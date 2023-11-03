@@ -6,6 +6,7 @@ import gpsPinActImage from '../assets/Core/gpsPinActivated.png';
 import gpsPinDeactImage from '../assets/Core/gpsPinDeactivated.png';
 import MusicBox from '../components/molcules/MusicBox/MusicBox';
 import Navbar from '../components/molcules/Navbar/Navbar';
+import { useGetMapMusicList } from '../apis/Map/Queries/useGetMapMusicList';
 
 export default function Core() {
     const [isUpdate, setIsUpdate] = useState(false);
@@ -16,26 +17,7 @@ export default function Core() {
     const [isSelect, setIsSelect] = useState(false); // 경도
 
     // 외부로부터 입력된 데이터
-    const [musicList, setMusicList] = useState([
-        {
-            registeredMusicId: 3,
-            lat: 36.3528192,
-            lng: 127.3102336,
-            comment: 'ddd',
-            subject: 'subject2',
-            singer: 'singer',
-            albumImg: 'https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg',
-        },
-        {
-            registeredMusicId: 4,
-            lat: 36.3528192,
-            lng: 127.3202336,
-            comment: 'ddd',
-            subject: 'subject2',
-            singer: 'singer',
-            albumImg: 'https://i.namu.wiki/i/T74peTI9G97pbLNLGK7H8XawCFQl9-0-GmJPIlrX7h1pg7N9C6Tm0QfKtTcd5XXEGCyUBjIqNgCYzfGyJj0lwA.webp',
-        },
-    ]);
+    const musicList = useGetMapMusicList();
 
     const [musicMap, setMusicMap] = useState({});
     const [musicPin, setMusicPin] = useState({});
@@ -88,6 +70,9 @@ export default function Core() {
             setMapState(map);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
+            console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
+            // console.log(mapMusicListIns);
+
             const musicMapIns: MusicMap = musicList.reduce((map: MusicMap, music: Music) => {
                 const { registeredMusicId, ...otherProps } = music;
                 map[registeredMusicId] = otherProps;
