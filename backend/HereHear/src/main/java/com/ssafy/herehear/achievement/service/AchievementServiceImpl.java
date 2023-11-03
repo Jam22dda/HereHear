@@ -10,6 +10,7 @@ import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberAchievement;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -81,6 +82,12 @@ public class AchievementServiceImpl implements AchievementService {
         }
 
         memberRepository.save(member);
+    }
+
+    @Override
+    public AchievementDto getAchievement(Long memberId) {
+        Member member = MemberUtil.findMember(memberId);
+        return AchievementMapper.INSTANCE.toAchievementDto(member.getAchievement());
     }
 
 }
