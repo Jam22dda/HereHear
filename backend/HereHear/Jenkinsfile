@@ -20,27 +20,10 @@ pipeline {
             }
         }
 
-        // 백엔드 프로젝트 빌드
-        stage("be build") {
-            // build
-            steps {
-                sh """
-                cd ${PROJECT_DIR_BE}
-                chmod 777 ./gradlew
-                ./gradlew clean build
-                """
-            }
-        }
 
         stage('SonarQube analysis') {
             steps{
-//                 withSonarQubeEnv('SonarQube'){
-//                     sh """
-//                     cd ${PROJECT_DIR_BE}
-//                     chmod 777 ./gradlew
-//                     ./gradlew sonarqube
-//                     """
-//                 }
+                withSonarQubeEnv('SonarQube'){
                     sh """
                     cd ${PROJECT_DIR_BE}
                     chmod 777 ./gradlew
@@ -50,6 +33,7 @@ pipeline {
                      -Dsonar.host.url=http://3.34.42.38:9000 \
                      -Dsonar.token=sqp_b5d00bfede7c4457ff4818e28a22e09775b3a982
                     """
+                }
             }
         }
 
@@ -65,6 +49,18 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+
+        // 백엔드 프로젝트 빌드
+        stage("be build") {
+            // build
+            steps {
+                sh """
+                cd ${PROJECT_DIR_BE}
+                chmod 777 ./gradlew
+                ./gradlew clean build
+                """
             }
         }
 
