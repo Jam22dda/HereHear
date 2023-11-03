@@ -87,6 +87,11 @@ public class MemberController {
         return new DataResponse("200", "멤버 정보 반환에 성공하였습니다", memberService.getMemberInfo(memberId));
     }
 
+    @GetMapping("/info/{memberId}")
+    public DataResponse getOtherMemberInfo(@PathVariable("memberId") Long memberId) {
+        return new DataResponse("200", "다른 멤버 정보 반환에 성공하였습니다", memberService.getMemberInfo(memberId));
+    }
+
     @PostMapping("/update/nickname")
     public CommonResponse updateNickname(@RequestBody String nickname, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
@@ -99,5 +104,12 @@ public class MemberController {
         Long memberId = Long.parseLong(authentication.getName());
         memberService.updateCharacter(characterCode, memberId);
         return new CommonResponse("200", "캐릭터 변경을 성공하였습니다");
+    }
+
+    @DeleteMapping("/delete")
+    public CommonResponse deleteMember(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        memberService.deleteMember(memberId);
+        return new CommonResponse("200", "회원 탈퇴가 완료되었습니다");
     }
 }
