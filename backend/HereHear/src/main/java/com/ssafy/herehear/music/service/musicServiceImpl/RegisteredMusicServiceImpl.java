@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,14 +39,14 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
     @Override
     @Transactional
-    public SseResDto registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
+    public List<SseResDto> registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
         log.info(logComment("음악 등록", memberId, registerMusicReqDto));
 
         Member member = MemberUtil.findMember(memberId);
 
         //음악 등록
         RegisteredMusic registeredMusic = registeredMusicRepository.save(registerMusicMapper.toRegisteredMusic(member, registerMusicReqDto));
-        log.info("registeredMusicId: " + registeredMusic.getRegisteredMusicId());
+        log.info("registerMusic registeredMusicId: " + registeredMusic.getRegisteredMusicId());
 
         //상황 태그 등록
         for (long occasionId : registerMusicReqDto.getMusicOccasionIds()) {
@@ -53,15 +54,12 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
         }
         log.info("registerMusic success");
 
-        //SSE 이벤트 등록
-        SseResDto sseResDto = registerMusicMapper.toSseResDto(
-                1,
-                registeredMusic,
-                registeredMusicRepositoryImpl.findByOccasionName(registeredMusic.getRegisteredMusicId())
-        );
-        log.info("SseResDto: "+ sseResDto);
+        //SSE 등록 이벤트
+        List<SseResDto> sseResDtos = new ArrayList<>();
+        sseResDtos.add(registerMusicMapper.toSseResDto(0, registeredMusic));
+        log.info("registerMusic SseResDto: " + sseResDtos);
 
-        return sseResDto;
+        return sseResDtos;
     }
 
     @Override
@@ -105,10 +103,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
         //전체 음악 조회
         List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(HourFilterUtils::findHourFilter)
-                .map(findRegisteredMusic -> registerMusicMapper.toRegisteredMusicListResDto(
-                        findRegisteredMusic,
-                        registeredMusicRepositoryImpl.findByOccasionName(findRegisteredMusic.getRegisteredMusicId()))
-                )
+                .map(registerMusicMapper::toRegisteredMusicListResDto)
                 .toList();
         log.info("getRegisteredMusicList: " + registeredMusicResDtos);
 
@@ -117,7 +112,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
     @Override
     @Transactional
-    public SseResDto updateMyRegisteredMusic(long memberId, long registeredMusicId) {
+    public List<SseResDto> updateMyRegisteredMusic(long memberId, long registeredMusicId) {
         log.info(logComment("등록한 음악 삭제", memberId, registeredMusicId));
 
         MemberUtil.findMember(memberId);
@@ -130,15 +125,12 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
         log.info("updateMyRegisteredMusic success");
 
-        //SSE 이벤트 등록
-        SseResDto sseResDto = registerMusicMapper.toSseResDto(
-                0,
-                findRegisteredMusic,
-                registeredMusicRepositoryImpl.findByOccasionName(findRegisteredMusic.getRegisteredMusicId())
-        );
-        log.info("SseResDto: "+ sseResDto);
+        //SSE 삭제 이벤트
+        List<SseResDto> sseResDtos = new ArrayList<>();
+        sseResDtos.add(registerMusicMapper.toSseResDto(0, findRegisteredMusic));
+        log.info("updateMyRegisteredMusic SseResDto: " + sseResDtos);
 
-        return sseResDto;
+        return sseResDtos;
     }
 
     @Override
