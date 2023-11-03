@@ -11,7 +11,7 @@ const MusicBox = styled.div`
     background-color: ${({ theme }) => theme.color.white1};
     box-shadow: ${({ theme }) => theme.shadow.shadow_dark};
     position: absolute;
-    bottom: 150px;
+    bottom: 130px;
     z-index: 998;
 
     /* @media screen and (max-width: 425px) {
