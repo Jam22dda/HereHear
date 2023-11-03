@@ -1,7 +1,6 @@
 package com.ssafy.herehear.music.service.musicServiceImpl;
 
 import com.ssafy.herehear.entity.RegisteredMusic;
-import com.ssafy.herehear.music.dto.request.AroundMusicReqDto;
 import com.ssafy.herehear.music.dto.request.AroundSearchReqDto;
 import com.ssafy.herehear.music.dto.response.AroundMusicResDto;
 import com.ssafy.herehear.music.mapper.AroundMapper;

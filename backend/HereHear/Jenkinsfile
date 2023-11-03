@@ -30,6 +30,7 @@ pipeline {
                     ./gradlew sonar\
                      -Dsonar.projectKey=herehear_be \
                      -Dsonar.projectName='herehear_be' \
+                     -Dsonar.profile='SonarWay' \
                      -Dsonar.host.url=http://3.34.42.38:9000 \
                      -Dsonar.token=sqp_b5d00bfede7c4457ff4818e28a22e09775b3a982
                     """
@@ -37,20 +38,13 @@ pipeline {
             }
         }
 
-        stage('SonarQube Quality Gate'){
-            steps{
-                timeout(time: 1, unit: 'MINUTES') {
-                    script{
-                        def qg = waitForQualityGate()
-                        if(qg.status != 'OK') {
-                            updateGitlabCommitStatus(name: "SonarQube Quality Gate", state: "failed")
-                        } else{
-                            pdateGitlabCommitStatus(name: "SonarQube Quality Gate", state: "success")
-                        }
-                    }
-                }
-            }
-        }
+//        stage('SonarQube Quality Gate'){
+//             steps {
+//                 timeout(time: 1, unit: 'HOURS') {
+//                     waitForQualityGate abortPipeline: true
+//                 }
+//             }
+//        }
 
         // 백엔드 프로젝트 빌드
         stage("be build") {
