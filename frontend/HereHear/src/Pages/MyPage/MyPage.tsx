@@ -108,8 +108,8 @@ export default function MyPage() {
                             />
                         ))}
                     </S.MyItemWrapper>
+                    <Navbar></Navbar>
                 </S.MyPageWrapper>
-                <Navbar></Navbar>
             </div>
         </div>
     );

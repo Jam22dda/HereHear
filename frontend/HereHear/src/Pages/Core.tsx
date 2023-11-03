@@ -1,34 +1,23 @@
 import { useEffect, useState } from 'react';
 // import './Core.styles';
 import * as S from './Core.styles';
-import testImage from '../assets/Core/Union.png';
+import markImage from '../assets/Core/Union.png';
+import gpsPinActImage from '../assets/Core/gpsPinActivated.png';
+import gpsPinDeactImage from '../assets/Core/gpsPinDeactivated.png';
+import MusicBox from '../components/molcules/MusicBox/MusicBox';
+import Navbar from '../components/molcules/Navbar/Navbar';
+import { useGetMapMusicList } from '../apis/Map/Queries/useGetMapMusicList';
 
 export default function Core() {
     const [isUpdate, setIsUpdate] = useState(false);
     const [lat, setLat] = useState(0); // 위도
     const [lng, setLng] = useState(0); // 경도
 
+    const [selectMusic, setSelectMusic] = useState(0); // 경도
+    const [isSelect, setIsSelect] = useState(false); // 경도
+
     // 외부로부터 입력된 데이터
-    const [musicList, setMusicList] = useState([
-        {
-            registeredMusicId: 3,
-            lat: 36.3528192,
-            lng: 127.3102336,
-            comment: 'ddd',
-            subject: 'subject2',
-            singer: 'singer',
-            albumImg: 'https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg',
-        },
-        {
-            registeredMusicId: 4,
-            lat: 36.3528192,
-            lng: 127.3202336,
-            comment: 'ddd',
-            subject: 'subject2',
-            singer: 'singer',
-            albumImg: 'https://i.namu.wiki/i/T74peTI9G97pbLNLGK7H8XawCFQl9-0-GmJPIlrX7h1pg7N9C6Tm0QfKtTcd5XXEGCyUBjIqNgCYzfGyJj0lwA.webp',
-        },
-    ]);
+    const musicList = useGetMapMusicList();
 
     const [musicMap, setMusicMap] = useState({});
     const [musicPin, setMusicPin] = useState({});
@@ -65,7 +54,14 @@ export default function Core() {
 
             // 마우스 이벤트가 발생하면 자동으로 따라가기 취소하는 이벤트 추가
             // https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
+            // touchstart
+            window.addEventListener('mousedown', function () {
+                console.log('화면 자동 업데이트 비활성화');
+                console.log(setIsUpdate(false));
+            });
+
             window.addEventListener('touchstart', function () {
+                console.log('화면 자동 업데이트 비활성화');
                 console.log(setIsUpdate(false));
             });
             // naver.maps.Event.addListener(map, 'click', function () {
@@ -74,6 +70,9 @@ export default function Core() {
             setMapState(map);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
+            console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
+            // console.log(mapMusicListIns);
+
             const musicMapIns: MusicMap = musicList.reduce((map: MusicMap, music: Music) => {
                 const { registeredMusicId, ...otherProps } = music;
                 map[registeredMusicId] = otherProps;
@@ -93,7 +92,7 @@ export default function Core() {
                     icon: {
                         content: `
                         <div style="position: relative">
-                            <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
+                            <img alt='img' src='${markImage}' className='pin' style="position: absolute" />
                             <img
                             src="${musicMapIns[key].albumImg}"
                             alt="pin-album"
@@ -138,7 +137,7 @@ export default function Core() {
                             map: map,
                             icon: {
                                 content: `
-                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
+                                <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white; box-shadow: 3px 3px 5px #8496B4;"></div>
                         `,
                             },
                         })
@@ -293,7 +292,7 @@ export default function Core() {
                             map: mapState,
                             icon: {
                                 content: `
-                                    <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white;"></div>
+                                    <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white; box-shadow: 3px 3px 5px #8496B4;"></div>
                             `,
                             },
                         });
@@ -313,7 +312,7 @@ export default function Core() {
             // 컴포넌트가 언마운트될 때 인터벌을 클리어
             return () => clearInterval(intervalId);
         }
-    }, [mapState, naverState, userPinState, centerState]);
+    }, []);
 
     // 내가 이동할 때마다 위치 업데이트 시키기
     useEffect(() => {
@@ -326,15 +325,17 @@ export default function Core() {
             const center = new (naverState as any).maps.LatLng(lat, lng);
             // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
             setCenterState(center);
+            (mapState as any).setZoom(15, true);
             (mapState as any).panTo(center);
 
-            intervalId = setInterval(() => {
-                // 현재 위치로 맵 가운데를 변경시키기
-                const center = new (naverState as any).maps.LatLng(lat, lng);
-                // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
-                setCenterState(center);
-                (mapState as any).panTo(center);
-            }, 3000); // 3초마다 실행
+            // intervalId = setInterval(() => {
+            //     // 현재 위치로 맵 가운데를 변경시키기
+            //     const center = new (naverState as any).maps.LatLng(lat, lng);
+            //     // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
+            //     setCenterState(center);
+            //     (mapState as any).setZoom(15, true);
+            //     (mapState as any).panTo(center);
+            // }, 500); // 3초마다 실행
         }
 
         // isUpdate이 변경되면 return 실행됨
@@ -345,7 +346,7 @@ export default function Core() {
                 clearInterval(intervalId);
             }
         };
-    }, [isUpdate]);
+    }, [isUpdate, lat, lng]);
 
     function handlerBtnClick() {
         setIsUpdate(prev => !prev);
@@ -356,17 +357,20 @@ export default function Core() {
         //     <div id='map'></div>
         // </div>
         <>
-            {isUpdate === true ? (
-                <button className='btn' onClick={handlerBtnClick}>
-                    해제
-                </button>
-            ) : (
-                <button className='btn' onClick={handlerBtnClick}>
-                    적용
-                </button>
-            )}
             <S.MapDisplay>
+                {isUpdate === true ? (
+                    <S.ImgOuter>
+                        <img src={gpsPinActImage} alt='gpsImage' onClick={handlerBtnClick} />
+                    </S.ImgOuter>
+                ) : (
+                    <S.ImgOuter>
+                        <img src={gpsPinDeactImage} alt='gpsImage' onClick={handlerBtnClick} />
+                    </S.ImgOuter>
+                )}
                 <S.Map id='map'></S.Map>
+                {isSelect ? <MusicBox></MusicBox> : null}
+                <MusicBox></MusicBox>
+                <Navbar></Navbar>
             </S.MapDisplay>
         </>
     );
