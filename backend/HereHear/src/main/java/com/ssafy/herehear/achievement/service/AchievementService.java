@@ -15,5 +15,5 @@ public interface AchievementService {
 
     void equipAchievement(Long memberId, EquipAchievementDto equipAchievementDto);
 
-    AchievementDto getAchievement(Long memberId);
+    AchievementDto getAchievement(Long achievementId);
 }
