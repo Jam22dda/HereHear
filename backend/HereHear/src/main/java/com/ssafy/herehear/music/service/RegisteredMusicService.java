@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RegisteredMusicService {
 
-    SseResDto registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto);
+    List<SseResDto> registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto);
 
     List<OccasionResDto> getAllTags();
 
@@ -15,7 +15,7 @@ public interface RegisteredMusicService {
 
     List<RegisteredMusicResDto> getRegisteredMusicList();
 
-    SseResDto updateMyRegisteredMusic(long memberId, long registeredMusicId);
+    List<SseResDto> updateMyRegisteredMusic(long memberId, long registeredMusicId);
 
     List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId);
 }

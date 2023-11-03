@@ -1,5 +1,6 @@
 package com.ssafy.herehear.member.mapper;
 
+import com.ssafy.herehear.entity.Achievement;
 import com.ssafy.herehear.entity.Follow;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.ProfileCharacter;
@@ -21,7 +22,7 @@ public interface MemberMapper {
 
     Follow toFollow(Member member, Long followMemberId);
 
-    MemberInfoResDto toMemberInfoResDto(Member member);
+    MemberInfoResDto toMemberInfoResDto(Member member, Achievement achievement);
 
     Member toMember(String nickname, String email, String provider);
 }
