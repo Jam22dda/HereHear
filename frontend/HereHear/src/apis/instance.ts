@@ -6,14 +6,18 @@ const APP_SERVER_URL = "https://k9b202.p.ssafy.io/api/";
 const instance: AxiosInstance = axios.create({
     baseURL: `${APP_SERVER_URL}/`,
     headers: {
-        Authorization:
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJwcm92aWRlciI6Imtha2FvIiwibWVtYmVySWQiOiIxNCIsInN1YiI6ImF1dGgiLCJpYXQiOjE2OTg5NzM0MjksImV4cCI6MTY5OTA1OTgyOX0.qqeheQwSgD-HDhNg0uWt75DTfjkfRNun03uwixVmrt9sOdSMgPJFHHsLWFNSihFj3rGEcGIohOWBeAZmBb2iAg",
         "Content-Type": "application/json",
     },
 });
 
 instance.interceptors.request.use(
     (config) => {
+        const token = localStorage.getItem("token");
+        console.log(token);
+        if (token) {
+            // 직접 속성을 할당하는 대신 이 방법을 사용
+            config.headers["Authorization"] = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => {
