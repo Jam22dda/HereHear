@@ -59,4 +59,10 @@ public class RegisteredMusicController {
         return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
     }
 
+    @GetMapping("/list/{memberId}")
+    public DataResponse<List<MyRegisteredMusicResDto>> memberRegisteredMusicList(@PathVariable Long memberId) {
+        return new DataResponse<>("200", "다른 유저가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
+    }
+
+
 }
