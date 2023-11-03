@@ -31,4 +31,9 @@ public class LikeMusicController {
         return new DataResponse<>("200", "좋아요 음악 목록 조회", likeMusicService.likeMusicList(memberId));
     }
 
+    @GetMapping("/list/{memberId}")
+    public DataResponse<List<LikeRegisteredMusicResDto>> likeMemberMusicList(@PathVariable Long memberId) {
+        return new DataResponse<>("200", "다른 유저의 좋아요한 음악 조회", likeMusicService.likeMusicList(memberId));
+    }
+
 }
