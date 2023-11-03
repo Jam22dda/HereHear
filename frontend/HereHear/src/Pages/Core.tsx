@@ -77,6 +77,11 @@ export default function Core() {
                 console.log('화면 자동 업데이트 비활성화');
                 console.log(setIsUpdate(false));
             });
+
+            window.addEventListener('touchstart', function () {
+                console.log('화면 자동 업데이트 비활성화');
+                console.log(setIsUpdate(false));
+            });
             // naver.maps.Event.addListener(map, 'click', function () {
             //     console.log(setIsUpdate(false));
             // });
@@ -317,12 +322,12 @@ export default function Core() {
                         maximumAge: 0,
                     }
                 );
-            }, 500); // 3000ms = 3초
+            }, 3000); // 3000ms = 3초
 
             // 컴포넌트가 언마운트될 때 인터벌을 클리어
             return () => clearInterval(intervalId);
         }
-    }, [mapState, naverState, userPinState, centerState]);
+    }, []);
 
     // 내가 이동할 때마다 위치 업데이트 시키기
     useEffect(() => {
@@ -338,13 +343,14 @@ export default function Core() {
             (mapState as any).setZoom(15, true);
             (mapState as any).panTo(center);
 
-            intervalId = setInterval(() => {
-                // 현재 위치로 맵 가운데를 변경시키기
-                const center = new (naverState as any).maps.LatLng(lat, lng);
-                // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
-                setCenterState(center);
-                (mapState as any).panTo(center);
-            }, 3000); // 3초마다 실행
+            // intervalId = setInterval(() => {
+            //     // 현재 위치로 맵 가운데를 변경시키기
+            //     const center = new (naverState as any).maps.LatLng(lat, lng);
+            //     // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
+            //     setCenterState(center);
+            //     (mapState as any).setZoom(15, true);
+            //     (mapState as any).panTo(center);
+            // }, 500); // 3초마다 실행
         }
 
         // isUpdate이 변경되면 return 실행됨
@@ -355,7 +361,7 @@ export default function Core() {
                 clearInterval(intervalId);
             }
         };
-    }, [isUpdate]);
+    }, [lat, lng]);
 
     function handlerBtnClick() {
         setIsUpdate(prev => !prev);
