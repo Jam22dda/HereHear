@@ -7,6 +7,7 @@ import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,9 +30,8 @@ public class AchievementController {
     }
 
     @GetMapping("/myachievement")
-    public DataResponse<List<MemberAchievementDto>> getMyTitle() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public DataResponse<List<MemberAchievementDto>> getMyTitle(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[달성한 업적 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -50,9 +50,8 @@ public class AchievementController {
     }
 
     @PutMapping("/equip")
-    public CommonResponse equipAchievement(@RequestBody EquipAchievementDto equipAchievementDto) {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public CommonResponse equipAchievement(@RequestBody EquipAchievementDto equipAchievementDto, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[칭호, 뱃지 장착] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
