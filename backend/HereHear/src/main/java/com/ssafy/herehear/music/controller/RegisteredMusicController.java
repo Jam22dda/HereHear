@@ -24,7 +24,7 @@ public class RegisteredMusicController {
     @PostMapping
     public CommonResponse registerMusic(Authentication authentication, @RequestBody RegisterMusicReqDto req) {
         Long memberId = Long.parseLong(authentication.getName());
-        SseResDto sseResDto = registeredMusicService.registerMusic(memberId, req);
+        List<SseResDto> sseResDto = registeredMusicService.registerMusic(memberId, req);
         sseService.notify(memberId, sseResDto);
         return new CommonResponse("200", "음악 등록");
     }
@@ -43,7 +43,7 @@ public class RegisteredMusicController {
     @PutMapping
     public CommonResponse updateMyRegisteredMusic(Authentication authentication, @RequestBody UpdateMusicIdReqDto req) {
         Long memberId = Long.parseLong(authentication.getName());
-        SseResDto sseResDto = registeredMusicService.updateMyRegisteredMusic(memberId, req.getRegisteredMusicId());
+        List<SseResDto> sseResDto = registeredMusicService.updateMyRegisteredMusic(memberId, req.getRegisteredMusicId());
         sseService.notify(memberId, sseResDto);
         return new CommonResponse("200", "등록한 음악 삭제");
     }
