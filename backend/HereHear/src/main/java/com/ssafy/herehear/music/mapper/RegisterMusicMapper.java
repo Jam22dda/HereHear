@@ -15,14 +15,13 @@ public interface RegisterMusicMapper {
 
     MusicOccasion toMusicOccasion(Occasion occasion, RegisteredMusic registeredMusic);
 
-    RegisteredMusicDetailsResDto toRegisteredMusicResDto(RegisteredMusic registeredMusic, boolean like, String nickname, List<Occasion> occasions);
+    RegisteredMusicDetailsResDto toRegisteredMusicDetailsResDto(RegisteredMusic registeredMusic, boolean like, String nickname, List<String> occasionName);
 
-    RegisteredMusicResDto toRegisteredMusicListResDto(RegisteredMusic registeredMusic, List<Occasion> occasions);
+    RegisteredMusicResDto toRegisteredMusicListResDto(RegisteredMusic registeredMusic, List<String> occasionName);
 
     MyRegisteredMusicResDto toMyRegisteredMusicResDto(RegisteredMusic registeredMusic);
 
     OccasionResDto toOccasionResDto(Occasion occasion);
 
-    AroundMusicResDto toAroundMusicResDto(RegisteredMusic registeredMusic, List<String> occasionName);
-
+    SseResDto toSseResDto(int status, RegisteredMusic registeredMusic, List<String> occasionName);
 }

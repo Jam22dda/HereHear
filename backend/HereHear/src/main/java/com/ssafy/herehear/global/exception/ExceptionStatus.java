@@ -37,7 +37,13 @@ public enum ExceptionStatus {
     /**
      * 업적 관련 STATUS CODE
      */
-    ACHIEVEMENT_NOT_FOUND("-4003", "업적을 찾을 수 업습니다.");
+    ACHIEVEMENT_NOT_FOUND("-4003", "업적을 찾을 수 업습니다."),
+
+    /**
+     * 파일 업로드 관련 STATUS CODE
+     */
+    FILE_NOT_FOUND("-4200", "파일을 찾을 수 없습니다."),
+    FILE_UPLOAD_FAILED("-4201", "파일 업로드에 실패하였습니다.");
 
 
     private final String code;

@@ -23,7 +23,7 @@ public class LikeMusicRepositoryImpl implements LikeMusicRepositoryCustom{
                 .from(likeMusic)
                 .join(likeMusic.registeredMusic, registeredMusic)
                 .where(likeMusic.member.memberId.eq(memberId)
-                        .and(registeredMusic.isDeleted.isNull()))
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
                 .orderBy(likeMusic.createTime.desc())
                 .fetch();
     }

@@ -1,10 +1,10 @@
 package com.ssafy.herehear.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,17 +31,17 @@ public class Member {
 
     private LocalDateTime removeDate;
 
-    @ColumnDefault("USER")
+//    @ColumnDefault("USER")
     private String role;
 
     @Column(nullable = false)
     private String provider;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_character_id")
     private ProfileCharacter profileCharacter;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "achievement_id")
     private Achievement achievement;
 
