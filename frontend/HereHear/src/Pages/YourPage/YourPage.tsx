@@ -1,13 +1,8 @@
 // import { useParams } from "react-router-dom";
-// import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Image } from "../../components/atoms/Image/Image";
-// import iconBack from "../../../public/images/icon-back.png";
-import * as S from "./MyPage.styles";
-// import monziSleeping from "../../../public/images/monzi-sleeping.png";
+import * as S from "./YourPage.styles";
 import { Text } from "../../components/atoms/Text/Text.styles";
-import iconEdit from "../../assets/MyPage/icon-edit.png";
 import Button from "../../components/atoms/Button/Button";
-// import iconPurpleStar from "../../../public/images/icon-purplestar.png";
 import iconLp from "../../assets/MyPage/icon-lp.png";
 import ItemBox from "../../components/molcules/ItemBox/ItemBox";
 import Navbar from "../../components/molcules/Navbar/Navbar";
@@ -15,10 +10,8 @@ import iconLikemusic from "../../assets/MyPage/icon-likemusic.png";
 import iconBadge from "../../assets/MyPage/badges.png";
 import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 import { useNavigate } from "react-router-dom";
-import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
-import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
-import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
-import { useGetMyAchievement } from "../../apis/Mypage/Quries/useGetMyAchievement";
+import icon1102DJ from "../../../public/images/icon-1102dj.png";
+import { useGetYourinfo } from "../../apis/Mypage/Quries/useGetYourInfo";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -28,77 +21,72 @@ const mypage = [
 ];
 
 export default function MyPage() {
+    // const { id } = useParams();
+
     const navigate = useNavigate(); // useNavigate 훅 사용
 
     const navigatePage = (path: string) => {
         navigate(path);
     };
 
-    const UserInfo = useGetUserinfo();
-    const Follower = useGetFollower();
-    const Following = useGetFollowing();
-    const MyAchievement = useGetMyAchievement(UserInfo.achievementId);
-    console.log(MyAchievement);
+    const YourInfo = useGetYourinfo(14);
+    console.log(YourInfo);
 
     return (
         <div id="display">
             <div className="container">
-                <S.MyPageWrapper>
+                <S.FollowBtnWrapper>
+                    <Button option="follow" size="medium" $width="70px">
+                        팔로우
+                    </Button>
+                </S.FollowBtnWrapper>
+                <S.YourPageWrapper>
                     <S.Profile>
                         <Image
                             src={
-                                UserInfo &&
-                                UserInfo.profileCharacter.characterImage
+                                YourInfo &&
+                                YourInfo.profileCharacter.characterImage
                             }
                             width={140}
                             height={140}
                             $unit="px"
                         ></Image>
                     </S.Profile>
-                    <S.MydataWrapper>
+                    <S.YourdataWrapper>
                         <Image
-                            src={MyAchievement && MyAchievement.badge.badgeImg}
+                            src={icon1102DJ}
                             width={24}
                             height={24}
                             $unit="px"
                             $margin="0 4px 4px 0"
                         ></Image>
                         <Text size="body1" fontWeight="bold">
-                            {MyAchievement && MyAchievement.title.titleName}
+                            신규 DJ
                         </Text>
                         <Text size="body1" $marginLeft="4px">
-                            {UserInfo && UserInfo.nickname}
+                            {YourInfo && YourInfo.nickname}
                         </Text>
                         <Text size="body2" $marginLeft="4px">
                             님
                         </Text>
-                        <S.EditWrapper>
-                            <Image
-                                src={iconEdit}
-                                width={16}
-                                height={16}
-                                $unit="px"
-                                $margin="0 0 0 4px"
-                            ></Image>
-                        </S.EditWrapper>
-                    </S.MydataWrapper>
+                    </S.YourdataWrapper>
                     <S.FollowWrapper>
                         <Button
                             option="tag_plus"
                             size="largeplus"
                             $width="130px"
                         >
-                            팔로잉 {Following.length}명
+                            팔로잉
                         </Button>
                         <Button
                             option="tag_plus"
                             size="largeplus"
                             $width="130px"
                         >
-                            팔로워 {Follower.length}명
+                            팔로워
                         </Button>
                     </S.FollowWrapper>
-                    <S.MyItemWrapper>
+                    <S.YourItemWrapper>
                         {mypage.map((item, index) => (
                             <ItemBox
                                 key={index}
@@ -107,9 +95,9 @@ export default function MyPage() {
                                 onClick={() => navigatePage(item.params)}
                             />
                         ))}
-                    </S.MyItemWrapper>
-                    <Navbar></Navbar>
-                </S.MyPageWrapper>
+                    </S.YourItemWrapper>
+                </S.YourPageWrapper>
+                <Navbar></Navbar>
             </div>
         </div>
     );
