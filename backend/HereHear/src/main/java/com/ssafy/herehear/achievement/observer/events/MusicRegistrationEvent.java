@@ -8,6 +8,7 @@ import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.Achievement;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberAchievement;
+import com.ssafy.herehear.entity.MemberAchievementId;
 import com.ssafy.herehear.entity.type.AchievementCategoryType;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
@@ -47,6 +48,7 @@ public class MusicRegistrationEvent implements EventListener {
         for (Achievement achievement : achievementList) {
             if (registeredMusicCount >= achievement.getCount() && !memberAchievementList.contains(achievement)) {
                 memberAchievementRepository.save(MemberAchievement.builder()
+                        .id(MemberAchievementId.builder().memberId(member.getMemberId()).achievementId(achievement.getAchievementId()).build())
                         .member(member)
                         .achievement(achievement)
                         .build());
