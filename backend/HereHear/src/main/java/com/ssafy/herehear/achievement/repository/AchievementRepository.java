@@ -12,4 +12,6 @@ public interface AchievementRepository extends JpaRepository<Achievement, Long> 
 
     List<Achievement> findByCategory(AchievementCategoryType achievementCategoryType);
 
+    @Query("select a from Achievement a join fetch a.titleCode join fetch a.badgeCode")
+    List<Achievement> findAllEager();
 }

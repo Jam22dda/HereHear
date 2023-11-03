@@ -33,7 +33,7 @@ public class AchievementController {
     public DataResponse<List<MemberAchievementDto>> getMyTitle(Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
-        log.info("[달성한 업적 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+        log.info("[달성한 업적 포함 전체조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
         List<MemberAchievementDto> myAchievementList = achievementService.getMyAchievementList(memberId);
 
