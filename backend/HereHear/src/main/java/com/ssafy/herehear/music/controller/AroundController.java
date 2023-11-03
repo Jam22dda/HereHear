@@ -1,15 +1,11 @@
 package com.ssafy.herehear.music.controller;
 
 import com.ssafy.herehear.global.response.DataResponse;
-import com.ssafy.herehear.music.dto.request.AroundMusicReqDto;
 import com.ssafy.herehear.music.dto.request.AroundSearchReqDto;
 import com.ssafy.herehear.music.dto.response.AroundMusicResDto;
 import com.ssafy.herehear.music.service.AroundService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,9 +16,9 @@ public class AroundController {
 
     private final AroundService aroundService;
 
-    @GetMapping("/list")
-    public DataResponse<List<AroundMusicResDto>> aroundMusicList(@RequestBody AroundMusicReqDto aroundMusicReqDto) {
-        return new DataResponse<>("200", "주변 음악 조회", aroundService.getAroundMusicList(aroundMusicReqDto));
+    @GetMapping("/list/{lat}/{lng}")
+    public DataResponse<List<AroundMusicResDto>> aroundMusicList(@PathVariable Double lat, @PathVariable Double lng) {
+        return new DataResponse<>("200", "주변 음악 조회", aroundService.getAroundMusicList(lat, lng));
     }
 
     @GetMapping("/search")
