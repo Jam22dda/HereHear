@@ -28,15 +28,15 @@ class MainActivity : ComponentActivity() {
                 navController = navController,
                 startDestination = "landing"
             ) {
-                composable("musicInfo") {
-                    val albumImage = painterResource(R.drawable.ditto)
-                    MusicInfoScreen(albumImage = albumImage)
-                }
                 composable("landing") {
-                    LandingPage()
+                    LandingPage(navController)
                 }
                 composable("map") {
-                    GoogleMapPage()
+                    GoogleMapPage(navController)
+                }
+                composable("musicInfo") {
+                    val albumImage = painterResource(R.drawable.ditto)
+                    MusicInfoScreen(albumImage = albumImage, navController)
                 }
             }
         }
