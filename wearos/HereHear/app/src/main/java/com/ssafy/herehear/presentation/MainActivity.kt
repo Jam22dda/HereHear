@@ -10,6 +10,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavOptions
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
@@ -17,19 +18,31 @@ import com.ssafy.herehear.R
 import com.ssafy.herehear.presentation.page.GoogleMapPage
 import com.ssafy.herehear.presentation.page.LandingPage
 import com.ssafy.herehear.presentation.page.MusicInfoScreen
+import com.ssafy.herehear.presentation.retrofit.api.authRequest
+import com.ssafy.herehear.presentation.util.readPersonalCodeFile
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberSwipeDismissableNavController()
+            var startDestination: String = "landing"
+
+            // access 처리
+            val personalCode: String = baseContext.readPersonalCodeFile("personalCode.txt")
+            if (personalCode != "") {
+                val authRequest = authRequest(personalCode)
+                if (authRequest?.accessResult == true) {
+                    startDestination = "map"
+                }
+            }
 
             SwipeDismissableNavHost(
                 navController = navController,
-                startDestination = "landing"
+                startDestination = startDestination
             ) {
                 composable("landing") {
-                    LandingPage(navController)
+                    LandingPage(navController, baseContext)
                 }
                 composable("map") {
                     GoogleMapPage(navController)
