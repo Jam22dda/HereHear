@@ -21,12 +21,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Text
+import com.ssafy.herehear.presentation.retrofit.api.personalCodeApi
 
 @Composable
-fun LandingPage() {
+fun LandingPage(navController: NavHostController) {
+    // 사용자가 입력한 code 저장을 위한 state
     val (inputCode, setInputCode) = remember {
         mutableStateOf("")
     }
@@ -60,13 +63,15 @@ fun LandingPage() {
         BasicTextField(
             value = inputCode,
             onValueChange = setInputCode,
-            modifier = Modifier.background(color = Color.DarkGray)
+            modifier = Modifier
+                .background(color = Color.DarkGray)
                 .height(25.dp),
         )
 
-
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                personalCodeApi(inputCode, setInputCode, navController)
+            },
             modifier = Modifier
                 .padding(all = 8.dp)
                 .clip(RoundedCornerShape(1888.dp)),
