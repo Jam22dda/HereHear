@@ -8,7 +8,7 @@ import PlayBtn from "../../components/molcules/Play/Play";
 
 export default function MusicPlay() {
     const tags = [{ tag: "산책" }, { tag: "청량" }, { tag: "주말" }];
-    const music = { artist: "악동뮤지션", title: "LOVELEE" };
+    const music = { artist: "악동뮤지션", title: "LOVELEE", src: "frontend/HereHear/src/assets/MusicItem/BTS_answer.jpg" };
     return (
         <div id="display">
             <div className="container">
@@ -19,7 +19,7 @@ export default function MusicPlay() {
                             <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item.tag}></Button>
                         ))}
                     </S.SelectTagWrapper>
-                    <AlbumCover></AlbumCover>
+                    <AlbumCover src={music.src}></AlbumCover>
                     <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }}></CircleButton>
                     <Text size="body2" fontWeight="bold" $marginTop="10px">
                         {music.artist}

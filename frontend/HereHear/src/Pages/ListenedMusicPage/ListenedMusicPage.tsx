@@ -16,13 +16,13 @@ export default function ListenedMusicPage() {
                     최근 들은 노래 리스트
                 </Text>
                 <S.MusicItemWrapper>
-                    <MusicItem src={BTS_answer} title="Answer : Love Myself" artist="방탄소년단"></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                     <CircleButton option="gradDeActivated" size="large">
                         <Image src={iconHeart} width={24} height={20} $unit="px"></Image>
                     </CircleButton>
                 </S.MusicItemWrapper>
                 <S.MusicItemWrapper>
-                    <MusicItem src={BTS_answer} title="Answer : Love Myself" artist="방탄소년단"></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                     <CircleButton option="gradActivated" size="large">
                         <Image src={iconEmptyheart} width={24} height={20} $unit="px"></Image>
                     </CircleButton>
