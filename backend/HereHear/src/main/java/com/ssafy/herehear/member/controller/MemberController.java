@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -69,9 +70,17 @@ public class MemberController {
         return new CommonResponse("200", "언팔로우 성공");
     }
 
+    @GetMapping("/check/nickname/{nickname}")
+    public DataResponse<Map<String, Boolean>> checkNickname(@PathVariable("nickname") String nickname) {
+        boolean isAvailable = memberService.checkNickname(nickname);
+        Map<String, Boolean> response = Map.of("isAvailable", isAvailable);
+        String message = isAvailable ? "사용 가능한 닉네임 입니다" : "이미 사용중인 닉네임 입니다";
+        return new DataResponse<>("200", message, response);
+    }
+
     @PostMapping("/signup")
     public DataResponse signUp(@RequestBody SignUpReqDto req, HttpServletResponse response) {
-        String accessToken =  memberService.signUp(req, response);
+        String accessToken = memberService.signUp(req, response);
         return new DataResponse("200", "회원 가입이 완료되었습니다", accessToken);
     }
 

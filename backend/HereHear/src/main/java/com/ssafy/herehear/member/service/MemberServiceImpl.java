@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -46,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
 
-        if(findMember.getNickname() != null && findMember.getProfileCharacter() != null){
+        if (findMember.getNickname() != null && findMember.getProfileCharacter() != null) {
             throw new CustomException(ExceptionStatus.MEMBER_ALREADY_SIGNED);
         }
 
@@ -110,7 +111,7 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
-        if(findMember.getRemoveDate() != null)
+        if (findMember.getRemoveDate() != null)
             throw new CustomException(ExceptionStatus.MEMBER_IS_DELETED);
 
         findMember.deleteMember();
@@ -123,7 +124,7 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
-        if(findMember.getRemoveDate() != null)
+        if (findMember.getRemoveDate() != null)
             throw new CustomException(ExceptionStatus.MEMBER_IS_DELETED);
 
         MemberInfoResDto res = memberMapper.toMemberInfoResDto(findMember, findMember.getAchievement());
@@ -172,5 +173,10 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new CustomException(ExceptionStatus.FOLLOW_NOT_FOUND));
 
         followRepository.delete(follow);
+    }
+
+    @Override
+    public boolean checkNickname(String nickname) {
+        return memberRepository.findByNickname(nickname).isEmpty();
     }
 }
