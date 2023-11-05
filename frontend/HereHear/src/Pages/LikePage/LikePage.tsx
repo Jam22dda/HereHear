@@ -23,53 +23,22 @@ export default function LikePage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigatePage("/mypage/1")}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigatePage("/mypage/1")}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="30px 0 50px 0"
-                >
+                <Text size="subtitle1" fontWeight="bold" $margin="30px 0 50px 0">
                     내가 좋아요한 노래
                 </Text>
                 <S.LikeItemWrapper>
-                    <MusicItem
-                        src={BTS_answer}
-                        title="Answer : Love Myself"
-                        artist="방탄소년단"
-                    ></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                     <CircleButton option="gradDeActivated" size="large">
-                        <Image
-                            src={iconHeart}
-                            width={24}
-                            height={20}
-                            $unit="px"
-                        ></Image>
+                        <Image src={iconHeart} width={24} height={20} $unit="px"></Image>
                     </CircleButton>
                 </S.LikeItemWrapper>
                 <S.LikeItemWrapper>
-                    <MusicItem
-                        src={BTS_answer}
-                        title="Answer : Love Myself"
-                        artist="방탄소년단"
-                    ></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                     <CircleButton option="gradActivated" size="large">
-                        <Image
-                            src={iconEmptyheart}
-                            width={24}
-                            height={20}
-                            $unit="px"
-                        ></Image>
+                        <Image src={iconEmptyheart} width={24} height={20} $unit="px"></Image>
                     </CircleButton>
                 </S.LikeItemWrapper>
             </div>
