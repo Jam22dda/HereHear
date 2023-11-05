@@ -42,6 +42,9 @@ public class AchievementAspect {
                 .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC));
 
         achievementEventManager.notify(EventType.LIKE_COUNT, registeredMusic.getMember().getMemberId());
+        achievementEventManager.notify(EventType.TOTAL_LIKE, registeredMusicId);
     }
+
+
 
 }
