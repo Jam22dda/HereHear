@@ -3,7 +3,8 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-feature android:name="android.hardware.type.watch" />
+<!--    <uses-feature android:name="android.hardware.type.watch" />-->
+    <uses-feature android:required="true" android:name="android.hardware.type.watch" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +23,9 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCjYLHgShf7UC1U35t9YGkcT3LJfXxTi8Q" />
 
         <activity
             android:name=".presentation.MainActivity"
