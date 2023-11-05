@@ -12,4 +12,5 @@ public interface LikeMusicRepository extends JpaRepository<LikeMusic, Long> {
     @Query("select count(l) from LikeMusic l where l.registeredMusic.member.memberId = :memberId")
     long countByMemberRegisteredMusic(@Param("memberId") Long memberId);
 
+    long countByRegisteredMusic_RegisteredMusicId(Long registeredMusicId);
 }

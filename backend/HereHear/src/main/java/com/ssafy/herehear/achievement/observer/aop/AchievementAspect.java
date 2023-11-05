@@ -42,6 +42,16 @@ public class AchievementAspect {
                 .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC));
 
         achievementEventManager.notify(EventType.LIKE_COUNT, registeredMusic.getMember().getMemberId());
+        achievementEventManager.notify(EventType.TOTAL_LIKE, registeredMusicId);
+    }
+
+    @AfterReturning("execution(* com.ssafy.herehear.member.service.MemberService.follow(..))")
+    public void afterFollowAdvice(JoinPoint joinPoint) {
+        Long memberId = (Long) joinPoint.getArgs()[1];
+
+        log.info("[팔로우 등록 후 AOP 실행] FOLLOWER_COUNT 업적 체크 memberId: {}", memberId);
+
+        achievementEventManager.notify(EventType.FOLLOWER_COUNT, memberId);
     }
 
 }
