@@ -1,5 +1,7 @@
 package com.ssafy.herehear.presentation.page
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +30,7 @@ import androidx.wear.compose.material.Text
 import com.ssafy.herehear.presentation.retrofit.api.personalCodeApi
 
 @Composable
-fun LandingPage(navController: NavHostController) {
+fun LandingPage(navController: NavHostController, baseContext: Context) {
     // 사용자가 입력한 code 저장을 위한 state
     val (inputCode, setInputCode) = remember {
         mutableStateOf("")
@@ -70,7 +72,8 @@ fun LandingPage(navController: NavHostController) {
 
         Button(
             onClick = {
-                personalCodeApi(inputCode, setInputCode, navController)
+                Log.d("Retrofit", inputCode)
+                personalCodeApi(inputCode, setInputCode, navController, baseContext)
             },
             modifier = Modifier
                 .padding(all = 8.dp)
