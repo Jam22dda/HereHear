@@ -61,11 +61,10 @@ public class SseServiceImpl implements SseService {
         sseRepositoryImpl.forEach((id, emitter) -> {
             try {
                 emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(data));
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException exception) {
+                log.info("sendAllClient exception: "+exception);
             }
         });
-        log.info("sendToClient data: "+data);
     }
 
     @Override
@@ -82,32 +81,25 @@ public class SseServiceImpl implements SseService {
     }
 
     //처음에는 실행하지 않고 1시간 후부터 매 1시간마다 실행
-    @Scheduled(fixedRate =  3600000, initialDelay =  3600000)
+    @Scheduled(fixedRate =  3600000, initialDelay =  3600000)//3600000
     public void checkForDataChanges() {
         List<SseResDto> sseResDtos = new ArrayList<>();
 
         //SSE 추가
-        List<RegisteredMusic> addRegisteredMusics = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+        List<SseResDto> addSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(this::afterHourFilter)
-                .toList();
-
-        List<SseResDto> addSseResDto = addRegisteredMusics.stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
                 .toList();
-        log.info("checkForDataChanges addSseResDto: "+ addSseResDto);
 
         //SSE 삭제
-        List<RegisteredMusic> deleteRegisteredMusics = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+        List<SseResDto> deleteSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(this::beforeHourFilter)
-                .toList();
-
-        List<SseResDto> deleteSseResDto = deleteRegisteredMusics.stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(0, registeredMusic))
                 .toList();
-        log.info("checkForDataChanges deleteSseResDto: "+ deleteSseResDto);
 
         sseResDtos.addAll(addSseResDto);
         sseResDtos.addAll(deleteSseResDto);
+        log.info("checkForDataChanges sseResDtos: "+ sseResDtos);
 
         sendAllClient(sseResDtos);
     }
