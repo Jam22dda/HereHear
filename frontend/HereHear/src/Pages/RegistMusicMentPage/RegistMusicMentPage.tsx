@@ -49,6 +49,7 @@ export default function RegistMusicMent() {
                     <Button option="tag_plus" size="mediumplus" $width="96px" $margin="20px 0 0 0 " onClick={onClickToggleModal}>
                         태그추가 +
                     </Button>
+
                     {/* TODO: 태그 선택전에는 안보이게, 태그 선택하면 그 값을 여기로 가져오기 */}
                     {/* <S.SelectTagWrapper>
                         {tags.map((item, index) => (
