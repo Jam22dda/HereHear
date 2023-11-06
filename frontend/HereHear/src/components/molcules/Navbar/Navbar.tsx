@@ -12,7 +12,7 @@ import iconMypage from "../../../assets/Navbar/icon-mypage.png";
 
 const navBarInfo = [
     { src: iconMap, path: "/core" },
-    { src: iconMusiclist, path: "/achievement" },
+    { src: iconMusiclist, path: "/listenedMusic" },
     { src: iconMusicplus, path: "/registMusic" },
     { src: iconStatistics, path: "/selectMusic" },
     { src: iconMypage, path: "/mypage" },
