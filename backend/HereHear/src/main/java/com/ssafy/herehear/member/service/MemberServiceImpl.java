@@ -8,6 +8,8 @@ import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.CookieUtil;
 import com.ssafy.herehear.global.util.JwtProvider;
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
+import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
+import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import com.ssafy.herehear.member.mapper.MemberMapper;
@@ -72,23 +74,23 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateNickname(String nickname, Long memberId) {
+    public void updateNickname(UpdateMemberReqDto updateMemberReqDto, Long memberId) {
         Member findMember = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
 
-        findMember.updateNickname(nickname);
+        findMember.updateNickname(updateMemberReqDto.getNickname());
         memberRepository.save(findMember);
     }
 
     @Override
     @Transactional
-    public void updateCharacter(Long characterId, Long memberId) {
+    public void updateCharacter(UpdateCharacterReqDto updateCharacterReqDto, Long memberId) {
         Member findMember = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
 
-        ProfileCharacter findCharcter = profileCharacterRepository.findById(characterId).orElseThrow(
+        ProfileCharacter findCharcter = profileCharacterRepository.findById(updateCharacterReqDto.getCharacterId()).orElseThrow(
                 () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
         );
 
