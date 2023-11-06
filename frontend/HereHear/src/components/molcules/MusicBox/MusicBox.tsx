@@ -6,6 +6,7 @@ import afterBtn from '../../../assets/MusicBox/icon-musicAfterBtn.png';
 import beforeBtn from '../../../assets/MusicBox/icon-musicBeforeBtn.png';
 import Button from '../../atoms/Button/Button';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // {isSelect ? <MusicBox musicAroundList={musicAroundList} pinId={userSelectPin} setIsSelect={setIsSelect}></MusicBox> : null}
 
@@ -19,11 +20,7 @@ export default function MusicBox(props: any) {
     const [tag3, setTag3] = useState('tag3');
     const [imgUrl, setImgUrl] = useState('');
 
-    // albumImg: 'http://i.maniadb.com/images/album/940/940274_1_f.jpg';
-    // occasionName: (3)[('감성', '봄', '맑음')];
-    // registeredMusicId: 2;
-    // singer: '아이유';
-    // subject: '복숭아';
+    const navigate = useNavigate();
 
     // 최초 컴포넌트 접근 시
     useEffect(() => {
@@ -78,7 +75,11 @@ export default function MusicBox(props: any) {
                     nextMusicHandler('prev');
                 }}
             ></Image>
-            <S.BigWrapper>
+            <S.BigWrapper
+                onClick={() => {
+                    navigate('/musicPlay', { state: { data: pinId } });
+                }}
+            >
                 <Image src={imgUrl} width={100} height={100} $unit='px' $borderRadius='10px'></Image>
 
                 <S.MidWrapper>
