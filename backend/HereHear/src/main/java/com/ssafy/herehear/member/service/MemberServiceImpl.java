@@ -89,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
                 () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
         );
 
-        ProfileCharacter findCharcter = profileCharacterRepository.findById(updateCharacterReqDto.getChracterId()).orElseThrow(
+        ProfileCharacter findCharcter = profileCharacterRepository.findById(updateCharacterReqDto.getCharacterId()).orElseThrow(
                 () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
         );
 

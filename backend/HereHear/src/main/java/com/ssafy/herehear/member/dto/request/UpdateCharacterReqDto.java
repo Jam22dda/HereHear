@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class UpdateCharacterReqDto {
-    private Long chracterId;
+    private Long characterId;
 }
