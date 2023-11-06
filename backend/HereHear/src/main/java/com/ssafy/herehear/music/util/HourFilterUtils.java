@@ -1,15 +1,12 @@
 package com.ssafy.herehear.music.util;
 
 import com.ssafy.herehear.entity.RegisteredMusic;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 public class HourFilterUtils {
-
-    private static final LocalTime currentTime = LocalDateTime.now().toLocalTime();
 
     public static boolean findHourFilter(RegisteredMusic findRegisteredMusic){
         long hoursDifference = hoursDifference(findRegisteredMusic);
@@ -27,6 +24,7 @@ public class HourFilterUtils {
     }
 
     public static long hoursDifference(RegisteredMusic findRegisteredMusic){
+        LocalTime currentTime = LocalDateTime.now().toLocalTime();
         return ChronoUnit.HOURS.between(currentTime, findRegisteredMusic.getCreateTime());
     }
 }
