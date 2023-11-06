@@ -1,9 +1,14 @@
 import { instance } from "../instance";
+import { changeNickname } from "../../types/user";
 
 const getUserinfo = async () => {
     try {
         const response = await instance.get("/member/info");
         console.log("getUserinfo 성공");
+        console.log(
+            response.data.data,
+            "오냐고??????????????????????????????????????"
+        );
         return response.data.data;
     } catch (error) {
         console.error("Error fetching search music", error);
@@ -77,7 +82,7 @@ const getAchievementList = async () => {
     }
 };
 
-const getMyAchievement = async (achievementId: number) => {
+const getMyAchievement = async (achievementId: number | undefined) => {
     try {
         const response = await instance.get(`/achievement/${achievementId}`);
         console.log("getMyAchievement 성공", response);
@@ -86,6 +91,24 @@ const getMyAchievement = async (achievementId: number) => {
         console.error("Error fetching search music", error);
         throw error;
     }
+};
+
+interface postNicknameResponse {
+    code: number;
+    message: string;
+}
+
+const postNickname = async (
+    nickname: changeNickname
+): Promise<postNicknameResponse> => {
+    const response = await instance.post<postNicknameResponse>(
+        "/member/update/nickname",
+        {
+            nickname,
+        }
+    );
+    console.log(response);
+    return response.data;
 };
 
 export {
@@ -97,4 +120,5 @@ export {
     getFollowing,
     getAchievementList,
     getMyAchievement,
+    postNickname,
 };
