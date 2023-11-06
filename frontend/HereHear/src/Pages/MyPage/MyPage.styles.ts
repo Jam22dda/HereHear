@@ -42,3 +42,16 @@ export const MyItemWrapper = styled.div`
 export const EditWrapper = styled.button`
     background-color: transparent;
 `;
+
+export const ExitWrapper = styled.div`
+    display: flex;
+    justify-content: end;
+`;
+
+export const TextWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+`;
