@@ -1,24 +1,36 @@
 package com.ssafy.herehear.presentation.util
 
 import android.content.Context
+import java.io.BufferedReader
 import java.io.DataInputStream
 import java.io.File
+import java.io.IOException
+import java.io.InputStreamReader
 
 fun Context.readPersonalCodeFile(fileName: String): String {
-    val file = File(filesDir, "personalCode.txt")
-    if (!file.exists()) {
-        val input = openFileInput("personalCode.txt")
-        val dis = DataInputStream(input)
-        val personalCode = dis.readUTF()
-        dis.close() //종료
-
-        return personalCode
+    val file = File(filesDir, fileName)
+    if (file.exists()) {
+        try {
+            // 버퍼를 사용하여 파일의 내용을 한 번에 읽습니다.
+            BufferedReader(InputStreamReader(openFileInput(fileName))).use { br ->
+                // 파일의 모든 텍스트를 읽고 문자열로 반환합니다.
+                return br.readText()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    } else {
+        try {
+            file.createNewFile()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
     return ""
 }
 
 fun Context.deletePersonalCodeFile(fileName: String) {
-    val file = File(filesDir, "personalCode.txt")
+    val file = File(filesDir, fileName)
     if (file.exists()) {
         file.delete()
     }
