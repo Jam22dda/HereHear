@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import iconBack from "../../assets/CircleButton/icon-back.png";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Image } from "../../components/atoms/Image/Image";
+import { useGetRegistMusic } from "../../apis/Mypage/Quries/useGetRegistMusic";
 
 export default function MyRegistPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -13,6 +14,9 @@ export default function MyRegistPage() {
     const navigatePage = (path: string) => {
         navigate(path);
     };
+
+    const RegistMusic = useGetRegistMusic();
+    console.log(RegistMusic);
 
     return (
         <div id="display">
@@ -24,10 +28,10 @@ export default function MyRegistPage() {
                     내가 등록한 노래
                 </Text>
                 <S.MyRegistWrapper>
-                    <MusicItem src={BTS_answer} title="Answer : Love Myself" artist="방탄소년단"></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                 </S.MyRegistWrapper>
                 <S.MyRegistWrapper>
-                    <MusicItem src={BTS_answer} title="Answer : Love Myself" artist="방탄소년단"></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                 </S.MyRegistWrapper>
             </div>
         </div>

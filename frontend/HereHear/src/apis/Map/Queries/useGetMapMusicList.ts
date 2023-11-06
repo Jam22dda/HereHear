@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMusicList } from '../mapAPI';
+import { useQuery } from "@tanstack/react-query";
+import { getMusicList } from "../mapAPI";
 
 const useGetMapMusicList = () => {
     const { data: MusicList } = useQuery({
