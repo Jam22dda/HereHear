@@ -5,6 +5,8 @@ import AlbumCover from "../../components/atoms/AlbumCover/AlbumCover";
 import Button from "../../components/atoms/Button/Button";
 import MessagePlus from "../../components/atoms/MessagePlus/MessagePlus";
 import { useCallback, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { musicItemState } from "../../states/RegistMusicAtom";
 // import TagSelect from "../../components/molcules/TagSelect/TagSselect";
 
 export default function RegistMusicMent() {
@@ -17,6 +19,9 @@ export default function RegistMusicMent() {
     //         setNewTags("" );
     //     }
     // };
+    const musicItem = useRecoilValue(musicItemState);
+
+    console.log(musicItem.songtitle, "musicItem입니다");
     const [isOpenModal, setOpenModal] = useState<boolean>(false);
 
     const onClickToggleModal = useCallback(() => {
@@ -33,17 +38,18 @@ export default function RegistMusicMent() {
                     음악 등록
                 </Text>
                 <S.RegistMusicWrapper>
-                    <AlbumCover></AlbumCover>
+                    <AlbumCover src={musicItem.src}></AlbumCover>
                     <Text size="body2" fontWeight="bold" $marginTop="40px">
-                        가수
+                        {musicItem.songtitle}
                     </Text>
                     <Text size="body2" fontWeight="medium" $marginTop="5px">
-                        제목
+                        {musicItem.artist}
                     </Text>
 
                     <Button option="tag_plus" size="mediumplus" $width="96px" $margin="20px 0 0 0 " onClick={onClickToggleModal}>
                         태그추가 +
                     </Button>
+
                     {/* TODO: 태그 선택전에는 안보이게, 태그 선택하면 그 값을 여기로 가져오기 */}
                     {/* <S.SelectTagWrapper>
                         {tags.map((item, index) => (

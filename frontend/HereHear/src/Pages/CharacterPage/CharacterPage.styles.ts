@@ -13,3 +13,8 @@ export const CharacterWrapper = styled.div`
     justify-content: center;
     margin-top: 28px;
 `;
+
+export const CharacterModalWrapper = styled.div`
+    display: flex;
+    justify-content: end;
+`;

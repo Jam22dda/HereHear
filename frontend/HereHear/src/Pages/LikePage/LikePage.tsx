@@ -8,6 +8,7 @@ import { Text } from "../../components/atoms/Text/Text.styles";
 import BTS_answer from "../../../public/images/BTS_answer.jpg";
 import iconBack from "../../assets/CircleButton/icon-back.png";
 import { useNavigate } from "react-router-dom";
+import { useGetLikeMusic } from "../../apis/Mypage/Quries/useGetLikeMusic";
 
 export default function LikePage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -15,6 +16,9 @@ export default function LikePage() {
     const navigatePage = (path: string) => {
         navigate(path);
     };
+
+    const LikeMusic = useGetLikeMusic();
+    console.log(LikeMusic);
 
     return (
         <div id="display">
@@ -26,13 +30,13 @@ export default function LikePage() {
                     내가 좋아요한 노래
                 </Text>
                 <S.LikeItemWrapper>
-                    <MusicItem src={BTS_answer} title="Answer : Love Myself" artist="방탄소년단"></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                     <CircleButton option="gradDeActivated" size="large">
                         <Image src={iconHeart} width={24} height={20} $unit="px"></Image>
                     </CircleButton>
                 </S.LikeItemWrapper>
                 <S.LikeItemWrapper>
-                    <MusicItem src={BTS_answer} title="Answer : Love Myself" artist="방탄소년단"></MusicItem>
+                    <MusicItem src={BTS_answer} songtitle="Answer : Love Myself" artist="방탄소년단"></MusicItem>
                     <CircleButton option="gradActivated" size="large">
                         <Image src={iconEmptyheart} width={24} height={20} $unit="px"></Image>
                     </CircleButton>
