@@ -6,6 +6,8 @@ const getMusicList = async () => {
     try {
         const response = await instance.get('/music/list');
         console.log('getUserinfo 성공');
+        console.log(response.data.data);
+        console.log('getUserinfo 성공한 데이터 위');
         return response.data.data; //get은 리턴으로 값을 줘야 함.
     } catch (error) {
         console.error('Error fetching search music', error);
@@ -13,4 +15,17 @@ const getMusicList = async () => {
     }
 };
 
-export { getMusicList };
+const getAroundMusicList = async (lat: number, lng: number) => {
+    try {
+        const response = await instance.get(`/music/around/list?lat=${lat}&lng=${lng}`);
+        console.log('getUserinfo 성공!!!!!!!!!!!!!!!!!!!!!!!!');
+        console.log(response.data.data);
+
+        return response.data.data; //get은 리턴으로 값을 줘야 함.
+    } catch (error) {
+        console.error('Error fetching search music', error);
+        throw error;
+    }
+};
+
+export { getMusicList, getAroundMusicList };
