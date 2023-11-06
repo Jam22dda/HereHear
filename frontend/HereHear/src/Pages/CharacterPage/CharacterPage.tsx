@@ -13,6 +13,11 @@ import { useRecoilState } from "recoil";
 import { SignUpInfoAtom } from "../../states/SignUpAtoms";
 import { useAddUser } from "../../apis/Login/Mutations/useAddUser";
 import { SignUpInfo } from "../../types/user";
+import { Image } from "../../components/atoms/Image/Image";
+import CircleButton from "../../components/atoms/CircleButton/CircleButton";
+import iconExit from "../../../public/images/icon-exit.png";
+import Modal from "../../components/atoms/Modal/Modal";
+import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
 
 const monzi = [
     { src: monziHerehear, name: "히어먼지" },
@@ -25,6 +30,7 @@ const monzi = [
 
 export default function CharacterPage() {
     const [selectedItem, setSelectedItem] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     console.log(selectedItem);
     const handleItemClick = (idx: number) => {
         setSelectedItem(idx);
@@ -34,11 +40,19 @@ export default function CharacterPage() {
         });
     };
 
+    const toggleModal = () => {
+        setIsModalOpen((prev) => !prev);
+    };
+
     const [signUpInfo, setSignUpInfo] = useRecoilState(SignUpInfoAtom);
     const { mutate } = useAddUser();
     console.log(signUpInfo);
     const handleLogin = (signUpInfo: SignUpInfo) => {
-        mutate(signUpInfo);
+        if (selectedItem !== 0) {
+            mutate(signUpInfo);
+        } else {
+            toggleModal();
+        }
     };
 
     return (
@@ -71,6 +85,36 @@ export default function CharacterPage() {
                     저장하기
                 </Button>
             </S.CharacterPageWrapper>
+            {isModalOpen && (
+                <ModalBg>
+                    <Modal toggleModal={() => toggleModal()}>
+                        <S.CharacterModalWrapper>
+                            <CircleButton
+                                option="default"
+                                size="medium"
+                                onClick={toggleModal}
+                            >
+                                <Image
+                                    src={iconExit}
+                                    width={20}
+                                    height={20}
+                                    $unit="px"
+                                ></Image>
+                            </CircleButton>
+                        </S.CharacterModalWrapper>
+                        <S.CharacterPageWrapper>
+                            <Image
+                                src={monziHerehear}
+                                width={100}
+                                height={100}
+                                $unit="px"
+                                $margin="0 0 30px 0"
+                            ></Image>
+                            <h2>캐릭터를 골라주세요!</h2>
+                        </S.CharacterPageWrapper>
+                    </Modal>
+                </ModalBg>
+            )}
         </div>
     );
 }
