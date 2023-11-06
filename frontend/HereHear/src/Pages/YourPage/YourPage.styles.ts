@@ -12,13 +12,13 @@ export const Profile = styled.div`
     justify-content: center;
 `;
 
-export const MyPageWrapper = styled.div`
+export const YourPageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 
-export const MydataWrapper = styled.div`
+export const YourdataWrapper = styled.div`
     display: flex;
     margin-top: 12px;
     align-items: center;
@@ -28,30 +28,18 @@ export const FollowWrapper = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-evenly;
-    margin-top: 32px;
+    margin-top: 28px;
 `;
 
-export const MyItemWrapper = styled.div`
+export const YourItemWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 36px;
+    gap: 32px;
     justify-content: center;
-    margin-top: 48px;
+    margin-top: 36px;
 `;
 
-export const EditWrapper = styled.button`
-    background-color: transparent;
-`;
-
-export const ExitWrapper = styled.div`
+export const FollowBtnWrapper = styled.div`
     display: flex;
     justify-content: end;
-`;
-
-export const TextWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 12px;
 `;

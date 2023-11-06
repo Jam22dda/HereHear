@@ -10,4 +10,13 @@ const getSearchMusic = async (keyword: string, page: number) => {
     }
 };
 
-export { getSearchMusic };
+const getTag = async () => {
+    try {
+        const response = await instance.get("/music/tag");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching search Tag", error);
+        throw error;
+    }
+};
+export { getSearchMusic, getTag };

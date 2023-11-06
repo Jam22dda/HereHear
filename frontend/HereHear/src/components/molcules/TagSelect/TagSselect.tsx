@@ -1,14 +1,51 @@
 import * as S from "./TagSelect.styles";
+import React, { useState } from "react";
 import { Text } from "../../atoms/Text/Text.styles";
 import CircleButton from "../../atoms/CircleButton/CircleButton";
 import Button from "../../atoms/Button/Button";
-// import Button from "../../atoms/Button/Button";
+import { useGetTag } from "../../../apis/Music/Quries/useGetTag";
+// import { useRecoilState } from "recoil";
+// import { selectedTagState } from "../../../states/SelectTagAtom";
 
-const taglist1 = ["청량", "감성", "집중", "신나는", "우울", "이별", "힐링", "열정", "출근", "퇴근", "주말"];
-const taglist2 = ["봄", "여름", "가을", "겨울", "눈", "비", "맑음"];
-const taglist3 = ["운동", "산책", "수면", "독서", "공부", "운전", "샤워", "여행", "업무"];
+interface Tag {
+    occasionCode: number;
+    occasionName: string;
+    category: string;
+}
 
 export default function TagSelect() {
+    const getTag = useGetTag();
+    console.log(getTag.tag.data);
+    const occasionTags = getTag.tag.data.filter((tag: Tag) => tag.category === "occasion");
+    const environmentTags = getTag.tag.data.filter((tag: Tag) => tag.category === "environment");
+    const activityTags = getTag.tag.data.filter((tag: Tag) => tag.category === "activity");
+
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+    // const [selectedTagIds, setSelectedTagIds] = useRecoilState<number[]>(selectedTagState);
+
+    const toggleTagSelection = (selectedTag: string) => {
+        if (selectedTags.includes(selectedTag)) {
+            // 이미 선택된 태그를 제거합니다.
+            setSelectedTags(selectedTags.filter((tag) => tag !== selectedTag));
+        } else {
+            // 새로운 태그를 추가하기 전에 이미 3개가 선택되었는지 확인합니다.
+            if (selectedTags.length < 3) {
+                setSelectedTags([...selectedTags, selectedTag]);
+            }
+        }
+    };
+
+    // const saveAndCloseModal = () => {
+    //     const selectedIds = selectedTags
+    //         .map((tagName) => {
+    //             const tag = getTag.tag.data.find((t: Tag) => t.occasionName === tagName);
+    //             return tag ? tag.occasionCode : null;
+    //         })
+    //         .filter((id) => id !== null); // null이 아닌 ID만 필터링합니다.
+
+    //     setSelectedTagIds(selectedIds);
+
     return (
         <S.TagSelectWrapper>
             <S.TagTopWrapper>
@@ -25,9 +62,18 @@ export default function TagSelect() {
                 상황
             </Text>
             <S.TagBtnWrapper>
-                {taglist1.slice(0, 11).map((tag, index) => {
-                    // return numberButton(btn, index);
-                    return <Button size="small" $width="58px" option="tag_unselected" key={index} tag={tag}></Button>;
+                {occasionTags.slice(0, 11).map((tag: Tag, index: number) => {
+                    const isSelected = selectedTags.includes(tag.occasionName);
+                    return (
+                        <Button
+                            size="small"
+                            $width="58px"
+                            option={isSelected ? "tag_selected" : "tag_unselected"}
+                            onClick={() => toggleTagSelection(tag.occasionName)}
+                            key={index}
+                            tag={tag.occasionName}
+                        ></Button>
+                    );
                 })}
             </S.TagBtnWrapper>
 
@@ -35,18 +81,36 @@ export default function TagSelect() {
                 환경
             </Text>
             <S.TagBtnWrapper>
-                {taglist2.slice(0, 7).map((tag, index) => {
-                    // return numberButton(btn, index);
-                    return <Button size="small" $width="58px" option="tag_unselected" key={index} tag={tag}></Button>;
+                {environmentTags.slice(0, 7).map((tag: Tag, index: number) => {
+                    const isSelected = selectedTags.includes(tag.occasionName);
+                    return (
+                        <Button
+                            size="small"
+                            $width="58px"
+                            option={isSelected ? "tag_selected" : "tag_unselected"}
+                            onClick={() => toggleTagSelection(tag.occasionName)}
+                            key={index}
+                            tag={tag.occasionName}
+                        ></Button>
+                    );
                 })}
             </S.TagBtnWrapper>
             <Text size="small2" fontWeight="medium" $margin="25px 0 15px 0">
                 활동
             </Text>
             <S.TagBtnWrapper>
-                {taglist3.slice(0, 9).map((tag, index) => {
-                    // return numberButton(btn, index);
-                    return <Button size="small" $width="58px" option="tag_unselected" key={index} tag={tag}></Button>;
+                {activityTags.slice(0, 9).map((tag: Tag, index: number) => {
+                    const isSelected = selectedTags.includes(tag.occasionName);
+                    return (
+                        <Button
+                            size="small"
+                            $width="58px"
+                            option={isSelected ? "tag_selected" : "tag_unselected"}
+                            onClick={() => toggleTagSelection(tag.occasionName)}
+                            key={index}
+                            tag={tag.occasionName}
+                        ></Button>
+                    );
                 })}
             </S.TagBtnWrapper>
             <Button option="save" $width="90px" size="medium" style={{ fontWeight: "normal", alignSelf: "center" }}>
