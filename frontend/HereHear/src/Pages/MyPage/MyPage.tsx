@@ -1,13 +1,9 @@
-// import { useParams } from "react-router-dom";
-// import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Image } from "../../components/atoms/Image/Image";
-// import iconBack from "../../../public/images/icon-back.png";
+import React, { useState, ChangeEvent } from "react";
 import * as S from "./MyPage.styles";
-// import monziSleeping from "../../../public/images/monzi-sleeping.png";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import iconEdit from "../../assets/MyPage/icon-edit.png";
 import Button from "../../components/atoms/Button/Button";
-// import iconPurpleStar from "../../../public/images/icon-purplestar.png";
 import iconLp from "../../assets/MyPage/icon-lp.png";
 import ItemBox from "../../components/molcules/ItemBox/ItemBox";
 import Navbar from "../../components/molcules/Navbar/Navbar";
@@ -19,6 +15,13 @@ import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
 import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
 import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
 import { useGetMyAchievement } from "../../apis/Mypage/Quries/useGetMyAchievement";
+import Modal from "../../components/atoms/Modal/Modal";
+import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
+import CircleButton from "../../components/atoms/CircleButton/CircleButton";
+import iconExit from "../../../public/images/icon-exit.png";
+import Input from "../../components/atoms/Input/Input";
+import { usePostNickname } from "../../apis/Mypage/Mutations/usePostNickname";
+import { changeNickname } from "../../types/user";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -35,10 +38,31 @@ export default function MyPage() {
     };
 
     const UserInfo = useGetUserinfo();
+    console.log("왜???????????????????????????");
+    console.log(UserInfo);
     const Follower = useGetFollower();
     const Following = useGetFollowing();
-    const MyAchievement = useGetMyAchievement(UserInfo.achievementId);
-    console.log(MyAchievement);
+    const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [nickname, setNickname] = useState("");
+
+    const toggleModal = () => {
+        setIsModalOpen((prev) => !prev);
+    };
+
+    const handleEdit = () => {
+        toggleModal();
+    };
+
+    const { mutate } = usePostNickname();
+    const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
+        setNickname(e.target.value);
+    };
+
+    const handleSaveNickname = (nickname: changeNickname) => {
+        mutate(nickname);
+        toggleModal();
+    };
 
     return (
         <div id="display">
@@ -79,6 +103,7 @@ export default function MyPage() {
                                 height={16}
                                 $unit="px"
                                 $margin="0 0 0 4px"
+                                onClick={handleEdit}
                             ></Image>
                         </S.EditWrapper>
                     </S.MydataWrapper>
@@ -111,6 +136,40 @@ export default function MyPage() {
                     <Navbar></Navbar>
                 </S.MyPageWrapper>
             </div>
+            {isModalOpen && (
+                <ModalBg>
+                    <Modal toggleModal={() => toggleModal()}>
+                        <S.ExitWrapper>
+                            <CircleButton
+                                option="default"
+                                size="medium"
+                                onClick={toggleModal}
+                            >
+                                <Image
+                                    src={iconExit}
+                                    width={20}
+                                    height={20}
+                                    $unit="px"
+                                ></Image>
+                            </CircleButton>
+                        </S.ExitWrapper>
+                        <S.TextWrapper>
+                            <Text fontWeight="bold">변경할 닉네임을 작성</Text>
+                            <Text $margin="0 0 28px 0" fontWeight="bold">
+                                해주세요!
+                            </Text>
+                            <Input onChange={handleChangeNickname}></Input>
+                            <Button
+                                onClick={() => handleSaveNickname(nickname)}
+                                $width="130px"
+                                $margin="32px 0 0 0"
+                            >
+                                저장하기
+                            </Button>
+                        </S.TextWrapper>
+                    </Modal>
+                </ModalBg>
+            )}
         </div>
     );
 }
