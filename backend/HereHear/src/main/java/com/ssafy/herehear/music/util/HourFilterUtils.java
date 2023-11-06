@@ -7,16 +7,26 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
-@Slf4j
 public class HourFilterUtils {
 
-    public static boolean findHourFilter(RegisteredMusic findRegisteredMusic){
-        LocalTime currentTime = LocalDateTime.now().toLocalTime();
+    private static final LocalTime currentTime = LocalDateTime.now().toLocalTime();
 
-        // 현재 시간으로부터 +3h 이내 또는 -3h 이내인 데이터만 필터링
-        long hoursDifference = ChronoUnit.HOURS.between(currentTime, findRegisteredMusic.getCreateTime());
-        log.info("getRegisteredMusicId: "+findRegisteredMusic.getRegisteredMusicId()+", hoursDifference: "+hoursDifference);
-        return hoursDifference >= -3 && hoursDifference <= 3 || hoursDifference >= 21;
+    public static boolean findHourFilter(RegisteredMusic findRegisteredMusic){
+        long hoursDifference = hoursDifference(findRegisteredMusic);
+        return hoursDifference > -3 && hoursDifference < 3 || hoursDifference >= 21 || hoursDifference <= -21;//-3h ~ +3h
     }
 
+    public static boolean beforeHourFilter(RegisteredMusic findRegisteredMusic){
+        long hoursDifference = hoursDifference(findRegisteredMusic);
+        return hoursDifference == -3 || hoursDifference == 20;//-4h ~ -3h
+    }
+
+    public static boolean afterHourFilter(RegisteredMusic findRegisteredMusic){
+        long hoursDifference = hoursDifference(findRegisteredMusic);
+        return hoursDifference == 3 || hoursDifference == -20;//+3h ~ +4h
+    }
+
+    public static long hoursDifference(RegisteredMusic findRegisteredMusic){
+        return ChronoUnit.HOURS.between(currentTime, findRegisteredMusic.getCreateTime());
+    }
 }
