@@ -1,11 +1,11 @@
 package com.ssafy.herehear.music.service.musicServiceImpl;
 
-import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.music.dto.response.SseResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.musicRepositoryImpl.RegisteredMusicRepositoryImpl;
 import com.ssafy.herehear.music.repository.musicRepositoryImpl.SseRepositoryImpl;
 import com.ssafy.herehear.music.service.SseService;
+import com.ssafy.herehear.music.util.HourFilterUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +22,6 @@ import java.util.List;
 public class SseServiceImpl implements SseService {
 
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;// timeout 12시간
-    private final LocalTime currentTime = LocalDateTime.now().toLocalTime();// 현재 시간
 
     private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
     private final SseRepositoryImpl sseRepositoryImpl;
@@ -61,11 +57,10 @@ public class SseServiceImpl implements SseService {
         sseRepositoryImpl.forEach((id, emitter) -> {
             try {
                 emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(data));
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException exception) {
+                log.info("sendAllClient exception: "+exception);
             }
         });
-        log.info("sendToClient data: "+data);
     }
 
     @Override
@@ -81,46 +76,28 @@ public class SseServiceImpl implements SseService {
         return emitter;
     }
 
-    //처음에는 실행하지 않고 1시간 후부터 매 1시간마다 실행
-    @Scheduled(fixedRate =  3600000, initialDelay =  3600000)
+    @Scheduled(cron = "0 0 * * * ?")//정각 마다 실행
     public void checkForDataChanges() {
         List<SseResDto> sseResDtos = new ArrayList<>();
 
-        //SSE 추가
-        List<RegisteredMusic> addRegisteredMusics = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-                .filter(this::afterHourFilter)
-                .toList();
-
-        List<SseResDto> addSseResDto = addRegisteredMusics.stream()
-                .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
-                .toList();
-        log.info("checkForDataChanges addSseResDto: "+ addSseResDto);
-
         //SSE 삭제
-        List<RegisteredMusic> deleteRegisteredMusics = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-                .filter(this::beforeHourFilter)
-                .toList();
-
-        List<SseResDto> deleteSseResDto = deleteRegisteredMusics.stream()
+        List<SseResDto> deleteSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+                .filter(HourFilterUtils::beforeHourFilter)
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(0, registeredMusic))
-                .toList();
-        log.info("checkForDataChanges deleteSseResDto: "+ deleteSseResDto);
+                .toList();//15,16
 
-        sseResDtos.addAll(addSseResDto);
+        //SSE 추가
+        List<SseResDto> addSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+                .filter(HourFilterUtils::afterHourFilter)
+                .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
+                .toList();//1,15,16
+
+
         sseResDtos.addAll(deleteSseResDto);
+        sseResDtos.addAll(addSseResDto);
+        log.info("checkForDataChanges sseResDtos: "+ sseResDtos);
 
         sendAllClient(sseResDtos);
     }
 
-    public boolean beforeHourFilter(RegisteredMusic findRegisteredMusic){
-        // 현재 시간으로부터 -1h 이내인 데이터만 필터링
-        long hoursDifference = ChronoUnit.HOURS.between(currentTime, findRegisteredMusic.getCreateTime());
-        return hoursDifference >= -1 && hoursDifference <= 0 || hoursDifference >= 23;
-    }
-
-    public boolean afterHourFilter(RegisteredMusic findRegisteredMusic){
-        // 현재 시간으로부터 -1h 이내인 데이터만 필터링
-        long hoursDifference = ChronoUnit.HOURS.between(currentTime, findRegisteredMusic.getCreateTime());
-        return hoursDifference >= 0 && hoursDifference <= 1 || hoursDifference >= 23;
-    }
 }
