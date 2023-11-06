@@ -7,10 +7,11 @@
 package com.ssafy.herehear.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavOptions
+import androidx.navigation.NavHostController
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
@@ -22,24 +23,26 @@ import com.ssafy.herehear.presentation.retrofit.api.authRequest
 import com.ssafy.herehear.presentation.util.readPersonalCodeFile
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var navController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberSwipeDismissableNavController()
-            var startDestination: String = "landing"
+            navController = rememberSwipeDismissableNavController()
 
             // access 처리
             val personalCode: String = baseContext.readPersonalCodeFile("personalCode.txt")
+
+            Log.d("onResume - personalCode", personalCode)
             if (personalCode != "") {
-                val authRequest = authRequest(personalCode)
-                if (authRequest?.accessResult == true) {
-                    startDestination = "map"
-                }
+                val authRequest = authRequest(personalCode, navController)
+                Log.d("onResume - authRequest", authRequest.toString())
             }
 
             SwipeDismissableNavHost(
                 navController = navController,
-                startDestination = startDestination
+                startDestination = "landing"
             ) {
                 composable("landing") {
                     LandingPage(navController, baseContext)

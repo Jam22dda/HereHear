@@ -7,7 +7,7 @@ import retrofit2.http.Path
 
 interface PersonalCodeService {
 
-    @POST("/wearos/auth/{personalCode}")
+    @POST("wearos/auth/{personalCode}")
     fun authPersonalCode(@Path("personalCode") personalCode: String): Call<ApiResponse>
 
 }
