@@ -5,6 +5,8 @@ import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import com.ssafy.herehear.member.dto.request.FollowReqDto;
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
+import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
+import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
 import com.ssafy.herehear.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -102,16 +104,16 @@ public class MemberController {
     }
 
     @PostMapping("/update/nickname")
-    public CommonResponse updateNickname(@RequestBody String nickname, Authentication authentication) {
+    public CommonResponse updateNickname(@RequestBody UpdateMemberReqDto updateMemberReqDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
-        memberService.updateNickname(nickname, memberId);
+        memberService.updateNickname(updateMemberReqDto, memberId);
         return new CommonResponse("200", "닉네임 변경을 성공하였습니다");
     }
 
     @PostMapping("/update/character")
-    public CommonResponse updateCharacter(@RequestBody Long characterCode, Authentication authentication) {
+    public CommonResponse updateCharacter(@RequestBody UpdateCharacterReqDto updateCharacterReqDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
-        memberService.updateCharacter(characterCode, memberId);
+        memberService.updateCharacter(updateCharacterReqDto, memberId);
         return new CommonResponse("200", "캐릭터 변경을 성공하였습니다");
     }
 

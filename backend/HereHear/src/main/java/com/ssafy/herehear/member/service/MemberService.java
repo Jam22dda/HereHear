@@ -1,6 +1,8 @@
 package com.ssafy.herehear.member.service;
 
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
+import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
+import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +13,8 @@ import java.util.List;
 public interface MemberService {
     String signUp(SignUpReqDto signUpReqDto, HttpServletResponse response);
 
-    void updateNickname(String nickname, Long memberId);
-    void updateCharacter(Long characterId, Long memberId);
+    void updateNickname(UpdateMemberReqDto updateMemberReqDto, Long memberId);
+    void updateCharacter(UpdateCharacterReqDto updateCharacterReqDto, Long memberId);
 
     void logout(HttpServletRequest request, HttpServletResponse response);
 
