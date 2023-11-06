@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getMusicList } from "../mapAPI";
 
 const useGetMapMusicList = () => {
-    const { data: MapMusicList } = useQuery({
-        queryKey: ["MapMusicList"],
+    const { data: MusicList } = useQuery({
+        queryKey: ['MusicList'],
         queryFn: getMusicList,
     });
 
-    return MapMusicList;
+    return { MusicList };
 };
 
 export { useGetMapMusicList };
