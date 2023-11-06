@@ -16,6 +16,6 @@ export const ModalBg = styled.div`
 export const ModalContent = styled.div`
     width: 100%;
     padding: 24px 24px 24px 24px;
-    background-color: white;
+    background-color: ${({ theme }) => theme.color.lightblue1};
     border-radius: 20px;
 `;

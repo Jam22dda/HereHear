@@ -3,3 +3,5 @@ export type SignUpInfo = {
     nickname: string;
     profileCharacterCode: number;
 };
+
+export type changeNickname = string;
