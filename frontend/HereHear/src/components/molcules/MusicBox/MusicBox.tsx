@@ -9,8 +9,22 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // {isSelect ? <MusicBox musicAroundList={musicAroundList} pinId={userSelectPin} setIsSelect={setIsSelect}></MusicBox> : null}
+interface MusicItem {
+    registeredMusicId: number;
+    albumImg: string;
+    occasionName: string[];
+    singer: string;
+    subject: string;
+    // 여기에 추가적인 음악과 관련된 속성들이 더 있을 수 있습니다.
+}
 
-export default function MusicBox(props: any) {
+interface MusicBoxProps {
+    musicAroundList: MusicItem[];
+    pinId: number;
+    setIsSelect: (isSelected: boolean) => void;
+}
+
+export default function MusicBox(props: MusicBoxProps) {
     const [title, setTitle] = useState('title');
     const [singer, setSinger] = useState('singer');
     const [pinId, setPinId] = useState(0);
@@ -80,7 +94,7 @@ export default function MusicBox(props: any) {
             if (nowPinIndex < 0) nowPinIndex = props.musicAroundList.length - 1;
         } else {
             nowPinIndex += 1;
-            if (nowPinIndex >= props.musicAroundList.length - 1) nowPinIndex = 0;
+            if (nowPinIndex > props.musicAroundList.length - 1) nowPinIndex = 0;
         }
         console.log('nextMusicHandler');
 
@@ -91,63 +105,75 @@ export default function MusicBox(props: any) {
         setPinIndex(nowPinIndex);
     }
 
+    function OuterOnClickHandler() {
+        console.log('밖만 들어감');
+        props.setIsSelect(false);
+    }
+
+    function InnerOnClickHandler(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        event.stopPropagation(); // 이벤트가 상위 DOM으로 전파되지 않도록 막음
+        console.log('안 클릭 처리');
+    }
+
     return (
-        <S.MusicBox>
-            {!isNearNull && !isListNull ? (
-                <>
-                    <Image
-                        src={beforeBtn}
-                        width={35}
-                        height={35}
-                        $unit='px'
-                        onClick={() => {
-                            nextMusicHandler('prev');
-                        }}
-                    ></Image>
-                    <S.BigWrapper
-                        onClick={() => {
-                            navigate('/musicPlay', { state: { data: pinId } });
-                        }}
-                    >
-                        <Image src={imgUrl} width={100} height={100} $unit='px' $borderRadius='10px'></Image>
+        <S.Outer onClick={OuterOnClickHandler}>
+            <S.MusicBox onClick={InnerOnClickHandler}>
+                {!isNearNull && !isListNull ? (
+                    <>
+                        <Image
+                            src={beforeBtn}
+                            width={35}
+                            height={35}
+                            $unit='px'
+                            onClick={() => {
+                                nextMusicHandler('prev');
+                            }}
+                        ></Image>
+                        <S.BigWrapper
+                            onClick={() => {
+                                navigate('/musicPlay', { state: { data: pinId } });
+                            }}
+                        >
+                            <Image src={imgUrl} width={100} height={100} $unit='px' $borderRadius='10px'></Image>
 
-                        <S.MidWrapper>
-                            <S.MapTextrapper>
-                                <Text size='body2' fontWeight='bold' color='main1' $margin='0 0 5px'>
-                                    {title}
-                                </Text>
-                                <Text size='body2' fontWeight='medium' color='main1' $margin='0 0 10px'>
-                                    {singer}
-                                </Text>
-                            </S.MapTextrapper>
+                            <S.MidWrapper>
+                                <S.MapTextrapper>
+                                    <Text size='body2' fontWeight='bold' color='main1' $margin='0 0 5px'>
+                                        {title}
+                                    </Text>
+                                    <Text size='body2' fontWeight='medium' color='main1' $margin='0 0 10px'>
+                                        {singer}
+                                    </Text>
+                                </S.MapTextrapper>
 
-                            <S.MapMusicTagWrapper>
-                                {/* TODO:버튼 크기 다시확인(아톰 버튼에 없음?) */}
-                                <Button option='tag1' $width='55px' $height='25px' size='small'>
-                                    {tag1}
-                                </Button>
-                                <Button option='tag1' $width='55px' $height='25px' size='small'>
-                                    {tag2}
-                                </Button>
-                                <Button option='tag1' $width='55px' $height='25px' size='small'>
-                                    {tag3}
-                                </Button>
-                            </S.MapMusicTagWrapper>
-                        </S.MidWrapper>
-                    </S.BigWrapper>
-                    <Image
-                        src={afterBtn}
-                        width={35}
-                        height={35}
-                        $unit='px'
-                        onClick={() => {
-                            nextMusicHandler('next');
-                        }}
-                    ></Image>
-                </>
-            ) : (
-                <p>주변의 음악이 아닙니다.</p>
-            )}
-        </S.MusicBox>
+                                <S.MapMusicTagWrapper>
+                                    {/* TODO:버튼 크기 다시확인(아톰 버튼에 없음?) */}
+                                    <Button option='tag1' $width='55px' $height='25px' size='small'>
+                                        {tag1}
+                                    </Button>
+                                    <Button option='tag1' $width='55px' $height='25px' size='small'>
+                                        {tag2}
+                                    </Button>
+                                    <Button option='tag1' $width='55px' $height='25px' size='small'>
+                                        {tag3}
+                                    </Button>
+                                </S.MapMusicTagWrapper>
+                            </S.MidWrapper>
+                        </S.BigWrapper>
+                        <Image
+                            src={afterBtn}
+                            width={35}
+                            height={35}
+                            $unit='px'
+                            onClick={() => {
+                                nextMusicHandler('next');
+                            }}
+                        ></Image>
+                    </>
+                ) : (
+                    <p>주변의 음악이 아닙니다.</p>
+                )}
+            </S.MusicBox>
+        </S.Outer>
     );
 }

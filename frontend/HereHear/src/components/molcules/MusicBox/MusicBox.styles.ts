@@ -1,6 +1,14 @@
 // import theme from "../../../styles/theme";
 import styled from 'styled-components';
 
+const Outer = styled.div`
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+    position: absolute;
+    display: flex;
+    justify-content: center;
+`;
 const MusicBox = styled.div`
     height: 149px;
     width: 303px;
@@ -38,4 +46,4 @@ const MapMusicTagWrapper = styled.div`
     /* flex-direction: column; */
 `;
 
-export { MusicBox, BigWrapper, MidWrapper, MapMusicTagWrapper, MapTextrapper };
+export { MusicBox, BigWrapper, MidWrapper, MapMusicTagWrapper, MapTextrapper, Outer };

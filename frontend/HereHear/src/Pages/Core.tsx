@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 // import './Core.styles';
 import * as S from './Core.styles';
 import markImage from '../assets/Core/Union.png';
