@@ -7,6 +7,7 @@ import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.CookieUtil;
 import com.ssafy.herehear.global.util.JwtProvider;
+import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
@@ -45,9 +46,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String signUp(SignUpReqDto signUpDto, HttpServletResponse response) {
-        Member findMember = memberRepository.findById(signUpDto.getMemberId()).orElseThrow(
-                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-        );
+        Member findMember = MemberUtil.findMember(signUpDto.getMemberId());
 
         if (findMember.getNickname() != null && findMember.getProfileCharacter() != null) {
             throw new CustomException(ExceptionStatus.MEMBER_ALREADY_SIGNED);
@@ -75,9 +74,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void updateNickname(UpdateMemberReqDto updateMemberReqDto, Long memberId) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(
-                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-        );
+        Member findMember = MemberUtil.findMember(memberId);
 
         findMember.updateNickname(updateMemberReqDto.getNickname());
         memberRepository.save(findMember);
@@ -86,9 +83,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void updateCharacter(UpdateCharacterReqDto updateCharacterReqDto, Long memberId) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(
-                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-        );
+        Member findMember = MemberUtil.findMember(memberId);
 
         ProfileCharacter findCharcter = profileCharacterRepository.findById(updateCharacterReqDto.getCharacterId()).orElseThrow(
                 () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
@@ -110,11 +105,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void deleteMember(Long memberId) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(
-                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-        );
-        if (findMember.getRemoveDate() != null)
-            throw new CustomException(ExceptionStatus.MEMBER_IS_DELETED);
+        Member findMember = MemberUtil.findMember(memberId);
 
         findMember.deleteMember();
         memberRepository.save(findMember);
@@ -123,11 +114,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MemberInfoResDto getMemberInfo(Long memberId) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(
-                () -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND)
-        );
-        if (findMember.getRemoveDate() != null)
-            throw new CustomException(ExceptionStatus.MEMBER_IS_DELETED);
+        Member findMember = MemberUtil.findMember(memberId);
 
         MemberInfoResDto res = memberMapper.toMemberInfoResDto(findMember, findMember.getAchievement());
         log.info("Member Info: {}", res);
@@ -156,20 +143,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void follow(Long memberId, Long followingMemberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
-        memberRepository.findById(followingMemberId)
-                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+        Member findMember = MemberUtil.findMember(memberId);
+        MemberUtil.findMember(followingMemberId);
 
-        followRepository.save(MemberMapper.INSTANCE.toFollow(member, followingMemberId));
+        followRepository.save(MemberMapper.INSTANCE.toFollow(findMember, followingMemberId));
     }
 
     @Override
     public void unfollow(Long memberId, Long followingMemberId) {
-        memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
-        memberRepository.findById(followingMemberId)
-                .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+        MemberUtil.findMember(memberId);
+        MemberUtil.findMember(followingMemberId);
 
         Follow follow = followRepository.findByMemberIdAndFollowMemberId(memberId, followingMemberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.FOLLOW_NOT_FOUND));
