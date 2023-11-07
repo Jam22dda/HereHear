@@ -50,10 +50,10 @@ export default function RegistMusicMent() {
                 </Text>
                 <S.RegistMusicWrapper>
                     <AlbumCover src={musicItem.src}></AlbumCover>
-                    <Text textAlign="center" size="body2" fontWeight="bold" $marginTop="40px">
+                    <Text $textAlign="center" size="body2" fontWeight="bold" $marginTop="40px">
                         {musicItem.songtitle}
                     </Text>
-                    <Text textAlign="center" size="body2" fontWeight="medium" $marginTop="5px">
+                    <Text $textAlign="center" size="body2" fontWeight="medium" $marginTop="5px">
                         {musicItem.artist}
                     </Text>
 
