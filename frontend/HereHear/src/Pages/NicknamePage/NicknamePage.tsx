@@ -10,9 +10,9 @@ import Modal from "../../components/atoms/Modal/Modal";
 import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
 import { Image } from "../../components/atoms/Image/Image";
 import monziHerehear from "../../../public/images/monzi-herehear.png";
-import CircleButton from "../../components/atoms/CircleButton/CircleButton";
-import iconExit from "../../../public/images/icon-exit.png";
 import { useSearchParams } from "react-router-dom";
+import { useGetCheckNickname } from "../../apis/Login/Quries/useGetCheckNickname";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function NicknamePage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -21,16 +21,34 @@ export default function NicknamePage() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const memberId = id ? Number(id) : undefined;
+    const [isBlanked, setIsBlanked] = useState(false);
+    const [isDuplicated, setIsDuplicated] = useState(false);
+    const [debouncedNickname, setDebouncedNickname] = useState("");
+
+    const debouncedCheck = useDebouncedCallback(
+        // function
+        (value) => {
+            setDebouncedNickname(value);
+        },
+        // delay in ms
+        500
+    );
 
     if (memberId === undefined || isNaN(memberId)) {
         console.error("Invalid member ID");
     }
 
+    const { data: checkNicknameData } = useGetCheckNickname(debouncedNickname);
+
     const navigatePage = (path: string) => {
-        if (signUpInfo.nickname !== "") {
-            navigate(path);
-        } else {
+        if (signUpInfo.nickname === "") {
             toggleModal();
+            setIsBlanked(true);
+        } else if (checkNicknameData?.isAvailable === false) {
+            toggleModal();
+            setIsDuplicated(true);
+        } else {
+            navigate(path);
         }
     };
 
@@ -41,10 +59,21 @@ export default function NicknamePage() {
             memberId: memberId,
             nickname: newNickname,
         });
+        debouncedCheck(newNickname);
     };
 
     const toggleModal = () => {
         setIsModalOpen((prev) => !prev);
+    };
+
+    const handleBlanked = () => {
+        toggleModal();
+        setIsBlanked(false);
+    };
+
+    const handleDuplicated = () => {
+        toggleModal();
+        setIsDuplicated(false);
     };
 
     return (
@@ -90,30 +119,44 @@ export default function NicknamePage() {
             {isModalOpen && (
                 <ModalBg>
                     <Modal toggleModal={() => toggleModal()}>
-                        <S.NicknameModalWrapper>
-                            <CircleButton
-                                option="default"
-                                size="medium"
-                                onClick={toggleModal}
-                            >
+                        {isBlanked && (
+                            <S.NicknamePageWrapper>
                                 <Image
-                                    src={iconExit}
-                                    width={20}
-                                    height={20}
+                                    src={monziHerehear}
+                                    width={100}
+                                    height={100}
                                     $unit="px"
+                                    $margin="0 0 30px 0"
                                 ></Image>
-                            </CircleButton>
-                        </S.NicknameModalWrapper>
-                        <S.NicknamePageWrapper>
-                            <Image
-                                src={monziHerehear}
-                                width={100}
-                                height={100}
-                                $unit="px"
-                                $margin="0 0 30px 0"
-                            ></Image>
-                            <h2>닉네임을 입력해주세요!</h2>
-                        </S.NicknamePageWrapper>
+                                <h2>닉네임을 입력해주세요!</h2>
+                                <Button
+                                    onClick={handleBlanked}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
+                                    다시 입력하기
+                                </Button>
+                            </S.NicknamePageWrapper>
+                        )}
+                        {isDuplicated && (
+                            <S.NicknamePageWrapper>
+                                <Image
+                                    src={monziHerehear}
+                                    width={100}
+                                    height={100}
+                                    $unit="px"
+                                    $margin="0 0 30px 0"
+                                ></Image>
+                                <h2>닉네임이 중복되었습니다!</h2>
+                                <Button
+                                    onClick={handleDuplicated}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
+                                    다시 입력하기
+                                </Button>
+                            </S.NicknamePageWrapper>
+                        )}
                     </Modal>
                 </ModalBg>
             )}
