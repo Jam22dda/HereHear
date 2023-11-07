@@ -11,12 +11,12 @@ interface ItemBoxProps {
     onClick?: () => void;
 }
 
-const ItemBox: React.FC<ItemBoxProps> = ({
+export default function ItemBox({
     src,
     title,
-    $isselected = false, // 기본값 설정
-    onClick = () => {}, // 기본값 설정
-}) => {
+    $isselected = false,
+    onClick = () => {},
+}: ItemBoxProps) {
     return (
         <S.ItemBoxWrapper onClick={onClick} $isselected={$isselected}>
             <Image src={src} width={80} $unit="px" $margin="0 0 4px 0" />
@@ -25,6 +25,4 @@ const ItemBox: React.FC<ItemBoxProps> = ({
             </S.ItemBoxTextWrapper>
         </S.ItemBoxWrapper>
     );
-};
-
-export default ItemBox;
+}
