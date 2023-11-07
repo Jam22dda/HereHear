@@ -10,7 +10,10 @@ import java.util.Optional;
 @Component
 public class CookieUtil {
 
-    public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
+    private CookieUtil() {
+    }
+
+    public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
@@ -22,7 +25,7 @@ public class CookieUtil {
         return Optional.empty();
     }
 
-    public Cookie createCookie(String refreshToken) {
+    public static Cookie createCookie(String refreshToken) {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
@@ -31,7 +34,7 @@ public class CookieUtil {
         return cookie;
     }
 
-    public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
