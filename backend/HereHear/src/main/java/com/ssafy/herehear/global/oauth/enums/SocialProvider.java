@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum SocialProvider {
     GOOGLE("google"),
     NAVER("naver"),
-    KAKAO("kakao");
+    KAKAO("kakao"),
+    SPOTIFY("spotify");
 
     private final String socialProvider;
 }

@@ -4,6 +4,7 @@ import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
+import com.ssafy.herehear.member.dto.response.FollowerResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +23,7 @@ public interface MemberService {
 
     MemberInfoResDto getMemberInfo(Long memberId);
 
-    List<FollowResDto> getFollowerList(Long memberId);
+    List<FollowerResDto> getFollowerList(Long memberId);
 
     List<FollowResDto> getFollowingList(Long memberId);
 
