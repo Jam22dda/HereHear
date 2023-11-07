@@ -7,7 +7,7 @@ public interface SseService {
 
     SseEmitter subscribe(Long memberId);
 
-    void notify(Long memberId, Object event);
+    void notify(Object event);
 
     void sendToClient(Long memberId, Object data);
 
