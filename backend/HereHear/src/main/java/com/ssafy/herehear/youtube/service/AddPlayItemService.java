@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -45,11 +46,41 @@ public class AddPlayItemService {
                 listId = item.getString("id");
         }
 
-        log.info("listId: "+listId);
+        log.info("selectPlayList listId: "+listId);
         return listId;
     }
 
-//    public void addPlayItem(String videoId) throws GeneralSecurityException, IOException {
+    public void insertPlayList() {
+        String jsonBody = "{" +
+                "\"snippet\": {" +
+                "\"title\": \"HereHear\"," +
+                "\"description\": \"New playlist description\"" +
+                "}," +
+                "\"status\": {" +
+                "\"privacyStatus\": \"private\"" +
+                "}" +
+                "}";
+
+        WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
+        Mono<String> response = webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/playlists")
+                        .queryParam("part", "snippet")
+                        .queryParam("part", "status")
+                        .build())
+                .body(BodyInserters.fromValue(jsonBody))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class);
+
+        response.subscribe(
+                result -> log.info("insertPlayList Response: " + result),
+                error -> log.info("insertPlayList error: "+error)
+        );
+    }
+
+//    public void addPlayItem(String videoId){
 //        YouTube youtubeService = YoutubeAuthorize.getService();
 //
 //        // Define the PlaylistItem object, which will be uploaded as the request body.
@@ -62,27 +93,4 @@ public class AddPlayItemService {
 //        log.info("addPlayItem: " + response);
 //    }
 //
-//    public void insertPlayList() throws GeneralSecurityException, IOException {
-//        YouTube youtubeService = YoutubeAuthorize.getService();
-//
-//        // Define the Playlist object, which will be uploaded as the request body.
-//        Playlist playlist = new Playlist();
-//
-//        // Add the snippet object property to the Playlist object.
-//        PlaylistSnippet snippet = new PlaylistSnippet();
-//        snippet.setDescription("New playlist description");
-//        snippet.setTitle("HereHear");
-//        playlist.setSnippet(snippet);
-//
-//        // Add the status object property to the Playlist object.
-//        PlaylistStatus status = new PlaylistStatus();
-//        status.setPrivacyStatus("private");
-//        playlist.setStatus(status);
-//
-//        // Define and execute the API request
-//        YouTube.Playlists.Insert request = youtubeService.playlists()
-//                .insert("snippet,status", playlist);
-//        Playlist response = request.execute();
-//        log.info("insertList: " + response);
-//    }
 }
