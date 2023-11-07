@@ -1,13 +1,11 @@
 package com.ssafy.herehear.achievement.observer.events;
 
 import com.ssafy.herehear.achievement.observer.EventListener;
-import com.ssafy.herehear.achievement.repository.AchievementRepository;
-import com.ssafy.herehear.achievement.repository.LikeMusicRepository;
-import com.ssafy.herehear.achievement.repository.MemberAchievementRepository;
-import com.ssafy.herehear.achievement.repository.MemberRepository;
+import com.ssafy.herehear.achievement.repository.*;
 import com.ssafy.herehear.entity.Achievement;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberAchievement;
+import com.ssafy.herehear.entity.MemberAchievementId;
 import com.ssafy.herehear.entity.type.AchievementCategoryType;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
@@ -24,6 +22,7 @@ public class LikeCountEvent implements EventListener {
     private final MemberAchievementRepository memberAchievementRepository;
     private final LikeMusicRepository likeMusicRepository;
     private final AchievementRepository achievementRepository;
+    private final RegisteredMusicRepository registeredMusicRepository;
 
     @Override
     public void update(EventType eventType, Long memberId) {
@@ -33,9 +32,9 @@ public class LikeCountEvent implements EventListener {
         List<Achievement> memberAchievementList = memberAchievementRepository.findByMemberId(memberId).stream()
                 .map(MemberAchievement::getAchievement).toList();
 
-        long likeCount = likeMusicRepository.countByMemberRegisteredMusic(memberId);
+        long allLikeCount = likeMusicRepository.countByMemberRegisteredMusic(memberId);
 
-        checkAchievementCondition(member, likeCount, memberAchievementList);
+        checkAchievementCondition(member, allLikeCount, memberAchievementList);
     }
 
     // 좋아요 달성조건 체크
@@ -45,6 +44,7 @@ public class LikeCountEvent implements EventListener {
         for (Achievement achievement : achievementList) {
             if (likeCount >= achievement.getCount() && !memberAchievementList.contains(achievement)) {
                 memberAchievementRepository.save(MemberAchievement.builder()
+                        .id(MemberAchievementId.builder().memberId(member.getMemberId()).achievementId(achievement.getAchievementId()).build())
                         .member(member)
                         .achievement(achievement)
                         .build());

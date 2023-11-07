@@ -15,4 +15,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.memberId = :memberId and m.removeDate = null")
     Optional<Member> findByMemberIdAndNotRemoved(@Param("memberId") Long memberId);
 
+    Optional<Member> findByNickname(@Param("nickname") String nickname);
 }

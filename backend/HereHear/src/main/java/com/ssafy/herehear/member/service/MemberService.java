@@ -29,4 +29,6 @@ public interface MemberService {
     void follow(Long memberId, Long followingMemberId);
 
     void unfollow(Long memberId, Long followingMemberId);
+
+    boolean checkNickname(String nickname);
 }

@@ -2,6 +2,7 @@ package com.ssafy.herehear.global.config;
 
 import com.ssafy.herehear.global.exception.CustomAuthenticationEntryPoint;
 import com.ssafy.herehear.global.filter.CustomAuthenticationFilter;
+import com.ssafy.herehear.global.filter.CustomWearOsAuthenticationFilter;
 import com.ssafy.herehear.global.oauth.handler.CustomOAuth2LoginFailureHandler;
 import com.ssafy.herehear.global.oauth.handler.CustomOAuth2LoginSuccessHandler;
 import com.ssafy.herehear.global.oauth.service.CustomOAuth2UserService;
@@ -9,6 +10,7 @@ import com.ssafy.herehear.global.oauth.service.CustomOidcUserService;
 import com.ssafy.herehear.global.util.CustomAuthorityMapper;
 import com.ssafy.herehear.global.util.JwtProvider;
 import com.ssafy.herehear.member.repository.MemberRepository;
+import com.ssafy.herehear.member.repository.WearOsPersonalCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +36,7 @@ public class OAuth2ClientConfig {
 
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
+    private final WearOsPersonalCodeRepository wearOsPersonalCodeRepository;
 
     private final CustomOAuth2LoginFailureHandler customOAuth2LoginFailureHandler;
     private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
@@ -59,7 +62,8 @@ public class OAuth2ClientConfig {
                         // Any other endpoint needs to be authenticated
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
-                .addFilterBefore(new CustomAuthenticationFilter(jwtProvider, memberRepository), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new CustomAuthenticationFilter(jwtProvider, memberRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CustomWearOsAuthenticationFilter(wearOsPersonalCodeRepository), UsernamePasswordAuthenticationFilter.class);
 
         // OAuth(ver.6.1.x)
         http

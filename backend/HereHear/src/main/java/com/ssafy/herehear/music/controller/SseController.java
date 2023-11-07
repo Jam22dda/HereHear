@@ -1,5 +1,6 @@
 package com.ssafy.herehear.music.controller;
 
+import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.music.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -16,9 +17,12 @@ public class SseController {
 
     private final SseService sseService;
 
-    @GetMapping(value = "/subscribe/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(@PathVariable Long id) {
-        return sseService.subscribe(id);
+    @GetMapping(value = "/subscribe/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter subscribe(@PathVariable Long memberId) {
+        SseEmitter sseEmitter = sseService.subscribe(memberId);
+        sseService.sendToClient(memberId, new CommonResponse("200", "SSE 구독완료"));
+
+        return sseEmitter;
     }
 
 }

@@ -1,9 +1,6 @@
 package com.ssafy.herehear.achievement.observer;
 
-import com.ssafy.herehear.achievement.observer.events.EventType;
-import com.ssafy.herehear.achievement.observer.events.FollowerCountEvent;
-import com.ssafy.herehear.achievement.observer.events.LikeCountEvent;
-import com.ssafy.herehear.achievement.observer.events.MusicRegistrationEvent;
+import com.ssafy.herehear.achievement.observer.events.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,6 +20,7 @@ public class AchievementEventManager {
     private final MusicRegistrationEvent musicRegistrationEvent;
     private final LikeCountEvent likeCountEvent;
     private final FollowerCountEvent followerCountEvent;
+    private final TotalLikeEvent totalLikeEvent;
 
     // Bean 생성 후 EventType 에 정의된 모든 이벤트를 등록
     @PostConstruct
@@ -34,6 +32,7 @@ public class AchievementEventManager {
         subscribe(EventType.MUSIC_REGISTRATION, musicRegistrationEvent);  // 음악 등록 이벤트
         subscribe(EventType.LIKE_COUNT, likeCountEvent);                  // 좋아요 이벤트
         subscribe(EventType.FOLLOWER_COUNT, followerCountEvent);          // 팔로우 이벤트
+        subscribe(EventType.TOTAL_LIKE, totalLikeEvent);
     }
 
     public void subscribe(EventType eventType, EventListener listener) {

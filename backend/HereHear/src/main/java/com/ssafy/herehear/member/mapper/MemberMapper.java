@@ -1,9 +1,9 @@
 package com.ssafy.herehear.member.mapper;
 
-import com.ssafy.herehear.entity.Achievement;
-import com.ssafy.herehear.entity.Follow;
-import com.ssafy.herehear.entity.Member;
-import com.ssafy.herehear.entity.ProfileCharacter;
+import com.ssafy.herehear.achievement.dto.AchievementDto;
+import com.ssafy.herehear.achievement.dto.BadgeCodeDto;
+import com.ssafy.herehear.achievement.dto.TitleCodeDto;
+import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import com.ssafy.herehear.member.dto.response.ProfileCharacterResDto;
@@ -18,7 +18,15 @@ public interface MemberMapper {
 
     ProfileCharacterResDto toProfileCharacterResDto(ProfileCharacter profileCharacter);
 
-    FollowResDto toFollowResDto(Member member);
+    @Mapping(source = "badgeCode", target = "badge")
+    @Mapping(source = "titleCode", target = "title")
+    AchievementDto toAchievementDto(Achievement achievement);
+
+    BadgeCodeDto toBadgeCode(BadgeCode badgeCode);
+
+    TitleCodeDto toTitleCodeDto(TitleCode titleCode);
+
+    FollowResDto toFollowResDto(Member member, Achievement achievement);
 
     Follow toFollow(Member member, Long followMemberId);
 
