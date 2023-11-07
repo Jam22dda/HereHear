@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 // import { RecoilRoot } from "recoil";
@@ -29,13 +29,13 @@ import SearchRegistMusicPage from "./Pages/SearchRegistMusicPage/SearchRegistMus
 import MyStatisticsPage from "./Pages/MyStatisticsPage/MyStatisticsPage.tsx";
 import RedirectHandler from "./RedirectHandler.tsx";
 import YourPage from "./Pages/YourPage/YourPage.tsx";
-import { Text } from "./components/atoms/Text/Text.styles.ts";
+// import { Text } from "./components/atoms/Text/Text.styles.ts";
 
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
             retry: 1,
-            suspense: true,
+            // suspense: true,
         },
     },
 });
