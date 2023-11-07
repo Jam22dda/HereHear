@@ -21,8 +21,9 @@ public enum ExceptionStatus {
     FOLLOW_NOT_FOUND("-2001", "팔로우를 찾을 수 없습니다."),
     PROFILE_CHARACTER_NOT_FOUND("-2002", "프로필 캐릭터를 찾을 수 없습니다."),
     MEMBER_ALREADY_SIGNED("-2003", "이미 가입한 사용자입니다."),
-    MEMBER_IS_DELETED("2004", "탈퇴한 회원입니다."),
+    MEMBER_IS_DELETED("-2004", "탈퇴한 회원입니다."),
     FOLLOW_ALREADY_EXIST("-2005", "이미 팔로우한 사람입니다."),
+    NICKNAME_ALREADY_USED("-2121", "사용 중인 닉네임입니다."),
     PERSONAL_CODE_IS_INVALID("-2500", "WEAR OS 의 개인코드가 유효하지 않습니다."),
 
     /**
