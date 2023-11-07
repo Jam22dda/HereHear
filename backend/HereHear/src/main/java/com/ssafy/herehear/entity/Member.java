@@ -66,6 +66,8 @@ public class Member {
     }
 
     public void deleteMember() {
+        this.nickname = null;
+        this.profileCharacter = null;
         this.removeDate = LocalDateTime.now();
     }
 
