@@ -1,5 +1,15 @@
 import * as S from "./MessagePlus.styles";
-
-export default function MessagePlus() {
-    return <S.MessagePlus name="message" id="message" placeholder="이곳에 멘트를 작성 해 주세요." />;
+import React, { forwardRef } from "react";
+interface MessagePlusProps {
+    $placeholder?: string;
 }
+
+const MessagePlus = forwardRef<HTMLTextAreaElement, MessagePlusProps>(({ $placeholder }, ref) => {
+    return (
+        <div>
+            <S.MessagePlus name="message" id="message" placeholder={$placeholder} ref={ref} />
+        </div>
+    );
+});
+
+export default MessagePlus;
