@@ -1,5 +1,6 @@
 package com.ssafy.herehear.member.dto.response;
 
+import com.ssafy.herehear.achievement.dto.AchievementDto;
 import com.ssafy.herehear.entity.ProfileCharacter;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +15,7 @@ public class FollowResDto {
     private String nickname;
 //    private LocalDateTime followRegistDate;
     private ProfileCharacterResDto profileCharacter;
+    private AchievementDto achievement;
+
 
 }
