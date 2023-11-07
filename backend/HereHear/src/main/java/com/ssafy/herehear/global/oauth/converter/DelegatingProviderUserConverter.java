@@ -19,12 +19,13 @@ public final class DelegatingProviderUserConverter implements ProviderUserConver
                 Arrays.asList(new GoogleOAuth2ProviderUserConverter(),
                         new NaverOAuth2ProviderUserConverter(),
                         new KakaoOAuth2OidcProviderUserConverter(),
-                        new KakaoOAuth2ProviderUserConverter());
+                        new KakaoOAuth2ProviderUserConverter(),
+                        new SpotifyOAuth2ProviderUserConverter());
 
         this.converters = Collections.unmodifiableList(new LinkedList<>(providerUserConverters));
     }
 
-    // Google, Naver, Kakao 구현체에게 Converting 위임
+    // Google, Naver, Kakao, Spotify 구현체에게 Converting 위임
     @Override
     public ProviderUser convert(ProviderUserRequest providerUserRequest) {
         Assert.notNull(providerUserRequest, "providerUserRequest는 NULL일 수 없습니다.");
