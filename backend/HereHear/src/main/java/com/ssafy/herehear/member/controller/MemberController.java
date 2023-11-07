@@ -8,6 +8,7 @@ import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
+import com.ssafy.herehear.member.dto.response.FollowerResDto;
 import com.ssafy.herehear.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,12 +30,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/follower")
-    public DataResponse<List<FollowResDto>> getFollowerList(Authentication authentication) {
+    public DataResponse<List<FollowerResDto>> getFollowerList(Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로워 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
-        List<FollowResDto> followerList = memberService.getFollowerList(memberId);
+        List<FollowerResDto> followerList = memberService.getFollowerList(memberId);
 
         return new DataResponse<>("200", "팔로워 목록 조회", followerList);
     }

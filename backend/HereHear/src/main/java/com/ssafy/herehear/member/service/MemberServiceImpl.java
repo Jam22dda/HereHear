@@ -11,6 +11,7 @@ import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
+import com.ssafy.herehear.member.dto.response.FollowerResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import com.ssafy.herehear.member.mapper.MemberMapper;
 import com.ssafy.herehear.member.mapper.ProfileCharacterMapper;
@@ -26,7 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -137,9 +139,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public List<FollowResDto> getFollowerList(Long memberId) {
+    public List<FollowerResDto> getFollowerList(Long memberId) {
+        Set<Long> followingSet = followRepository.findByFollowingMemberId(memberId).stream()
+                .map(Follow::getFollowMemberId).collect(Collectors.toSet());
+
         return followRepository.findByFollowerMemberId(memberId).stream()
-                .map(follow -> MemberMapper.INSTANCE.toFollowResDto(follow.getMember(), follow.getMember().getAchievement()))
+                .map(follow -> MemberMapper.INSTANCE.toFollowerListDto(follow.getMember(), follow.getMember().getAchievement(), followingSet.contains(follow.getMember().getMemberId())))
                 .toList();
     }
 
@@ -160,6 +165,8 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
         memberRepository.findById(followingMemberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+        // TODO: 한 번 팔로우 한 사람은 다시 못하도록 예외처리
 
         followRepository.save(MemberMapper.INSTANCE.toFollow(member, followingMemberId));
     }
