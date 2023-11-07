@@ -14,7 +14,6 @@ import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import com.ssafy.herehear.member.mapper.MemberMapper;
-import com.ssafy.herehear.member.mapper.ProfileCharacterMapper;
 import com.ssafy.herehear.member.repository.FollowRepository;
 import com.ssafy.herehear.member.repository.MemberRepository;
 import com.ssafy.herehear.member.repository.ProfileCharacterRepository;
@@ -38,9 +37,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final ProfileCharacterRepository profileCharacterRepository;
     private final MemberMapper memberMapper;
-    private final ProfileCharacterMapper profileCharacterMapper;
     private final JwtProvider jwtProvider;
-    private final CookieUtil cookieUtil;
     private static final String REFRESH_TOKEN = "refreshToken";
 
     @Override
@@ -65,7 +62,7 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtProvider.createAccessToken(findMember);
 
         String refreshToken = jwtProvider.createRefreshToken();
-        Cookie cookie = cookieUtil.createCookie(refreshToken);
+        Cookie cookie = CookieUtil.createCookie(refreshToken);
         response.addCookie(cookie);
 
         return accessToken;
@@ -95,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie cookie = cookieUtil.getCookie(request, REFRESH_TOKEN).orElseThrow(
+        Cookie cookie = CookieUtil.getCookie(request, REFRESH_TOKEN).orElseThrow(
                 () -> new CustomException(ExceptionStatus.TOKEN_NOT_FOUND_IN_COOKIE)
         );
         cookie.setMaxAge(0);
