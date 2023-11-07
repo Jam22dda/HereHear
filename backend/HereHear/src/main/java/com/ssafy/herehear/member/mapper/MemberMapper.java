@@ -5,6 +5,7 @@ import com.ssafy.herehear.achievement.dto.BadgeCodeDto;
 import com.ssafy.herehear.achievement.dto.TitleCodeDto;
 import com.ssafy.herehear.entity.*;
 import com.ssafy.herehear.member.dto.response.FollowResDto;
+import com.ssafy.herehear.member.dto.response.FollowerResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import com.ssafy.herehear.member.dto.response.ProfileCharacterResDto;
 import org.mapstruct.Mapper;
@@ -27,6 +28,8 @@ public interface MemberMapper {
     TitleCodeDto toTitleCodeDto(TitleCode titleCode);
 
     FollowResDto toFollowResDto(Member member, Achievement achievement);
+
+    FollowerResDto toFollowerListDto(Member member, Achievement achievement, Boolean isFollowed);
 
     Follow toFollow(Member member, Long followMemberId);
 
