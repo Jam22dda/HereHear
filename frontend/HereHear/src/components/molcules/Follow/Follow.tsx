@@ -2,18 +2,30 @@
 import * as S from "./Follow.styles";
 import { Text } from "../../atoms/Text/Text.styles";
 import CircleButton from "../../atoms/CircleButton/CircleButton";
-// import theme from "../../../styles/theme";
+import { Image } from "../../atoms/Image/Image";
 
-export default function Follow() {
+interface FollowProps {
+    nickname: string;
+    characterImage: string;
+    titleName?: string;
+}
+
+export default function Follow({
+    nickname,
+    characterImage,
+    titleName = "",
+}: FollowProps) {
     return (
         <S.FollowWrapper>
-            <CircleButton $backgroundColor="gradient2" size="large" box-shadow="shadow_smallbtn"></CircleButton>
+            <CircleButton option="follow" size="large">
+                <Image src={characterImage} width={32} height={32} $unit="px" />
+            </CircleButton>
             <S.FollowTextWrapper>
-                <Text size="small2" fontWeight="bold">
-                    이름이요
+                <Text size="small2" fontWeight="bold" color="main2">
+                    {nickname}
                 </Text>
-                <Text size="small3" fontWeight="medium">
-                    대표뱃지
+                <Text size="small3" fontWeight="medium" color="main2">
+                    {titleName}
                 </Text>
             </S.FollowTextWrapper>
         </S.FollowWrapper>
