@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -51,6 +50,8 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("Sign Up memberId: {}", findMember.getMemberId());
 
+        if(checkNickname(signUpDto.getNickname())) { throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED); }
+
         findMember.updateNickname(signUpDto.getNickname());
         ProfileCharacter profileCharacter = profileCharacterRepository.findById(signUpDto.getProfileCharacterCode()).orElseThrow(
                 () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
@@ -73,6 +74,7 @@ public class MemberServiceImpl implements MemberService {
     public void updateNickname(UpdateMemberReqDto updateMemberReqDto, Long memberId) {
         Member findMember = MemberUtil.findMember(memberId);
 
+        if(checkNickname(updateMemberReqDto.getNickname())) { throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED); }
         findMember.updateNickname(updateMemberReqDto.getNickname());
         memberRepository.save(findMember);
     }
