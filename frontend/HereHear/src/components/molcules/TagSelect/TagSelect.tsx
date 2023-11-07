@@ -4,7 +4,8 @@ import { Text } from "../../atoms/Text/Text.styles";
 import CircleButton from "../../atoms/CircleButton/CircleButton";
 import Button from "../../atoms/Button/Button";
 import { useGetTag } from "../../../apis/Music/Quries/useGetTag";
-
+import { Image } from "../../atoms/Image/Image";
+import deleteBtn from "../../../assets/CircleButton/icon-delete.png";
 import { useRecoilState } from "recoil";
 import { TagInfo, selectedTagState } from "../../../states/SelectTagAtom";
 
@@ -37,10 +38,10 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
 
     const toggleTagSelection = (selectedTag: string) => {
         if (selectedTags.includes(selectedTag)) {
-            // 이미 선택된 태그를 제거합니다.
+            // 이미 선택된 태그를 제거
             setSelectedTags(selectedTags.filter((tag) => tag !== selectedTag));
         } else {
-            // 새로운 태그를 추가하기 전에 이미 3개가 선택되었는지 확인합니다.
+            // 새로운 태그를 추가하기 전에 이미 3개가 선택되었는지 확인
             if (selectedTags.length < 3) {
                 setSelectedTags([...selectedTags, selectedTag]);
             }
@@ -53,7 +54,7 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
                 const tag = tagsData.data.find((t: TagData) => t.occasionName === tagName);
                 return tag ? { name: tagName, id: tag.occasionCode } : null;
             })
-            .filter((tagInfo): tagInfo is TagInfo => tagInfo !== null); // null이 아닌 ID만 필터링합니다.
+            .filter((tagInfo): tagInfo is TagInfo => tagInfo !== null); // null이 아닌 ID만 필터링
         // 선택된 태그의 ID들을 Recoil 상태에 저장
         setSelectedTagIds(selectedIds);
         setOpenModal(false);
@@ -66,7 +67,9 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
                     태그 등록
                 </Text>
 
-                <CircleButton size="medium"></CircleButton>
+                <CircleButton size="medium" onClick={() => setOpenModal(false)}>
+                    <Image src={deleteBtn} width={0.9}></Image>
+                </CircleButton>
             </S.TagTopWrapper>
             <Text color="main2" size="small2" fontWeight="medium" $marginTop="20px">
                 태그 등록은 최대 3개까지 가능합니다.
