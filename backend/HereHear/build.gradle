@@ -57,6 +57,9 @@ dependencies {
     // 23.10.30 WebClient 위한 WebFlux 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    // 23.11.03 redis 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 //jacocoTestReport {

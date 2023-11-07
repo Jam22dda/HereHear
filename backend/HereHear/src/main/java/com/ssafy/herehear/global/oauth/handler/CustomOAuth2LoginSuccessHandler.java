@@ -7,7 +7,6 @@ import com.ssafy.herehear.global.util.CookieUtil;
 import com.ssafy.herehear.global.util.JwtProvider;
 import com.ssafy.herehear.member.mapper.MemberMapper;
 import com.ssafy.herehear.member.repository.MemberRepository;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,25 +33,18 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
     private final JwtProvider jwtProvider;
-    private final CookieUtil cookieUtil;
     private String redirectUrl;
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        log.info("member success handler");
         PrincipalUser principalUser = (PrincipalUser)authentication.getPrincipal();
         ProviderUser providerUser = principalUser.getProviderUser();
         log.info("provider: {}", providerUser.getProvider());
 
         Optional<Member> member = memberRepository.findByEmailAndProvider(providerUser.getEmail(),
                 providerUser.getProvider());
-
-        Optional<Member> test = memberRepository.findByEmailAndProvider("tkfkd122@naver.com",
-                "kakao");
-        log.info("test: {}", test);
-        log.info("member: {}", member);
 
         member.ifPresentOrElse(
                 tempMember -> {
@@ -68,7 +60,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             String accessToken = jwtProvider.createAccessToken(member.get());
                             String refreshToken = jwtProvider.createRefreshToken();
 
-                            Cookie cookie = cookieUtil.createCookie(refreshToken);
+                            Cookie cookie = CookieUtil.createCookie(refreshToken);
                             response.addCookie(cookie);
 
                             log.info("============ 기존 회원 {} ============", tempMember.getMemberId());
