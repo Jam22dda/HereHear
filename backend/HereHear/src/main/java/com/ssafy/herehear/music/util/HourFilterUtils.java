@@ -20,7 +20,7 @@ public class HourFilterUtils {
 
     public static boolean afterHourFilter(RegisteredMusic findRegisteredMusic){
         long hoursDifference = hoursDifference(findRegisteredMusic);
-        return hoursDifference == 3 || hoursDifference == -20;//+3h ~ +4h
+        return hoursDifference == 2 || hoursDifference == -21;//+3h ~ +4h
     }
 
     public static long hoursDifference(RegisteredMusic findRegisteredMusic){
