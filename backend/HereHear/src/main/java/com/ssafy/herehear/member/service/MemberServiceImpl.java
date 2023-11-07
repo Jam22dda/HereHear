@@ -166,7 +166,11 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.findById(followingMemberId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
 
-        // TODO: 한 번 팔로우 한 사람은 다시 못하도록 예외처리
+        // 중복 팔로우에 대한 예외처리
+        followRepository.findByMemberIdAndFollowMemberId(memberId, followingMemberId)
+                .ifPresent(o -> {
+                    throw new CustomException(ExceptionStatus.FOLLOW_ALREADY_EXIST);
+                });
 
         followRepository.save(MemberMapper.INSTANCE.toFollow(member, followingMemberId));
     }
