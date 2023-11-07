@@ -1,6 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTag } from "../musicAPI";
-// import { useDebounce } from "use-debounce";
+
+const useGetTag = () => {
+    const queryResult = useQuery({
+        queryKey: ["getTag"],
+        queryFn: () => getTag(),
+    });
+    return queryResult;
+};
+export { useGetTag };
 
 // const useGetTag = () => {
 //     // const [debouncedKeyword] = useDebounce(500); // 500ms 디바운스
@@ -16,12 +24,3 @@ import { getTag } from "../musicAPI";
 
 //     return { tag };
 // };
-
-const useGetTag = () => {
-    const queryResult = useQuery({
-        queryKey: ["getTag"],
-        queryFn: () => getTag(),
-    });
-    return queryResult;
-};
-export { useGetTag };
