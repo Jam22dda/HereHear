@@ -17,9 +17,9 @@ public class YoutubeController {
     private final AddPlayItemService addPlayItemService;
 
     @PostMapping
-    public CommonResponse insertList(@RequestBody YoutubePlayReqDto req) throws GeneralSecurityException, IOException {
-        addPlayItemService.selectList();
-        addPlayItemService.insertList("listId");
+    public CommonResponse insertPlayItem(@RequestBody YoutubePlayReqDto req) throws GeneralSecurityException, IOException {
+        addPlayItemService.selectPlayList();
+        addPlayItemService.insertPlayList();
         addPlayItemService.addPlayItem(req.getVideoId());
         return new CommonResponse("200", "재생 목록 추가완료");
     }
