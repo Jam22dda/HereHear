@@ -2,10 +2,12 @@ package com.ssafy.herehear.member.dto.response;
 
 import com.ssafy.herehear.entity.ProfileCharacter;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class FollowResDto {
 
     private Long memberId;
