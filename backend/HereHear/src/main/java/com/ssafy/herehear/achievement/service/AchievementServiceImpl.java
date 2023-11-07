@@ -10,12 +10,15 @@ import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberAchievement;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +40,25 @@ public class AchievementServiceImpl implements AchievementService {
     @Transactional
     public List<MemberAchievementDto> getMyAchievementList(Long memberId) {
         List<MemberAchievement> memberAchievementList = memberAchievementRepository.findByMemberId(memberId);
+        List<Achievement> achievementList = achievementRepository.findAllEager();
 
-        return memberAchievementList.stream()
+        Set<Long> achievementIdSet = memberAchievementList.stream()
+                .map(item -> item.getAchievement().getAchievementId())
+                .collect(Collectors.toSet());
+
+        List<MemberAchievementDto> result = memberAchievementList.stream()
                 .map(item -> AchievementMapper.INSTANCE.toMemberAchievementDto(item.getAchievement(), memberId, TimeFormatUtil.formatTime(item.getClearTime())))
-                .toList();
+                .collect(Collectors.toList());
+
+        achievementList.forEach(item -> {
+            if (!achievementIdSet.contains(item.getAchievementId())) {
+                result.add(AchievementMapper.INSTANCE.toMemberAchievementDto(item, memberId, null));
+            }
+        });
+
+        result.sort((o1, o2) -> Math.toIntExact(o1.getAchievementId() - o2.getAchievementId()));
+
+        return result;
     }
 
     @Override
@@ -64,6 +82,13 @@ public class AchievementServiceImpl implements AchievementService {
         }
 
         memberRepository.save(member);
+    }
+
+    @Override
+    public AchievementDto getAchievement(Long achievementId) {
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.ACHIEVEMENT_NOT_FOUND));
+        return AchievementMapper.INSTANCE.toAchievementDto(achievement);
     }
 
 }

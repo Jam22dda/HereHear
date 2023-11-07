@@ -7,6 +7,7 @@ import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,36 +30,34 @@ public class AchievementController {
     }
 
     @GetMapping("/myachievement")
-    public DataResponse<List<MemberAchievementDto>> getMyTitle() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public DataResponse<List<MemberAchievementDto>> getMyTitle(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
-        log.info("[달성한 업적 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+        log.info("[달성한 업적 포함 전체조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
         List<MemberAchievementDto> myAchievementList = achievementService.getMyAchievementList(memberId);
 
         return new DataResponse<>("200", "달성한 업적 조회", myAchievementList);
     }
 
-    @GetMapping("/{memberId}")
-    public DataResponse<Integer> getAchievement(@PathVariable Long memberId) {
-        log.info("[달성한 업적 개수 조회] 조회 memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
-
-        int count = achievementService.getAchievementCount(memberId);
-
-        return new DataResponse<>("200", "달성한 업적 개수 조회", count);
-    }
-
     @PutMapping("/equip")
-    public CommonResponse equipAchievement(@RequestBody EquipAchievementDto equipAchievementDto) {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public CommonResponse equipAchievement(@RequestBody EquipAchievementDto equipAchievementDto, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[칭호, 뱃지 장착] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
         achievementService.equipAchievement(memberId, equipAchievementDto);
 
         return new CommonResponse("200", "칭호, 테두리 장착 완료");
+    }
+
+    @GetMapping("/{achievementId}")
+    public DataResponse<AchievementDto> getEquipedAchievement(@PathVariable Long achievementId) {
+        log.info("[칭호, 뱃지 조회] achievementId: {}, time: {}", achievementId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+
+        AchievementDto equipedAchievementDto = achievementService.getAchievement(achievementId);
+
+        return new DataResponse<>("200", "칭호, 뱃지 조회", equipedAchievementDto);
     }
 
 }

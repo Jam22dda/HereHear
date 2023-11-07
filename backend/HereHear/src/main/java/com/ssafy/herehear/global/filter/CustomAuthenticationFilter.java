@@ -30,7 +30,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     public static final String TOKEN_EXCEPTION_KEY = "exception";
     public static final String TOKEN_INVALID = "invalid";
-    public static final String TOEKN_EXPIRE = "expire";
+    public static final String TOKEN_EXPIRE = "expire";
     public static final String TOKEN_UNSUPPORTED = "unsupported";
     public static final String TOKEN_ILLEGAL = "illegal";
     public static final String CUSTOM_EXCEPTION = "custom";
@@ -66,7 +66,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_INVALID);
         } catch (ExpiredJwtException e) {
             log.info("만료된 토큰입니다.");
-            request.setAttribute(TOKEN_EXCEPTION_KEY, TOEKN_EXPIRE);
+            request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_EXPIRE);
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않는 토큰입니다.");
             request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_UNSUPPORTED);

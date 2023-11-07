@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -28,9 +29,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/follower")
-    public DataResponse<List<FollowResDto>> getFollowerList() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public DataResponse<List<FollowResDto>> getFollowerList(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로워 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -40,9 +40,8 @@ public class MemberController {
     }
 
     @GetMapping("/following")
-    public DataResponse<List<FollowResDto>> getFollowing() {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public DataResponse<List<FollowResDto>> getFollowing(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로잉 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -52,9 +51,8 @@ public class MemberController {
     }
 
     @PostMapping("/follow")
-    public CommonResponse follow(@RequestBody FollowReqDto followReqDto) {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public CommonResponse follow(@RequestBody FollowReqDto followReqDto, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로우] memberId: {}, followMemberId: {}, time: {}", memberId, followReqDto.getMemberId(), TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -64,9 +62,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/follow")
-    public CommonResponse unfollow(@RequestBody FollowReqDto followReqDto) {
-        // TODO: OAuth2.0으로 받아온 userId로 변경해야 함
-        Long memberId = 1L;
+    public CommonResponse unfollow(@RequestBody FollowReqDto followReqDto, Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[언팔로우] memberId: {}, followMemberId: {}, time: {}", memberId, followReqDto.getMemberId(), TimeFormatUtil.formatTime(LocalDateTime.now()));
 
@@ -75,9 +72,17 @@ public class MemberController {
         return new CommonResponse("200", "언팔로우 성공");
     }
 
+    @GetMapping("/check/nickname/{nickname}")
+    public DataResponse<Map<String, Boolean>> checkNickname(@PathVariable("nickname") String nickname) {
+        boolean isAvailable = memberService.checkNickname(nickname);
+        Map<String, Boolean> response = Map.of("isAvailable", isAvailable);
+        String message = isAvailable ? "사용 가능한 닉네임 입니다" : "이미 사용중인 닉네임 입니다";
+        return new DataResponse<>("200", message, response);
+    }
+
     @PostMapping("/signup")
     public DataResponse signUp(@RequestBody SignUpReqDto req, HttpServletResponse response) {
-        String accessToken =  memberService.signUp(req, response);
+        String accessToken = memberService.signUp(req, response);
         return new DataResponse("200", "회원 가입이 완료되었습니다", accessToken);
     }
 

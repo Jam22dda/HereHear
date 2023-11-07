@@ -1,10 +1,14 @@
 package com.ssafy.herehear.achievement.observer.events;
 
 import com.ssafy.herehear.achievement.observer.EventListener;
-import com.ssafy.herehear.achievement.repository.*;
+import com.ssafy.herehear.achievement.repository.AchievementRepository;
+import com.ssafy.herehear.achievement.repository.FollowRepository;
+import com.ssafy.herehear.achievement.repository.MemberAchievementRepository;
+import com.ssafy.herehear.achievement.repository.MemberRepository;
 import com.ssafy.herehear.entity.Achievement;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberAchievement;
+import com.ssafy.herehear.entity.MemberAchievementId;
 import com.ssafy.herehear.entity.type.AchievementCategoryType;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
@@ -42,6 +46,7 @@ public class FollowerCountEvent implements EventListener {
         for (Achievement achievement : achievementList) {
             if (followerCount >= achievement.getCount() && !memberAchievementList.contains(achievement)) {
                 memberAchievementRepository.save(MemberAchievement.builder()
+                        .id(MemberAchievementId.builder().memberId(member.getMemberId()).achievementId(achievement.getAchievementId()).build())
                         .member(member)
                         .achievement(achievement)
                         .build());
