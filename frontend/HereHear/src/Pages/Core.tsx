@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 // import './Core.styles';
 import * as S from './Core.styles';
 import markImage from '../assets/Core/Union.png';
@@ -32,6 +32,25 @@ export default function Core() {
 
     // 최초 1회 실행
     useEffect(() => {
+        // SSE
+        const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
+
+        // SSE 이벤트 핸들러를 등록합니다.
+        eventSource.addEventListener('sse', event => {
+            const eventData = JSON.parse(event.data);
+            // 이벤트 데이터를 처리합니다.
+            console.log('Received SSE event:', eventData);
+        });
+
+        // SSE 에러 핸들러를 등록합니다.
+        eventSource.addEventListener('error', error => {
+            console.error('SSE error:', error);
+        });
+
+        // SSE 연결이 닫힐 때의 핸들러를 등록합니다.
+        eventSource.addEventListener('close', () => {
+            console.log('SSE connection closed.');
+        });
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         const script = document.createElement('script');
