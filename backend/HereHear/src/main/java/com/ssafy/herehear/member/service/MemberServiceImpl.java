@@ -139,7 +139,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public List<FollowResDto> getFollowerList(Long memberId) {
         return followRepository.findByFollowerMemberId(memberId).stream()
-                .map(follow -> MemberMapper.INSTANCE.toFollowResDto(follow.getMember()))
+                .map(follow -> MemberMapper.INSTANCE.toFollowResDto(follow.getMember(), follow.getMember().getAchievement()))
                 .toList();
     }
 
@@ -150,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
                 .map(follow -> {
                     Member followingMember = memberRepository.findById(follow.getFollowMemberId())
                             .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
-                    return MemberMapper.INSTANCE.toFollowResDto(followingMember);
+                    return MemberMapper.INSTANCE.toFollowResDto(followingMember, followingMember.getAchievement());
                 }).toList();
     }
 
