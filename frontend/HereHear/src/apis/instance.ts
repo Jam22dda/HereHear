@@ -11,9 +11,9 @@ const instance: AxiosInstance = axios.create({
 });
 
 instance.interceptors.request.use(
-    config => {
-        const token = localStorage.getItem('token');
-        console.log(token);
+    (config) => {
+        const token = localStorage.getItem("token");
+
         if (token) {
             // 직접 속성을 할당하는 대신 이 방법을 사용
             config.headers['Authorization'] = `Bearer ${token}`;

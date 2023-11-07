@@ -8,7 +8,7 @@ import IconKakao from "../../assets/Landing/icon-kakao.png";
 export default function Landing() {
     // const id = "angel";
     const serverUrl = import.meta.env.VITE_SERVER_URL;
-    console.log(serverUrl, "서브주소");
+    // console.log(serverUrl, "서브주소");
 
     const navigatePage = () => {
         window.location.href = `${serverUrl}oauth2/authorization/kakao`;
