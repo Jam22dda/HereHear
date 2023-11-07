@@ -31,25 +31,6 @@ export default function Core() {
     const musicAroundList = useGetAroundMusicList(lat, lng);
 
     useEffect(() => {
-        // SSE
-        const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
-
-        // SSE 이벤트 핸들러를 등록합니다.
-        eventSource.addEventListener('sse', event => {
-            const eventData = JSON.parse(event.data);
-            // 이벤트 데이터를 처리합니다.
-            console.log('Received SSE event:', eventData);
-        });
-
-        // SSE 에러 핸들러를 등록합니다.
-        eventSource.addEventListener('error', error => {
-            console.error('SSE error:', error);
-        });
-
-        // SSE 연결이 닫힐 때의 핸들러를 등록합니다.
-        eventSource.addEventListener('close', () => {
-            console.log('SSE connection closed.');
-        });
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         const script = document.createElement('script');
@@ -95,7 +76,7 @@ export default function Core() {
 
             setMusicMap(musicMapIns);
 
-            const arr: any[] = [];
+            // const arr: any[] = [];
             const pinIns: any = {};
 
             for (const key in musicMapIns) {
@@ -126,7 +107,6 @@ export default function Core() {
 
                     alert(`marker${key} clicked`);
                 });
-                console.log(arr.length);
             }
 
             if (!navigator.geolocation) {
@@ -175,42 +155,110 @@ export default function Core() {
                 }
             );
 
-            // 지도 핀찍기 테스트
-            // setTimeout(() => {
-            //     arr[0].setMap(null);
+            // SSE
+            const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
 
-            //     arr[arr.length] = new naver.maps.Marker({
-            //         position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
-            //         map: map,
-            //         icon: {
-            //             content: `
-            //             <div style="position: relative">
-            //                 <img alt='img' src='${testImage}' className='pin' style="position: absolute" />
-            //                 <img
-            //                 src="https://image.bugsm.co.kr/album/images/500/204598/20459847.jpg"
-            //                 alt="pin-album"
-            //                 style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
-            //                 />
-            //             </div>
+            // SSE 이벤트 핸들러를 등록합니다.
+            eventSource.addEventListener('sse', event => {
+                const eventData = JSON.parse(event.data);
 
-            //             `,
-            //         },
-            //     });
+                console.log('musicMap');
+                console.log(musicMap);
 
-            //     console.log(arr.length);
+                if (Array.isArray(eventData)) {
+                    // 이벤트 데이터를 처리합니다.
+                    console.log('Received SSE event:', eventData);
+                    console.log('나 들어온다');
 
-            //     userPin.setMap(null);
+                    const addList = [];
+                    const delList = [];
 
-            //     userPin = new naver.maps.Marker({
-            //         position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
-            //         map: map,
-            //         icon: {
-            //             content: `
-            //                 <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; z-index: 999; border: 4px solid white;"></div>
-            //         `,
-            //         },
-            //     });
-            // }, 3000); // 10초 후에 실행
+                    for (let i = 0; i < eventData.length; i++) {
+                        if (eventData[i].status === 1) {
+                            addList.push(eventData[i]);
+                        } else {
+                            delList.push(eventData[i]);
+                        }
+                    }
+
+                    console.log('LLLLLLLLLLLLList');
+                    console.log(addList);
+                    console.log(delList);
+
+                    // 현재까지 저장된 musicMap
+                    const newMusicMapIns: MusicMap = { ...musicMap };
+
+                    // 음악 삭제
+                    const musicDelIns: MusicMap = delList.reduce((map: MusicMap, music: Music) => {
+                        const { registeredMusicId, ...otherProps } = music;
+                        map[registeredMusicId] = otherProps;
+                        return map;
+                    }, {});
+
+                    for (const key in musicDelIns) {
+                        console.log('newMusicMapIns[key]');
+                        console.log(newMusicMapIns);
+                        console.log(newMusicMapIns[key]);
+
+                        newMusicMapIns[key].setMap(null);
+                    }
+
+                    // 음악 데이터를 Map 형태로 변경하여 저장
+                    const musicMapIns: MusicMap = addList.reduce((map: MusicMap, music: Music) => {
+                        const { registeredMusicId, ...otherProps } = music;
+                        map[registeredMusicId] = otherProps;
+                        return map;
+                    }, {});
+
+                    setMusicMap(prev => Object.assign({}, prev, musicMapIns));
+
+                    const pinIns: any = {};
+
+                    for (const key in musicMapIns) {
+                        // 마커 표시
+                        pinIns[key] = new naver.maps.Marker({
+                            position: new naver.maps.LatLng(musicMapIns[key].lat, musicMapIns[key].lng),
+                            map: map,
+                            icon: {
+                                content: `
+                        <div style="position: relative">
+                            <img alt='img' src='${markImage}' className='pin' style="position: absolute" />
+                            <img
+                            src="${musicMapIns[key].albumImg}"
+                            alt="pin-album"
+                            style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
+                            />
+                        </div>
+                        `,
+                            },
+                        });
+
+                        // 마커 클릭 시 발생하는 이벤트
+                        naver.maps.Event.addListener(pinIns[key], 'click', function () {
+                            setIsSelect(true);
+                            console.log(`marker${key} clicked`);
+                            console.log(musicAroundList.musicAroundList);
+                            setUserSelectPin(Number(key));
+
+                            alert(`marker${key} clicked`);
+                        });
+                    }
+                }
+
+                // for (let i = 0; i < eventData.length; i++) {
+                //     console.log('Received SSE[i] event:', eventData[i]);
+                // }
+            });
+
+            // SSE 에러 핸들러를 등록합니다.
+            eventSource.addEventListener('error', error => {
+                console.error('SSE error:', error);
+            });
+
+            // SSE 연결이 닫힐 때의 핸들러를 등록합니다.
+            eventSource.addEventListener('close', () => {
+                console.log('SSE connection closed.');
+            });
         };
 
         document.body.appendChild(script);
@@ -221,6 +269,12 @@ export default function Core() {
             document.body.removeChild(script);
         };
     }, []);
+
+    useEffect(() => {
+        console.log('musicMap용 useEffects');
+
+        console.log(musicMap);
+    }, [musicMap]);
 
     // 정해진 시간마다 내 위치 정보 받아오는 기능
     // useEffect(() => {
@@ -411,5 +465,5 @@ interface Music {
 }
 
 interface MusicMap {
-    [key: number]: Omit<Music, 'registeredMusicId'>;
+    [key: string]: Omit<Music, 'registeredMusicId'>;
 }
