@@ -29,14 +29,7 @@ public class SseServiceImpl implements SseService {
 
     @Override
     public SseEmitter subscribe(Long memberId) {
-        sendToClient(memberId, "SseEmitter 구독 memberId: "+memberId);
-
         return createEmitter(memberId);
-    }
-
-    @Override
-    public void notify(Long memberId, Object event) {
-        sendToClient(memberId, event);
     }
 
     @Override
@@ -50,6 +43,11 @@ public class SseServiceImpl implements SseService {
                 emitter.completeWithError(exception);
             }
         }
+    }
+
+    @Override
+    public void notify(Object event) {
+        sendAllClient(event);
     }
 
     @Override
@@ -98,7 +96,7 @@ public class SseServiceImpl implements SseService {
         sseResDtos.addAll(addSseResDto);
         log.info("checkForDataChanges sseResDtos: "+ sseResDtos);
 
-        sendAllClient(sseResDtos);
+        notify(sseResDtos);
     }
 
 }
