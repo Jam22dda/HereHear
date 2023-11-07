@@ -13,6 +13,7 @@ const getSearchMusic = async (keyword: string, page: number) => {
 const getTag = async () => {
     try {
         const response = await instance.get("/music/tag");
+        console.log("태그 오니?", response.data);
         return response.data;
     } catch (error) {
         console.error("Error fetching search Tag", error);

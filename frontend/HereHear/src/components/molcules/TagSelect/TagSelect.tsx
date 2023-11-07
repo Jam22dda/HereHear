@@ -4,25 +4,36 @@ import { Text } from "../../atoms/Text/Text.styles";
 import CircleButton from "../../atoms/CircleButton/CircleButton";
 import Button from "../../atoms/Button/Button";
 import { useGetTag } from "../../../apis/Music/Quries/useGetTag";
-// import { useRecoilState } from "recoil";
-// import { selectedTagState } from "../../../states/SelectTagAtom";
 
-interface Tag {
-    occasionCode: number;
-    occasionName: string;
-    category: string;
+import { useRecoilState } from "recoil";
+import { TagInfo, selectedTagState } from "../../../states/SelectTagAtom";
+
+interface TagSelectProps {
+    setOpenModal: (open: boolean) => void;
+}
+interface TagData {
+    occasionCode?: number;
+    occasionName?: string;
+    category?: string;
 }
 
-export default function TagSelect() {
-    const getTag = useGetTag();
-    console.log(getTag.tag.data);
-    const occasionTags = getTag.tag.data.filter((tag: Tag) => tag.category === "occasion");
-    const environmentTags = getTag.tag.data.filter((tag: Tag) => tag.category === "environment");
-    const activityTags = getTag.tag.data.filter((tag: Tag) => tag.category === "activity");
-
+export default function TagSelect({ setOpenModal }: TagSelectProps) {
+    const { data: tagsData, isLoading, isError, error } = useGetTag();
+    // console.log(getTag);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [, setSelectedTagIds] = useRecoilState(selectedTagState);
 
-    // const [selectedTagIds, setSelectedTagIds] = useRecoilState<number[]>(selectedTagState);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    const occasionTags = tagsData.data?.filter((tag: TagData) => tag.category === "occasion") || [];
+    const environmentTags = tagsData.data?.filter((tag: TagData) => tag.category === "environment") || [];
+    const activityTags = tagsData.data?.filter((tag: TagData) => tag.category === "activity") || [];
 
     const toggleTagSelection = (selectedTag: string) => {
         if (selectedTags.includes(selectedTag)) {
@@ -36,15 +47,17 @@ export default function TagSelect() {
         }
     };
 
-    // const saveAndCloseModal = () => {
-    //     const selectedIds = selectedTags
-    //         .map((tagName) => {
-    //             const tag = getTag.tag.data.find((t: Tag) => t.occasionName === tagName);
-    //             return tag ? tag.occasionCode : null;
-    //         })
-    //         .filter((id) => id !== null); // null이 아닌 ID만 필터링합니다.
-
-    //     setSelectedTagIds(selectedIds);
+    const saveSelectedTags = () => {
+        const selectedIds = selectedTags
+            .map((tagName) => {
+                const tag = tagsData.data.find((t: TagData) => t.occasionName === tagName);
+                return tag ? { name: tagName, id: tag.occasionCode } : null;
+            })
+            .filter((tagInfo): tagInfo is TagInfo => tagInfo !== null); // null이 아닌 ID만 필터링합니다.
+        // 선택된 태그의 ID들을 Recoil 상태에 저장
+        setSelectedTagIds(selectedIds);
+        setOpenModal(false);
+    };
 
     return (
         <S.TagSelectWrapper>
@@ -62,16 +75,16 @@ export default function TagSelect() {
                 상황
             </Text>
             <S.TagBtnWrapper>
-                {occasionTags.slice(0, 11).map((tag: Tag, index: number) => {
-                    const isSelected = selectedTags.includes(tag.occasionName);
+                {occasionTags.slice(0, 11).map((tag: TagData, index: number) => {
+                    const isSelected = selectedTags.includes(tag.occasionName ?? "");
                     return (
                         <Button
                             size="small"
                             $width="58px"
                             option={isSelected ? "tag_selected" : "tag_unselected"}
-                            onClick={() => toggleTagSelection(tag.occasionName)}
+                            onClick={() => tag.occasionName && toggleTagSelection(tag.occasionName)}
                             key={index}
-                            tag={tag.occasionName}
+                            tag={tag.occasionName ?? ""}
                         ></Button>
                     );
                 })}
@@ -81,16 +94,16 @@ export default function TagSelect() {
                 환경
             </Text>
             <S.TagBtnWrapper>
-                {environmentTags.slice(0, 7).map((tag: Tag, index: number) => {
-                    const isSelected = selectedTags.includes(tag.occasionName);
+                {environmentTags.slice(0, 7).map((tag: TagData, index: number) => {
+                    const isSelected = selectedTags.includes(tag.occasionName ?? "");
                     return (
                         <Button
                             size="small"
                             $width="58px"
                             option={isSelected ? "tag_selected" : "tag_unselected"}
-                            onClick={() => toggleTagSelection(tag.occasionName)}
+                            onClick={() => tag.occasionName && toggleTagSelection(tag.occasionName)}
                             key={index}
-                            tag={tag.occasionName}
+                            tag={tag.occasionName ?? ""}
                         ></Button>
                     );
                 })}
@@ -99,21 +112,21 @@ export default function TagSelect() {
                 활동
             </Text>
             <S.TagBtnWrapper>
-                {activityTags.slice(0, 9).map((tag: Tag, index: number) => {
-                    const isSelected = selectedTags.includes(tag.occasionName);
+                {activityTags.slice(0, 9).map((tag: TagData, index: number) => {
+                    const isSelected = selectedTags.includes(tag.occasionName ?? "");
                     return (
                         <Button
                             size="small"
                             $width="58px"
                             option={isSelected ? "tag_selected" : "tag_unselected"}
-                            onClick={() => toggleTagSelection(tag.occasionName)}
+                            onClick={() => tag.occasionName && toggleTagSelection(tag.occasionName)}
                             key={index}
-                            tag={tag.occasionName}
+                            tag={tag.occasionName ?? ""}
                         ></Button>
                     );
                 })}
             </S.TagBtnWrapper>
-            <Button option="save" $width="90px" size="medium" style={{ fontWeight: "normal", alignSelf: "center" }}>
+            <Button option="save" $width="90px" size="medium" style={{ fontWeight: "normal", alignSelf: "center" }} onClick={saveSelectedTags}>
                 선택
             </Button>
         </S.TagSelectWrapper>
