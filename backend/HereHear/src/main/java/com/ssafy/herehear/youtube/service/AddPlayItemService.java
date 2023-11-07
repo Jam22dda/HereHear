@@ -27,7 +27,7 @@ public class AddPlayItemService {
         log.info("addPlayItem: "+response);
     }
 
-    public void selectList() throws GeneralSecurityException, IOException {
+    public void selectPlayList() throws GeneralSecurityException, IOException {
         YouTube youtubeService = YoutubeAuthorize.getService();
         // Define and execute the API request
         YouTube.Playlists.List request = youtubeService.playlists()
@@ -36,7 +36,7 @@ public class AddPlayItemService {
         log.info("selectList: "+response);
     }
 
-    public void insertList() throws GeneralSecurityException, IOException {
+    public void insertPlayList() throws GeneralSecurityException, IOException {
         YouTube youtubeService = YoutubeAuthorize.getService();
 
         // Define the Playlist object, which will be uploaded as the request body.
