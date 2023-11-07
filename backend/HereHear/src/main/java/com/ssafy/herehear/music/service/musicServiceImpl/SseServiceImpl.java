@@ -29,14 +29,7 @@ public class SseServiceImpl implements SseService {
 
     @Override
     public SseEmitter subscribe(Long memberId) {
-        sendToClient(memberId, "SseEmitter 구독 memberId: "+memberId);
-
         return createEmitter(memberId);
-    }
-
-    @Override
-    public void notify(Long memberId, Object event) {
-        sendToClient(memberId, event);
     }
 
     @Override
@@ -50,6 +43,11 @@ public class SseServiceImpl implements SseService {
                 emitter.completeWithError(exception);
             }
         }
+    }
+
+    @Override
+    public void notify(Object event) {
+        sendAllClient(event);
     }
 
     @Override
@@ -77,6 +75,7 @@ public class SseServiceImpl implements SseService {
     }
 
     @Scheduled(cron = "0 0 * * * ?")//정각 마다 실행
+//    @Scheduled(fixedRate = 5000)//test
     public void checkForDataChanges() {
         List<SseResDto> sseResDtos = new ArrayList<>();
 
@@ -84,20 +83,20 @@ public class SseServiceImpl implements SseService {
         List<SseResDto> deleteSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(HourFilterUtils::beforeHourFilter)
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(0, registeredMusic))
-                .toList();//15,16
+                .toList();
 
         //SSE 추가
         List<SseResDto> addSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(HourFilterUtils::afterHourFilter)
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
-                .toList();//1,15,16
+                .toList();
 
 
         sseResDtos.addAll(deleteSseResDto);
         sseResDtos.addAll(addSseResDto);
         log.info("checkForDataChanges sseResDtos: "+ sseResDtos);
 
-        sendAllClient(sseResDtos);
+        notify(sseResDtos);
     }
 
 }
