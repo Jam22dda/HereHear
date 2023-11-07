@@ -27,10 +27,16 @@ export default function Core() {
     const [userSelectPin, setUserSelectPin] = useState(0);
 
     // 외부로부터 입력된 데이터
-    const musicList = useGetMapMusicList();
+    const { musicList, refetch } = useGetMapMusicList();
     const musicAroundList = useGetAroundMusicList(lat, lng);
 
     // 최초 1회 실행
+    // useEffect(() => {
+    //     console.log('나 몇번만 나오니');
+
+    //     refetch();
+    // }, []);
+
     useEffect(() => {
         // SSE
         const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
@@ -58,7 +64,7 @@ export default function Core() {
         script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
 
         // 지도 초기화 완료 시 최초 1회 실행
-        script.onload = () => {
+        script.onload = async () => {
             const naver = window.naver;
             setNaverState(naver);
             console.log('naver');
@@ -83,6 +89,11 @@ export default function Core() {
             });
 
             setMapState(map);
+
+            const ml = await refetch();
+            console.log('MMMMMMMMMMM');
+            console.log(ml.data);
+            console.log(musicList.MusicList);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
             const musicMapIns: MusicMap = musicList.MusicList.reduce((map: MusicMap, music: Music) => {
