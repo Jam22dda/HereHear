@@ -10,17 +10,17 @@ public class HourFilterUtils {
 
     public static boolean findHourFilter(RegisteredMusic findRegisteredMusic){
         long hoursDifference = hoursDifference(findRegisteredMusic);
-        return hoursDifference > -3 && hoursDifference < 3 || hoursDifference >= 21 || hoursDifference <= -21;//-3h ~ +3h
+        return hoursDifference > -3 && hoursDifference < 3 || hoursDifference >= 21 || hoursDifference <= -21;
     }
 
     public static boolean beforeHourFilter(RegisteredMusic findRegisteredMusic){
         long hoursDifference = hoursDifference(findRegisteredMusic);
-        return hoursDifference == -3 || hoursDifference == 20;//-4h ~ -3h
+        return hoursDifference == -3 || hoursDifference == 20;
     }
 
     public static boolean afterHourFilter(RegisteredMusic findRegisteredMusic){
         long hoursDifference = hoursDifference(findRegisteredMusic);
-        return hoursDifference == 2 || hoursDifference == -21;//+3h ~ +4h
+        return hoursDifference == 2 || hoursDifference == -21;
     }
 
     public static long hoursDifference(RegisteredMusic findRegisteredMusic){
