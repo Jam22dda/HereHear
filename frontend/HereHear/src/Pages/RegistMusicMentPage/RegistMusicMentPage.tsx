@@ -1,9 +1,12 @@
 import * as S from "./RegistMusicMentPage.styles";
+import { useNavigate } from "react-router-dom";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import AlbumCover from "../../components/atoms/AlbumCover/AlbumCover";
 import Button from "../../components/atoms/Button/Button";
 import MessagePlus from "../../components/atoms/MessagePlus/MessagePlus";
+import iconBack from "../../assets/CircleButton/icon-back.png";
+import { Image } from "../../components/atoms/Image/Image";
 import { useState } from "react";
 import { musicItemState } from "../../states/RegistMusicAtom";
 import { startTransition } from "react";
@@ -14,9 +17,11 @@ import { selectedTagState } from "../../states/SelectTagAtom";
 export default function RegistMusicMent() {
     const selectedTagIds = useRecoilValue(selectedTagState); // 선택한 태그 리코일에서 불러오기
     console.log(selectedTagIds, "태그 리스트");
+
     const musicItem = useRecoilValue(musicItemState); // 선택한 노래 리코일에서 불러오기
 
     const [isOpenModal, setOpenModal] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const openModal = () => {
         startTransition(() => {
@@ -37,16 +42,18 @@ export default function RegistMusicMent() {
                     </>
                 )}
 
-                <CircleButton option="default2" size="medium"></CircleButton>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                </CircleButton>
                 <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
                     음악 등록
                 </Text>
                 <S.RegistMusicWrapper>
                     <AlbumCover src={musicItem.src}></AlbumCover>
-                    <Text size="body2" fontWeight="bold" $marginTop="40px">
+                    <Text textAlign="center" size="body2" fontWeight="bold" $marginTop="40px">
                         {musicItem.songtitle}
                     </Text>
-                    <Text size="body2" fontWeight="medium" $marginTop="5px">
+                    <Text textAlign="center" size="body2" fontWeight="medium" $marginTop="5px">
                         {musicItem.artist}
                     </Text>
 
@@ -57,16 +64,7 @@ export default function RegistMusicMent() {
                     {selectedTagIds.length > 0 && (
                         <S.SelectTagWrapper>
                             {selectedTagIds.map((tag, index) => (
-                                <Button
-                                    option="tag1"
-                                    size="medium"
-                                    $margin="5px"
-                                    $width="80px"
-                                    key={index}
-                                    // 여기서 tag.name이 태그의 이름이라고 가정했습니다.
-                                    // 실제 사용하는 객체 구조에 맞춰야 합니다.
-                                    tag={tag.name}
-                                ></Button>
+                                <Button option="tag1" size="medium" $margin="5px" $width="80px" key={index} tag={tag.name}></Button>
                             ))}
                         </S.SelectTagWrapper>
                     )}

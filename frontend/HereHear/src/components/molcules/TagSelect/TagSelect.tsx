@@ -10,20 +10,31 @@ import { TagInfo, selectedTagState } from "../../../states/SelectTagAtom";
 
 interface TagSelectProps {
     setOpenModal: (open: boolean) => void;
+}
+interface TagData {
     occasionCode?: number;
     occasionName?: string;
     category?: string;
 }
 
 export default function TagSelect({ setOpenModal }: TagSelectProps) {
-    const getTag = useGetTag();
+    const { data: tagsData, isLoading, isError, error } = useGetTag();
     // console.log(getTag);
-
-    const occasionTags = getTag.tag.data.filter((tag: TagSelectProps) => tag.category === "occasion");
-    const environmentTags = getTag.tag.data.filter((tag: TagSelectProps) => tag.category === "environment");
-    const activityTags = getTag.tag.data.filter((tag: TagSelectProps) => tag.category === "activity");
-
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [, setSelectedTagIds] = useRecoilState(selectedTagState);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    const occasionTags = tagsData.data?.filter((tag: TagData) => tag.category === "occasion") || [];
+    const environmentTags = tagsData.data?.filter((tag: TagData) => tag.category === "environment") || [];
+    const activityTags = tagsData.data?.filter((tag: TagData) => tag.category === "activity") || [];
+
     const toggleTagSelection = (selectedTag: string) => {
         if (selectedTags.includes(selectedTag)) {
             // 이미 선택된 태그를 제거합니다.
@@ -36,12 +47,10 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
         }
     };
 
-    const [, setSelectedTagIds] = useRecoilState(selectedTagState);
-
     const saveSelectedTags = () => {
         const selectedIds = selectedTags
             .map((tagName) => {
-                const tag = getTag.tag.data.find((t: TagSelectProps) => t.occasionName === tagName);
+                const tag = tagsData.data.find((t: TagData) => t.occasionName === tagName);
                 return tag ? { name: tagName, id: tag.occasionCode } : null;
             })
             .filter((tagInfo): tagInfo is TagInfo => tagInfo !== null); // null이 아닌 ID만 필터링합니다.
@@ -66,7 +75,7 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
                 상황
             </Text>
             <S.TagBtnWrapper>
-                {occasionTags.slice(0, 11).map((tag: TagSelectProps, index: number) => {
+                {occasionTags.slice(0, 11).map((tag: TagData, index: number) => {
                     const isSelected = selectedTags.includes(tag.occasionName ?? "");
                     return (
                         <Button
@@ -85,7 +94,7 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
                 환경
             </Text>
             <S.TagBtnWrapper>
-                {environmentTags.slice(0, 7).map((tag: TagSelectProps, index: number) => {
+                {environmentTags.slice(0, 7).map((tag: TagData, index: number) => {
                     const isSelected = selectedTags.includes(tag.occasionName ?? "");
                     return (
                         <Button
@@ -103,7 +112,7 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
                 활동
             </Text>
             <S.TagBtnWrapper>
-                {activityTags.slice(0, 9).map((tag: TagSelectProps, index: number) => {
+                {activityTags.slice(0, 9).map((tag: TagData, index: number) => {
                     const isSelected = selectedTags.includes(tag.occasionName ?? "");
                     return (
                         <Button
