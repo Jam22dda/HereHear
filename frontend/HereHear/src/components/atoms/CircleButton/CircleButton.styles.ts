@@ -2,7 +2,10 @@ import styled, { css } from "styled-components";
 import { CircleButtonProps } from "./CircleButton";
 import theme from "../../../styles/theme";
 
-const getOptionStyling = (option: Required<CircleButtonProps>["option"], props: CircleButtonProps) => {
+const getOptionStyling = (
+    option: Required<CircleButtonProps>["option"],
+    props: CircleButtonProps
+) => {
     const style = {
         default: css`
             background: ${({ theme }) => theme.color.white2};
@@ -68,6 +71,10 @@ const getOptionStyling = (option: Required<CircleButtonProps>["option"], props: 
             color: ${({ theme }) => theme.color.main1};
             box-shadow: ${({ theme }) => theme.shadow.shadow_goback};
         `,
+        follow: css`
+            background: ${({ theme }) => theme.gradient.gradient2};
+            box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
+        `,
     };
     return props.$backgroundColor
         ? css`
@@ -82,31 +89,49 @@ const getSizeStyling = (size: Required<CircleButtonProps>["size"]) => {
             height: 40px;
             width: 40px;
             border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         `,
         medium: css`
             height: 40px;
             width: 40px;
             border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         `,
         mediumplus: css`
             height: 45px;
             width: 45px;
             border-radius: 22.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         `,
         large: css`
             height: 50px;
             width: 50px;
             border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         `,
         large60: css`
             height: 60px;
             width: 60px;
             border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         `,
         largePlus: css`
             height: 68px;
             width: 68px;
             border-radius: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         `,
     };
     return style[size];
@@ -115,7 +140,8 @@ const getSizeStyling = (size: Required<CircleButtonProps>["size"]) => {
 const Button = styled.button<CircleButtonProps>`
     width: ${(props) => props.$width || "100%"};
     text-align: ${(props) => props.$textAlign || "center"};
-    color: ${(props) => (props.color ? props.theme.color[props.color] : theme.color.main1)};
+    color: ${(props) =>
+        props.color ? props.theme.color[props.color] : theme.color.main1};
     border-radius: ${(props) => props.$borderRadius || "24px"};
     ${({ size = "large" }) => getSizeStyling(size)};
     ${({ option = "default", ...props }) => getOptionStyling(option, props)};

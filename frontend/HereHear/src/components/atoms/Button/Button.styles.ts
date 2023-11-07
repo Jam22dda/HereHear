@@ -59,7 +59,7 @@ const getSizeStyling = (size: Required<ButtonProps>["size"]) => {
             font-size: ${({ theme }) => theme.fontSize.small2};
             border-radius: 32px;
             border: none;
-            line-height: 34px;
+            line-height: 36px;
         `,
         mediumplus: css`
             // 큰 태그

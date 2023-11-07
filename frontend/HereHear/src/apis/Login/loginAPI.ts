@@ -17,4 +17,18 @@ const addUser = async (data: SignUpInfo): Promise<AddUserResponse> => {
     return response.data;
 };
 
-export { addUser };
+const getCheckNickname = async (nickname: string) => {
+    try {
+        const response = await instance.get(
+            `/member/check/nickname/${nickname}`
+        );
+        console.log("getCheckNickname 성공");
+        console.log(response);
+        return response.data.data;
+    } catch (error) {
+        console.error("Error fetching search music", error);
+        throw error;
+    }
+};
+
+export { addUser, getCheckNickname };
