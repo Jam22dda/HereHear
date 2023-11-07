@@ -2,6 +2,7 @@ import theme from "../../../styles/theme";
 import styled, { css } from "styled-components";
 
 export interface TextProps {
+    $textAlign?: "left" | "right" | "center" | "justify";
     size?: "heading1" | "subtitle1" | "body1" | "body2" | "small1" | "small2" | "small3";
     color?: keyof typeof theme.color;
     //width 단위는 픽셀
@@ -54,7 +55,7 @@ const Text = styled.p<TextProps>`
     margin: ${(props) => props.$margin || "0"};
     margin-left: ${(props) => props.$marginLeft};
     margin-top: ${(props) => props.$marginTop};
-
+    text-align: ${(props) => props.$textAlign || "left"};
     ${({ size = "subtitle1" }) => getSizeStyling(size)};
     color: ${(props) => (props.color ? props.theme.color[props.color as keyof typeof theme.color] : props.theme.color.main1)};
     font-weight: ${(props) => getFontWeightStyling(props.fontWeight)};
