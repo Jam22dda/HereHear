@@ -7,5 +7,6 @@ export const musicItemState = atom<MusicItemState>({
         src: "",
         songtitle: "",
         artist: "",
+        releaseTime: "",
     },
 });
