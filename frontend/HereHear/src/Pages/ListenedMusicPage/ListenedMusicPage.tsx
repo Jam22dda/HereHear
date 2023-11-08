@@ -78,8 +78,8 @@ export default function ListenedMusicPage() {
                             </S.MusicItemWrapper>
                         )
                     )}
-                <Navbar></Navbar>
             </div>
+            <Navbar></Navbar>
         </div>
     );
 }
