@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public class YoutubePlayListService {
     private static final String VALUE = "snippet";
     private static final String SEARCH_URL = "https://youtube.googleapis.com/youtube/v3";
-    private static final String ACCESS_TOKEN = "ya29.a0AfB_byBV7hl9HWZWr99hT99Gf6vT2c9CFCd2dQBkB2X3nLhl8R6oqIoBQMVp5xWZX2V9Dd3UtOQ_zTHJ5M0nE7hcCebpH29fN8BtW3uPjlkSaT0BSCuRcn-DUwKWf2giFpBE3qTvkAJrmCs3bZ7GkQtSWluizgrGacwaCgYKAU0SARASFQHGX2MiOZl6zeCh0DubqCRHRzICJQ0170";
+    private static final String ACCESS_TOKEN = "Bearer ya29.a0AfB_byBV7hl9HWZWr99hT99Gf6vT2c9CFCd2dQBkB2X3nLhl8R6oqIoBQMVp5xWZX2V9Dd3UtOQ_zTHJ5M0nE7hcCebpH29fN8BtW3uPjlkSaT0BSCuRcn-DUwKWf2giFpBE3qTvkAJrmCs3bZ7GkQtSWluizgrGacwaCgYKAU0SARASFQHGX2MiOZl6zeCh0DubqCRHRzICJQ0170";
     private static final WebClient webClient = WebClient.builder().baseUrl(SEARCH_URL).build();
 
     public String selectPlayList() {
@@ -29,7 +29,7 @@ public class YoutubePlayListService {
                         .queryParam("part", VALUE)
                         .queryParam("mine", "true")
                         .build())
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class);
@@ -66,7 +66,7 @@ public class YoutubePlayListService {
                         .queryParam("part", "status")
                         .build())
                 .body(BodyInserters.fromValue(jsonBody))
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class);
@@ -80,6 +80,26 @@ public class YoutubePlayListService {
         }
     }
 
+    public String selectPlayListItem(String searchName) {
+        Mono<String> response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/search")
+                        .queryParam("part", VALUE)
+                        .queryParam("maxResults", "1")
+                        .queryParam("q", searchName)
+                        .build())
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class);
+
+        JSONObject jsonObject = new JSONObject(response.block());
+        JSONArray items = jsonObject.getJSONArray("items");
+        JSONObject item = items.getJSONObject(0);
+        JSONObject id = item.getJSONObject("id");
+
+        return id.getString("videoId");
+    }
 
 
 }
