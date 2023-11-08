@@ -27,4 +27,18 @@ const useUnFollow = () => {
     });
 };
 
-export { useUnFollow };
+const useUnFollow2 = () => {
+    return useMutation<unFollowResponse, Error, UnFollowRequest>({
+        mutationFn: (UnFollowRequest) => unFollow(UnFollowRequest.memberId),
+        onSuccess: () => {
+            // 성공 시 실행될 함수
+            console.log("언팔로우 성공!");
+        },
+        onError: (error: Error) => {
+            // 에러 발생 시 실행될 함수
+            console.log("언팔로우 실패:", error.message);
+        },
+    });
+};
+
+export { useUnFollow, useUnFollow2 };
