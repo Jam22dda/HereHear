@@ -1,5 +1,5 @@
 //NavBar.styles.ts
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledNavBar = styled.div`
     display: flex;
@@ -10,11 +10,12 @@ export const StyledNavBar = styled.div`
     height: 88px;
 `;
 
-export const StyledNavBarBackground = styled.div`
+export const StyledNavBarBackground = styled.div<{ active?: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${({ theme }) => theme.color.nav};
+    background-color: ${({ theme, active }) =>
+        active !== undefined ? theme.color.white1 : theme.color.nav};
     position: fixed;
     width: 340px;
     height: 88px;
