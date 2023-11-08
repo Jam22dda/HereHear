@@ -14,6 +14,17 @@ const getSearchMusic = async (keyword: string, page: number) => {
     }
 };
 
+const getMusicPlay = async (registeredMusicId: number) => {
+    try {
+        const response = await instance.get(`/music/${registeredMusicId}`);
+        console.log(response.data, "음악플레이어에 호출 가능?");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching readMusicPlayer", error);
+        throw error;
+    }
+};
+
 const getTag = async () => {
     try {
         const response = await instance.get("/music/tag");
