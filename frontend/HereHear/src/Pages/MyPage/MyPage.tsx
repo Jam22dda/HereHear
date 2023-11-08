@@ -40,8 +40,12 @@ export default function MyPage() {
 
     const navigatePage = (path: string) => {
         if (path === "/achievement") {
-            setMyAchievement(MyAchievement);
-            navigate(path);
+            if (UserInfo.achievementId === null) {
+                navigate(path);
+            } else {
+                setMyAchievement(MyAchievement);
+                navigate(path);
+            }
         } else {
             navigate(path);
         }
@@ -52,6 +56,9 @@ export default function MyPage() {
     const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
     const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
+    console.log(UserInfo);
+    console.log(MyAchievement);
+    console.log(myAchievement);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [isBlanked, setIsBlanked] = useState(false);
