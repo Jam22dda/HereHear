@@ -2,6 +2,7 @@ package com.ssafy.herehear.music.service.musicServiceImpl;
 
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.Occasion;
+import com.ssafy.herehear.entity.ProfileCharacter;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
@@ -11,6 +12,7 @@ import com.ssafy.herehear.music.dto.response.*;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.MusicOccasionRepository;
 import com.ssafy.herehear.music.repository.OccasionRepository;
+import com.ssafy.herehear.music.repository.ProfileCharacterRepository;
 import com.ssafy.herehear.music.repository.RegisteredMusicRepository;
 import com.ssafy.herehear.music.repository.musicRepositoryImpl.RegisteredMusicRepositoryImpl;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
@@ -33,6 +35,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     private final OccasionRepository occasionRepository;
     private final MusicOccasionRepository musicOccasionRepository;
     private final RegisteredMusicRepository registeredMusicRepository;
+    private final ProfileCharacterRepository profileCharacterRepository;
     private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
 
     private final RegisterMusicMapper registerMusicMapper;
@@ -56,7 +59,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
         //SSE 등록 이벤트
         List<SseResDto> sseResDtos = new ArrayList<>();
-        sseResDtos.add(registerMusicMapper.toSseResDto(0, registeredMusic));
+        sseResDtos.add(registerMusicMapper.toSseResDto(1, registeredMusic));
         log.info("registerMusic SseResDto: " + sseResDtos);
 
         return sseResDtos;
@@ -79,12 +82,14 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Transactional
     public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
         log.info(logComment("음악 상세 조회", memberId, registeredMusicId));
+        Member member = MemberUtil.findMember(memberId);
 
         //음악 상세 조회
         RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicDetailsResDto(
+                member,
                 findByRegisterMusic(registeredMusicId),
                 findRegisteredMusicLike(memberId, registeredMusicId),
-                MemberUtil.findMember(memberId),
+                findByProfileCharacter(member.getProfileCharacter().getProfileCharacterId()),
                 registeredMusicRepositoryImpl.findByOccasionName(registeredMusicId)
         );
         log.info("getRegisteredMusicDetails: " + registeredMusicDetailsResDto);
@@ -98,16 +103,16 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
     @Override
     @Transactional
-    public List<RegisteredMusicResDto> getRegisteredMusicList() {
+    public List<RegisteredMusicMapResDto> getRegisteredMusicList() {
 
         //전체 음악 조회
-        List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+        List<RegisteredMusicMapResDto> registeredMusicMapResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(HourFilterUtils::findHourFilter)
                 .map(registerMusicMapper::toRegisteredMusicListResDto)
                 .toList();
-        log.info("getRegisteredMusicList: " + registeredMusicResDtos);
+        log.info("getRegisteredMusicList: " + registeredMusicMapResDtos);
 
-        return registeredMusicResDtos;
+        return registeredMusicMapResDtos;
     }
 
     @Override
@@ -155,6 +160,12 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     public RegisteredMusic findByRegisterMusic(long registeredMusicId) {
         return registeredMusicRepositoryImpl.findByRegisterMusic(registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
+        );
+    }
+
+    public ProfileCharacter findByProfileCharacter(long profileCharacterId) {
+        return profileCharacterRepository.findById(profileCharacterId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
         );
     }
 
