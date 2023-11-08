@@ -27,6 +27,7 @@ import { useGetCheckNickname } from "../../apis/Login/Quries/useGetCheckNickname
 import { useDebouncedCallback } from "use-debounce";
 import { useRecoilState } from "recoil";
 import { MyAchievementAtom } from "../../states/MypageAtoms";
+import iconBack from "../../assets/CircleButton/icon-back.png";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -110,6 +111,18 @@ export default function MyPage() {
     return (
         <div id="display">
             <div className="container">
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
+                </CircleButton>
                 <S.MyPageWrapper>
                     <S.Profile>
                         <Image
