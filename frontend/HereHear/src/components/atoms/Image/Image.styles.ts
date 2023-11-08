@@ -18,7 +18,8 @@ const ImageConatiner = styled.img<ImageProps>`
     &.invert {
         filter: invert(1);
     }
-    box-shadow: ${(props) => (props.$boxShadow ? props.theme.shadow[props.$boxShadow] : "none")};
+    box-shadow: ${(props) =>
+        props.$boxShadow ? props.theme.shadow[props.$boxShadow] : "none"};
     border-radius: ${(props) => props.$borderRadius};
 `;
 

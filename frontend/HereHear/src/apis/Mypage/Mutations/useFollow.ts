@@ -23,4 +23,16 @@ const useFollow = () => {
     });
 };
 
-export { useFollow };
+const useFollow2 = () => {
+    return useMutation<FollowResponse, Error, memberId>({
+        mutationFn: Follow, // 이 함수는 Promise<MutationResponse>를 반환해야 합니다.
+        onSuccess: (data) => {
+            console.log("팔로우!", data);
+        },
+        onError: (error: Error) => {
+            console.error("팔로우 실패...", error);
+        },
+    });
+};
+
+export { useFollow, useFollow2 };

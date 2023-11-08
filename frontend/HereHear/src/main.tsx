@@ -10,7 +10,7 @@ import FollowerPage from "./Pages/FollowerPage/FollowerPage.tsx";
 import FollowingPage from "./Pages/FollowingPage/FollowingPage.tsx";
 import ListenedMusicPage from "./Pages/ListenedMusicPage/ListenedMusicPage.tsx";
 import MyPage from "./Pages/MyPage/MyPage.tsx";
-import SelectMusic from "./Pages/SelectMusic.tsx";
+import StatisticsPage from "./Pages/StatisticPage/StatisticPage.tsx";
 import Stats from "./Pages/Stats.tsx";
 import NicknamePage from "./Pages/NicknamePage/NicknamePage.tsx";
 import CharacterPage from "./Pages/CharacterPage/CharacterPage.tsx";
@@ -52,81 +52,38 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                         <RedirectHandler />
                         <Routes>
                             <Route path="/" element={<Landing />}></Route>
-                            <Route
-                                path="/memberInfo"
-                                element={<NicknamePage />}
-                            ></Route>
+                            <Route path="/memberInfo" element={<NicknamePage />}></Route>
                             {/* // 닉네임 설정 */}
-                            <Route
-                                path="/character"
-                                element={<CharacterPage />}
-                            ></Route>
+                            <Route path="/character" element={<CharacterPage />}></Route>
                             {/* // 캐릭터 설정 */}
                             <Route path="/core" element={<Core />}></Route>
                             {/* map 화면 */}
-                            <Route
-                                path="/achievement"
-                                element={<AchievementPage />}
-                            ></Route>
+                            <Route path="/achievement" element={<AchievementPage />}></Route>
                             {/* // 뱃지 화면 */}
-                            <Route
-                                path="/registMusic"
-                                element={<SearchRegistMusicPage />}
-                            ></Route>
+                            <Route path="/registMusic" element={<SearchRegistMusicPage />}></Route>
                             {/* // 음악 등록 */}
-                            <Route
-                                path="/registMusicMent"
-                                element={<RegistMusicMentPage />}
-                            ></Route>
+                            <Route path="/registMusicMent" element={<RegistMusicMentPage />}></Route>
                             {/* //음악 등록 후 멘트태그 작성 */}
-                            <Route
-                                path="/selectMusic"
-                                element={<SelectMusic />}
-                            ></Route>
-                            {/* // 음악 상세 */}
-                            <Route
-                                path="/musicPlay/:id"
-                                element={<MusicPlayPage />}
-                            ></Route>
+                            <Route path="/statistic" element={<StatisticsPage />}></Route>
+                            {/* // 전체 통계*/}
+                            <Route path="/musicPlay/:id" element={<MusicPlayPage />}></Route>
                             {/* // 음악 실행 페이지 */}
                             <Route path="/stats" element={<Stats />}></Route>
                             {/* 통계 화면 */}
-                            <Route
-                                path="/follower"
-                                element={<FollowerPage />}
-                            ></Route>
+                            <Route path="/follower" element={<FollowerPage />}></Route>
                             {/* // 팔로우 */}
-                            <Route
-                                path="/following"
-                                element={<FollowingPage />}
-                            ></Route>
+                            <Route path="/following" element={<FollowingPage />}></Route>
                             {/* // 팔로잉 */}
-                            <Route
-                                path="/like"
-                                element={<LikePage />}
-                            ></Route>{" "}
-                            {/* // 좋아요한 음악 */}
-                            <Route
-                                path="/listenedMusic"
-                                element={<ListenedMusicPage />}
-                            ></Route>
+                            <Route path="/like" element={<LikePage />}></Route> {/* // 좋아요한 음악 */}
+                            <Route path="/listenedMusic" element={<ListenedMusicPage />}></Route>
                             {/* // 들었던 음악 */}
                             <Route path="/mypage" element={<MyPage />}></Route>
                             {/* // 마이페이지 */}
-                            <Route
-                                path="/mypage/:id"
-                                element={<YourPage />}
-                            ></Route>
+                            <Route path="/mypage/:id" element={<YourPage />}></Route>
                             {/* // 다른사람 마이페이지 */}
-                            <Route
-                                path="/myRegist"
-                                element={<MyRegistPage />}
-                            ></Route>
+                            <Route path="/myRegist" element={<MyRegistPage />}></Route>
                             {/* // 내가 등록한 음악 */}
-                            <Route
-                                path="/myStatistics"
-                                element={<MyStatisticsPage />}
-                            ></Route>
+                            <Route path="/myStatistics" element={<MyStatisticsPage />}></Route>
                             {/* // 내 통계 */}
                             <Route path="/app" element={<App />}></Route>
                         </Routes>
