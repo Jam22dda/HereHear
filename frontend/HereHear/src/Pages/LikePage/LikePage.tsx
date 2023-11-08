@@ -57,18 +57,16 @@ export default function LikePage() {
                 </Text>
                 {LikeMusic &&
                     LikeMusic.map((item: LikeMusicType, index: number) => (
-                        <S.LikeItemWrapper
-                            key={index}
-                            onClick={() =>
-                                navigatePage(
-                                    `/musicPlay/${item.registeredMusicId}`
-                                )
-                            }
-                        >
+                        <S.LikeItemWrapper key={index}>
                             <MusicItem
                                 src={item.albumImg}
                                 songtitle={item.subject}
                                 artist={item.singer}
+                                onClick={() =>
+                                    navigatePage(
+                                        `/musicPlay/${item.registeredMusicId}`
+                                    )
+                                }
                             />
                             <CircleButton
                                 option="gradDeActivated"
