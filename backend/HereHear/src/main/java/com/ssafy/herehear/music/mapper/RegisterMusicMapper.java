@@ -17,7 +17,7 @@ public interface RegisterMusicMapper {
 
     RegisteredMusicDetailsResDto toRegisteredMusicDetailsResDto(RegisteredMusic registeredMusic, boolean like, Member member, List<String> occasionName);
 
-    RegisteredMusicResDto toRegisteredMusicListResDto(RegisteredMusic registeredMusic);
+    RegisteredMusicMapResDto toRegisteredMusicListResDto(RegisteredMusic registeredMusic);
 
     MyRegisteredMusicResDto toMyRegisteredMusicResDto(RegisteredMusic registeredMusic);
 

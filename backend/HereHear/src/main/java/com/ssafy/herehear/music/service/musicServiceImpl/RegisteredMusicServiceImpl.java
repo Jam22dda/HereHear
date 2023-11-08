@@ -98,16 +98,16 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
     @Override
     @Transactional
-    public List<RegisteredMusicResDto> getRegisteredMusicList() {
+    public List<RegisteredMusicMapResDto> getRegisteredMusicList() {
 
         //전체 음악 조회
-        List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+        List<RegisteredMusicMapResDto> registeredMusicMapResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(HourFilterUtils::findHourFilter)
                 .map(registerMusicMapper::toRegisteredMusicListResDto)
                 .toList();
-        log.info("getRegisteredMusicList: " + registeredMusicResDtos);
+        log.info("getRegisteredMusicList: " + registeredMusicMapResDtos);
 
-        return registeredMusicResDtos;
+        return registeredMusicMapResDtos;
     }
 
     @Override
