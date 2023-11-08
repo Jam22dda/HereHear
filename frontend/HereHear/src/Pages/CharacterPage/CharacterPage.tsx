@@ -75,13 +75,7 @@ export default function CharacterPage() {
                         />
                     ))}
                 </S.CharacterWrapper>
-                <Button
-                    option="save"
-                    size="large"
-                    $width="132px"
-                    $margin="60px 0 0 0"
-                    onClick={() => handleLogin(signUpInfo)}
-                >
+                <Button option="save" size="large" $width="132px" $margin="60px 0 0 0" onClick={() => handleLogin(signUpInfo)}>
                     저장하기
                 </Button>
             </S.CharacterPageWrapper>
@@ -89,27 +83,12 @@ export default function CharacterPage() {
                 <ModalBg>
                     <Modal toggleModal={() => toggleModal()}>
                         <S.CharacterModalWrapper>
-                            <CircleButton
-                                option="default"
-                                size="medium"
-                                onClick={toggleModal}
-                            >
-                                <Image
-                                    src={iconExit}
-                                    width={20}
-                                    height={20}
-                                    $unit="px"
-                                ></Image>
+                            <CircleButton option="default" size="medium" onClick={toggleModal}>
+                                <Image src={iconExit} width={20} height={20} $unit="px"></Image>
                             </CircleButton>
                         </S.CharacterModalWrapper>
                         <S.CharacterPageWrapper>
-                            <Image
-                                src={monziHerehear}
-                                width={100}
-                                height={100}
-                                $unit="px"
-                                $margin="0 0 30px 0"
-                            ></Image>
+                            <Image src={monziHerehear} width={100} height={100} $unit="px" $margin="0 0 30px 0"></Image>
                             <h2>캐릭터를 골라주세요!</h2>
                         </S.CharacterPageWrapper>
                     </Modal>
