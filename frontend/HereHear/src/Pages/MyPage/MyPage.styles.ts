@@ -6,7 +6,7 @@ export const Profile = styled.div`
     height: 200px;
     border-radius: 120px;
     box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
-    margin-top: 16px;
+    margin: 0 0 8px 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,7 +28,7 @@ export const FollowWrapper = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-evenly;
-    margin-top: 32px;
+    margin-top: 24px;
 `;
 
 export const MyItemWrapper = styled.div`
@@ -36,7 +36,7 @@ export const MyItemWrapper = styled.div`
     flex-wrap: wrap;
     gap: 24px;
     justify-content: center;
-    margin-top: 48px;
+    margin-top: 32px;
 `;
 
 export const EditWrapper = styled.button`
