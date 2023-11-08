@@ -22,7 +22,6 @@ export default function MyRegistPage() {
     }
 
     const RegistMusic: RegistMusicType[] = useGetRegistMusic();
-    console.log(RegistMusic);
 
     return (
         <div id="display">
@@ -42,7 +41,7 @@ export default function MyRegistPage() {
                 <Text
                     size="subtitle1"
                     fontWeight="bold"
-                    $margin="50px 0 30px 0"
+                    $margin="20px 0 48px 0"
                 >
                     내가 등록한 노래
                 </Text>
