@@ -84,7 +84,8 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Transactional
     public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
         log.info(logComment("음악 상세 조회", memberId, registeredMusicId));
-        Member member = MemberUtil.findMember(memberId);
+        MemberUtil.findMember(memberId);
+        Member member = findByRegisterMusic(registeredMusicId).getMember();
 
         //음악 상세 조회
         RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicDetailsResDto(
