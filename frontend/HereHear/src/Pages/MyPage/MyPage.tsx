@@ -56,9 +56,6 @@ export default function MyPage() {
     const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
     const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
-    console.log(UserInfo);
-    console.log(MyAchievement);
-    console.log(myAchievement);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [isBlanked, setIsBlanked] = useState(false);
@@ -94,8 +91,6 @@ export default function MyPage() {
 
     const { mutate: postNicknameMutate } = usePostNickname();
     const { data: checkNicknameData } = useGetCheckNickname(debouncedNickname);
-
-    console.log(checkNicknameData);
     const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
         debouncedCheck(e.target.value);
