@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetLikeMusic } from "../../apis/Mypage/Quries/useGetLikeMusic";
 import { usePostLikeMusic } from "../../apis/Music/Mutations/useLikeMusic";
 import { registeredMusicId } from "../../types/music";
+import { useState, useEffect } from "react";
 
 export default function LikePage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -30,9 +31,31 @@ export default function LikePage() {
     const { mutate: postLikeMusicMutate } = usePostLikeMusic();
     console.log(LikeMusic);
 
-    const handleLikeMusicClick = (registeredMusicId: registeredMusicId) => {
+    const handleLikeMusicClick = (
+        registeredMusicId: registeredMusicId,
+        index: number
+    ) => {
         postLikeMusicMutate(registeredMusicId);
+        setLikeList((prevList) =>
+            prevList.map((like, idx) =>
+                idx === index ? { ...like, isLiked: !like.isLiked } : like
+            )
+        );
     };
+
+    interface LikeState {
+        isLiked: boolean;
+    }
+
+    const [likeList, setLikeList] = useState<LikeState[]>([]);
+    console.log(likeList);
+
+    useEffect(() => {
+        if (LikeMusic && LikeMusic.length > 0) {
+            // 타입스크립트에게 상태의 타입을 알려줍니다.
+            setLikeList(LikeMusic.map(() => ({ isLiked: true })));
+        }
+    }, [LikeMusic]);
 
     return (
         <div id="display">
@@ -69,13 +92,14 @@ export default function LikePage() {
                                     )
                                 }
                             />
-                            {item.like && (
+                            {likeList[index] && likeList[index].isLiked ? (
                                 <CircleButton
                                     option="gradDeActivated"
                                     size="large"
                                     onClick={() =>
                                         handleLikeMusicClick(
-                                            item.registeredMusicId
+                                            item.registeredMusicId,
+                                            index
                                         )
                                     }
                                 >
@@ -86,14 +110,14 @@ export default function LikePage() {
                                         $unit="px"
                                     ></Image>
                                 </CircleButton>
-                            )}
-                            {!item.like && (
+                            ) : (
                                 <CircleButton
                                     option="gradDeActivated"
                                     size="large"
                                     onClick={() =>
                                         handleLikeMusicClick(
-                                            item.registeredMusicId
+                                            item.registeredMusicId,
+                                            index
                                         )
                                     }
                                 >
