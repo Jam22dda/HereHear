@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from 'react';
 // import './Core.styles';
 import * as S from "./Core.styles";
 import markImage from "../assets/Core/Union.png";
@@ -14,21 +14,24 @@ export default function Core() {
     const [lat, setLat] = useState(0); // 위도
     const [lng, setLng] = useState(0); // 경도
 
-    const [selectMusic, setSelectMusic] = useState(0);
+    // const [selectMusic, setSelectMusic] = useState(0);
     const [isSelect, setIsSelect] = useState(false);
 
     const [musicMap, setMusicMap] = useState({}); // 맵 전체에 있는 음악
+    const [musicPin, setMusicPin] = useState({}); // 맵 전체에 있는 음악
     // const [musicAround, setMusicAround] = useState({});
 
     const [naverState, setNaverState] = useState();
-    const [mapState, setMapState] = useState();
+    const [mapState, setMapState] = useState<MusicPin | undefined>(undefined);
     const [userPinState, setUserPinState] = useState();
     const [centerState, setCenterState] = useState();
     const [userSelectPin, setUserSelectPin] = useState(0);
 
     // 외부로부터 입력된 데이터
     const { musicList, refetch } = useGetMapMusicList();
-    const musicAroundList = useGetAroundMusicList(lat, lng);
+    const { musicAroundList, refetch: refetchMusicAroundList } = useGetAroundMusicList(lat, lng);
+    const [musicAroundListState, setMusicAroundListState] = useState([]);
+    // const { mutate: musicAroundList } = useGetAroundMusicList();
 
     const [eventSource, setEventSource] = useState<EventSource | undefined>(undefined);
 
@@ -52,22 +55,19 @@ export default function Core() {
             // 마우스 이벤트가 발생하면 자동으로 따라가기 취소하는 이벤트 추가
             // https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
             // touchstart
-            window.addEventListener("mousedown", function () {
+            window.addEventListener('mousedown', function () {
                 setIsUpdate(false);
             });
 
-            window.addEventListener("touchstart", function () {
+            window.addEventListener('touchstart', function () {
                 setIsUpdate(false);
             });
 
             setMapState(map);
 
             const ml = await refetch();
-            console.log("ml.data");
+            console.log('ml.data');
             console.log(ml.data);
-
-            console.log("naver");
-            console.log(naver);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
             const musicMapIns: MusicMap = ml.data.reduce((map: MusicMap, music: Music) => {
@@ -101,15 +101,24 @@ export default function Core() {
                 });
 
                 // 마커 클릭 시 발생하는 이벤트
-                naver.maps.Event.addListener(pinIns[key], "click", function () {
+                naver.maps.Event.addListener(pinIns[key], 'click', async function () {
+                    // useGetAroundMusicList({ lat, lng });
+
+                    const mal = await refetchMusicAroundList();
+                    console.log('@@@@@@@@@@@@@@@@ mal');
+                    console.log(mal);
+                    setMusicAroundListState(mal.data);
+
                     setIsSelect(true);
                     // console.log(`marker${key} clicked`);
+                    // console.log('@@@@@@@@@@@@@musicAroundList.musicAroundList');
                     // console.log(musicAroundList.musicAroundList);
                     setUserSelectPin(Number(key));
 
                     // alert(`marker${key} clicked`);
                 });
             }
+            setMusicPin(pinIns);
 
             if (!navigator.geolocation) {
                 console.error("Geolocation is not supported by your browser");
@@ -160,7 +169,7 @@ export default function Core() {
             // SSE
             // const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
 
-            setEventSource(new EventSource("http://localhost:8080/music/subscribe/1"));
+            setEventSource(new EventSource('http://localhost:8080/music/subscribe/1'));
         };
 
         document.body.appendChild(script);
@@ -173,24 +182,25 @@ export default function Core() {
     }, []);
 
     useEffect(() => {
-        console.log("USEEFFECT");
+        console.log('USEEFFECT');
         console.log(eventSource);
+        console.log('naverState');
         console.log(naverState);
 
         if (eventSource && naverState && mapState) {
             // const sse = eventSource;
 
             // SSE 이벤트 핸들러를 등록합니다.
-            eventSource.addEventListener("sse", (event) => {
+            eventSource.addEventListener('sse', event => {
                 const eventData = JSON.parse(event.data);
 
-                console.log("musicMap");
+                console.log('musicMap');
                 console.log(musicMap);
 
                 if (Array.isArray(eventData)) {
                     // 이벤트 데이터를 처리합니다.
-                    console.log("Received SSE event:", eventData);
-                    console.log("나 들어온다");
+                    console.log('Received SSE event:', eventData);
+                    console.log('나 들어온다');
 
                     const addList = [];
                     const delList = [];
@@ -203,12 +213,15 @@ export default function Core() {
                         }
                     }
 
-                    console.log("LLLLLLLLLLLLList");
+                    console.log('LLLLLLLLLLLLList');
                     console.log(addList);
                     console.log(delList);
 
-                    // 현재까지 저장된 musicMap
-                    const newMusicMapIns: MusicMap = { ...musicMap };
+                    // let musicPinIns = musicPin;
+                    let musicPinIns = Object.assign({}, musicPin, {});
+
+                    console.log('musicPinIns 인스턴스 만들기 ');
+                    console.log(musicPinIns);
 
                     // 음악 삭제
                     const musicDelIns: MusicMap = delList.reduce((map: MusicMap, music: Music) => {
@@ -217,15 +230,22 @@ export default function Core() {
                         return map;
                     }, {});
 
-                    for (const key in musicDelIns) {
-                        console.log("newMusicMapIns[key]");
-                        console.log(newMusicMapIns);
-                        console.log(newMusicMapIns[key]);
+                    console.log('musicDelIns');
+                    console.log(musicDelIns);
 
-                        (newMusicMapIns[key] as any).setMap(null);
+                    for (const key in musicDelIns) {
+                        console.log('key', key);
+                        // key에 해당하는 객체가 존재하는 경우
+                        if (key in musicPinIns) {
+                            (musicPinIns[key] as any).setMap(null);
+                            delete musicPinIns[key];
+
+                            console.log('musicPin in DELETE');
+                            console.log(musicPinIns);
+                        }
                     }
 
-                    console.log("LLLLLLLLLLLLList 이까지는 들어오는 거 같고");
+                    console.log('LLLLLLLLLLLLList 이까지는 들어오는 거 같고');
                     // 음악 데이터를 Map 형태로 변경하여 저장
                     const musicMapIns: MusicMap = addList.reduce((map: MusicMap, music: Music) => {
                         const { registeredMusicId, ...otherProps } = music;
@@ -233,17 +253,17 @@ export default function Core() {
                         return map;
                     }, {});
 
-                    setMusicMap((prev) => Object.assign({}, prev, musicMapIns));
+                    setMusicMap(prev => Object.assign({}, prev, musicMapIns));
 
                     const pinIns: any = {};
 
-                    console.log("mapState");
+                    console.log('mapState');
                     console.log(mapState);
 
                     for (const key in musicMapIns) {
                         // 마커 표시
-                        pinIns[key] = new (mapState as any).maps.Marker({
-                            position: new (mapState as any).maps.LatLng(musicMapIns[key].lat, musicMapIns[key].lng),
+                        pinIns[key] = new (naverState as any).maps.Marker({
+                            position: new (naverState as any).maps.LatLng(musicMapIns[key].lat, musicMapIns[key].lng),
                             map: mapState,
                             icon: {
                                 content: `
@@ -258,11 +278,23 @@ export default function Core() {
                                     `,
                             },
                         });
-                        console.log("pinIns");
+                        console.log('pinIns');
                         console.log(pinIns);
 
+                        musicPinIns = Object.assign({}, musicPinIns, pinIns);
+                        console.log('AFTER add musicPinIns ', musicPinIns);
+                        // setMusicPin(prev => Object.assign({}, prev, pinIns));
+
+                        // // 함수형 업데이트를 사용하여 상태를 안전하게 업데이트
+                        // setMusicPin((prevMusicPins) => {
+                        //     return [...prevMusicPins, pinIns];
+                        // });
+
+                        // console.log('Hola', Object.assign({}, musicPin, pinIns));
+
                         // 마커 클릭 시 발생하는 이벤트
-                        (mapState as any).maps.Event.addListener(pinIns[key], "click", function () {
+                        (naverState as any).maps.Event.addListener(pinIns[key], 'click', async function () {
+                            await refetchMusicAroundList();
                             setIsSelect(true);
                             console.log(`marker${key} clicked`);
                             console.log(musicAroundList.musicAroundList);
@@ -271,6 +303,8 @@ export default function Core() {
                             alert(`marker${key} clicked`);
                         });
                     }
+
+                    setMusicPin(musicPinIns);
                 }
 
                 // for (let i = 0; i < eventData.length; i++) {
@@ -279,16 +313,22 @@ export default function Core() {
             });
 
             // SSE 에러 핸들러를 등록합니다.
-            eventSource.addEventListener("error", (error) => {
-                console.error("SSE error:", error);
+            eventSource.addEventListener('error', error => {
+                console.error('SSE error:', error);
             });
 
             // SSE 연결이 닫힐 때의 핸들러를 등록합니다.
-            eventSource.addEventListener("close", () => {
-                console.log("SSE connection closed.");
+            eventSource.addEventListener('close', () => {
+                console.log('SSE connection closed.');
             });
         }
     }, [eventSource, naverState, mapState]);
+
+    useEffect(() => {
+        console.log('승종승종승조ㅡㅇ');
+
+        console.log(musicPin);
+    }, [musicPin]);
 
     // 정해진 시간마다 내 위치 정보 받아오는 기능
     // useEffect(() => {
@@ -453,8 +493,8 @@ export default function Core() {
                         <img src={gpsPinDeactImage} alt="gpsImage" onClick={handlerBtnClick} />
                     </S.ImgOuter>
                 )}
-                <S.Map id="map"></S.Map>
-                {isSelect ? <MusicBox musicAroundList={musicAroundList.musicAroundList} pinId={userSelectPin} setIsSelect={setIsSelect}></MusicBox> : null}
+                <S.Map id='map'></S.Map>
+                {isSelect ? <MusicBox musicAroundList={musicAroundListState} pinId={userSelectPin} setIsSelect={setIsSelect}></MusicBox> : null}
                 {/* <MusicBox></MusicBox> */}
                 <Navbar></Navbar>
             </S.MapDisplay>
@@ -462,10 +502,17 @@ export default function Core() {
     );
 }
 
+// type lat = number;
+// type lng = number;
+
 declare global {
     interface Window {
         naver: any;
     }
+}
+
+interface MusicPin {
+    [key: number]: any;
 }
 
 interface Music {
@@ -479,5 +526,5 @@ interface Music {
 }
 
 interface MusicMap {
-    [key: string]: Omit<Music, "registeredMusicId">;
+    [key: string]: Omit<Music, 'registeredMusicId'>;
 }
