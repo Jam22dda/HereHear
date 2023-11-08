@@ -20,10 +20,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String email;
 
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 20, nullable = false)
     private String nickname;
 
     @CreatedDate
@@ -66,6 +66,8 @@ public class Member {
     }
 
     public void deleteMember() {
+        this.nickname = null;
+        this.profileCharacter = null;
         this.removeDate = LocalDateTime.now();
     }
 

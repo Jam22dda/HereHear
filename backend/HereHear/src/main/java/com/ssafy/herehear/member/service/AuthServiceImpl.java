@@ -17,14 +17,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final JwtProvider jwtProvider;
-    private final CookieUtil cookieUtil;
     private final String REFRESH_TOKEN = "refreshToken";
     private final MemberRepository memberRepository;
 
     @Override
     public String refresh(HttpServletRequest request) {
         String accessToken = jwtProvider.getAccessToken(request);
-        Cookie cookie = cookieUtil.getCookie(request, REFRESH_TOKEN).orElseThrow(
+        Cookie cookie = CookieUtil.getCookie(request, REFRESH_TOKEN).orElseThrow(
                 () -> new CustomException(ExceptionStatus.TOKEN_NOT_FOUND_IN_COOKIE)
         );
 

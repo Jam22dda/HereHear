@@ -59,7 +59,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
         //SSE 등록 이벤트
         List<SseResDto> sseResDtos = new ArrayList<>();
-        sseResDtos.add(registerMusicMapper.toSseResDto(0, registeredMusic));
+        sseResDtos.add(registerMusicMapper.toSseResDto(1, registeredMusic));
         log.info("registerMusic SseResDto: " + sseResDtos);
 
         return sseResDtos;
