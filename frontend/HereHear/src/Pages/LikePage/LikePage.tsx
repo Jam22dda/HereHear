@@ -36,23 +36,10 @@ export default function LikePage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigate(-1)}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="30px 0 50px 0"
-                >
+                <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
                     내가 좋아요한 노래
                 </Text>
                 {LikeMusic &&
@@ -62,25 +49,10 @@ export default function LikePage() {
                                 src={item.albumImg}
                                 songtitle={item.subject}
                                 artist={item.singer}
-                                onClick={() =>
-                                    navigatePage(
-                                        `/musicPlay/${item.registeredMusicId}`
-                                    )
-                                }
+                                onClick={() => navigatePage(`/musicPlay/${item.registeredMusicId}`)}
                             />
-                            <CircleButton
-                                option="gradDeActivated"
-                                size="large"
-                                onClick={() =>
-                                    handleLikeMusicClick(item.registeredMusicId)
-                                }
-                            >
-                                <Image
-                                    src={iconHeart}
-                                    width={24}
-                                    height={20}
-                                    $unit="px"
-                                ></Image>
+                            <CircleButton option="gradDeActivated" size="large" onClick={() => handleLikeMusicClick(item.registeredMusicId)}>
+                                <Image src={iconHeart} width={24} height={20} $unit="px"></Image>
                             </CircleButton>
                         </S.LikeItemWrapper>
                     ))}
