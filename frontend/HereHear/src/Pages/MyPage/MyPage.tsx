@@ -56,9 +56,6 @@ export default function MyPage() {
     const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
     const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
-    console.log(UserInfo);
-    console.log(MyAchievement);
-    console.log(myAchievement);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [isBlanked, setIsBlanked] = useState(false);
@@ -94,8 +91,6 @@ export default function MyPage() {
 
     const { mutate: postNicknameMutate } = usePostNickname();
     const { data: checkNicknameData } = useGetCheckNickname(debouncedNickname);
-
-    console.log(checkNicknameData);
     const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
         debouncedCheck(e.target.value);
@@ -128,13 +123,18 @@ export default function MyPage() {
                         ></Image>
                     </S.Profile>
                     <S.MydataWrapper>
-                        <Image
-                            src={MyAchievement && MyAchievement.badge.badgeImg}
-                            width={24}
-                            height={24}
-                            $unit="px"
-                            $margin="0 4px 4px 0"
-                        ></Image>
+                        {MyAchievement && (
+                            <Image
+                                src={
+                                    MyAchievement &&
+                                    MyAchievement.badge.badgeImg
+                                }
+                                width={24}
+                                height={24}
+                                $unit="px"
+                                $margin="0 4px 4px 0"
+                            ></Image>
+                        )}
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
                         </Text>
