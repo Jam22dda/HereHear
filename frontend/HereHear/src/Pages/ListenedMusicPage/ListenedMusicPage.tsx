@@ -28,10 +28,23 @@ export default function ListenedMusicPage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
-                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
                 </CircleButton>
-                <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
+                <Text
+                    size="subtitle1"
+                    fontWeight="bold"
+                    $margin="20px 0 48px 0"
+                >
                     최근 들은 노래 리스트
                 </Text>
                 {ListenedMusic &&

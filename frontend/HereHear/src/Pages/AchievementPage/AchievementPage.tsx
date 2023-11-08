@@ -16,6 +16,8 @@ import Modal from "../../components/atoms/Modal/Modal";
 import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
 import iconExit from "../../../public/images/icon-exit.png";
 import iconInformation from "../../assets/Achievement/icon-information.png";
+// import iconChevronBack from "../../assets/Achievement/icon-chevron-back.png";
+// import iconChevronForward from "../../assets/Achievement/icon-chevron-forward.png";
 
 interface AchievementType {
     achievementId: number;
@@ -65,13 +67,27 @@ export default function Achievement() {
     console.log(selectedItem);
 
     const handleItemClick = (idx: number) => {
-        setSelectedItem(idx);
+        if (idx === selectedItem) {
+            setSelectedItem(0);
+        } else {
+            setSelectedItem(idx);
+        }
     };
 
     const handleInfoClick = (item: AchievementType) => {
         setModalContent(item);
         toggleModal();
     };
+
+    const itemsPerPage = 6;
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = Math.ceil(MyAchievementList?.length / itemsPerPage);
+    const goToPage = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    const currentItems = MyAchievementList?.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
     return (
         <div id="display">
@@ -97,53 +113,83 @@ export default function Achievement() {
                 </Text>
                 <S.AchievementPageWrapper>
                     <S.AchievementWrapper>
-                        {MyAchievementList &&
-                            MyAchievementList.map(
-                                (item: AchievementType, index: number) => (
-                                    <div
-                                        key={index}
-                                        style={{
-                                            position: "relative",
-                                            display: "inline-block",
-                                            marginRight: "10px",
-                                        }}
-                                    >
-                                        <Image
-                                            src={iconInformation}
-                                            width={24}
-                                            height={24}
-                                            $unit="px"
+                        {currentItems &&
+                            currentItems.map(
+                                (item: AchievementType, index: number) => {
+                                    // Calculate the index for display, starting at 1 and adjusting for the current page
+                                    const displayIndex =
+                                        (currentPage - 1) * itemsPerPage +
+                                        index +
+                                        1;
+                                    return (
+                                        <div
+                                            key={item.achievementId} // Assuming achievementId is unique
                                             style={{
-                                                position: "absolute", // 절대 위치
-                                                top: 10, // 상단 정렬
-                                                right: 12, // 우측 정렬
-                                                zIndex: 1,
+                                                position: "relative",
+                                                display: "inline-block",
+                                                marginRight: "10px",
                                             }}
-                                            onClick={() =>
-                                                handleInfoClick(item)
-                                            }
-                                        />
-                                        <ItemBox
-                                            src={item.badge.badgeImg}
-                                            title={item.title.titleName}
-                                            $isselected={
-                                                index + 1 === selectedItem
-                                            }
-                                            onClick={() =>
-                                                handleItemClick(index + 1)
-                                            }
-                                            width={68}
-                                            style={{
-                                                filter:
-                                                    item.clearTime === null
-                                                        ? "grayscale(100%)"
-                                                        : "none",
-                                            }}
-                                        />
-                                    </div>
-                                )
+                                        >
+                                            <Image
+                                                src={iconInformation}
+                                                width={24}
+                                                height={24}
+                                                $unit="px"
+                                                style={{
+                                                    position: "absolute",
+                                                    top: 10,
+                                                    right: 12,
+                                                    zIndex: 1,
+                                                }}
+                                                onClick={() =>
+                                                    handleInfoClick(item)
+                                                }
+                                            />
+                                            <ItemBox
+                                                src={item.badge.badgeImg}
+                                                title={item.title.titleName} // Display the index within the title
+                                                $isselected={
+                                                    displayIndex ===
+                                                    selectedItem
+                                                }
+                                                onClick={() => {
+                                                    if (
+                                                        item.clearTime !== null
+                                                    ) {
+                                                        handleItemClick(
+                                                            displayIndex
+                                                        );
+                                                    }
+                                                }}
+                                                width={68}
+                                                style={{
+                                                    filter:
+                                                        item.clearTime === null
+                                                            ? "grayscale(100%)"
+                                                            : "none",
+                                                    cursor:
+                                                        item.clearTime === null
+                                                            ? "default"
+                                                            : "pointer", // Add this line to change the cursor
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                }
                             )}
                     </S.AchievementWrapper>
+                    <S.PaginationContainer>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <S.PaginationButton
+                                key={index}
+                                onClick={() => goToPage(index + 1)}
+                                disabled={index + 1 === currentPage}
+                                active={index + 1 === currentPage}
+                            >
+                                {index + 1}
+                            </S.PaginationButton>
+                        ))}
+                    </S.PaginationContainer>
                     <Button
                         option="save"
                         size="large"
@@ -191,7 +237,6 @@ export default function Achievement() {
                                     <Text size="small1" $margin="0 0 20px 0">
                                         {modalContent.mission}
                                     </Text>
-                                    {/* 여기에 더 많은 정보를 추가할 수 있습니다. */}
                                 </>
                             )}
                         </S.TextWrapper>
