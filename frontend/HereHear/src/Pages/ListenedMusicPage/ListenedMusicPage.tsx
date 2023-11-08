@@ -19,9 +19,9 @@ interface ListenedMusicType {
 export default function ListenedMusicPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-    const navigatePage = (path: string) => {
-        navigate(path);
-    };
+    // const navigatePage = (path: string) => {
+    //     navigate(path);
+    // };
 
     const ListenedMusic: ListenedMusicType[] = useGetListenedMusic();
 
@@ -55,32 +55,24 @@ export default function ListenedMusicPage() {
                                     src={item.albumImg}
                                     songtitle={item.subject}
                                     artist={item.singer}
-                                    onClick={() =>
-                                        navigatePage(
-                                            `/musicPlay/${item.registeredMusicId}`
-                                        )
-                                    }
                                 />
                                 <CircleButton
                                     option="gradDeActivated"
                                     size="large"
+                                    onClick={() => {
+                                        const subjectEncoded =
+                                            encodeURIComponent(item.subject);
+                                        const singerEncoded =
+                                            encodeURIComponent(item.singer);
+                                        const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
+                                        window.location.href = youtubeSearchUrl;
+                                    }}
                                 >
                                     <Image
                                         src={iconArrowForward}
                                         width={24}
                                         height={20}
                                         $unit="px"
-                                        onClick={() => {
-                                            const subjectEncoded =
-                                                encodeURIComponent(
-                                                    item.subject
-                                                );
-                                            const singerEncoded =
-                                                encodeURIComponent(item.singer);
-                                            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
-                                            window.location.href =
-                                                youtubeSearchUrl;
-                                        }}
                                     ></Image>
                                 </CircleButton>
                             </S.MusicItemWrapper>
