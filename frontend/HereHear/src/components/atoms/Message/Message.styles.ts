@@ -18,4 +18,8 @@ const WriterWrapper = styled.div`
     justify-content: space-between;
     align-items: flex-end;
 `;
-export { Message, WriterWrapper };
+const userWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
+export { Message, WriterWrapper, userWrapper };
