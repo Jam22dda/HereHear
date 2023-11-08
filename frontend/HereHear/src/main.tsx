@@ -85,7 +85,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                             ></Route>
                             {/* // 음악 상세 */}
                             <Route
-                                path="/musicPlay"
+                                path="/musicPlay/:id"
                                 element={<MusicPlayPage />}
                             ></Route>
                             {/* // 음악 실행 페이지 */}
