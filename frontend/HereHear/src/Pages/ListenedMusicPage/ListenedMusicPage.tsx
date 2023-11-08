@@ -35,19 +35,44 @@ export default function ListenedMusicPage() {
                     최근 들은 노래 리스트
                 </Text>
                 {ListenedMusic &&
-                    ListenedMusic.map((item: ListenedMusicType, index: number) => (
-                        <S.MusicItemWrapper key={index}>
-                            <MusicItem
-                                src={item.albumImg}
-                                songtitle={item.subject}
-                                artist={item.singer}
-                                onClick={() => navigatePage(`/musicPlay/${item.registeredMusicId}`)}
-                            />
-                            <CircleButton option="gradDeActivated" size="large">
-                                <Image src={iconArrowForward} width={24} height={20} $unit="px"></Image>
-                            </CircleButton>
-                        </S.MusicItemWrapper>
-                    ))}
+                    ListenedMusic.map(
+                        (item: ListenedMusicType, index: number) => (
+                            <S.MusicItemWrapper key={index}>
+                                <MusicItem
+                                    src={item.albumImg}
+                                    songtitle={item.subject}
+                                    artist={item.singer}
+                                    onClick={() =>
+                                        navigatePage(
+                                            `/musicPlay/${item.registeredMusicId}`
+                                        )
+                                    }
+                                />
+                                <CircleButton
+                                    option="gradDeActivated"
+                                    size="large"
+                                >
+                                    <Image
+                                        src={iconArrowForward}
+                                        width={24}
+                                        height={20}
+                                        $unit="px"
+                                        onClick={() => {
+                                            const subjectEncoded =
+                                                encodeURIComponent(
+                                                    item.subject
+                                                );
+                                            const singerEncoded =
+                                                encodeURIComponent(item.singer);
+                                            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
+                                            window.location.href =
+                                                youtubeSearchUrl;
+                                        }}
+                                    ></Image>
+                                </CircleButton>
+                            </S.MusicItemWrapper>
+                        )
+                    )}
                 <Navbar></Navbar>
             </div>
         </div>
