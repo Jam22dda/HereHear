@@ -76,7 +76,7 @@ export default function RegistMusicMent() {
             };
             console.log(musicInfo, "musicInfo 잘 들어가?");
             addMusicMutation.mutate(musicInfo);
-            navigate("/core");
+            navigate("/musicPlay");
         }
     };
     return (
