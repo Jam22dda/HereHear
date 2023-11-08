@@ -41,12 +41,12 @@ public class MemberController {
     }
 
     @GetMapping("/following")
-    public DataResponse<List<FollowResDto>> getFollowing(Authentication authentication) {
+    public DataResponse<List<FollowerResDto>> getFollowing(Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[팔로잉 목록 조회] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
-        List<FollowResDto> followingList = memberService.getFollowingList(memberId);
+        List<FollowerResDto> followingList = memberService.getFollowingList(memberId);
 
         return new DataResponse<>("200", "팔로잉 목록 조회", followingList);
     }
