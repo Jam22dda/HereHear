@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 // import './Core.styles';
-import * as S from "./Core.styles";
-import markImage from "../assets/Core/Union.png";
-import gpsPinActImage from "../assets/Core/gpsPinActivated.png";
-import gpsPinDeactImage from "../assets/Core/gpsPinDeactivated.png";
-import MusicBox from "../components/molcules/MusicBox/MusicBox";
-import Navbar from "../components/molcules/Navbar/Navbar";
-import { useGetMapMusicList } from "../apis/Map/Queries/useGetMapMusicList";
-import { useGetAroundMusicList } from "../apis/Map/Queries/useGetAroundMusicList";
+import * as S from './Core.styles';
+import markImage from '../assets/Core/Union.png';
+import gpsPinActImage from '../assets/Core/gpsPinActivated.png';
+import gpsPinDeactImage from '../assets/Core/gpsPinDeactivated.png';
+import MusicBox from '../components/molcules/MusicBox/MusicBox';
+import Navbar from '../components/molcules/Navbar/Navbar';
+import { useGetMapMusicList } from '../apis/Map/Queries/useGetMapMusicList';
+import { useGetAroundMusicList } from '../apis/Map/Queries/useGetAroundMusicList';
 
 export default function Core() {
     const [isUpdate, setIsUpdate] = useState(false);
@@ -38,16 +38,17 @@ export default function Core() {
     useEffect(() => {
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
-        const script = document.createElement("script");
-        script.type = "text/javascript";
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
         script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
 
         // 지도 초기화 완료 시 최초 1회 실행
         script.onload = async () => {
             const naver = window.naver;
             setNaverState(naver);
+            console.log(naver);
 
-            const map = new naver.maps.Map("map", {
+            const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
                 zoom: 15,
             });
@@ -121,7 +122,7 @@ export default function Core() {
             setMusicPin(pinIns);
 
             if (!navigator.geolocation) {
-                console.error("Geolocation is not supported by your browser");
+                console.error('Geolocation is not supported by your browser');
                 return;
             }
 
@@ -130,12 +131,12 @@ export default function Core() {
 
             // 현재 위치 가져오기
             navigator.geolocation.getCurrentPosition(
-                (position) => {
+                position => {
                     latitude = position.coords.latitude;
                     longitude = position.coords.longitude;
                     // const { latitude, longitude } = position.coords;
 
-                    console.log("Latitude:", latitude, "Longitude:", longitude);
+                    console.log('Latitude:', latitude, 'Longitude:', longitude);
                     setLat(latitude);
                     setLng(longitude);
 
@@ -157,8 +158,8 @@ export default function Core() {
                     setCenterState(center);
                     map.panTo(center);
                 },
-                (error) => {
-                    console.error("Error getting location:", error);
+                error => {
+                    console.error('Error getting location:', error);
                 },
                 {
                     enableHighAccuracy: true,
@@ -173,7 +174,7 @@ export default function Core() {
         };
 
         document.body.appendChild(script);
-        console.log("im 한번만이에요");
+        console.log('im 한번만이에요');
 
         // 컴포넌트 언마운트 시 스크립트 제거
         return () => {
@@ -236,9 +237,18 @@ export default function Core() {
                     for (const key in musicDelIns) {
                         console.log('key', key);
                         // key에 해당하는 객체가 존재하는 경우
+                        console.log('typeof musicPinIns@@@@@@@@@@@@@@@@@@@@@@');
+                        // console.log(typeof musicPinIns);
+                        // console.log(musicPinIns);
+
                         if (key in musicPinIns) {
+                            // console.log(musicPinIns[key]);
+
+                            // (userPinState as any).setMap(null);
+                            // @ts-ignore
                             (musicPinIns[key] as any).setMap(null);
-                            delete musicPinIns[key];
+                            // @ts-ignore
+                            delete (musicPinIns[key] as any);
 
                             console.log('musicPin in DELETE');
                             console.log(musicPinIns);
@@ -294,13 +304,20 @@ export default function Core() {
 
                         // 마커 클릭 시 발생하는 이벤트
                         (naverState as any).maps.Event.addListener(pinIns[key], 'click', async function () {
-                            await refetchMusicAroundList();
+                            // useGetAroundMusicList({ lat, lng });
+
+                            const mal = await refetchMusicAroundList();
+                            console.log('@@@@@@@@@@@@@@@@ mal');
+                            console.log(mal);
+                            setMusicAroundListState(mal.data);
+
                             setIsSelect(true);
-                            console.log(`marker${key} clicked`);
-                            console.log(musicAroundList.musicAroundList);
+                            // console.log(`marker${key} clicked`);
+                            // console.log('@@@@@@@@@@@@@musicAroundList.musicAroundList');
+                            // console.log(musicAroundList.musicAroundList);
                             setUserSelectPin(Number(key));
 
-                            alert(`marker${key} clicked`);
+                            // alert(`marker${key} clicked`);
                         });
                     }
 
@@ -393,7 +410,7 @@ export default function Core() {
         if (mapState && naverState && userPinState && centerState) {
             // mapState가 설정되었을 때만 인터벌을 시작합니다.
             const intervalId = setInterval(() => {
-                console.log("setMap");
+                console.log('setMap');
 
                 (userPinState as any).setMap(null);
 
@@ -402,7 +419,7 @@ export default function Core() {
 
                 // 현재 위치 가져오기
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
+                    position => {
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
                         // const { latitude, longitude } = position.coords;
@@ -425,8 +442,8 @@ export default function Core() {
 
                         setUserPinState(userPin);
                     },
-                    (error) => {
-                        console.error("Error getting location:", error);
+                    error => {
+                        console.error('Error getting location:', error);
                     },
                     {
                         enableHighAccuracy: true,
@@ -445,8 +462,8 @@ export default function Core() {
         let intervalId: any;
 
         if (isUpdate && centerState && naverState && mapState) {
-            console.log("화면 자동 업데이트 활성화");
-            console.log(lat + " " + lng);
+            console.log('화면 자동 업데이트 활성화');
+            console.log(lat + ' ' + lng);
 
             const center = new (naverState as any).maps.LatLng(lat, lng);
             // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
@@ -467,7 +484,7 @@ export default function Core() {
         // isUpdate이 변경되면 return 실행됨
         return () => {
             if (intervalId) {
-                console.log("화면 자동 업데이트 비활성화");
+                console.log('화면 자동 업데이트 비활성화');
 
                 clearInterval(intervalId);
             }
@@ -475,7 +492,7 @@ export default function Core() {
     }, [isUpdate, lat, lng]);
 
     function handlerBtnClick() {
-        setIsUpdate((prev) => !prev);
+        setIsUpdate(prev => !prev);
     }
 
     return (
@@ -486,11 +503,11 @@ export default function Core() {
             <S.MapDisplay>
                 {isUpdate === true ? (
                     <S.ImgOuter>
-                        <img src={gpsPinActImage} alt="gpsImage" onClick={handlerBtnClick} />
+                        <img src={gpsPinActImage} alt='gpsImage' onClick={handlerBtnClick} />
                     </S.ImgOuter>
                 ) : (
                     <S.ImgOuter>
-                        <img src={gpsPinDeactImage} alt="gpsImage" onClick={handlerBtnClick} />
+                        <img src={gpsPinDeactImage} alt='gpsImage' onClick={handlerBtnClick} />
                     </S.ImgOuter>
                 )}
                 <S.Map id='map'></S.Map>
