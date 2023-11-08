@@ -18,20 +18,17 @@ public class CustomOidcUserService extends AbstractOAuth2UserService implements 
 
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("hello oidc user service");
         ClientRegistration clientRegistration = ClientRegistration.withClientRegistration(
                 userRequest.getClientRegistration())
                 .userNameAttributeName("sub")
                 .build();
-        log.info("clientRegi: {}", clientRegistration);
 
         OidcUserRequest oidcUserRequest = new OidcUserRequest(clientRegistration,
                 userRequest.getAccessToken(),
                 userRequest.getIdToken(),
                 userRequest.getAdditionalParameters());
 
-        log.info("oidcuser: {}", oidcUserRequest);
-
+        log.info("OAuth accessToken: {}", userRequest.getAccessToken().getTokenValue());
         OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService = new OidcUserService();
         OidcUser oidcUser = oidcUserService.loadUser(oidcUserRequest);
 
