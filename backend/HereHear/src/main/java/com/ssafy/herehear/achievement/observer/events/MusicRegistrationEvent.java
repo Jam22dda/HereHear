@@ -1,10 +1,10 @@
 package com.ssafy.herehear.achievement.observer.events;
 
 import com.ssafy.herehear.achievement.observer.EventListener;
-import com.ssafy.herehear.achievement.repository.RegisteredMusicRepository;
 import com.ssafy.herehear.achievement.repository.AchievementRepository;
 import com.ssafy.herehear.achievement.repository.MemberAchievementRepository;
 import com.ssafy.herehear.achievement.repository.MemberRepository;
+import com.ssafy.herehear.achievement.repository.RegisteredMusicRepository;
 import com.ssafy.herehear.entity.Achievement;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.MemberAchievement;

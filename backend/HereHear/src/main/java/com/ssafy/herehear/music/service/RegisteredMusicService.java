@@ -13,7 +13,7 @@ public interface RegisteredMusicService {
 
     RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId);
 
-    List<RegisteredMusicResDto> getRegisteredMusicList();
+    List<RegisteredMusicMapResDto> getRegisteredMusicList();
 
     List<SseResDto> updateMyRegisteredMusic(long memberId, long registeredMusicId);
 

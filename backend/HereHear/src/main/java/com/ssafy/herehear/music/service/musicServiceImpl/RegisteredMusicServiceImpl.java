@@ -2,6 +2,7 @@ package com.ssafy.herehear.music.service.musicServiceImpl;
 
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.Occasion;
+import com.ssafy.herehear.entity.ProfileCharacter;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
@@ -11,6 +12,7 @@ import com.ssafy.herehear.music.dto.response.*;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.MusicOccasionRepository;
 import com.ssafy.herehear.music.repository.OccasionRepository;
+import com.ssafy.herehear.music.repository.ProfileCharacterRepository;
 import com.ssafy.herehear.music.repository.RegisteredMusicRepository;
 import com.ssafy.herehear.music.repository.musicRepositoryImpl.RegisteredMusicRepositoryImpl;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
@@ -22,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +37,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     private final OccasionRepository occasionRepository;
     private final MusicOccasionRepository musicOccasionRepository;
     private final RegisteredMusicRepository registeredMusicRepository;
+    private final ProfileCharacterRepository profileCharacterRepository;
     private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
 
     private final RegisterMusicMapper registerMusicMapper;
@@ -79,12 +84,14 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Transactional
     public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
         log.info(logComment("음악 상세 조회", memberId, registeredMusicId));
+        Member member = MemberUtil.findMember(memberId);
 
         //음악 상세 조회
         RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicDetailsResDto(
+                member,
                 findByRegisterMusic(registeredMusicId),
                 findRegisteredMusicLike(memberId, registeredMusicId),
-                MemberUtil.findMember(memberId),
+                findByProfileCharacter(member.getProfileCharacter().getProfileCharacterId()),
                 registeredMusicRepositoryImpl.findByOccasionName(registeredMusicId)
         );
         log.info("getRegisteredMusicDetails: " + registeredMusicDetailsResDto);
@@ -98,16 +105,16 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
 
     @Override
     @Transactional
-    public List<RegisteredMusicResDto> getRegisteredMusicList() {
+    public List<RegisteredMusicMapResDto> getRegisteredMusicList() {
 
         //전체 음악 조회
-        List<RegisteredMusicResDto> registeredMusicResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
+        List<RegisteredMusicMapResDto> registeredMusicMapResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
                 .filter(HourFilterUtils::findHourFilter)
                 .map(registerMusicMapper::toRegisteredMusicListResDto)
                 .toList();
-        log.info("getRegisteredMusicList: " + registeredMusicResDtos);
+        log.info("getRegisteredMusicList: " + registeredMusicMapResDtos);
 
-        return registeredMusicResDtos;
+        return registeredMusicMapResDtos;
     }
 
     @Override
@@ -158,12 +165,22 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
         );
     }
 
+    public ProfileCharacter findByProfileCharacter(long profileCharacterId) {
+        return profileCharacterRepository.findById(profileCharacterId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
+        );
+    }
+
     public boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
         return registeredMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
     }
 
     public String convertAndSetCreateTime(String createTime) {
-        LocalDateTime dateTime = LocalDateTime.parse(createTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                .appendFraction(ChronoField.MICRO_OF_SECOND, 0, 6, true)
+                .toFormatter();
+        LocalDateTime dateTime = LocalDateTime.parse(createTime, formatter);
         return dateTime.format(DateTimeFormatter.ofPattern("MM월 dd일 HH시"));
     }
 

@@ -28,7 +28,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     //    local
 //    private static final String REDIRECT_ENDPOINT = "http://localhost:5173";
 //    server
-    private static final String REDIRECT_ENDPOINT = "https://k9b202.p.ssafy.io";
+    private static final String REDIRECT_ENDPOINT = "https://k9b202.p.ssafy.io/dev";
 
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;

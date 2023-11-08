@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @Builder
 @ToString
-public class RegisteredMusicResDto {
+public class RegisteredMusicMapResDto {
     private Long registeredMusicId;
     private Double lng;
     private Double lat;
