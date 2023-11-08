@@ -30,7 +30,6 @@ export default function MyPage() {
     };
 
     const YourInfo = useGetYourinfo(14);
-    console.log(YourInfo);
 
     return (
         <div id="display">
