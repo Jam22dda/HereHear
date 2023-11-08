@@ -7,7 +7,7 @@ import Navbar from "../../components/molcules/Navbar/Navbar";
 import { useGetListenedMusic } from "../../apis/Music/Quries/useGetListenedMusic";
 import { useNavigate } from "react-router-dom";
 import iconArrowForward from "../../../public/images/icon-arrow-forward.png";
-
+import iconBack from "../../assets/CircleButton/icon-back.png";
 interface ListenedMusicType {
     albumImg: string;
     like: boolean;
@@ -28,11 +28,10 @@ export default function ListenedMusicPage() {
     return (
         <div id="display">
             <div className="container">
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="50px 0 30px 0"
-                >
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                </CircleButton>
+                <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
                     최근 들은 노래 리스트
                 </Text>
                 {ListenedMusic &&
