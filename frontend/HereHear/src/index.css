@@ -87,8 +87,8 @@ body {
     animation: gradientAnimation 4.5s linear infinite alternate;
 } */
 
-#root {
-    background-image: url("../public//images//icon-Background.png"); 
+body {
+    background-image: url("../public//images//icon-Background.png");
     background-size: 300% 300%;
     background-position: 50% 40%;
     background-repeat: no-repeat;

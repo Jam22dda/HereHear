@@ -18,7 +18,11 @@ const navBarInfo = [
     { src: iconMypage, path: "/mypage" },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+    active?: boolean;
+}
+
+export default function Navbar({ active }: NavbarProps) {
     const navigate = useNavigate();
 
     const navigatePage = (path: string) => {
@@ -26,10 +30,18 @@ export default function Navbar() {
     };
 
     return (
-        <S.StyledNavBarBackground>
+        <S.StyledNavBarBackground active={active}>
             <S.StyledNavBar>
                 {navBarInfo.map(({ src, path }) => {
-                    return <Image key={path} src={src} onClick={() => navigatePage(path)} width={path === "/statistic" ? 64 : 52} $unit="px" />;
+                    return (
+                        <Image
+                            key={path}
+                            src={src}
+                            onClick={() => navigatePage(path)}
+                            width={path === "/registMusic" ? 64 : 52}
+                            $unit="px"
+                        />
+                    );
                 })}
             </S.StyledNavBar>
         </S.StyledNavBarBackground>

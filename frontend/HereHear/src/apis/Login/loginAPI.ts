@@ -23,7 +23,6 @@ const getCheckNickname = async (nickname: string) => {
             `/member/check/nickname/${nickname}`
         );
         console.log("getCheckNickname 성공");
-        console.log(response);
         return response.data.data;
     } catch (error) {
         console.error("Error fetching search music", error);

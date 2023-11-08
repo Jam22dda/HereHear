@@ -27,6 +27,7 @@ import { useGetCheckNickname } from "../../apis/Login/Quries/useGetCheckNickname
 import { useDebouncedCallback } from "use-debounce";
 import { useRecoilState } from "recoil";
 import { MyAchievementAtom } from "../../states/MypageAtoms";
+import iconBack from "../../assets/CircleButton/icon-back.png";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -40,8 +41,12 @@ export default function MyPage() {
 
     const navigatePage = (path: string) => {
         if (path === "/achievement") {
-            setMyAchievement(MyAchievement);
-            navigate(path);
+            if (UserInfo.achievementId === null) {
+                navigate(path);
+            } else {
+                setMyAchievement(MyAchievement);
+                navigate(path);
+            }
         } else {
             navigate(path);
         }
@@ -87,8 +92,6 @@ export default function MyPage() {
 
     const { mutate: postNicknameMutate } = usePostNickname();
     const { data: checkNicknameData } = useGetCheckNickname(debouncedNickname);
-
-    console.log(checkNicknameData);
     const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
         debouncedCheck(e.target.value);
@@ -108,6 +111,18 @@ export default function MyPage() {
     return (
         <div id="display">
             <div className="container">
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
+                </CircleButton>
                 <S.MyPageWrapper>
                     <S.Profile>
                         <Image
@@ -121,13 +136,18 @@ export default function MyPage() {
                         ></Image>
                     </S.Profile>
                     <S.MydataWrapper>
-                        <Image
-                            src={MyAchievement && MyAchievement.badge.badgeImg}
-                            width={24}
-                            height={24}
-                            $unit="px"
-                            $margin="0 4px 4px 0"
-                        ></Image>
+                        {MyAchievement && (
+                            <Image
+                                src={
+                                    MyAchievement &&
+                                    MyAchievement.badge.badgeImg
+                                }
+                                width={24}
+                                height={24}
+                                $unit="px"
+                                $margin="0 4px 4px 0"
+                            ></Image>
+                        )}
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
                         </Text>

@@ -17,14 +17,7 @@ import { FollowingType } from "../../types/user";
 
 export default function Following() {
     const navigate = useNavigate(); // useNavigate 훅 사용
-
-    // const navigatePage = (path: string) => {
-    //     navigate(path);
-    // };
-    // const [followingList, setFollowingList] = useRecoilState(FollowingListAtom);
-    // console.log(followingList);
     const [followingList, setFollowingList] = useState<FollowState[]>([]);
-    console.log(followingList);
 
     const Following: FollowingType[] = useGetFollowing();
     const { mutate: FollowUser } = useFollow();
@@ -64,7 +57,6 @@ export default function Following() {
         );
     };
 
-    console.log(Following);
     return (
         <div id="display">
             <div className="container">
