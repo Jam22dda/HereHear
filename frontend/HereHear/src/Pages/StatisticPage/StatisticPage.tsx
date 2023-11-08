@@ -1,13 +1,13 @@
-import * as S from "./MyStatisticsPage.styles";
+import * as S from "./StatisticPage.styles";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import { Image } from "../../components/atoms/Image/Image";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { useNavigate } from "react-router-dom";
-// import monzi from "../../../public/images/monzi-herehear.png";
-import monziSleep from "../../../public/images/monzi-sleeping.png";
+import monzi from "../../../public/images/monzi-herehear.png";
+// import monziSleep from "../../../public/images/monzi-sleeping.png";
 import iconBack from "../../assets/CircleButton/icon-back.png";
 
-export default function MyStatisticsPage() {
+export default function StatisticsPage() {
     const navigate = useNavigate();
 
     return (
@@ -23,8 +23,8 @@ export default function MyStatisticsPage() {
                         아직 준비중이에요!
                     </Text>
 
-                    {/* <Image width={10} src={monzi}></Image> */}
-                    <Image width={10} src={monziSleep}></Image>
+                    <Image width={10} src={monzi}></Image>
+                    {/* <Image width={10} src={monziSleep}></Image> */}
                 </S.readyPageWrapper>
             </div>
         </div>
