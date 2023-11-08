@@ -6,7 +6,7 @@ export const Profile = styled.div`
     height: 200px;
     border-radius: 120px;
     box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
-    margin-top: 16px;
+    margin: 16px 0 8px 0;
     display: flex;
     align-items: center;
     justify-content: center;

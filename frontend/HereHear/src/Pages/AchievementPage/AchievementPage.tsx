@@ -53,8 +53,6 @@ export default function Achievement() {
     const [modalContent, setModalContent] = useState<AchievementType | null>(
         null
     );
-    console.log(MyAchievementList);
-    console.log(MyAchievement);
     const { mutate: PutAchievementMutate } = usePutAchievement();
 
     const handlePutAchievement = (achievementId: achievementId) => {
@@ -64,7 +62,6 @@ export default function Achievement() {
     const [selectedItem, setSelectedItem] = useState(
         MyAchievement.achievementId
     );
-    console.log(selectedItem);
 
     const handleItemClick = (idx: number) => {
         if (idx === selectedItem) {
