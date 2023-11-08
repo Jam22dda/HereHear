@@ -1,6 +1,8 @@
 package com.ssafy.herehear.achievement.controller;
 
-import com.ssafy.herehear.achievement.dto.*;
+import com.ssafy.herehear.achievement.dto.AchievementDto;
+import com.ssafy.herehear.achievement.dto.EquipAchievementDto;
+import com.ssafy.herehear.achievement.dto.MemberAchievementDto;
 import com.ssafy.herehear.achievement.service.AchievementService;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
