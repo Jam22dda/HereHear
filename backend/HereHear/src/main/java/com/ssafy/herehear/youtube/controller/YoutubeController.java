@@ -2,7 +2,7 @@ package com.ssafy.herehear.youtube.controller;
 
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.youtube.dto.YoutubePlayReqDto;
-import com.ssafy.herehear.youtube.service.AddPlayItemService;
+import com.ssafy.herehear.youtube.service.YoutubePlayListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class YoutubeController {
 
-    private final AddPlayItemService addPlayItemService;
+    private final YoutubePlayListService youtubePlayListService;
 
     @PostMapping
     public CommonResponse insertPlayItem(@RequestBody YoutubePlayReqDto req){
-        String listId = addPlayItemService.selectPlayList();
-        if(listId.isEmpty())
-            addPlayItemService.insertPlayList();
-//        addPlayItemService.addPlayItem(req.getVideoId());
+        String playlistId = youtubePlayListService.selectPlayList();
+        log.info("Youtube playlistId: "+playlistId);
+
+//        String videoId = youtubePlayListService.selectPlayListItem(req.getSearchName());
+//        log.info("Youtube videoId: "+videoId);
+//
+//        youtubePlayListService.addPlayListItem(playlistId, videoId);
         return new CommonResponse("200", "재생 목록 추가완료");
     }
 

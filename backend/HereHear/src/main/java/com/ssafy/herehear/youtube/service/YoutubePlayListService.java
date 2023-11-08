@@ -1,5 +1,7 @@
 package com.ssafy.herehear.youtube.service;
 
+import com.ssafy.herehear.global.exception.CustomException;
+import com.ssafy.herehear.global.exception.ExceptionStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -14,43 +16,39 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AddPlayItemService {
-
-    private String searchUrl = "https://youtube.googleapis.com/youtube/v3";
-
-    private String accessToken = "ya29.a0AfB_byC8E-k3ZOkI4Lv5d3pRRMo9TMCjvf4Cim0x7kJfKFR8hiXm3kD7FauojYjAlQ86-pJ5dn9Y29AxUShU5W2pS0Q0pkUxaFBzRXrx6Ap1HQw__ibVeYOCoeJ7PeCzwOya30jdsUiWSrxkKKPIsLYllDEVpw-jyAaCgYKAQ8SARASFQHGX2Miy1FVFY_Wn2M76Y4dM8cGrw0169";
+public class YoutubePlayListService {
+    private static final String VALUE = "snippet";
+    private static final String SEARCH_URL = "https://youtube.googleapis.com/youtube/v3";
+    private static final String ACCESS_TOKEN = "ya29.a0AfB_byBV7hl9HWZWr99hT99Gf6vT2c9CFCd2dQBkB2X3nLhl8R6oqIoBQMVp5xWZX2V9Dd3UtOQ_zTHJ5M0nE7hcCebpH29fN8BtW3uPjlkSaT0BSCuRcn-DUwKWf2giFpBE3qTvkAJrmCs3bZ7GkQtSWluizgrGacwaCgYKAU0SARASFQHGX2MiOZl6zeCh0DubqCRHRzICJQ0170";
+    private static final WebClient webClient = WebClient.builder().baseUrl(SEARCH_URL).build();
 
     public String selectPlayList() {
-        WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
-
         Mono<String> response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/playlists")
-                        .queryParam("part", "snippet")
+                        .queryParam("part", VALUE)
                         .queryParam("mine", "true")
                         .build())
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class);
 
-        String listId = "";
         JSONObject jsonObject = new JSONObject(response.block());
 
         JSONArray items = jsonObject.getJSONArray("items");
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = items.getJSONObject(i);
-            JSONObject snippet = item.getJSONObject("snippet");
+            JSONObject snippet = item.getJSONObject(VALUE);
             String title = snippet.getString("title");
             if ("HereHear".equals(title))
-                listId = item.getString("id");
+                return item.getString("id");
         }
-
-        log.info("selectPlayList listId: "+listId);
-        return listId;
+        log.info("여기까지와?");
+        return insertPlayList();
     }
 
-    public void insertPlayList() {
+    public String insertPlayList() {
         String jsonBody = "{" +
                 "\"snippet\": {" +
                 "\"title\": \"HereHear\"," +
@@ -61,36 +59,27 @@ public class AddPlayItemService {
                 "}" +
                 "}";
 
-        WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
         Mono<String> response = webClient.post()
                 .uri(uriBuilder -> uriBuilder
                         .path("/playlists")
-                        .queryParam("part", "snippet")
+                        .queryParam("part", VALUE)
                         .queryParam("part", "status")
                         .build())
                 .body(BodyInserters.fromValue(jsonBody))
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class);
 
-        response.subscribe(
-                result -> log.info("insertPlayList Response: " + result),
-                error -> log.info("insertPlayList error: "+error)
-        );
+        try {
+            String result = response.block();
+            JSONObject jsonResponse = new JSONObject(result);
+            return jsonResponse.getString("id");
+        } catch (Exception e) {
+            throw new CustomException(ExceptionStatus.NOT_FOUND_YOUTUBE_PLAYLIST_ID);
+        }
     }
 
-//    public void addPlayItem(String videoId){
-//        YouTube youtubeService = YoutubeAuthorize.getService();
-//
-//        // Define the PlaylistItem object, which will be uploaded as the request body.
-//        PlaylistItem playlistItem = new PlaylistItem();
-//
-//        // Define and execute the API request
-//        YouTube.PlaylistItems.Insert request = youtubeService.playlistItems()
-//                .insert("snippet", playlistItem);
-//        PlaylistItem response = request.execute();
-//        log.info("addPlayItem: " + response);
-//    }
-//
+
+
 }
