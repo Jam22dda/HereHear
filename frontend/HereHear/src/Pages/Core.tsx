@@ -182,6 +182,8 @@ export default function Core() {
         };
     }, []);
 
+    let musicPinIns = Object.assign({}, musicPin, {}); // musicPinIns를 밖으로 이동
+
     useEffect(() => {
         console.log('USEEFFECT');
         console.log(eventSource);
@@ -194,7 +196,6 @@ export default function Core() {
             // SSE 이벤트 핸들러를 등록합니다.
             eventSource.addEventListener('sse', event => {
                 const eventData = JSON.parse(event.data);
-
                 console.log('musicMap');
                 console.log(musicMap);
 
@@ -219,8 +220,6 @@ export default function Core() {
                     console.log(delList);
 
                     // let musicPinIns = musicPin;
-                    let musicPinIns = Object.assign({}, musicPin, {});
-
                     console.log('musicPinIns 인스턴스 만들기 ');
                     console.log(musicPinIns);
 
@@ -289,7 +288,6 @@ export default function Core() {
                             },
                         });
                         console.log('pinIns');
-                        console.log(pinIns);
 
                         musicPinIns = Object.assign({}, musicPinIns, pinIns);
                         console.log('AFTER add musicPinIns ', musicPinIns);
@@ -342,7 +340,7 @@ export default function Core() {
     }, [eventSource, naverState, mapState]);
 
     useEffect(() => {
-        console.log('승종승종승조ㅡㅇ');
+        console.log('useEffect musicPin');
 
         console.log(musicPin);
     }, [musicPin]);
