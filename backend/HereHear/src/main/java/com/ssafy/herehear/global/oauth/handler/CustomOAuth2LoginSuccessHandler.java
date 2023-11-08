@@ -31,7 +31,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     private final JwtProvider jwtProvider;
 
     @Value("${auth.redirectUrl}")
-    private final String REDIRECT_ENDPOINT;
+    private String REDIRECT_ENDPOINT;
     private String redirectUrl;
 
 
