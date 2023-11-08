@@ -170,7 +170,9 @@ export default function Core() {
             // SSE
             // const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
 
-            setEventSource(new EventSource('http://localhost:8080/music/subscribe/1'));
+            const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+            setEventSource(new EventSource(`${serverUrl}/music/subscribe/1`));
         };
 
         document.body.appendChild(script);
