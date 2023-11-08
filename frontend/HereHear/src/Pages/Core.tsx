@@ -8,8 +8,13 @@ import MusicBox from '../components/molcules/MusicBox/MusicBox';
 import Navbar from '../components/molcules/Navbar/Navbar';
 import { useGetMapMusicList } from '../apis/Map/Queries/useGetMapMusicList';
 import { useGetAroundMusicList } from '../apis/Map/Queries/useGetAroundMusicList';
+import { useRecoilValue } from 'recoil';
+import { SignUpInfoAtom } from '../states/SignUpAtoms';
 
 export default function Core() {
+    const signUpInfoAtom = useRecoilValue(SignUpInfoAtom);
+    const myId = signUpInfoAtom.memberId;
+
     const [isUpdate, setIsUpdate] = useState(false);
     const [lat, setLat] = useState(0); // 위도
     const [lng, setLng] = useState(0); // 경도
@@ -36,6 +41,8 @@ export default function Core() {
     const [eventSource, setEventSource] = useState<EventSource | undefined>(undefined);
 
     useEffect(() => {
+        console.log('myId : ', myId);
+
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         const script = document.createElement('script');
@@ -172,7 +179,7 @@ export default function Core() {
 
             const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-            setEventSource(new EventSource(`${serverUrl}/music/subscribe/1`));
+            setEventSource(new EventSource(`${serverUrl}/music/subscribe/${myId}`));
         };
 
         document.body.appendChild(script);
