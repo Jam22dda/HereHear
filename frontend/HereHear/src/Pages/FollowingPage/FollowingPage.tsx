@@ -8,6 +8,12 @@ import Follow from "../../components/molcules/Follow/Follow";
 import Button from "../../components/atoms/Button/Button";
 import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
 import { useUnFollow } from "../../apis/Mypage/Mutations/useUnFollow";
+import { useFollow } from "../../apis/Mypage/Mutations/useFollow";
+import { memberId } from "../../types/user";
+import React, { useState, useEffect } from "react";
+import { FollowingType } from "../../types/user";
+// import { useRecoilState } from "recoil";
+// import { FollowingListAtom } from "../../states/MypageAtoms";
 
 export default function Following() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -15,36 +21,49 @@ export default function Following() {
     // const navigatePage = (path: string) => {
     //     navigate(path);
     // };
-
-    interface FollowingType {
-        memberId: number;
-        nickname: string;
-        profileCharacter: {
-            profileCharacterId: number;
-            characterName: string;
-            characterImage: string;
-        };
-        achievement?: {
-            achievementId?: number;
-            mission?: string;
-            badge?: {
-                badgeCode?: number;
-                badgeName?: string;
-                badgeImg?: string;
-            };
-            title?: {
-                titleCode?: number;
-                titleName?: string;
-            };
-        };
-    }
+    // const [followingList, setFollowingList] = useRecoilState(FollowingListAtom);
+    // console.log(followingList);
+    const [followingList, setFollowingList] = useState<FollowState[]>([]);
+    console.log(followingList);
 
     const Following: FollowingType[] = useGetFollowing();
+    const { mutate: FollowUser } = useFollow();
     const { mutate: unFollowUser } = useUnFollow();
 
-    const handleUnFollowClick = (memberId: number) => {
-        unFollowUser({ memberId });
+    interface FollowState {
+        isFollowing: boolean;
+    }
+
+    useEffect(() => {
+        if (Following && Following.length > 0) {
+            // 타입스크립트에게 상태의 타입을 알려줍니다.
+            setFollowingList(Following.map(() => ({ isFollowing: true })));
+        }
+    }, [Following]);
+
+    // useEffect(() => {
+    //     setFollowingList(Following);
+    // }, [Following]);
+
+    const handleFollowClick = (memberId: memberId, index: number) => {
+        FollowUser(memberId);
+        setFollowingList((prevList) =>
+            prevList.map((follow, idx) =>
+                idx === index ? { ...follow, isFollowing: true } : follow
+            )
+        );
     };
+
+    const handleUnFollowClick = (memberId: memberId, index: number) => {
+        unFollowUser({ memberId });
+        // 상태 업데이트
+        setFollowingList((prevList) =>
+            prevList.map((follow, idx) =>
+                idx === index ? { ...follow, isFollowing: false } : follow
+            )
+        );
+    };
+
     console.log(Following);
     return (
         <div id="display">
@@ -82,16 +101,36 @@ export default function Following() {
                                         "뱃지가 없어용!"
                                     }
                                 />
-                                <Button
-                                    option="unfollow"
-                                    size="medium"
-                                    $width="92px"
-                                    onClick={() =>
-                                        handleUnFollowClick(item.memberId)
-                                    }
-                                >
-                                    팔로잉
-                                </Button>
+                                {followingList[index] &&
+                                followingList[index].isFollowing ? (
+                                    <Button
+                                        option="unfollow"
+                                        size="medium"
+                                        $width="92px"
+                                        onClick={() =>
+                                            handleUnFollowClick(
+                                                item.memberId,
+                                                index
+                                            )
+                                        }
+                                    >
+                                        팔로잉
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        option="follow"
+                                        size="medium"
+                                        $width="92px"
+                                        onClick={() =>
+                                            handleFollowClick(
+                                                item.memberId,
+                                                index
+                                            )
+                                        }
+                                    >
+                                        팔로우
+                                    </Button>
+                                )}
                             </S.FollowingWrapper>
                         ))}
                 </S.FollowingListWrapper>

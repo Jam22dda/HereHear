@@ -75,15 +75,23 @@ h3 {
 /* Page */
 body {
     width: 100%;
+    /* max-width: 390px; */
     margin: auto;
     display: flex;
     justify-content: center;
 }
 
-body {
+/* body {
     background-image: linear-gradient(-30deg, #fbb7d4 0%, #a9d4ff 100%);
     background-size: 200% 200%;
     animation: gradientAnimation 4.5s linear infinite alternate;
+} */
+
+#root {
+    background-image: url("../public//images//icon-Background.png"); 
+    background-size: 300% 300%;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
 }
 
 #root {
@@ -98,8 +106,8 @@ body {
 
 #display {
     /* 이후 조정 필요 */
-    /* max-width: 415px;
-    background-color: white; */
+    /* max-width: 390px; */
+    /* background-color: white; */
 
     display: flex;
     flex-wrap: wrap;

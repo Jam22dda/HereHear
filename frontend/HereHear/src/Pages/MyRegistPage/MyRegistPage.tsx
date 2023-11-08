@@ -10,9 +10,9 @@ import { useGetRegistMusic } from "../../apis/Mypage/Quries/useGetRegistMusic";
 export default function MyRegistPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-    // const navigatePage = (path: string) => {
-    //     navigate(path);
-    // };
+    const navigatePage = (path: string) => {
+        navigate(path);
+    };
 
     interface RegistMusicType {
         albumImg: string;
@@ -27,23 +27,10 @@ export default function MyRegistPage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigate(-1)}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="50px 0 30px 0"
-                >
+                <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
                     내가 등록한 노래
                 </Text>
                 {RegistMusic &&
@@ -53,6 +40,7 @@ export default function MyRegistPage() {
                                 src={item.albumImg}
                                 songtitle={item.subject}
                                 artist={item.singer}
+                                onClick={() => navigatePage(`/musicPlay/${item.registeredMusicId}`)}
                             />
                         </S.MyRegistWrapper>
                     ))}

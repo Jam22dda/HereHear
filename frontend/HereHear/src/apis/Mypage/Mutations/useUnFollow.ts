@@ -18,7 +18,7 @@ const useUnFollow = () => {
             // 성공 시 실행될 함수
             console.log("언팔로우 성공!");
             queryClient.invalidateQueries({ queryKey: ["Follower"] });
-            queryClient.invalidateQueries({ queryKey: ["Following"] });
+            // queryClient.invalidateQueries({ queryKey: ["Following"] });
         },
         onError: (error: Error) => {
             // 에러 발생 시 실행될 함수

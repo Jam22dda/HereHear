@@ -25,6 +25,8 @@ import { changeNickname } from "../../types/user";
 import monziHerehear from "../../../public/images/monzi-herehear.png";
 import { useGetCheckNickname } from "../../apis/Login/Quries/useGetCheckNickname";
 import { useDebouncedCallback } from "use-debounce";
+import { useRecoilState } from "recoil";
+import { MyAchievementAtom } from "../../states/MypageAtoms";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -37,13 +39,19 @@ export default function MyPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
     const navigatePage = (path: string) => {
-        navigate(path);
+        if (path === "/achievement") {
+            setMyAchievement(MyAchievement);
+            navigate(path);
+        } else {
+            navigate(path);
+        }
     };
 
     const UserInfo = useGetUserinfo();
     const Follower = useGetFollower();
     const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
+    const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [isBlanked, setIsBlanked] = useState(false);
