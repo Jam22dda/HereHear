@@ -7,7 +7,7 @@ import Navbar from "../../components/molcules/Navbar/Navbar";
 import { useGetListenedMusic } from "../../apis/Music/Quries/useGetListenedMusic";
 import { useNavigate } from "react-router-dom";
 import iconArrowForward from "../../../public/images/icon-arrow-forward.png";
-
+import iconBack from "../../assets/CircleButton/icon-back.png";
 interface ListenedMusicType {
     albumImg: string;
     like: boolean;
@@ -19,19 +19,31 @@ interface ListenedMusicType {
 export default function ListenedMusicPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-    const navigatePage = (path: string) => {
-        navigate(path);
-    };
+    // const navigatePage = (path: string) => {
+    //     navigate(path);
+    // };
 
     const ListenedMusic: ListenedMusicType[] = useGetListenedMusic();
 
     return (
         <div id="display">
             <div className="container">
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
+                </CircleButton>
                 <Text
                     size="subtitle1"
                     fontWeight="bold"
-                    $margin="50px 0 30px 0"
+                    $margin="20px 0 48px 0"
                 >
                     최근 들은 노래 리스트
                 </Text>
@@ -43,15 +55,18 @@ export default function ListenedMusicPage() {
                                     src={item.albumImg}
                                     songtitle={item.subject}
                                     artist={item.singer}
-                                    onClick={() =>
-                                        navigatePage(
-                                            `/musicPlay/${item.registeredMusicId}`
-                                        )
-                                    }
                                 />
                                 <CircleButton
                                     option="gradDeActivated"
                                     size="large"
+                                    onClick={() => {
+                                        const subjectEncoded =
+                                            encodeURIComponent(item.subject);
+                                        const singerEncoded =
+                                            encodeURIComponent(item.singer);
+                                        const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
+                                        window.location.href = youtubeSearchUrl;
+                                    }}
                                 >
                                     <Image
                                         src={iconArrowForward}
@@ -63,8 +78,8 @@ export default function ListenedMusicPage() {
                             </S.MusicItemWrapper>
                         )
                     )}
-                <Navbar></Navbar>
             </div>
+            <Navbar></Navbar>
         </div>
     );
 }

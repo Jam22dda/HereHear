@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const LoginBtn = styled.button`
     border-radius: 30px;
     width: 288px;
-    height: 88px;
+    height: 78px;
     background-color: ${({ theme }) => theme.color.yellow};
     box-shadow: ${({ theme }) => theme.shadow.shadow_btn};
     position: fixed;
