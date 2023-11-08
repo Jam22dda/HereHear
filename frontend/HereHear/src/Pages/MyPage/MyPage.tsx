@@ -22,6 +22,9 @@ import iconExit from "../../../public/images/icon-exit.png";
 import Input from "../../components/atoms/Input/Input";
 import { usePostNickname } from "../../apis/Mypage/Mutations/usePostNickname";
 import { changeNickname } from "../../types/user";
+import monziHerehear from "../../../public/images/monzi-herehear.png";
+import { useGetCheckNickname } from "../../apis/Login/Quries/useGetCheckNickname";
+import { useDebouncedCallback } from "use-debounce";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -38,30 +41,60 @@ export default function MyPage() {
     };
 
     const UserInfo = useGetUserinfo();
-    console.log("왜???????????????????????????");
-    console.log(UserInfo);
     const Follower = useGetFollower();
     const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
+    const [isBlanked, setIsBlanked] = useState(false);
+    const [isDuplicated, setIsDuplicated] = useState(false);
+    const [debouncedNickname, setDebouncedNickname] = useState("");
+
+    const debouncedCheck = useDebouncedCallback(
+        // function
+        (value) => {
+            setDebouncedNickname(value);
+        },
+        // delay in ms
+        500
+    );
 
     const toggleModal = () => {
         setIsModalOpen((prev) => !prev);
+        setIsBlanked(false);
+        setIsDuplicated(false);
     };
 
     const handleEdit = () => {
         toggleModal();
     };
 
-    const { mutate } = usePostNickname();
+    const handleBlanked = () => {
+        setIsBlanked(false);
+    };
+
+    const handleDuplicated = () => {
+        setIsDuplicated(false);
+    };
+
+    const { mutate: postNicknameMutate } = usePostNickname();
+    const { data: checkNicknameData } = useGetCheckNickname(debouncedNickname);
+
+    console.log(checkNicknameData);
     const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
+        debouncedCheck(e.target.value);
     };
 
     const handleSaveNickname = (nickname: changeNickname) => {
-        mutate(nickname);
-        toggleModal();
+        if (nickname == "") {
+            setIsBlanked(true);
+        } else if (checkNicknameData?.isAvailable === false) {
+            setIsDuplicated(true);
+        } else {
+            postNicknameMutate(nickname);
+            toggleModal();
+        }
     };
 
     return (
@@ -112,15 +145,17 @@ export default function MyPage() {
                             option="tag_plus"
                             size="largeplus"
                             $width="130px"
+                            onClick={() => navigatePage("/following")}
                         >
-                            팔로잉 {Following.length}명
+                            팔로잉 {Following?.length ?? 0}명
                         </Button>
                         <Button
                             option="tag_plus"
                             size="largeplus"
                             $width="130px"
+                            onClick={() => navigatePage("/follower")}
                         >
-                            팔로워 {Follower.length}명
+                            팔로워 {Follower?.length ?? 0}명
                         </Button>
                     </S.FollowWrapper>
                     <S.MyItemWrapper>
@@ -139,34 +174,78 @@ export default function MyPage() {
             {isModalOpen && (
                 <ModalBg>
                     <Modal toggleModal={() => toggleModal()}>
-                        <S.ExitWrapper>
-                            <CircleButton
-                                option="default"
-                                size="medium"
-                                onClick={toggleModal}
-                            >
+                        {!isBlanked && !isDuplicated && (
+                            <S.ExitWrapper>
+                                <CircleButton
+                                    option="default"
+                                    size="medium"
+                                    onClick={toggleModal}
+                                >
+                                    <Image
+                                        src={iconExit}
+                                        width={20}
+                                        height={20}
+                                        $unit="px"
+                                    ></Image>
+                                </CircleButton>
+                            </S.ExitWrapper>
+                        )}
+                        {!isBlanked && !isDuplicated && (
+                            <S.TextWrapper>
+                                <Text fontWeight="bold">
+                                    변경할 닉네임을 작성
+                                </Text>
+                                <Text $margin="0 0 28px 0" fontWeight="bold">
+                                    해주세요!
+                                </Text>
+                                <Input onChange={handleChangeNickname}></Input>
+                                <Button
+                                    onClick={() => handleSaveNickname(nickname)}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
+                                    저장하기
+                                </Button>
+                            </S.TextWrapper>
+                        )}
+                        {isBlanked && (
+                            <S.TextWrapper>
                                 <Image
-                                    src={iconExit}
-                                    width={20}
-                                    height={20}
+                                    src={monziHerehear}
+                                    width={100}
+                                    height={100}
                                     $unit="px"
+                                    $margin="0 0 30px 0"
                                 ></Image>
-                            </CircleButton>
-                        </S.ExitWrapper>
-                        <S.TextWrapper>
-                            <Text fontWeight="bold">변경할 닉네임을 작성</Text>
-                            <Text $margin="0 0 28px 0" fontWeight="bold">
-                                해주세요!
-                            </Text>
-                            <Input onChange={handleChangeNickname}></Input>
-                            <Button
-                                onClick={() => handleSaveNickname(nickname)}
-                                $width="130px"
-                                $margin="32px 0 0 0"
-                            >
-                                저장하기
-                            </Button>
-                        </S.TextWrapper>
+                                <h2>닉네임을 입력해주세요!</h2>
+                                <Button
+                                    onClick={handleBlanked}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
+                                    다시 입력하기
+                                </Button>
+                            </S.TextWrapper>
+                        )}
+                        {isDuplicated && (
+                            <S.TextWrapper>
+                                <Image
+                                    src={monziHerehear}
+                                    width={100}
+                                    height={100}
+                                    $unit="px"
+                                    $margin="0 0 30px 0"
+                                ></Image>
+                                <h2>닉네임이 중복되었습니다!</h2>
+                                <Button
+                                    onClick={handleDuplicated}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
+                                    다시 입력하기
+                                </Button>
+                            </S.TextWrapper>
+                        )}
                     </Modal>
                 </ModalBg>
             )}
