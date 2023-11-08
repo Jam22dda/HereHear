@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import Follow from "../../components/molcules/Follow/Follow";
 import Button from "../../components/atoms/Button/Button";
 import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
+import { useFollow } from "../../apis/Mypage/Mutations/useFollow";
+import { useUnFollow } from "../../apis/Mypage/Mutations/useUnFollow";
+import { memberId } from "../../types/user";
 
 export default function Follower() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -41,6 +44,18 @@ export default function Follower() {
 
     const Follower: FollowerType[] = useGetFollower();
     console.log(Follower);
+
+    const { mutate: FollowUser } = useFollow();
+    const { mutate: unFollowUser } = useUnFollow();
+
+    const handleFollowClick = (memberId: memberId) => {
+        FollowUser(memberId);
+    };
+
+    const handleUnFollowClick = (memberId: number) => {
+        unFollowUser({ memberId });
+    };
+
     return (
         <div id="display">
             <div className="container">
@@ -61,29 +76,47 @@ export default function Follower() {
                     fontWeight="bold"
                     $margin="30px 0 50px 0"
                 >
-                    팔로잉 목록
+                    팔로워 목록
                 </Text>
-                {Follower.map((item: FollowerType, index: number) => (
-                    <S.FollowerWrapper key={index}>
-                        <Follow
-                            characterImage={
-                                item.profileCharacter.characterImage
-                            }
-                            nickname={item.nickname}
-                            titleName={
-                                item.achievement?.title?.titleName ??
-                                "뱃지가 없어용!"
-                            }
-                        />
-                        <Button
-                            option={item.isFollowed ? "follow" : "unfollow"}
-                            size="medium"
-                            $width="92px"
-                        >
-                            {item.isFollowed ? "팔로잉" : "팔로우"}
-                        </Button>
-                    </S.FollowerWrapper>
-                ))}
+                {Follower &&
+                    Follower.map((item: FollowerType, index: number) => (
+                        <S.FollowerWrapper key={index}>
+                            <Follow
+                                characterImage={
+                                    item.profileCharacter.characterImage
+                                }
+                                nickname={item.nickname}
+                                titleName={
+                                    item.achievement?.title?.titleName ??
+                                    "뱃지가 없어용!"
+                                }
+                            />
+                            {item.isFollowed && (
+                                <Button
+                                    option="unfollow"
+                                    size="medium"
+                                    $width="92px"
+                                    onClick={() =>
+                                        handleUnFollowClick(item.memberId)
+                                    }
+                                >
+                                    팔로잉
+                                </Button>
+                            )}
+                            {!item.isFollowed && (
+                                <Button
+                                    option="follow"
+                                    size="medium"
+                                    $width="92px"
+                                    onClick={() =>
+                                        handleFollowClick(item.memberId)
+                                    }
+                                >
+                                    팔로우
+                                </Button>
+                            )}
+                        </S.FollowerWrapper>
+                    ))}
             </div>
         </div>
     );
