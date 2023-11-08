@@ -62,4 +62,23 @@ const postLikeMusic = async (
     return response.data;
 };
 
-export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic };
+const getListenedMusic = async () => {
+    try {
+        const response = await instance.get("/history/list");
+        console.log("getListenedMusic 성공");
+        console.log(response.data.data);
+        return response.data.data;
+    } catch (error) {
+        console.error("Error fetching search music", error);
+        throw error;
+    }
+};
+
+export {
+    getSearchMusic,
+    getMusicPlay,
+    getTag,
+    addMusic,
+    postLikeMusic,
+    getListenedMusic,
+};

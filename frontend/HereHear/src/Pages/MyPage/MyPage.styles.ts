@@ -34,7 +34,7 @@ export const FollowWrapper = styled.div`
 export const MyItemWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 36px;
+    gap: 24px;
     justify-content: center;
     margin-top: 48px;
 `;

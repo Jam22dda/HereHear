@@ -10,9 +10,9 @@ import { useGetRegistMusic } from "../../apis/Mypage/Quries/useGetRegistMusic";
 export default function MyRegistPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-    // const navigatePage = (path: string) => {
-    //     navigate(path);
-    // };
+    const navigatePage = (path: string) => {
+        navigate(path);
+    };
 
     interface RegistMusicType {
         albumImg: string;
@@ -53,6 +53,11 @@ export default function MyRegistPage() {
                                 src={item.albumImg}
                                 songtitle={item.subject}
                                 artist={item.singer}
+                                onClick={() =>
+                                    navigatePage(
+                                        `/musicPlay/${item.registeredMusicId}`
+                                    )
+                                }
                             />
                         </S.MyRegistWrapper>
                     ))}
