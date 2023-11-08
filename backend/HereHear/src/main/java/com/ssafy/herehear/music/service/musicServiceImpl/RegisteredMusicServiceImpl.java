@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,7 +176,11 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     }
 
     public String convertAndSetCreateTime(String createTime) {
-        LocalDateTime dateTime = LocalDateTime.parse(createTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"));
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                .appendFraction(ChronoField.MICRO_OF_SECOND, 0, 6, true)
+                .toFormatter();
+        LocalDateTime dateTime = LocalDateTime.parse(createTime, formatter);
         return dateTime.format(DateTimeFormatter.ofPattern("MM월 dd일 HH시"));
     }
 
