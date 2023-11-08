@@ -1,5 +1,5 @@
 import { instance } from "../instance";
-import { changeNickname } from "../../types/user";
+import { changeNickname, achievementId } from "../../types/user";
 
 const getUserinfo = async () => {
     try {
@@ -136,6 +136,24 @@ const Follow = async (memberId: memberId): Promise<FollowResponse> => {
     return response.data;
 };
 
+interface putAchievementResponse {
+    code: number;
+    message: string;
+}
+
+const putAchievement = async (
+    achievementId: achievementId
+): Promise<putAchievementResponse> => {
+    const response = await instance.put<putAchievementResponse>(
+        "/achievement/equip",
+        {
+            achievementId,
+        }
+    );
+    console.log(response);
+    return response.data;
+};
+
 export {
     getUserinfo,
     getYourinfo,
@@ -148,4 +166,5 @@ export {
     postNickname,
     unFollow,
     Follow,
+    putAchievement,
 };

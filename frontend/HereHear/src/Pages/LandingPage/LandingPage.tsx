@@ -3,6 +3,7 @@ import { Text } from "../../components/atoms/Text/Text.styles";
 import * as S from "./LandingPage.styles";
 import { Image } from "../../components/atoms/Image/Image";
 import IconKakao from "../../assets/Landing/icon-kakao.png";
+import logo from "../../assets/Landing/logo-herehear.png";
 // import axios from "axios";
 
 export default function Landing() {
@@ -17,9 +18,10 @@ export default function Landing() {
     return (
         <div id="display">
             <S.LandingWrapper className="container">
-                <Text size="heading1" fontWeight="bold" $marginTop="150px">
+                {/* <Text size="heading1" fontWeight="bold" $marginTop="150px">
                     HERE HEAR
-                </Text>
+                </Text> */}
+                <Image $margin="30vw" width={19} src={logo}></Image>
                 <S.LoginBtn onClick={navigatePage}>
                     <Image src={IconKakao} width={24} height={20} $unit="px" $margin="0 8px 0 0"></Image>
                     <Text size="body1" fontWeight="bold">

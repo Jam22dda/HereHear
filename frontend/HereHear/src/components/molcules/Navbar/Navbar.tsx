@@ -14,7 +14,7 @@ const navBarInfo = [
     { src: iconMap, path: "/core" },
     { src: iconMusiclist, path: "/listenedMusic" },
     { src: iconMusicplus, path: "/registMusic" },
-    { src: iconStatistics, path: "/selectMusic" },
+    { src: iconStatistics, path: "/statistic" },
     { src: iconMypage, path: "/mypage" },
 ];
 
@@ -29,15 +29,7 @@ export default function Navbar() {
         <S.StyledNavBarBackground>
             <S.StyledNavBar>
                 {navBarInfo.map(({ src, path }) => {
-                    return (
-                        <Image
-                            key={path}
-                            src={src}
-                            onClick={() => navigatePage(path)}
-                            width={path === "/registMusic" ? 64 : 52}
-                            $unit="px"
-                        />
-                    );
+                    return <Image key={path} src={src} onClick={() => navigatePage(path)} width={path === "/statistic" ? 64 : 52} $unit="px" />;
                 })}
             </S.StyledNavBar>
         </S.StyledNavBarBackground>
