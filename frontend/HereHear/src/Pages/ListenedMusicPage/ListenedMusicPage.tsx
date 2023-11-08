@@ -58,6 +58,17 @@ export default function ListenedMusicPage() {
                                         width={24}
                                         height={20}
                                         $unit="px"
+                                        onClick={() => {
+                                            const subjectEncoded =
+                                                encodeURIComponent(
+                                                    item.subject
+                                                );
+                                            const singerEncoded =
+                                                encodeURIComponent(item.singer);
+                                            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
+                                            window.location.href =
+                                                youtubeSearchUrl;
+                                        }}
                                     ></Image>
                                 </CircleButton>
                             </S.MusicItemWrapper>
