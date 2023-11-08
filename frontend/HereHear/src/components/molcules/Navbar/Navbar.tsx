@@ -12,13 +12,13 @@ import iconMypage from "../../../assets/Navbar/icon-mypage.png";
 
 const navBarInfo = [
     { src: iconMap, path: "/core" },
-    { src: iconMusiclist, path: "/achievement" },
+    { src: iconMusiclist, path: "/listenedMusic" },
     { src: iconMusicplus, path: "/registMusic" },
     { src: iconStatistics, path: "/selectMusic" },
-    { src: iconMypage, path: "/stats" },
+    { src: iconMypage, path: "/mypage" },
 ];
 
-export default function ItemBox() {
+export default function Navbar() {
     const navigate = useNavigate();
 
     const navigatePage = (path: string) => {
@@ -26,22 +26,20 @@ export default function ItemBox() {
     };
 
     return (
-        <nav>
-            <S.StyledNavBarBackground>
-                <S.StyledNavBar>
-                    {navBarInfo.map(({ src, path }) => {
-                        return (
-                            <Image
-                                key={path}
-                                src={src}
-                                onClick={() => navigatePage(path)}
-                                width={path === "/registMusic" ? 64 : 52}
-                                $unit="px"
-                            />
-                        );
-                    })}
-                </S.StyledNavBar>
-            </S.StyledNavBarBackground>
-        </nav>
+        <S.StyledNavBarBackground>
+            <S.StyledNavBar>
+                {navBarInfo.map(({ src, path }) => {
+                    return (
+                        <Image
+                            key={path}
+                            src={src}
+                            onClick={() => navigatePage(path)}
+                            width={path === "/registMusic" ? 64 : 52}
+                            $unit="px"
+                        />
+                    );
+                })}
+            </S.StyledNavBar>
+        </S.StyledNavBarBackground>
     );
 }

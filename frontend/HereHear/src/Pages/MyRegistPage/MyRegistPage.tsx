@@ -1,18 +1,28 @@
 import * as S from "./MyRegistPage.styles";
 import MusicItem from "../../components/molcules/MusicItem/MusicItem";
 import { Text } from "../../components/atoms/Text/Text.styles";
-import BTS_answer from "../../../public/images/BTS_answer.jpg";
 import { useNavigate } from "react-router-dom";
-import iconBack from "../../../public/images/icon-back.png";
+import iconBack from "../../assets/CircleButton/icon-back.png";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Image } from "../../components/atoms/Image/Image";
+import { useGetRegistMusic } from "../../apis/Mypage/Quries/useGetRegistMusic";
 
 export default function MyRegistPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-    const navigatePage = (path: string) => {
-        navigate(path);
-    };
+    // const navigatePage = (path: string) => {
+    //     navigate(path);
+    // };
+
+    interface RegistMusicType {
+        albumImg: string;
+        registeredMusicId: number;
+        singer: string;
+        subject: string;
+    }
+
+    const RegistMusic: RegistMusicType[] = useGetRegistMusic();
+    console.log(RegistMusic);
 
     return (
         <div id="display">
@@ -20,7 +30,7 @@ export default function MyRegistPage() {
                 <CircleButton
                     option="default2"
                     size="medium"
-                    onClick={() => navigatePage("/mypage/1")}
+                    onClick={() => navigate(-1)}
                 >
                     <Image
                         src={iconBack}
@@ -36,20 +46,23 @@ export default function MyRegistPage() {
                 >
                     내가 등록한 노래
                 </Text>
-                <S.MyRegistWrapper>
+                {RegistMusic &&
+                    RegistMusic.map((item: RegistMusicType, index: number) => (
+                        <S.MyRegistWrapper key={index}>
+                            <MusicItem
+                                src={item.albumImg}
+                                songtitle={item.subject}
+                                artist={item.singer}
+                            />
+                        </S.MyRegistWrapper>
+                    ))}
+                {/* <S.MyRegistWrapper>
                     <MusicItem
                         src={BTS_answer}
-                        title="Answer : Love Myself"
+                        songtitle="Answer : Love Myself"
                         artist="방탄소년단"
                     ></MusicItem>
-                </S.MyRegistWrapper>
-                <S.MyRegistWrapper>
-                    <MusicItem
-                        src={BTS_answer}
-                        title="Answer : Love Myself"
-                        artist="방탄소년단"
-                    ></MusicItem>
-                </S.MyRegistWrapper>
+                </S.MyRegistWrapper> */}
             </div>
         </div>
     );

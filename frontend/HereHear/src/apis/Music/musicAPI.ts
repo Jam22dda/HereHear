@@ -1,8 +1,10 @@
 import { instance } from "../instance";
+import { AddMusicInfo } from "../../types/music";
+import { registeredMusicId } from "../../types/music";
 
-const getSearchMusic = async (keyword: string) => {
+const getSearchMusic = async (keyword: string, page: number) => {
     try {
-        const response = await instance.get(`/music/search?keyword=${keyword}`);
+        const response = await instance.get(`/music/search?keyword=${keyword}&limit=10&page=${page}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching search music", error);
@@ -10,4 +12,50 @@ const getSearchMusic = async (keyword: string) => {
     }
 };
 
-export { getSearchMusic };
+const getMusicPlay = async (registeredMusicId: number) => {
+    try {
+        const response = await instance.get(`/music/${registeredMusicId}`);
+        // console.log(response.data, "음악플레이어에 호출 가능?");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching readMusicPlayer", error);
+        throw error;
+    }
+};
+
+const getTag = async () => {
+    try {
+        const response = await instance.get("/music/tag");
+        // console.log("태그 오니?", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching search Tag", error);
+        throw error;
+    }
+};
+
+const addMusic = async (data: AddMusicInfo) => {
+    try {
+        const response = await instance.post("/music", data);
+        // console.log(response.data, "음악등록 가능?");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching addMusic", error);
+        throw error;
+    }
+};
+
+interface postLikeMusicResponse {
+    code: number;
+    message: string;
+}
+
+const postLikeMusic = async (registeredMusicId: registeredMusicId): Promise<postLikeMusicResponse> => {
+    const response = await instance.post<postLikeMusicResponse>("/like", {
+        registeredMusicId,
+    });
+    console.log(response);
+    return response.data;
+};
+
+export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic };

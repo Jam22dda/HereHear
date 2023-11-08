@@ -12,12 +12,6 @@ export const Profile = styled.div`
     justify-content: center;
 `;
 
-// export const OverlappingImageWrapper = styled.div`
-//     position: absolute;
-//     bottom: -10px; // 원하는 만큼 위치 조정
-//     right: 0; // 원하는 만큼 위치 조정
-// `;
-
 export const MyPageWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -43,4 +37,21 @@ export const MyItemWrapper = styled.div`
     gap: 36px;
     justify-content: center;
     margin-top: 48px;
+`;
+
+export const EditWrapper = styled.button`
+    background-color: transparent;
+`;
+
+export const ExitWrapper = styled.div`
+    display: flex;
+    justify-content: end;
+`;
+
+export const TextWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
 `;

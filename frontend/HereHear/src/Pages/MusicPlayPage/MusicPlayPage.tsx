@@ -1,34 +1,92 @@
 import * as S from "./MusicPlayPage.styles";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
+import iconBack from "../../assets/CircleButton/icon-back.png";
+import { Image } from "../../components/atoms/Image/Image";
 import AlbumCover from "../../components/atoms/AlbumCover/AlbumCover";
 import Button from "../../components/atoms/Button/Button";
 import Message from "../../components/atoms/Message/Message";
-import PlayBtn from "../../components/molcules/Play/Play";
+import emptyHeart from "../../assets/CircleButton/icon-emptyheart.png";
+import Heart from "../../assets/CircleButton/icon-heart.png";
+import youtube from "../../assets/CircleButton/icon-youtubePlay.png";
+
+import { useGetMusicPlay } from "../../apis/Music/Quries/useGetMusicPlay";
 
 export default function MusicPlay() {
-    const tags = [{ tag: "산책" }, { tag: "청량" }, { tag: "주말" }];
-    const music = { artist: "악동뮤지션", title: "LOVELEE" };
+    const { id } = useParams();
+    // console.log(typeof id);
+
+    const MusicNumber = id ? Number(id) : null;
+    // console.log(typeof MusicNumber);
+
+    const navigate = useNavigate();
+
+    // 좋아요체크
+    const [isLiked, setIsLiked] = useState(false);
+    const toggleLike = () => {
+        const newIsLiked = !isLiked;
+        setIsLiked(newIsLiked);
+    };
+    // 음악 API
+    const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (isError || !musicPlay) {
+        return <div>Error occurred or no data!</div>;
+    }
+
+    console.log(musicPlay, "이거 들어와????????????");
+    const occasionName = musicPlay.data.occasionName;
+    // console.log(occasionName, "occasionName");
+
     return (
         <div id="display">
             <div className="container">
-                <CircleButton option="default2" size="medium"></CircleButton>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                </CircleButton>
                 <S.MusicPlayWrapper>
                     <S.SelectTagWrapper>
-                        {tags.map((item, index) => (
-                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item.tag}></Button>
+                        {occasionName.map((item: string, index: number) => (
+                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item}></Button>
                         ))}
                     </S.SelectTagWrapper>
-                    <AlbumCover></AlbumCover>
-                    <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }}></CircleButton>
+                    <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
+                    {isLiked ? (
+                        <CircleButton option="pinkActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
+                            <Image src={Heart} width={23} height={21} $unit="px"></Image>
+                        </CircleButton>
+                    ) : (
+                        <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
+                            <Image src={emptyHeart} width={23} height={21} $unit="px"></Image>
+                        </CircleButton>
+                    )}
+
                     <Text size="body2" fontWeight="bold" $marginTop="10px">
-                        {music.artist}
+                        {musicPlay.data.singer}
                     </Text>
                     <Text size="body2" fontWeight="medium" $marginTop="5px">
-                        {music.title}
+                        {musicPlay.data.subject}
                     </Text>
-                    <Message></Message>
-                    <PlayBtn></PlayBtn>
+                    <Message
+                        comment={musicPlay.data.comment}
+                        createTime={musicPlay.data.createTime}
+                        nickname={musicPlay.data.nickname}
+                        characterImage={musicPlay.data.characterImage}
+                    ></Message>
+                    <Image
+                        src={youtube}
+                        width={6}
+                        onClick={() => {
+                            const subjectEncoded = encodeURIComponent(musicPlay.data.subject);
+                            const singerEncoded = encodeURIComponent(musicPlay.data.singer);
+                            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
+                            window.location.href = youtubeSearchUrl;
+                        }}
+                    ></Image>
                 </S.MusicPlayWrapper>
             </div>
         </div>
