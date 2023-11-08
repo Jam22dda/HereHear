@@ -30,6 +30,8 @@ export default function Core() {
     const { musicList, refetch } = useGetMapMusicList();
     const musicAroundList = useGetAroundMusicList(lat, lng);
 
+    const [eventSource, setEventSource] = useState<EventSource | undefined>(undefined);
+
     useEffect(() => {
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
@@ -53,18 +55,17 @@ export default function Core() {
             // https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
             // touchstart
             window.addEventListener('mousedown', function () {
-                console.log('화면 자동 업데이트 비활성화');
-                console.log(setIsUpdate(false));
+                setIsUpdate(false);
             });
 
             window.addEventListener('touchstart', function () {
-                console.log('화면 자동 업데이트 비활성화');
-                console.log(setIsUpdate(false));
+                setIsUpdate(false);
             });
 
             setMapState(map);
 
             const ml = await refetch();
+            console.log('ml.data');
             console.log(ml.data);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
@@ -101,11 +102,11 @@ export default function Core() {
                 // 마커 클릭 시 발생하는 이벤트
                 naver.maps.Event.addListener(pinIns[key], 'click', function () {
                     setIsSelect(true);
-                    console.log(`marker${key} clicked`);
-                    console.log(musicAroundList.musicAroundList);
+                    // console.log(`marker${key} clicked`);
+                    // console.log(musicAroundList.musicAroundList);
                     setUserSelectPin(Number(key));
 
-                    alert(`marker${key} clicked`);
+                    // alert(`marker${key} clicked`);
                 });
             }
 
@@ -156,7 +157,28 @@ export default function Core() {
             );
 
             // SSE
-            const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
+            // const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
+
+            setEventSource(new EventSource('http://localhost:8080/music/subscribe/1'));
+        };
+
+        document.body.appendChild(script);
+        console.log('im 한번만이에요');
+
+        // 컴포넌트 언마운트 시 스크립트 제거
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log('USEEFFECT');
+        console.log(eventSource);
+        console.log('naverState');
+        console.log(naverState);
+
+        if (eventSource && naverState && mapState) {
+            // const sse = eventSource;
 
             // SSE 이벤트 핸들러를 등록합니다.
             eventSource.addEventListener('sse', event => {
@@ -200,9 +222,10 @@ export default function Core() {
                         console.log(newMusicMapIns);
                         console.log(newMusicMapIns[key]);
 
-                        newMusicMapIns[key].setMap(null);
+                        (newMusicMapIns[key] as any).setMap(null);
                     }
 
+                    console.log('LLLLLLLLLLLLList 이까지는 들어오는 거 같고');
                     // 음악 데이터를 Map 형태로 변경하여 저장
                     const musicMapIns: MusicMap = addList.reduce((map: MusicMap, music: Music) => {
                         const { registeredMusicId, ...otherProps } = music;
@@ -214,27 +237,32 @@ export default function Core() {
 
                     const pinIns: any = {};
 
+                    console.log('mapState');
+                    console.log(mapState);
+
                     for (const key in musicMapIns) {
                         // 마커 표시
-                        pinIns[key] = new naver.maps.Marker({
-                            position: new naver.maps.LatLng(musicMapIns[key].lat, musicMapIns[key].lng),
-                            map: map,
+                        pinIns[key] = new (naverState as any).maps.Marker({
+                            position: new (naverState as any).maps.LatLng(musicMapIns[key].lat, musicMapIns[key].lng),
+                            map: mapState,
                             icon: {
                                 content: `
-                        <div style="position: relative">
-                            <img alt='img' src='${markImage}' className='pin' style="position: absolute" />
-                            <img
-                            src="${musicMapIns[key].albumImg}"
-                            alt="pin-album"
-                            style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
-                            />
-                        </div>
-                        `,
+                                    <div style="position: relative">
+                                        <img alt='img' src='${markImage}' className='pin' style="position: absolute" />
+                                        <img
+                                        src="${musicMapIns[key].albumImg}"
+                                        alt="pin-album"
+                                        style="position: absolute; width: 40px; height: 40px; border-radius: 10px; left: 5.5px; top: 5.5px"
+                                        />
+                                    </div>
+                                    `,
                             },
                         });
+                        console.log('pinIns');
+                        console.log(pinIns);
 
                         // 마커 클릭 시 발생하는 이벤트
-                        naver.maps.Event.addListener(pinIns[key], 'click', function () {
+                        (naverState as any).maps.Event.addListener(pinIns[key], 'click', function () {
                             setIsSelect(true);
                             console.log(`marker${key} clicked`);
                             console.log(musicAroundList.musicAroundList);
@@ -259,22 +287,8 @@ export default function Core() {
             eventSource.addEventListener('close', () => {
                 console.log('SSE connection closed.');
             });
-        };
-
-        document.body.appendChild(script);
-        console.log('im 한번만이에요');
-
-        // 컴포넌트 언마운트 시 스크립트 제거
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-    useEffect(() => {
-        console.log('musicMap용 useEffects');
-
-        console.log(musicMap);
-    }, [musicMap]);
+        }
+    }, [eventSource, naverState, mapState]);
 
     // 정해진 시간마다 내 위치 정보 받아오는 기능
     // useEffect(() => {
