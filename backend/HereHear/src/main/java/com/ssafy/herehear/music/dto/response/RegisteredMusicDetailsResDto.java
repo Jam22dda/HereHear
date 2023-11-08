@@ -23,6 +23,7 @@ public class RegisteredMusicDetailsResDto {
     private String createTime;
     private String memberId;
     private String nickname;
+    private String characterImage;
     private boolean like;
     private List<String> occasionName;
 }
