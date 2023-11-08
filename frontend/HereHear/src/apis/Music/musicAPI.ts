@@ -1,9 +1,12 @@
 import { instance } from "../instance";
 import { AddMusicInfo } from "../../types/music";
+import { registeredMusicId } from "../../types/music";
 
 const getSearchMusic = async (keyword: string, page: number) => {
     try {
-        const response = await instance.get(`/music/search?keyword=${keyword}&limit=10&page=${page}`);
+        const response = await instance.get(
+            `/music/search?keyword=${keyword}&limit=10&page=${page}`
+        );
         return response.data;
     } catch (error) {
         console.error("Error fetching search music", error);
@@ -33,4 +36,19 @@ const addMusic = async (data: AddMusicInfo) => {
     }
 };
 
-export { getSearchMusic, getTag, addMusic };
+interface postLikeMusicResponse {
+    code: number;
+    message: string;
+}
+
+const postLikeMusic = async (
+    registeredMusicId: registeredMusicId
+): Promise<postLikeMusicResponse> => {
+    const response = await instance.post<postLikeMusicResponse>("/like", {
+        registeredMusicId,
+    });
+    console.log(response);
+    return response.data;
+};
+
+export { getSearchMusic, getTag, addMusic, postLikeMusic };
