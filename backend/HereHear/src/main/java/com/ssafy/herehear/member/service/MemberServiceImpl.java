@@ -156,7 +156,6 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = MemberUtil.findMember(memberId);
         MemberUtil.findMember(followingMemberId);
 
-        followRepository.save(MemberMapper.INSTANCE.toFollow(findMember, followingMemberId));
         // 중복 팔로우에 대한 예외처리
         followRepository.findByMemberIdAndFollowMemberId(memberId, followingMemberId)
                 .ifPresent(o -> {
