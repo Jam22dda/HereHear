@@ -43,8 +43,6 @@ export default function Follower() {
     }
 
     const Follower: FollowerType[] = useGetFollower();
-    console.log(Follower);
-
     const { mutate: FollowUser } = useFollow();
     const { mutate: unFollowUser } = useUnFollow();
 

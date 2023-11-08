@@ -31,7 +31,6 @@ const monzi = [
 export default function CharacterPage() {
     const [selectedItem, setSelectedItem] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    console.log(selectedItem);
     const handleItemClick = (idx: number) => {
         setSelectedItem(idx);
         setSignUpInfo({
@@ -46,7 +45,6 @@ export default function CharacterPage() {
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(SignUpInfoAtom);
     const { mutate } = useAddUser();
-    console.log(signUpInfo);
     const handleLogin = (signUpInfo: SignUpInfo) => {
         if (selectedItem !== 0) {
             mutate(signUpInfo);

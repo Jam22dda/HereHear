@@ -4,6 +4,7 @@ export const AchievementPageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 117vw;
 `;
 
 export const AchievementWrapper = styled.div`
@@ -11,7 +12,7 @@ export const AchievementWrapper = styled.div`
     flex-wrap: wrap;
     gap: 36px;
     justify-content: center;
-    min-height: 117vw;
+    /* min-height: 117vw; */
 `;
 
 export const ExitWrapper = styled.div`

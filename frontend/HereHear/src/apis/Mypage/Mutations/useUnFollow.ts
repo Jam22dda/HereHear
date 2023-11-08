@@ -15,13 +15,10 @@ const useUnFollow = () => {
     return useMutation<unFollowResponse, Error, UnFollowRequest>({
         mutationFn: (UnFollowRequest) => unFollow(UnFollowRequest.memberId),
         onSuccess: () => {
-            // 성공 시 실행될 함수
             console.log("언팔로우 성공!");
             queryClient.invalidateQueries({ queryKey: ["Follower"] });
-            // queryClient.invalidateQueries({ queryKey: ["Following"] });
         },
         onError: (error: Error) => {
-            // 에러 발생 시 실행될 함수
             console.log("언팔로우 실패:", error.message);
         },
     });

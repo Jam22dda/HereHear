@@ -29,7 +29,6 @@ export default function LikePage() {
 
     const LikeMusic: LikeMusicType[] = useGetLikeMusic();
     const { mutate: postLikeMusicMutate } = usePostLikeMusic();
-    console.log(LikeMusic);
 
     const handleLikeMusicClick = (
         registeredMusicId: registeredMusicId,
@@ -48,7 +47,6 @@ export default function LikePage() {
     }
 
     const [likeList, setLikeList] = useState<LikeState[]>([]);
-    console.log(likeList);
 
     useEffect(() => {
         if (LikeMusic && LikeMusic.length > 0) {

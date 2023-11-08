@@ -22,15 +22,27 @@ export default function MyRegistPage() {
     }
 
     const RegistMusic: RegistMusicType[] = useGetRegistMusic();
-    console.log(RegistMusic);
 
     return (
         <div id="display">
             <div className="container">
-                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
-                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
                 </CircleButton>
-                <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
+                <Text
+                    size="subtitle1"
+                    fontWeight="bold"
+                    $margin="20px 0 48px 0"
+                >
                     내가 등록한 노래
                 </Text>
                 {RegistMusic &&
@@ -40,7 +52,11 @@ export default function MyRegistPage() {
                                 src={item.albumImg}
                                 songtitle={item.subject}
                                 artist={item.singer}
-                                onClick={() => navigatePage(`/musicPlay/${item.registeredMusicId}`)}
+                                onClick={() =>
+                                    navigatePage(
+                                        `/musicPlay/${item.registeredMusicId}`
+                                    )
+                                }
                             />
                         </S.MyRegistWrapper>
                     ))}
