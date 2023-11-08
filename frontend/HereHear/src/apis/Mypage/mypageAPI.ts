@@ -5,10 +5,7 @@ const getUserinfo = async () => {
     try {
         const response = await instance.get("/member/info");
         console.log("getUserinfo 성공");
-        console.log(
-            response.data.data,
-            "오냐고??????????????????????????????????????"
-        );
+        console.log(response.data.data);
         return response.data.data;
     } catch (error) {
         console.error("Error fetching search music", error);
@@ -111,6 +108,34 @@ const postNickname = async (
     return response.data;
 };
 
+interface unFollowResponse {
+    code: number;
+    message: string;
+}
+
+const unFollow = async (memberId: number): Promise<unFollowResponse> => {
+    const { data } = await instance.delete("/member/follow", {
+        data: { memberId },
+    });
+    console.log(data);
+    return data;
+};
+
+interface FollowResponse {
+    code: number;
+    message: string;
+}
+
+export type memberId = number;
+
+const Follow = async (memberId: memberId): Promise<FollowResponse> => {
+    const response = await instance.post<FollowResponse>("/member/follow", {
+        memberId,
+    });
+    console.log(response);
+    return response.data;
+};
+
 export {
     getUserinfo,
     getYourinfo,
@@ -121,4 +146,6 @@ export {
     getAchievementList,
     getMyAchievement,
     postNickname,
+    unFollow,
+    Follow,
 };
