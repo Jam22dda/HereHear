@@ -147,7 +147,7 @@ export default function MyPage() {
                             $width="130px"
                             onClick={() => navigatePage("/following")}
                         >
-                            팔로잉 {Following.length}명
+                            팔로잉 {Following?.length ?? 0}명
                         </Button>
                         <Button
                             option="tag_plus"
@@ -155,7 +155,7 @@ export default function MyPage() {
                             $width="130px"
                             onClick={() => navigatePage("/follower")}
                         >
-                            팔로워 {Follower.length}명
+                            팔로워 {Follower?.length ?? 0}명
                         </Button>
                     </S.FollowWrapper>
                     <S.MyItemWrapper>

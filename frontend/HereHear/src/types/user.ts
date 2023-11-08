@@ -5,3 +5,5 @@ export type SignUpInfo = {
 };
 
 export type changeNickname = string;
+
+export type memberId = number;

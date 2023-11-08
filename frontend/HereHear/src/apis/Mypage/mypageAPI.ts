@@ -113,9 +113,27 @@ interface unFollowResponse {
     message: string;
 }
 
-const unFollow = async (): Promise<unFollowResponse> => {
-    const { data } = await instance.delete("/member/follow");
+const unFollow = async (memberId: number): Promise<unFollowResponse> => {
+    const { data } = await instance.delete("/member/follow", {
+        data: { memberId },
+    });
+    console.log(data);
     return data;
+};
+
+interface FollowResponse {
+    code: number;
+    message: string;
+}
+
+export type memberId = number;
+
+const Follow = async (memberId: memberId): Promise<FollowResponse> => {
+    const response = await instance.post<FollowResponse>("/member/follow", {
+        memberId,
+    });
+    console.log(response);
+    return response.data;
 };
 
 export {
@@ -129,4 +147,5 @@ export {
     getMyAchievement,
     postNickname,
     unFollow,
+    Follow,
 };
