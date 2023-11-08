@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("Sign Up memberId: {}", findMember.getMemberId());
 
-        if (checkNickname(signUpDto.getNickname())) {
+        if (!checkNickname(signUpDto.getNickname())) {
             throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED);
         }
 
@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
     public void updateNickname(UpdateMemberReqDto updateMemberReqDto, Long memberId) {
         Member findMember = MemberUtil.findMember(memberId);
 
-        if (checkNickname(updateMemberReqDto.getNickname())) {
+        if (!checkNickname(updateMemberReqDto.getNickname())) {
             throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED);
         }
         findMember.updateNickname(updateMemberReqDto.getNickname());
