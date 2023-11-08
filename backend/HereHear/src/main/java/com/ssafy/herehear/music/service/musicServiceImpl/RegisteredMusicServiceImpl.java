@@ -163,7 +163,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     }
 
     public String convertAndSetCreateTime(String createTime) {
-        LocalDateTime dateTime = LocalDateTime.parse(createTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"));
+        LocalDateTime dateTime = LocalDateTime.parse(createTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         return dateTime.format(DateTimeFormatter.ofPattern("MM월 dd일 HH시"));
     }
 
