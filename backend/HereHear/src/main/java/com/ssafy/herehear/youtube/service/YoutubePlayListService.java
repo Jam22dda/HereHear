@@ -34,8 +34,8 @@ public class YoutubePlayListService {
                 .retrieve()
                 .bodyToMono(String.class);
 
+        //'HereHear' 재생 목록 유무 확인
         JSONObject jsonObject = new JSONObject(response.block());
-
         JSONArray items = jsonObject.getJSONArray("items");
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = items.getJSONObject(i);
@@ -44,7 +44,6 @@ public class YoutubePlayListService {
             if ("HereHear".equals(title))
                 return item.getString("id");
         }
-        log.info("여기까지와?");
         return insertPlayList();
     }
 
@@ -71,6 +70,7 @@ public class YoutubePlayListService {
                 .retrieve()
                 .bodyToMono(String.class);
 
+        //추가한 재생 목록 Id 추출
         try {
             String result = response.block();
             JSONObject jsonResponse = new JSONObject(result);
@@ -93,6 +93,7 @@ public class YoutubePlayListService {
                 .retrieve()
                 .bodyToMono(String.class);
 
+        //제일 상단 영상 추출
         JSONObject jsonObject = new JSONObject(response.block());
         JSONArray items = jsonObject.getJSONArray("items");
         JSONObject item = items.getJSONObject(0);
