@@ -7,6 +7,7 @@ import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.*;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import com.ssafy.herehear.music.service.SseService;
+import com.ssafy.herehear.music.util.HourFilterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,7 @@ public class RegisteredMusicController {
 
     @PostMapping
     public CommonResponse registerMusic(Authentication authentication, @RequestBody RegisterMusicReqDto req) {
-        Long memberId = Long.parseLong(authentication.getName());
-        List<SseResDto> sseResDto = registeredMusicService.registerMusic(memberId, req);
+        List<SseResDto> sseResDto = registeredMusicService.registerMusic(Long.parseLong(authentication.getName()), req);
         sseService.notify(sseResDto);
         return new CommonResponse("200", "음악 등록");
     }
@@ -42,9 +42,10 @@ public class RegisteredMusicController {
 
     @PutMapping
     public CommonResponse updateMyRegisteredMusic(Authentication authentication, @RequestBody UpdateMusicIdReqDto req) {
-        Long memberId = Long.parseLong(authentication.getName());
-        List<SseResDto> sseResDto = registeredMusicService.updateMyRegisteredMusic(memberId, req.getRegisteredMusicId());
-        sseService.notify(sseResDto);
+        List<SseResDto> sseResDto = registeredMusicService.updateMyRegisteredMusic(Long.parseLong(authentication.getName()), req.getRegisteredMusicId());
+        if(HourFilterUtils.checkHour(sseResDto))
+            sseService.notify(sseResDto);
+
         return new CommonResponse("200", "등록한 음악 삭제");
     }
 
@@ -55,8 +56,7 @@ public class RegisteredMusicController {
 
     @GetMapping("/my/list")
     public DataResponse<List<MyRegisteredMusicResDto>> myRegisteredMusicList(Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
-        return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
+        return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(Long.parseLong(authentication.getName())));
     }
 
     @GetMapping("/list/{memberId}")
