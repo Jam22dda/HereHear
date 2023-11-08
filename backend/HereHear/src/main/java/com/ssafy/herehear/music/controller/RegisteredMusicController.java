@@ -49,7 +49,7 @@ public class RegisteredMusicController {
     }
 
     @GetMapping("/list")
-    public DataResponse<List<RegisteredMusicResDto>> registeredMusicList() {
+    public DataResponse<List<RegisteredMusicMapResDto>> registeredMusicList() {
         return new DataResponse<>("200", "전체 음악 조회", registeredMusicService.getRegisteredMusicList());
     }
 
