@@ -1,5 +1,6 @@
 import * as S from "./MusicPlayPage.styles";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import iconBack from "../../assets/CircleButton/icon-back.png";
@@ -7,24 +8,39 @@ import { Image } from "../../components/atoms/Image/Image";
 import AlbumCover from "../../components/atoms/AlbumCover/AlbumCover";
 import Button from "../../components/atoms/Button/Button";
 import Message from "../../components/atoms/Message/Message";
-import PlayBtn from "../../components/molcules/Play/Play";
-import { useLocation } from "react-router-dom";
+import emptyHeart from "../../assets/CircleButton/icon-emptyheart.png";
+import Heart from "../../assets/CircleButton/icon-heart.png";
+import youtube from "../../assets/CircleButton/icon-youtubePlay.png";
+
 import { useGetMusicPlay } from "../../apis/Music/Quries/useGetMusicPlay";
 
 export default function MusicPlay() {
+    const { id } = useParams();
+    // console.log(typeof id);
+
+    const MusicNumber = id ? Number(id) : null;
+    // console.log(typeof MusicNumber);
+
     const navigate = useNavigate();
 
-    const occasionName = [{ tag: "산책" }, { tag: "청량" }, { tag: "주말" }];
-    const music = { singer: "악동뮤지션", subject: "LOVELEE", albumImg: ".jpg" };
+    // 좋아요체크
+    const [isLiked, setIsLiked] = useState(false);
+    const toggleLike = () => {
+        const newIsLiked = !isLiked;
+        setIsLiked(newIsLiked);
+    };
+    // 음악 API
+    const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (isError || !musicPlay) {
+        return <div>Error occurred or no data!</div>;
+    }
 
-    const location = useLocation();
-    const musicId = location.state?.data;
-    // =================================== 데이터 연결 아이디 이거 쓰세욤 ==========================================
-    console.log("musicId");
-    console.log(musicId);
-    // =================================== 데이터 연결 아이디 이거 쓰세욤 ==========================================
-    const getMusicPlay = useGetMusicPlay(musicId);
-    console.log(getMusicPlay, "getMusicPlay");
+    console.log(musicPlay, "이거 들어와????????????");
+    const occasionName = musicPlay.data.occasionName;
+    // console.log(occasionName, "occasionName");
 
     return (
         <div id="display">
@@ -34,23 +50,43 @@ export default function MusicPlay() {
                 </CircleButton>
                 <S.MusicPlayWrapper>
                     <S.SelectTagWrapper>
-                        {/* TODO:음악들어온거 안에 있는 태그 map으로 뿌리기 */}
-                        {occasionName.map((item, index) => (
-                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item.tag}></Button>
+                        {occasionName.map((item: string, index: number) => (
+                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item}></Button>
                         ))}
                     </S.SelectTagWrapper>
-                    {/* TODO: getMusicPlay가 잘 들어오는지 확인하고 이미지,가수,제목 바꾸기 */}
-                    <AlbumCover src={music.albumImg}></AlbumCover>
-                    <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }}></CircleButton>
+                    <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
+                    {isLiked ? (
+                        <CircleButton option="pinkActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
+                            <Image src={Heart} width={23} height={21} $unit="px"></Image>
+                        </CircleButton>
+                    ) : (
+                        <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
+                            <Image src={emptyHeart} width={23} height={21} $unit="px"></Image>
+                        </CircleButton>
+                    )}
+
                     <Text size="body2" fontWeight="bold" $marginTop="10px">
-                        {music.singer}
+                        {musicPlay.data.singer}
                     </Text>
                     <Text size="body2" fontWeight="medium" $marginTop="5px">
-                        {music.subject}
+                        {musicPlay.data.subject}
                     </Text>
-                    {/* TODO: 메세지 불러올 때 작성자 comment,createTime,nickname //근데 캐릭터는 어케 앎?*/}
-                    <Message></Message>
-                    <PlayBtn></PlayBtn>
+                    <Message
+                        comment={musicPlay.data.comment}
+                        createTime={musicPlay.data.createTime}
+                        nickname={musicPlay.data.nickname}
+                        characterImage={musicPlay.data.characterImage}
+                    ></Message>
+                    <Image
+                        src={youtube}
+                        width={6}
+                        onClick={() => {
+                            const subjectEncoded = encodeURIComponent(musicPlay.data.subject);
+                            const singerEncoded = encodeURIComponent(musicPlay.data.singer);
+                            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
+                            window.location.href = youtubeSearchUrl;
+                        }}
+                    ></Image>
                 </S.MusicPlayWrapper>
             </div>
         </div>
