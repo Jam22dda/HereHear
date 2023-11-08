@@ -100,8 +100,8 @@ public class OAuth2ClientConfig {
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedOriginPattern("*");
         corsConfiguration.addAllowedOrigin("https://k9b202.p.ssafy.io");
-        corsConfiguration.addAllowedOrigin("https://localhost:8080");
         corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin("http://localhost:3001");
         corsConfiguration.addAllowedOrigin("http://localhost:5173");
 
         corsConfiguration.setAllowCredentials(true);
