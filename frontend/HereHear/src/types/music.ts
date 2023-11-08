@@ -39,3 +39,5 @@ export type AddMusicInfo = {
     releaseTime: string;
     musicOccasionIds: number[];
 };
+
+export type registeredMusicId = number;

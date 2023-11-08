@@ -42,8 +42,8 @@ export default function Following() {
     const Following: FollowingType[] = useGetFollowing();
     const { mutate: unFollowUser } = useUnFollow();
 
-    const handleUnFollowClick = () => {
-        unFollowUser();
+    const handleUnFollowClick = (memberId: number) => {
+        unFollowUser({ memberId });
     };
     console.log(Following);
     return (
@@ -69,28 +69,31 @@ export default function Following() {
                     팔로잉 목록
                 </Text>
                 <S.FollowingListWrapper>
-                    {Following.map((item: FollowingType, index: number) => (
-                        <S.FollowingWrapper key={index}>
-                            <Follow
-                                characterImage={
-                                    item.profileCharacter.characterImage
-                                }
-                                nickname={item.nickname}
-                                titleName={
-                                    item.achievement?.title?.titleName ??
-                                    "뱃지가 없어용!"
-                                }
-                            />
-                            <Button
-                                option="unfollow"
-                                size="medium"
-                                $width="92px"
-                                onClick={handleUnFollowClick}
-                            >
-                                팔로잉
-                            </Button>
-                        </S.FollowingWrapper>
-                    ))}
+                    {Following &&
+                        Following.map((item: FollowingType, index: number) => (
+                            <S.FollowingWrapper key={index}>
+                                <Follow
+                                    characterImage={
+                                        item.profileCharacter.characterImage
+                                    }
+                                    nickname={item.nickname}
+                                    titleName={
+                                        item.achievement?.title?.titleName ??
+                                        "뱃지가 없어용!"
+                                    }
+                                />
+                                <Button
+                                    option="unfollow"
+                                    size="medium"
+                                    $width="92px"
+                                    onClick={() =>
+                                        handleUnFollowClick(item.memberId)
+                                    }
+                                >
+                                    팔로잉
+                                </Button>
+                            </S.FollowingWrapper>
+                        ))}
                 </S.FollowingListWrapper>
             </div>
         </div>

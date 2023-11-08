@@ -46,15 +46,16 @@ export default function MyRegistPage() {
                 >
                     내가 등록한 노래
                 </Text>
-                {RegistMusic.map((item: RegistMusicType, index: number) => (
-                    <S.MyRegistWrapper key={index}>
-                        <MusicItem
-                            src={item.albumImg}
-                            songtitle={item.subject}
-                            artist={item.singer}
-                        />
-                    </S.MyRegistWrapper>
-                ))}
+                {RegistMusic &&
+                    RegistMusic.map((item: RegistMusicType, index: number) => (
+                        <S.MyRegistWrapper key={index}>
+                            <MusicItem
+                                src={item.albumImg}
+                                songtitle={item.subject}
+                                artist={item.singer}
+                            />
+                        </S.MyRegistWrapper>
+                    ))}
                 {/* <S.MyRegistWrapper>
                     <MusicItem
                         src={BTS_answer}
