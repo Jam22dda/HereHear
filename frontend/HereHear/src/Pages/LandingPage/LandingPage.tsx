@@ -21,7 +21,7 @@ export default function Landing() {
                 {/* <Text size="heading1" fontWeight="bold" $marginTop="150px">
                     HERE HEAR
                 </Text> */}
-                <Image $margin="40vw" width={19} src={logo}></Image>
+                <Image width={70} $unit="%" src={logo}></Image>
                 <S.LoginBtn onClick={navigatePage}>
                     <Image src={IconKakao} width={24} height={20} $unit="px" $margin="0 8px 0 0"></Image>
                     <Text size="body1" fontWeight="bold">
