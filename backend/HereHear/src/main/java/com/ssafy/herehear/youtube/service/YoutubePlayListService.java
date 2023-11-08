@@ -101,5 +101,30 @@ public class YoutubePlayListService {
         return id.getString("videoId");
     }
 
+    public void addPlayListItem(String playlistId, String videoId) {
+        String jsonBody = "{"
+                + "\"snippet\": {"
+                + "\"playlistId\": \"" + playlistId + "\","
+                + "\"resourceId\": {"
+                + "\"kind\": \"youtube#video\","
+                + "\"videoId\": \"" + videoId + "\""
+                + "}"
+                + "}"
+                + "}";
+
+        Mono<String> response = webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/playlistItems")
+                        .queryParam("part", VALUE)
+                        .build())
+                .body(BodyInserters.fromValue(jsonBody))
+                .header(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class);
+
+        String result = response.block();
+        log.info("유튜브 영상 추가 result: "+result);
+    }
 
 }

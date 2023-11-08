@@ -22,8 +22,8 @@ public class YoutubeController {
 
         String videoId = youtubePlayListService.selectPlayListItem(req.getSearchName());
         log.info("Youtube videoId: "+videoId);
-//
-//        youtubePlayListService.addPlayListItem(playlistId, videoId);
+
+        youtubePlayListService.addPlayListItem(playlistId, videoId);
         return new CommonResponse("200", "재생 목록 추가완료");
     }
 
