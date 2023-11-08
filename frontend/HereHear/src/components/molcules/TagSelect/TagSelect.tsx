@@ -20,7 +20,6 @@ interface TagData {
 
 export default function TagSelect({ setOpenModal }: TagSelectProps) {
     const { data: tagsData, isLoading, isError, error } = useGetTag();
-    // console.log(getTag);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [, setSelectedTagIds] = useRecoilState(selectedTagState);
 
@@ -32,9 +31,16 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
         return <div>Error: {error.message}</div>;
     }
 
-    const occasionTags = tagsData.data?.filter((tag: TagData) => tag.category === "occasion") || [];
-    const environmentTags = tagsData.data?.filter((tag: TagData) => tag.category === "environment") || [];
-    const activityTags = tagsData.data?.filter((tag: TagData) => tag.category === "activity") || [];
+    const occasionTags =
+        tagsData.data?.filter((tag: TagData) => tag.category === "occasion") ||
+        [];
+    const environmentTags =
+        tagsData.data?.filter(
+            (tag: TagData) => tag.category === "environment"
+        ) || [];
+    const activityTags =
+        tagsData.data?.filter((tag: TagData) => tag.category === "activity") ||
+        [];
 
     const toggleTagSelection = (selectedTag: string) => {
         if (selectedTags.includes(selectedTag)) {
@@ -51,7 +57,9 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
     const saveSelectedTags = () => {
         const selectedIds = selectedTags
             .map((tagName) => {
-                const tag = tagsData.data.find((t: TagData) => t.occasionName === tagName);
+                const tag = tagsData.data.find(
+                    (t: TagData) => t.occasionName === tagName
+                );
                 return tag ? { name: tagName, id: tag.occasionCode } : null;
             })
             .filter((tagInfo): tagInfo is TagInfo => tagInfo !== null); // null이 아닌 ID만 필터링
@@ -71,65 +79,105 @@ export default function TagSelect({ setOpenModal }: TagSelectProps) {
                     <Image src={deleteBtn} width={0.9}></Image>
                 </CircleButton>
             </S.TagTopWrapper>
-            <Text color="main2" size="small2" fontWeight="medium" $marginTop="20px">
+            <Text
+                color="main2"
+                size="small2"
+                fontWeight="medium"
+                $marginTop="20px"
+            >
                 태그 등록은 최대 3개까지 가능합니다.
             </Text>
             <Text size="small2" fontWeight="medium" $margin="25px 0 15px 0">
                 상황
             </Text>
             <S.TagBtnWrapper>
-                {occasionTags.slice(0, 11).map((tag: TagData, index: number) => {
-                    const isSelected = selectedTags.includes(tag.occasionName ?? "");
-                    return (
-                        <Button
-                            size="small"
-                            $width="58px"
-                            option={isSelected ? "tag_selected" : "tag_unselected"}
-                            onClick={() => tag.occasionName && toggleTagSelection(tag.occasionName)}
-                            key={index}
-                            tag={tag.occasionName ?? ""}
-                        ></Button>
-                    );
-                })}
+                {occasionTags
+                    .slice(0, 11)
+                    .map((tag: TagData, index: number) => {
+                        const isSelected = selectedTags.includes(
+                            tag.occasionName ?? ""
+                        );
+                        return (
+                            <Button
+                                size="small"
+                                $width="58px"
+                                option={
+                                    isSelected
+                                        ? "tag_selected"
+                                        : "tag_unselected"
+                                }
+                                onClick={() =>
+                                    tag.occasionName &&
+                                    toggleTagSelection(tag.occasionName)
+                                }
+                                key={index}
+                                tag={tag.occasionName ?? ""}
+                            ></Button>
+                        );
+                    })}
             </S.TagBtnWrapper>
 
             <Text size="small2" fontWeight="medium" $margin="25px 0 15px 0">
                 환경
             </Text>
             <S.TagBtnWrapper>
-                {environmentTags.slice(0, 7).map((tag: TagData, index: number) => {
-                    const isSelected = selectedTags.includes(tag.occasionName ?? "");
-                    return (
-                        <Button
-                            size="small"
-                            $width="58px"
-                            option={isSelected ? "tag_selected" : "tag_unselected"}
-                            onClick={() => tag.occasionName && toggleTagSelection(tag.occasionName)}
-                            key={index}
-                            tag={tag.occasionName ?? ""}
-                        ></Button>
-                    );
-                })}
+                {environmentTags
+                    .slice(0, 7)
+                    .map((tag: TagData, index: number) => {
+                        const isSelected = selectedTags.includes(
+                            tag.occasionName ?? ""
+                        );
+                        return (
+                            <Button
+                                size="small"
+                                $width="58px"
+                                option={
+                                    isSelected
+                                        ? "tag_selected"
+                                        : "tag_unselected"
+                                }
+                                onClick={() =>
+                                    tag.occasionName &&
+                                    toggleTagSelection(tag.occasionName)
+                                }
+                                key={index}
+                                tag={tag.occasionName ?? ""}
+                            ></Button>
+                        );
+                    })}
             </S.TagBtnWrapper>
             <Text size="small2" fontWeight="medium" $margin="25px 0 15px 0">
                 활동
             </Text>
             <S.TagBtnWrapper>
                 {activityTags.slice(0, 9).map((tag: TagData, index: number) => {
-                    const isSelected = selectedTags.includes(tag.occasionName ?? "");
+                    const isSelected = selectedTags.includes(
+                        tag.occasionName ?? ""
+                    );
                     return (
                         <Button
                             size="small"
                             $width="58px"
-                            option={isSelected ? "tag_selected" : "tag_unselected"}
-                            onClick={() => tag.occasionName && toggleTagSelection(tag.occasionName)}
+                            option={
+                                isSelected ? "tag_selected" : "tag_unselected"
+                            }
+                            onClick={() =>
+                                tag.occasionName &&
+                                toggleTagSelection(tag.occasionName)
+                            }
                             key={index}
                             tag={tag.occasionName ?? ""}
                         ></Button>
                     );
                 })}
             </S.TagBtnWrapper>
-            <Button option="save" $width="90px" size="medium" style={{ fontWeight: "normal", alignSelf: "center" }} onClick={saveSelectedTags}>
+            <Button
+                option="save"
+                $width="90px"
+                size="medium"
+                style={{ fontWeight: "normal", alignSelf: "center" }}
+                onClick={saveSelectedTags}
+            >
                 선택
             </Button>
         </S.TagSelectWrapper>
