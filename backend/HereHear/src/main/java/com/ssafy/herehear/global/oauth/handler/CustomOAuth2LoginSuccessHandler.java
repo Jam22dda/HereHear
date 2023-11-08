@@ -31,6 +31,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     private final JwtProvider jwtProvider;
 
     @Value("${auth.redirectUrl}")
+    private final String REDIRECT_ENDPOINT;
     private String redirectUrl;
 
 
@@ -48,12 +49,12 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                 tempMember -> {
                     if (tempMember.getRemoveDate() != null) {
                         log.info("=== 탈퇴한 회원입니다. 가입 페이지로 리다이렉트 합니다. ===");
-                        redirectUrl += "/memberInfo?id=" + tempMember.getMemberId();
+                        redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
 
                     }else {
                         if (tempMember.getProfileCharacter() == null) {
                             log.info("============ 캐릭터 선택 안 함 {} ============", tempMember.getMemberId());
-                            redirectUrl += "/memberInfo?id=" + tempMember.getMemberId();
+                            redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + tempMember.getMemberId();
                         } else {
                             String accessToken = jwtProvider.createAccessToken(member.get());
                             String refreshToken = jwtProvider.createRefreshToken();
@@ -62,7 +63,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             response.addCookie(cookie);
 
                             log.info("============ 기존 회원 {} ============", tempMember.getMemberId());
-                            redirectUrl += "/oauth2/redirect?token=" + accessToken;
+                            redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken;
                         }
                     }
                 },
@@ -71,7 +72,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                     log.info("{}{}{}", newMember.getEmail(), newMember.getNickname(), providerUser.getProvider());
                     Member signupMember = memberRepository.save(newMember);
                     log.info("============ 최초 진입 {} ============", signupMember.getMemberId());
-                    redirectUrl += "/memberInfo?id=" + signupMember.getMemberId();
+                    redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
                 }
         );
 
