@@ -62,4 +62,4 @@ const postLikeMusic = async (
     return response.data;
 };
 
-export { getSearchMusic, getTag, addMusic, postLikeMusic };
+export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic };
