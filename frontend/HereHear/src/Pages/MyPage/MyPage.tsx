@@ -123,13 +123,18 @@ export default function MyPage() {
                         ></Image>
                     </S.Profile>
                     <S.MydataWrapper>
-                        <Image
-                            src={MyAchievement && MyAchievement.badge.badgeImg}
-                            width={24}
-                            height={24}
-                            $unit="px"
-                            $margin="0 4px 4px 0"
-                        ></Image>
+                        {MyAchievement && (
+                            <Image
+                                src={
+                                    MyAchievement &&
+                                    MyAchievement.badge.badgeImg
+                                }
+                                width={24}
+                                height={24}
+                                $unit="px"
+                                $margin="0 4px 4px 0"
+                            ></Image>
+                        )}
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
                         </Text>

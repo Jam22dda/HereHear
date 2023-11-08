@@ -38,7 +38,7 @@ export default function Navbar({ active }: NavbarProps) {
                             key={path}
                             src={src}
                             onClick={() => navigatePage(path)}
-                            width={path === "/statistic" ? 64 : 52}
+                            width={path === "/registMusic" ? 64 : 52}
                             $unit="px"
                         />
                     );
