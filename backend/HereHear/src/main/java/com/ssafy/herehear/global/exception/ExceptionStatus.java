@@ -47,8 +47,12 @@ public enum ExceptionStatus {
      * 파일 업로드 관련 STATUS CODE
      */
     FILE_NOT_FOUND("-4200", "파일을 찾을 수 없습니다."),
-    FILE_UPLOAD_FAILED("-4201", "파일 업로드에 실패하였습니다.");
+    FILE_UPLOAD_FAILED("-4201", "파일 업로드에 실패하였습니다."),
 
+    /**
+     * 유튜브 관련 STATUS CODE
+     */
+    NOT_FOUND_YOUTUBE_PLAYLIST_ID("-5000", "유튜브 재생목록 아이디를 찾을 수 없습니다.");
 
     private final String code;
     private final String message;
