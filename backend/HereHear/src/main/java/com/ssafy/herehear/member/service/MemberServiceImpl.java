@@ -11,7 +11,6 @@ import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
-import com.ssafy.herehear.member.dto.response.FollowResDto;
 import com.ssafy.herehear.member.dto.response.FollowerResDto;
 import com.ssafy.herehear.member.dto.response.MemberInfoResDto;
 import com.ssafy.herehear.member.mapper.MemberMapper;
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,7 +53,9 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("Sign Up memberId: {}", findMember.getMemberId());
 
-        if(checkNickname(signUpDto.getNickname())) { throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED); }
+        if (checkNickname(signUpDto.getNickname())) {
+            throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED);
+        }
 
         findMember.updateNickname(signUpDto.getNickname());
         ProfileCharacter profileCharacter = profileCharacterRepository.findById(signUpDto.getProfileCharacterCode()).orElseThrow(
@@ -77,7 +79,9 @@ public class MemberServiceImpl implements MemberService {
     public void updateNickname(UpdateMemberReqDto updateMemberReqDto, Long memberId) {
         Member findMember = MemberUtil.findMember(memberId);
 
-        if(checkNickname(updateMemberReqDto.getNickname())) { throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED); }
+        if (checkNickname(updateMemberReqDto.getNickname())) {
+            throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED);
+        }
         findMember.updateNickname(updateMemberReqDto.getNickname());
         memberRepository.save(findMember);
     }
@@ -137,12 +141,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public List<FollowResDto> getFollowingList(Long memberId) {
+    public List<FollowerResDto> getFollowingList(Long memberId) {
         return followRepository.findByFollowingMemberId(memberId).stream()
                 .map(follow -> {
-                    Member followingMember = memberRepository.findById(follow.getFollowMemberId())
-                            .orElseThrow(() -> new CustomException(ExceptionStatus.MEMBER_NOT_FOUND));
-                    return MemberMapper.INSTANCE.toFollowResDto(followingMember, followingMember.getAchievement());
+                    Member followingMember = MemberUtil.findMember(follow.getFollowMemberId());
+                    Optional<Follow> isFollowed = followRepository.isFollowed(follow.getFollowMemberId(), memberId);
+                    return MemberMapper.INSTANCE.toFollowerListDto(followingMember, followingMember.getAchievement(),
+                            isFollowed.isPresent());
                 }).toList();
     }
 
@@ -151,7 +156,6 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = MemberUtil.findMember(memberId);
         MemberUtil.findMember(followingMemberId);
 
-        followRepository.save(MemberMapper.INSTANCE.toFollow(findMember, followingMemberId));
         // 중복 팔로우에 대한 예외처리
         followRepository.findByMemberIdAndFollowMemberId(memberId, followingMemberId)
                 .ifPresent(o -> {
