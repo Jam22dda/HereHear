@@ -1,10 +1,12 @@
 import styled from "styled-components";
 
 const MessagePlus = styled.textarea`
-    height: 30vw;
-    width: 80vw;
+    /* height: 30vw;
+    width: 80vw; */
+    height: 10vw; /* 2차 배포 때 수정 */
+    width: 25vw; /* 2차 배포 때 수정 */
     border-radius: 20px;
-    margin-bottom: 10px;
+    margin: 10px 0 10px 0;
     background-color: ${({ theme }) => theme.color.white1};
     box-shadow: ${({ theme }) => theme.shadow.shadow_itembox};
     resize: none; // 사용자가 크기를 조정하지 못하게 합니다.
@@ -19,7 +21,14 @@ const MessagePlus = styled.textarea`
     &:focus {
         /* TODO:박스 테두리 배경 수정 후 다시 손보기 */
         outline: none;
-        box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn}; // 클릭 시 원하는 box-shadow를 설정
+        box-shadow: ${({ theme }) =>
+            theme.shadow.shadow_smallbtn}; // 클릭 시 원하는 box-shadow를 설정
+    }
+
+    // 미디어 쿼리를 추가하여 웹에서의 크기 조정
+    @media (min-width: 768px) {
+        height: 150px; // 웹에서의 textarea 높이를 조정합니다.
+        width: 500px; // 웹에서의 textarea 너비를 조정합니다.
     }
 `;
 

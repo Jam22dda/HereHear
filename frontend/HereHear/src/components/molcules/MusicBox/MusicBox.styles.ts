@@ -27,10 +27,32 @@ const MusicBox = styled.div`
     } */
 `;
 
+const ImageLeftOuter = styled.div`
+    position: absolute;
+    top: 36%;
+    left: -20px;
+`;
+const ImageRightOuter = styled.div`
+    position: absolute;
+    top: 36%;
+    right: -20px;
+`;
+
+const MusicBoxInner = styled.div`
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+`;
+
 const BigWrapper = styled.div`
     display: flex;
     align-items: center;
-    padding-left: 16px;
+    padding: 16px;
+
+    .album_img {
+        margin-right: 12px;
+    }
 `;
 const MidWrapper = styled.div`
     display: flex;
@@ -39,6 +61,38 @@ const MidWrapper = styled.div`
 const MapTextrapper = styled.div`
     display: flex;
     flex-direction: column;
+
+    .ellipsis {
+        width: 160px; /* 원하는 너비 설정 */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .marquee {
+        width: 160px; /* 원하는 너비 설정 */
+        overflow: hidden;
+        white-space: nowrap;
+        box-shadow: 0 0 1px #000;
+    }
+    .marquee_inner {
+        display: inline-block;
+        padding-left: 100%; /* 시작하기 전에 뷰포트 밖에서 대기 */
+        animation: marquee 10s linear infinite; /* 10초 동안 애니메이션 반복 */
+    }
+    .static {
+        position: relative;
+        animation: none;
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
 `;
 
 const MapMusicTagWrapper = styled.div`
@@ -46,4 +100,4 @@ const MapMusicTagWrapper = styled.div`
     /* flex-direction: column; */
 `;
 
-export { MusicBox, BigWrapper, MidWrapper, MapMusicTagWrapper, MapTextrapper, Outer };
+export { MusicBox, BigWrapper, MidWrapper, MapMusicTagWrapper, MapTextrapper, Outer, MusicBoxInner, ImageLeftOuter, ImageRightOuter };
