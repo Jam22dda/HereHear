@@ -10,32 +10,15 @@ interface MusicItemProps {
     onClick?: () => void;
 }
 
-function MusicItem({
-    src,
-    songtitle,
-    artist,
-    onClick = () => {},
-}: MusicItemProps) {
+function MusicItem({ src, songtitle, artist, onClick = () => {} }: MusicItemProps) {
     return (
         <S.MusicItemWrapper onClick={onClick}>
-            <Image
-                src={src}
-                width={50}
-                height={50}
-                $unit="px"
-                $boxShadow="shadow_goback"
-                $borderRadius="10px"
-            ></Image>
+            <Image src={src} width={50} height={50} $unit="px" $boxShadow="shadow_goback" $borderRadius="10px"></Image>
             <S.MusicTextWrapper>
-                <Text
-                    size="small2"
-                    fontWeight="bold"
-                    style={{ width: "230px" }}
-                    color="main2"
-                >
+                <Text size="small2" fontWeight="bold" style={{ width: "220px" }} color="main2">
                     {songtitle}
                 </Text>
-                <Text size="small3" color="main2" style={{ width: "230px" }}>
+                <Text size="small3" color="main2" style={{ width: "220px" }}>
                     {artist}
                 </Text>
             </S.MusicTextWrapper>
