@@ -14,6 +14,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,11 +26,17 @@ import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.ssafy.herehear.R
+import com.ssafy.herehear.presentation.data.AroundMusicDto
+import com.ssafy.herehear.presentation.data.MusicInfoDto
 import com.ssafy.herehear.presentation.data.GpsDto
 import com.ssafy.herehear.presentation.page.Landing
 import com.ssafy.herehear.presentation.page.MainMap
+import com.ssafy.herehear.presentation.page.MusicList
+import com.ssafy.herehear.presentation.page.NoMusicAround
 import com.ssafy.herehear.presentation.page.RouteType
+import com.ssafy.herehear.presentation.retrofit.api.aroundMusicRequest
 import com.ssafy.herehear.presentation.retrofit.api.authRequest
+import com.ssafy.herehear.presentation.retrofit.api.musicListRequest
 import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 import com.ssafy.herehear.presentation.util.getCurrentLocation
 import com.ssafy.herehear.presentation.util.readPersonalCodeFile
@@ -97,7 +104,7 @@ class MainActivity : ComponentActivity() {
 
                 composable(RouteType.LANDING.toString()) {
                     // 로그인 처리 로직 -- start
-                    Log.d("[MainActivity] personalCode", personalCode.value)
+                    Log.d("[MainActivity - Landing] personalCode", personalCode.value)
                     authRequest(
                         personalCode.value,
                         isLoginSuccess,
@@ -115,7 +122,7 @@ class MainActivity : ComponentActivity() {
                 composable(RouteType.MAP.toString()) {
                     // 로그인 성공시 파일에 코드 저장 이후 재시작 -- start
                     if (isLoginSuccess.value == "success") {
-                        Log.d("[MainActivity] code file update", personalCode.value)
+                        Log.d("[MainActivity - Map] code file update", personalCode.value)
                         isLoginSuccess.value = ""
                         baseContext.deletePersonalCodeFile("personalCode.txt")
                         baseContext.writePersonalCodeFile("personalCode.txt", personalCode.value)
@@ -123,32 +130,47 @@ class MainActivity : ComponentActivity() {
                     // 로그인 성공시 파일에 코드 저장 이후 재시작 -- end
 
 
-                    // 1) 현재 위치 가져오기
+                    // 현재 gps 위치 가져오기
                     val gpsState = remember { mutableStateOf(GpsDto()) }
                     getCurrentLocation(mainActivity, gpsState)
 
-                    // 2) 현재의 모든 음악 뽑아오기
+                    // 음악 리스트 조회 후 Map 으로 이동
+                    val musicList = remember { mutableStateListOf(MusicInfoDto()) }
                     if (gpsState.value.latitude != 0.0 && gpsState.value.longitude != 0.0) {
-                        MainMap(gpsState, navController)
+                        musicListRequest(personalCode.value, musicList)
+                        MainMap(gpsState, musicList, navController)
                     }
-
-                    // 3) map 의 매개변수로 전달
-
-
-//                    val drawableId: Int =
-//                        R.drawable.free_icon_rec_1783356 // 'your_drawable_name'은 drawable 폴더에 있는 이미지 이름
-
-//                    val bitmapDrawable =
-//                        ContextCompat.getDrawable(baseContext, drawableId) as BitmapDrawable
-
-//                    val bitmap = bitmapDrawable.bitmap
-//                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, false)
-
-//                    MainMap(navController, mainActivity, baseContext, resizedBitmap)
                 }
 
                 composable(RouteType.MUSIC_LIST.toString()) {
+                    val aroundMusicList = remember { mutableStateListOf(AroundMusicDto()) }
 
+                    // 현재 gps 위치 가져오기
+                    val gpsState = remember { mutableStateOf(GpsDto()) }
+                    getCurrentLocation(mainActivity, gpsState)
+
+                    if (gpsState.value.latitude != 0.0 && gpsState.value.longitude != 0.0) {
+                        aroundMusicRequest(
+                            personalCode.value,
+                            gpsState.value.latitude,
+                            gpsState.value.longitude,
+                            aroundMusicList
+                        )
+
+                        if (aroundMusicList.size == 0) {
+                            navController.navigate(RouteType.NO_MUSIC.toString())
+                        } else {
+                            MusicList(
+                                personalCode = personalCode.value,
+                                aroundMusicList = aroundMusicList,
+                                navController = navController
+                            )
+                        }
+                    }
+                }
+
+                composable(RouteType.NO_MUSIC.toString()) {
+                    NoMusicAround(around = 500)
                 }
             }
             // 라우팅 경로 등록 -- end

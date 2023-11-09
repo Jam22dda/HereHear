@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -40,14 +39,10 @@ import androidx.wear.compose.material.Text
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ssafy.herehear.R
-import com.ssafy.herehear.presentation.retrofit.data.response.MusicDetailData
+import com.ssafy.herehear.presentation.data.MusicDetailDto
 
 @Composable
-fun MusicInfo(
-    musicDetailData: MutableState<MusicDetailData>,
-    navController: NavController,
-    index: Int,
-) {
+fun MusicInfo(musicDetailDto: MusicDetailDto, navController: NavController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -58,11 +53,10 @@ fun MusicInfo(
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
-//                contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(musicDetailData.value.albumImg)
+                        .data(musicDetailDto.albumImg)
                         .crossfade(true)
                         .build(),
                     contentDescription = null,
@@ -104,7 +98,7 @@ fun MusicInfo(
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    text = musicDetailData.value.subject,
+                                    text = musicDetailDto.subject,
                                     textAlign = TextAlign.Center,
                                     style = TextStyle(
                                         fontSize = 18.sp,
@@ -114,7 +108,7 @@ fun MusicInfo(
                                 )
                                 Spacer(modifier = Modifier.height(1.dp))
                                 Text(
-                                    text = musicDetailData.value.singer,
+                                    text = musicDetailDto.singer,
                                     textAlign = TextAlign.Center,
                                     style = TextStyle(
                                         fontSize = 12.sp,
@@ -145,7 +139,7 @@ fun MusicInfo(
 
         item {
             Row {
-                for (tag in musicDetailData.value.occasionName) {
+                for (tag in musicDetailDto.occasionName) {
                     Text(text = "#$tag")
                     Spacer(modifier = Modifier.width(3.dp))
                 }
@@ -157,14 +151,14 @@ fun MusicInfo(
                 onClick = { },
                 appName = {
                     Text(
-                        musicDetailData.value.nickname,
+                        musicDetailDto.nickname,
                         style = TextStyle(fontSize = 10.sp, fontWeight = FontWeight.Bold)
                     )
                 },
                 title = { },
                 time = {
                     Text(
-                        text = musicDetailData.value.createTime,
+                        text = musicDetailDto.createTime,
                         style = TextStyle(fontSize = 7.sp, fontWeight = FontWeight.Bold)
                     )
                 },
@@ -173,7 +167,7 @@ fun MusicInfo(
                     .padding(top = 10.dp, start = 20.dp, end = 20.dp, bottom = 10.dp)
             ) {
                 Text(
-                    text = musicDetailData.value.comment,
+                    text = musicDetailDto.comment,
                     style = TextStyle(fontSize = 10.sp)
                 )
             }
