@@ -3,7 +3,14 @@ import styled, { css } from "styled-components";
 
 export interface TextProps {
     $textAlign?: "left" | "right" | "center" | "justify";
-    size?: "heading1" | "subtitle1" | "body1" | "body2" | "small1" | "small2" | "small3";
+    size?:
+        | "heading1"
+        | "subtitle1"
+        | "body1"
+        | "body2"
+        | "small1"
+        | "small2"
+        | "small3";
     color?: keyof typeof theme.color;
     //width 단위는 픽셀
     width?: number;
@@ -11,6 +18,8 @@ export interface TextProps {
     $margin?: string;
     $marginLeft?: string;
     $marginTop?: string;
+    isOverflowing?: boolean;
+    animate?: boolean;
 }
 
 const getSizeStyling = (size: Required<TextProps>["size"] = "heading1") => {
@@ -57,7 +66,10 @@ const Text = styled.p<TextProps>`
     margin-top: ${(props) => props.$marginTop};
     text-align: ${(props) => props.$textAlign || "left"};
     ${({ size = "subtitle1" }) => getSizeStyling(size)};
-    color: ${(props) => (props.color ? props.theme.color[props.color as keyof typeof theme.color] : props.theme.color.main1)};
+    color: ${(props) =>
+        props.color
+            ? props.theme.color[props.color as keyof typeof theme.color]
+            : props.theme.color.main1};
     font-weight: ${(props) => getFontWeightStyling(props.fontWeight)};
 `;
 

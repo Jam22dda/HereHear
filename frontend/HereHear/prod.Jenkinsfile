@@ -53,5 +53,14 @@ pipeline {
                 }
             }
         }
+
+        // 도커 레이어 정리
+        stage("docker layer pruning") {
+            steps {
+                script {
+                    sh "docker system prune -a -f"
+                }
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ import { useState } from "react";
 import { musicItemState } from "../../states/RegistMusicAtom";
 import { startTransition } from "react";
 import TagSelect from "../../components/molcules/TagSelect/TagSelect";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { selectedTagState } from "../../states/SelectTagAtom";
 import { useAddMusic } from "../../apis/Music/Mutations/useAddMusic";
 import { AddMusicInfo } from "../../types/music";
@@ -25,6 +25,7 @@ export default function RegistMusicMent() {
 
     useEffect(() => {
         // 현재 위치 가져오기
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 locationRef.current = {
@@ -40,14 +41,21 @@ export default function RegistMusicMent() {
             }
         );
     }, []);
-
-    const selectedTagIds = useRecoilValue(selectedTagState); // 선택한 태그 리코일에서 불러오기
+    // const selectedTagIds = useRecoilValue(selectedTagState); // 선택한 태그 리코일에서 불러오기
     // console.log(selectedTagIds, "태그 리스트");
-
+    const [selectedTagIds, setSelectedTagIds] = useRecoilState(selectedTagState);
     const musicItem = useRecoilValue(musicItemState); // 선택한 노래 리코일에서 불러오기
 
     const [isOpenModal, setOpenModal] = useState<boolean>(false);
     const navigate = useNavigate();
+
+    const handleBack = () => {
+        // 태그 상태를 초기화하고
+        setSelectedTagIds([]);
+        console.log(selectedTagIds);
+        // 이전 페이지로 이동합니다.
+        navigate(-1);
+    };
 
     const openModal = () => {
         startTransition(() => {
@@ -74,6 +82,7 @@ export default function RegistMusicMent() {
             };
             console.log(musicInfo, "musicInfo 잘 들어가?");
             addMusicMutation.mutate(musicInfo);
+            setSelectedTagIds([]);
             navigate("/core");
         }
     };
@@ -88,7 +97,7 @@ export default function RegistMusicMent() {
                     </>
                 )}
 
-                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                <CircleButton option="default2" size="medium" onClick={handleBack}>
                     <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
                 <Text size="subtitle1" fontWeight="bold" $marginTop="20px">

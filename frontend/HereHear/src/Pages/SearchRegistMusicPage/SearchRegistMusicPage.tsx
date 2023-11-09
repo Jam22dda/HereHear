@@ -1,6 +1,6 @@
 import * as S from "./SearchRegistMusicPage.styles";
 import { useNavigate } from "react-router-dom";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import Input from "../../components/atoms/Input/Input";
@@ -14,6 +14,7 @@ import { Image } from "../../components/atoms/Image/Image";
 import { useRecoilState } from "recoil";
 import { musicItemState } from "../../states/RegistMusicAtom";
 import { MusicItemState } from "../../types/music";
+import { selectedTagState } from "../../states/SelectTagAtom";
 
 export default function SearchRegistMusic() {
     const page = 1; //음악 받아오는 페이지 1로 임의 설정
@@ -24,6 +25,11 @@ export default function SearchRegistMusic() {
     const [temp, setTemp] = useState("");
     const { searchMusic } = useGetSearchMusic(temp, page);
     const [, setMusicItem] = useRecoilState(musicItemState);
+    const [, setSelectedTagIds] = useRecoilState(selectedTagState);
+
+    useEffect(() => {
+        setSelectedTagIds([]);
+    }, [setSelectedTagIds]);
 
     // 음악 검색 버튼 클릭 시 이벤트
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,40 +54,50 @@ export default function SearchRegistMusic() {
         navigate("/registMusicMent"); // 다른 페이지의 경로로 변경하세요
     };
 
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            handleSearchClick();
+        }
+    };
+
     return (
         <div id="display">
             <div className="container">
-                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
-                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
-                </CircleButton>
+                <S.RegistMusicContainer>
+                    <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                        <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                    </CircleButton>
 
-                <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
-                    음악 등록
-                </Text>
-                <S.InputWrapper>
-                    <Input
-                        $placeholder="이곳에 검색해주세요"
-                        value={searchKeyword}
-                        onChange={handleSearchChange}
-                        // disabled={isLoading} // 로딩 중일 때 입력창 비활성화
-                    ></Input>
-                    <Button option="follow" $height="44px" $width="60px" $borderRadius="12px" color="white1" size="mediumplus" onClick={handleSearchClick}>
-                        검색
-                    </Button>
-                </S.InputWrapper>
+                    <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
+                        음악 등록
+                    </Text>
 
-                {searchMusic &&
-                    searchMusic.data?.musicInfoList?.map((item: MusicData, index: number) => (
-                        <S.MusicItemWrapper key={index}>
-                            <MusicItem src={item.albumImages[0].url} songtitle={item.subject} artist={item.artists[0].name} />
-                            <CircleButton option="gradDeActivated" size="mediumplus" onClick={() => saveMusicItemAndNavigate(item)}>
-                                <Image src={iconMusicPlus} width={24} height={24} $unit="px"></Image>
-                            </CircleButton>
+                    <S.InputWrapper>
+                        <Input
+                            $placeholder="이곳에 검색해주세요"
+                            value={searchKeyword}
+                            onChange={handleSearchChange}
+                            onKeyPress={handleKeyPress} // Enter 누를 때 이벤트 추가
+                            // disabled={isLoading} // 로딩 중일 때 입력창 비활성화
+                        ></Input>
+                        <Button option="follow" $height="44px" $width="60px" $borderRadius="12px" color="white1" size="mediumplus" onClick={handleSearchClick}>
+                            검색
+                        </Button>
+                    </S.InputWrapper>
 
-                            {/* TODO: 버튼 클릭이벤트- 음악 
+                    {searchMusic &&
+                        searchMusic.data?.musicInfoList?.map((item: MusicData, index: number) => (
+                            <S.MusicItemWrapper key={index}>
+                                <MusicItem src={item.albumImages[0].url} songtitle={item.subject} artist={item.artists[0].name} />
+                                <CircleButton option="gradDeActivated" size="mediumplus" onClick={() => saveMusicItemAndNavigate(item)}>
+                                    <Image src={iconMusicPlus} width={24} height={24} $unit="px"></Image>
+                                </CircleButton>
+
+                                {/* TODO: 버튼 클릭이벤트- 음악 
                             저장하고 음악 등록페이지로 이동 */}
-                        </S.MusicItemWrapper>
-                    ))}
+                            </S.MusicItemWrapper>
+                        ))}
+                </S.RegistMusicContainer>
             </div>
         </div>
     );

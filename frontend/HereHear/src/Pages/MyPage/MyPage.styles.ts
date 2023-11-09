@@ -10,6 +10,7 @@ export const Profile = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    /* margin-top: 48px; // 2차배포때 삭제 */
 `;
 
 export const MyPageWrapper = styled.div`
