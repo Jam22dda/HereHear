@@ -31,6 +31,7 @@ export default function Core() {
     const [userPinState, setUserPinState] = useState();
     const [centerState, setCenterState] = useState();
     const [userSelectPin, setUserSelectPin] = useState(0);
+    const [circleState, setCircleState] = useState();
 
     // 외부로부터 입력된 데이터
     const { musicList, refetch } = useGetMapMusicList();
@@ -114,6 +115,8 @@ export default function Core() {
                             />
                         </div>
                         `,
+                        origin: new naver.maps.Point(0, 0),
+                        anchor: new naver.maps.Point(30, 60),
                     },
                 });
 
@@ -171,10 +174,27 @@ export default function Core() {
                             icon: {
                                 content: `
                                 <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white; box-shadow: 3px 3px 5px #8496B4;"></div>
-                        `,
+                                `,
+                                origin: new naver.maps.Point(0, 0),
+                                anchor: new naver.maps.Point(19, 19),
                             },
                         })
                     );
+
+                    const circle = new naver.maps.Circle({
+                        strokeColor: "#0000ff",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 1,
+                        fillColor: "#0000ff",
+                        fillOpacity: 0.15,
+                        center: new naver.maps.LatLng(latitude, longitude),
+                        radius: 600,
+                        zIndex: 100,
+                        clickable: true,
+                        map: map,
+                    });
+
+                    setCircleState(circle);
 
                     // 현재 위치로 맵 가운데를 변경시키기
                     const center = new naver.maps.LatLng(latitude, longitude);
@@ -192,7 +212,6 @@ export default function Core() {
 
             // SSE
             // const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
-
             const serverUrl = import.meta.env.VITE_SERVER_URL;
 
             setEventSource(
@@ -361,10 +380,6 @@ export default function Core() {
 
                     setMusicPin(musicPinIns);
                 }
-
-                // for (let i = 0; i < eventData.length; i++) {
-                //     console.log('Received SSE[i] event:', eventData[i]);
-                // }
             });
 
             // SSE 에러 핸들러를 등록합니다.
@@ -384,64 +399,6 @@ export default function Core() {
 
         console.log(musicPin);
     }, [musicPin]);
-
-    // 정해진 시간마다 내 위치 정보 받아오는 기능
-    // useEffect(() => {
-    //     if (!navigator.geolocation) {
-    //         console.error('Geolocation is not supported by your browser');
-    //         return;
-    //     }
-
-    //     // 최초에 지도에 현재 위치 찍기
-    //     navigator.geolocation.getCurrentPosition(
-    //         position => {
-    //             const { latitude, longitude } = position.coords;
-    //             console.log('Latitude:', latitude, 'Longitude:', longitude);
-    //             setLat(latitude);
-    //             setLng(longitude);
-
-    //             userPin = new naver.maps.Marker({
-    //                 position: new naver.maps.LatLng(37.4867995957995, 126.983211871752),
-    //                 map: map,
-    //                 icon: {
-    //                     content: `
-    //                     <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; z-index: 999;"></div>
-    //                     `,
-    //                 },
-    //             });
-    //         },
-    //         error => {
-    //             console.error('Error getting location:', error);
-    //         },
-    //         {
-    //             enableHighAccuracy: true,
-    //             maximumAge: 0,
-    //         }
-    //     );
-
-    //     const intervalId = setInterval(() => {
-    //         navigator.geolocation.getCurrentPosition(
-    //             position => {
-    //                 const { latitude, longitude } = position.coords;
-    //                 console.log('Latitude:', latitude, 'Longitude:', longitude);
-    //                 setLat(latitude);
-    //                 setLng(longitude);
-    //             },
-    //             error => {
-    //                 console.error('Error getting location:', error);
-    //             },
-    //             // 위치 정보 업데이트 관련 설정 (건들일 필요 x)
-    //             {
-    //                 enableHighAccuracy: true,
-    //                 maximumAge: 0,
-    //             }
-    //         );
-    //     }, 3000);
-
-    //     return () => {
-    //         clearInterval(intervalId);
-    //     };
-    // }, []);
 
     // 지도 가운데 변경 (3초마다)
     useEffect(() => {
@@ -481,6 +438,19 @@ export default function Core() {
                             },
                         });
 
+                        // 현재 위치를 중심으로 하는 반투명한 원 생성
+                        const userCircle = new (naverState as any).maps.Circle({
+                            map: mapState,
+                            center: new (naverState as any).maps.LatLng(
+                                latitude,
+                                longitude
+                            ),
+                            radius: 500, // 반지름을 미터 단위로 설정
+                            fillColor: "rgba(51, 153, 255, 0.3)", // 반투명한 파란색으로 채움
+                            strokeColor: "rgba(51, 153, 255, 0.6)", // 테두리 색
+                            strokeWeight: 2, // 테두리 두께
+                        });
+
                         setUserPinState(userPin);
                     },
                     (error) => {
@@ -509,17 +479,8 @@ export default function Core() {
             const center = new (naverState as any).maps.LatLng(lat, lng);
             // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
             setCenterState(center);
-            (mapState as any).setZoom(15, true);
+            // (mapState as any).setZoom(15, true);
             (mapState as any).panTo(center);
-
-            // intervalId = setInterval(() => {
-            //     // 현재 위치로 맵 가운데를 변경시키기
-            //     const center = new (naverState as any).maps.LatLng(lat, lng);
-            //     // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
-            //     setCenterState(center);
-            //     (mapState as any).setZoom(15, true);
-            //     (mapState as any).panTo(center);
-            // }, 500); // 3초마다 실행
         }
 
         // isUpdate이 변경되면 return 실행됨
