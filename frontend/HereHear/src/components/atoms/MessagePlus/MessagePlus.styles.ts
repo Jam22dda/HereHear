@@ -3,8 +3,8 @@ import styled from "styled-components";
 const MessagePlus = styled.textarea`
     /* height: 30vw;
     width: 80vw; */
-    height: 10vw; /* 2차 배포 때 수정 */
-    width: 25vw; /* 2차 배포 때 수정 */
+    height: 40vw; /* 2차 배포 때 수정 */
+    width: 70vw; /* 2차 배포 때 수정 */
     border-radius: 20px;
     margin: 10px 0 10px 0;
     background-color: ${({ theme }) => theme.color.white1};
