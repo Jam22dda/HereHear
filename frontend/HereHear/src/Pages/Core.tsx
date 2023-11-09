@@ -42,8 +42,6 @@ export default function Core() {
     const [eventSource, setEventSource] = useState<EventSource | undefined>(undefined);
 
     useEffect(() => {
-        console.log('myId : ', myId);
-
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         const script = document.createElement('script');
@@ -54,7 +52,6 @@ export default function Core() {
         script.onload = async () => {
             const naver = window.naver;
             setNaverState(naver);
-            console.log(naver);
 
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
@@ -75,8 +72,6 @@ export default function Core() {
             setMapState(map);
 
             const ml = await refetch();
-            console.log('ml.data');
-            console.log(ml.data);
 
             // 음악 데이터를 Map 형태로 변경하여 저장
             const musicMapIns: MusicMap = ml.data.reduce((map: MusicMap, music: Music) => {
@@ -139,7 +134,6 @@ export default function Core() {
                     longitude = position.coords.longitude;
                     // const { latitude, longitude } = position.coords;
 
-                    console.log('Latitude:', latitude, 'Longitude:', longitude);
                     setLat(latitude);
                     setLng(longitude);
 
@@ -195,7 +189,6 @@ export default function Core() {
         };
 
         document.body.appendChild(script);
-        console.log('im 한번만이에요');
 
         // 컴포넌트 언마운트 시 스크립트 제거
         return () => {
@@ -206,24 +199,15 @@ export default function Core() {
     let musicPinIns = Object.assign({}, musicPin, {}); // musicPinIns를 밖으로 이동
 
     useEffect(() => {
-        console.log('USEEFFECT');
-        console.log(eventSource);
-        console.log('naverState');
-        console.log(naverState);
-
         if (eventSource && naverState && mapState) {
             // const sse = eventSource;
 
             // SSE 이벤트 핸들러를 등록합니다.
             eventSource.addEventListener('sse', event => {
                 const eventData = JSON.parse(event.data);
-                console.log('musicMap');
-                console.log(musicMap);
 
                 if (Array.isArray(eventData)) {
                     // 이벤트 데이터를 처리합니다.
-                    console.log('Received SSE event:', eventData);
-                    console.log('나 들어온다');
 
                     const addList = [];
                     const delList = [];
@@ -236,13 +220,7 @@ export default function Core() {
                         }
                     }
 
-                    console.log('LLLLLLLLLLLLList');
-                    console.log(addList);
-                    console.log(delList);
-
                     // let musicPinIns = musicPin;
-                    console.log('musicPinIns 인스턴스 만들기 ');
-                    console.log(musicPinIns);
 
                     // 음악 삭제
                     const musicDelIns: MusicMap = delList.reduce((map: MusicMap, music: Music) => {
@@ -251,13 +229,8 @@ export default function Core() {
                         return map;
                     }, {});
 
-                    console.log('musicDelIns');
-                    console.log(musicDelIns);
-
                     for (const key in musicDelIns) {
-                        console.log('key', key);
                         // key에 해당하는 객체가 존재하는 경우
-                        console.log('typeof musicPinIns@@@@@@@@@@@@@@@@@@@@@@');
                         // console.log(typeof musicPinIns);
                         // console.log(musicPinIns);
 
@@ -269,9 +242,6 @@ export default function Core() {
                             (musicPinIns[key] as any).setMap(null);
                             // @ts-ignore
                             delete (musicPinIns[key] as any);
-
-                            console.log('musicPin in DELETE');
-                            console.log(musicPinIns);
                         }
                     }
 
@@ -285,9 +255,6 @@ export default function Core() {
                     setMusicMap(prev => Object.assign({}, prev, musicMapIns));
 
                     const pinIns: any = {};
-
-                    console.log('mapState');
-                    console.log(mapState);
 
                     for (const key in musicMapIns) {
                         // 마커 표시
@@ -307,18 +274,14 @@ export default function Core() {
                                     `,
                             },
                         });
-                        console.log('pinIns');
 
                         musicPinIns = Object.assign({}, musicPinIns, pinIns);
-                        console.log('AFTER add musicPinIns ', musicPinIns);
 
                         // 마커 클릭 시 발생하는 이벤트
                         (naverState as any).maps.Event.addListener(pinIns[key], 'click', async function () {
                             // useGetAroundMusicList({ lat, lng });
 
                             const mal = await refetchMusicAroundList();
-                            console.log('@@@@@@@@@@@@@@@@ mal');
-                            console.log(mal);
                             setMusicAroundListState(mal.data);
 
                             setIsSelect(true);
@@ -339,24 +302,18 @@ export default function Core() {
 
             // SSE 연결이 닫힐 때의 핸들러를 등록합니다.
             eventSource.addEventListener('close', () => {
-                console.log('SSE connection closed.');
+                // console.log('SSE connection closed.');
             });
         }
     }, [eventSource, naverState, mapState]);
 
-    useEffect(() => {
-        console.log('useEffect musicPin');
-
-        console.log(musicPin);
-    }, [musicPin]);
+    useEffect(() => {}, [musicPin]);
 
     // 지도 가운데 변경 (3초마다)
     useEffect(() => {
         if (mapState && naverState && userPinState && centerState) {
             // mapState가 설정되었을 때만 인터벌을 시작합니다.
             const intervalId = setInterval(() => {
-                console.log('setMap');
-
                 (userPinState as any).setMap(null);
 
                 let latitude: number;
@@ -417,9 +374,6 @@ export default function Core() {
         let intervalId: any;
 
         if (isUpdate && centerState && naverState && mapState) {
-            console.log('화면 자동 업데이트 활성화');
-            console.log(lat + ' ' + lng);
-
             const center = new (naverState as any).maps.LatLng(lat, lng);
             // const center = new naverState.maps.LatLng(33.3590628, 126.534361); // 예제에서는 제주도 좌표 사용
             setCenterState(center);
@@ -430,8 +384,6 @@ export default function Core() {
         // isUpdate이 변경되면 return 실행됨
         return () => {
             if (intervalId) {
-                console.log('화면 자동 업데이트 비활성화');
-
                 clearInterval(intervalId);
             }
         };
