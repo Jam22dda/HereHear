@@ -12,6 +12,7 @@ export const CharacterWrapper = styled.div`
     gap: 36px;
     justify-content: center;
     margin-top: 28px;
+    width: 86%; /* 2차 배포 때 삭제 */
 `;
 
 export const CharacterModalWrapper = styled.div`
