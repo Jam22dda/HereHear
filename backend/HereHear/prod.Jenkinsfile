@@ -81,5 +81,14 @@ pipeline {
                 sh "docker run -d -p 8080:8080 -v herehearprodvolume:/app/file --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
             }
         }
+
+        // 도커 레이어 정리
+        stage("docer layer pruning") {
+            steps {
+                script {
+                    sh "docker system prune -a -f"
+                }
+            }
+        }
     }
 }
