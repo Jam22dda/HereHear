@@ -10,13 +10,20 @@ import iconBack from "../../assets/CircleButton/icon-back.png";
 export default function StatisticsPage() {
     const navigate = useNavigate();
 
+    const navigatePage = (path: string) => {
+        navigate(path);
+    };
+
     return (
         <div id="display">
             <div className="container">
                 <CircleButton
                     option="default2"
                     size="medium"
-                    onClick={() => navigate(-1)}
+                    onClick={() => {
+                        navigatePage("/core");
+                        window.location.reload();
+                    }}
                 >
                     <Image
                         src={iconBack}

@@ -114,7 +114,10 @@ export default function MyPage() {
                 <CircleButton
                     option="default2"
                     size="medium"
-                    onClick={() => navigate(-1)}
+                    onClick={() => {
+                        navigatePage("/core");
+                        window.location.reload();
+                    }}
                 >
                     <Image
                         src={iconBack}
