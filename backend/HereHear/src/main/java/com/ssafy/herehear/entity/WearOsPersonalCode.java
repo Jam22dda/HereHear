@@ -18,7 +18,7 @@ public class WearOsPersonalCode {
 
     private String personalCode;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private Member member;
 
