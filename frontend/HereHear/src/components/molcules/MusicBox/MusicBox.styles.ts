@@ -1,5 +1,6 @@
 // import theme from "../../../styles/theme";
-import styled from 'styled-components';
+import styled, { keyframes } from "styled-components";
+import { Text } from "../../atoms/Text/Text.styles";
 
 const Outer = styled.div`
     width: 100%;
@@ -61,38 +62,7 @@ const MidWrapper = styled.div`
 const MapTextrapper = styled.div`
     display: flex;
     flex-direction: column;
-
-    .ellipsis {
-        width: 160px; /* 원하는 너비 설정 */
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .marquee {
-        width: 160px; /* 원하는 너비 설정 */
-        overflow: hidden;
-        white-space: nowrap;
-        box-shadow: 0 0 1px #000;
-    }
-    .marquee_inner {
-        display: inline-block;
-        padding-left: 100%; /* 시작하기 전에 뷰포트 밖에서 대기 */
-        animation: marquee 10s linear infinite; /* 10초 동안 애니메이션 반복 */
-    }
-    .static {
-        position: relative;
-        animation: none;
-    }
-
-    @keyframes marquee {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(-100%);
-        }
-    }
+    overflow: hidden;
 `;
 
 const MapMusicTagWrapper = styled.div`
@@ -100,4 +70,43 @@ const MapMusicTagWrapper = styled.div`
     /* flex-direction: column; */
 `;
 
-export { MusicBox, BigWrapper, MidWrapper, MapMusicTagWrapper, MapTextrapper, Outer, MusicBoxInner, ImageLeftOuter, ImageRightOuter };
+const scroll = keyframes`
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+`;
+
+// MarqueeTextProps 타입을 정의합니다.
+interface MarqueeTextProps {
+    isOverflowing: boolean;
+    animate: boolean;
+}
+
+// MarqueeText를 styled-component로 정의할 때 해당 타입을 적용합니다.
+const MarqueeText = styled(Text)<MarqueeTextProps>`
+    white-space: nowrap;
+    display: inline-block;
+    width: 160px;
+    min-width: 100%;
+    animation: ${scroll} 10s linear infinite;
+    animation-play-state: ${(props) => (props.animate ? "running" : "paused")};
+    animation-delay: ${(props) =>
+        props.isOverflowing && !props.animate ? "3s" : "0s"};
+    animation-fill-mode: forwards;
+`;
+
+export {
+    MusicBox,
+    BigWrapper,
+    MidWrapper,
+    MapMusicTagWrapper,
+    MapTextrapper,
+    Outer,
+    MusicBoxInner,
+    ImageLeftOuter,
+    ImageRightOuter,
+    MarqueeText,
+};
