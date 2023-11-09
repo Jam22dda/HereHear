@@ -35,5 +35,5 @@ public interface MemberMapper {
 
     MemberInfoResDto toMemberInfoResDto(Member member, Achievement achievement);
 
-    Member toMember(String nickname, String email, String provider);
+    Member toMember(String email, String provider);
 }
