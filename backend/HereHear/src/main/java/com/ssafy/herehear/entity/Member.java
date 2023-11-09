@@ -37,11 +37,11 @@ public class Member {
     @Column(nullable = false)
     private String provider;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_character_id")
     private ProfileCharacter profileCharacter;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "achievement_id")
     private Achievement achievement;
 
