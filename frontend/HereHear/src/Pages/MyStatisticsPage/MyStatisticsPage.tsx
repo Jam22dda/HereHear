@@ -13,20 +13,11 @@ export default function MyStatisticsPage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigate(-1)}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
                 <S.readyPageWrapper>
-                    <Text $textAlign="center">
+                    <Text $textAlign="center" $margin="20px 0 ">
                         정확한 통계 수집을 위해
                         <br />
                         아직 준비중이에요!

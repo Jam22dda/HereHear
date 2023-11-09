@@ -177,12 +177,7 @@ export default function MyPage() {
                         >
                             팔로잉 {Following?.length ?? 0}명
                         </Button>
-                        <Button
-                            option="tag_plus"
-                            size="largeplus"
-                            $width="130px"
-                            onClick={() => navigatePage("/follower")}
-                        >
+                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/follower")}>
                             팔로워 {Follower?.length ?? 0}명
                         </Button>
                     </S.FollowWrapper> */}
@@ -220,12 +215,14 @@ export default function MyPage() {
                         )}
                         {!isBlanked && !isDuplicated && (
                             <S.TextWrapper>
-                                <Text fontWeight="bold">
-                                    변경할 닉네임을 작성
+                                <Text
+                                    size="body2"
+                                    fontWeight="medium"
+                                    $margin="10px 0 28px 0"
+                                >
+                                    변경할 닉네임을 작성해 주세요!
                                 </Text>
-                                <Text $margin="0 0 28px 0" fontWeight="bold">
-                                    해주세요!
-                                </Text>
+
                                 <Input onChange={handleChangeNickname}></Input>
                                 <Button
                                     onClick={() => handleSaveNickname(nickname)}
