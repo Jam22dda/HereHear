@@ -1,17 +1,23 @@
 package com.ssafy.herehear.presentation.retrofit.api
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
+import com.ssafy.herehear.presentation.data.AuthDto
 import com.ssafy.herehear.presentation.retrofit.RetrofitConnection
 import com.ssafy.herehear.presentation.retrofit.data.response.ApiResponse
-import com.ssafy.herehear.presentation.retrofit.data.response.AuthResponse
 import com.ssafy.herehear.presentation.retrofit.service.PersonalCodeService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun authRequest(personalCode: String, navController: NavHostController) {
+fun authRequest(
+    personalCode: String,
+    isLoginSuccess: MutableState<String>,
+    navController: NavHostController,
+    route: String,
+) {
+    Log.d("[authRequest]", "authRequest API 호출, 인증성공시 map 화면으로 이동")
     val retrofit = RetrofitConnection.getInstance().create(PersonalCodeService::class.java)
 
     retrofit.authPersonalCode(personalCode)
@@ -20,20 +26,24 @@ fun authRequest(personalCode: String, navController: NavHostController) {
                 call: Call<ApiResponse>,
                 response: Response<ApiResponse>
             ) {
-                val apiResult: AuthResponse = response.body()?.data ?: AuthResponse(false, "", -1)
+                val apiResult: AuthDto = response.body()?.data ?: AuthDto()
 
+                Log.d("[authRequest]", "authRequest API 호출 성공, result = ${apiResult.accessResult}")
                 if (apiResult.accessResult) {
+                    isLoginSuccess.value = "success"
+
                     // 여기에 navigation map 으로 이동하는 로직
-                    Log.d("onResume", "access true")
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo("landing", true)
-                        .build()
-                    navController.navigate("map", navOptions)
+                    navController.navigate(route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                } else {
+                    isLoginSuccess.value = "fail"
                 }
             }
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Log.d("Retrofit", "personal code api 호출 실패")
+                Log.d("[authRequest]", "authRequest API 호출 실패")
+                isLoginSuccess.value = "fail"
             }
         })
 }

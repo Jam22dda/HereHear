@@ -1,17 +1,19 @@
 package com.ssafy.herehear.presentation.page
 
-import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -19,18 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Text
-import com.ssafy.herehear.presentation.retrofit.api.personalCodeApi
+import com.ssafy.herehear.R
 
 @Composable
-fun LandingPage(navController: NavHostController, baseContext: Context) {
+fun Landing(personalCode: MutableState<String>) {
     // 사용자가 입력한 code 저장을 위한 state
     val (inputCode, setInputCode) = remember {
         mutableStateOf("")
@@ -44,11 +46,10 @@ fun LandingPage(navController: NavHostController, baseContext: Context) {
     ) {
         Spacer(modifier = Modifier.fillMaxHeight(0.2f))
 
-        Text(
-            text = "HereHear!",
-            style = TextStyle(
-                fontSize = 20.sp
-            )
+        Image(
+            painter = painterResource(id = R.drawable.hoyoyo_line),
+            contentDescription = "HereHear_logo",
+            modifier = Modifier.fillMaxWidth(0.6f)
         )
 
         Spacer(modifier = Modifier.height(15.dp))
@@ -72,8 +73,9 @@ fun LandingPage(navController: NavHostController, baseContext: Context) {
 
         Button(
             onClick = {
-                Log.d("Retrofit", inputCode)
-                personalCodeApi(inputCode, setInputCode, navController, baseContext)
+                Log.d("[LandingPage] inputCode 변경", inputCode.toString())
+                personalCode.value = inputCode
+                Log.d("[LandingPage] personalCode", personalCode.value.toString())
             },
             modifier = Modifier
                 .padding(all = 8.dp)
