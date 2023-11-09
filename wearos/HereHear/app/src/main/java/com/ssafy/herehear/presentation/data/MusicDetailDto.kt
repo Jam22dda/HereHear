@@ -1,12 +1,6 @@
-package com.ssafy.herehear.presentation.retrofit.data.response
+package com.ssafy.herehear.presentation.data
 
-data class MusicDetailResponse(
-    val code: String,
-    val message: String,
-    val data: MusicDetailData
-)
-
-data class MusicDetailData(
+data class MusicDetailDto(
     val registeredMusicId: Int = 0,
     val lng: Double = 0.0,
     val lat: Double = 0.0,
