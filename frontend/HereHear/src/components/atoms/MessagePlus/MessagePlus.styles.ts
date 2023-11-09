@@ -21,6 +21,12 @@ const MessagePlus = styled.textarea`
         outline: none;
         box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn}; // 클릭 시 원하는 box-shadow를 설정
     }
+
+    // 미디어 쿼리를 추가하여 웹에서의 크기 조정
+    @media (min-width: 768px) {
+        height: 150px; // 웹에서의 textarea 높이를 조정합니다.
+        width: 500px; // 웹에서의 textarea 너비를 조정합니다.
+    }
 `;
 
 export { MessagePlus };
