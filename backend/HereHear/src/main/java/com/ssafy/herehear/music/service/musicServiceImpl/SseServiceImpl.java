@@ -66,6 +66,7 @@ public class SseServiceImpl implements SseService {
     @Scheduled(cron = "0 0 * * * ?")//정각 마다 실행
 //    @Scheduled(fixedRate = 5000)//test
     public void checkForDataChanges() {
+        log.info("checkForDataChanges SSE 실행");
         List<SseResDto> sseResDtos = new ArrayList<>();
 
         //SSE 삭제
