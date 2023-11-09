@@ -1,5 +1,5 @@
 import * as S from "./MusicPlayPage.styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Text } from "../../components/atoms/Text/Text.styles";
@@ -11,7 +11,7 @@ import Message from "../../components/atoms/Message/Message";
 import emptyHeart from "../../assets/CircleButton/icon-emptyheart.png";
 import Heart from "../../assets/CircleButton/icon-heart.png";
 import youtube from "../../assets/CircleButton/icon-youtubePlay.png";
-
+import { usePostLikeMusic } from "../../apis/Music/Mutations/useLikeMusic";
 import { useGetMusicPlay } from "../../apis/Music/Quries/useGetMusicPlay";
 
 export default function MusicPlay() {
@@ -23,14 +23,29 @@ export default function MusicPlay() {
 
     const navigate = useNavigate();
 
+    //좋아요 API
+    const { mutate: postLikeMusicMutate } = usePostLikeMusic();
+
     // 좋아요체크
-    const [isLiked, setIsLiked] = useState(false);
+
+    const [isLiked, setIsLiked] = useState(false); //musicPlay.data.like
+
     const toggleLike = () => {
         const newIsLiked = !isLiked;
         setIsLiked(newIsLiked);
+        if (MusicNumber !== null) {
+            postLikeMusicMutate(MusicNumber);
+        }
     };
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
+
+    useEffect(() => {
+        if (musicPlay) {
+            setIsLiked(musicPlay.data.like ? musicPlay.data.like : false);
+        }
+    }, [musicPlay]);
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -41,7 +56,6 @@ export default function MusicPlay() {
     console.log(musicPlay, "이거 들어와????????????");
     const occasionName = musicPlay.data.occasionName;
     // console.log(occasionName, "occasionName");
-
     return (
         <div id="display">
             <div className="container">
@@ -55,7 +69,7 @@ export default function MusicPlay() {
                         ))}
                     </S.SelectTagWrapper>
                     <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
-                    {isLiked ? (
+                    {/* {isLiked ? (
                         <CircleButton option="pinkActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
                             <Image src={Heart} width={23} height={21} $unit="px"></Image>
                         </CircleButton>
@@ -63,7 +77,15 @@ export default function MusicPlay() {
                         <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
                             <Image src={emptyHeart} width={23} height={21} $unit="px"></Image>
                         </CircleButton>
-                    )}
+                    )} */}
+
+                    <CircleButton
+                        option={isLiked ? "pinkActivated" : "pinkDeActivated"}
+                        style={{ marginLeft: "17rem" }}
+                        onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
+                    >
+                        <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
+                    </CircleButton>
 
                     <Text size="body2" fontWeight="bold" $marginTop="10px">
                         {musicPlay.data.singer}
