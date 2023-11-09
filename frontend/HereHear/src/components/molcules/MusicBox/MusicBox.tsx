@@ -71,6 +71,13 @@ export default function MusicBox(props: MusicBoxProps) {
         }
     }, [pinIndex, isListNull]);
 
+    useEffect(() => {
+        console.log('tag1 ', tag1);
+        if (tag1 === 'tag1') {
+            console.log('나는 동일하다');
+        }
+    }, [tag1]);
+
     function nextMusicHandler(type: string) {
         let nowPinIndex = pinIndex;
         if (type === 'prev') {
@@ -97,22 +104,24 @@ export default function MusicBox(props: MusicBoxProps) {
         <S.Outer onClick={OuterOnClickHandler}>
             <S.MusicBox onClick={InnerOnClickHandler}>
                 {!isNearNull && !isListNull ? (
-                    <>
-                        <Image
-                            src={beforeBtn}
-                            width={35}
-                            height={35}
-                            $unit='px'
-                            onClick={() => {
-                                nextMusicHandler('prev');
-                            }}
-                        ></Image>
+                    <S.MusicBoxInner>
+                        <S.ImageLeftOuter>
+                            <Image
+                                src={beforeBtn}
+                                width={35}
+                                height={35}
+                                $unit='px'
+                                onClick={() => {
+                                    nextMusicHandler('prev');
+                                }}
+                            ></Image>
+                        </S.ImageLeftOuter>
                         <S.BigWrapper
                             onClick={() => {
                                 navigate(`/musicPlay/${pinId}`);
                             }}
                         >
-                            <Image src={imgUrl} width={100} height={100} $unit='px' $borderRadius='10px'></Image>
+                            <Image className='album_img' src={imgUrl} width={100} height={100} $unit='px' $borderRadius='10px'></Image>
 
                             <S.MidWrapper>
                                 <S.MapTextrapper>
@@ -126,17 +135,17 @@ export default function MusicBox(props: MusicBoxProps) {
 
                                 <S.MapMusicTagWrapper>
                                     {/* TODO:버튼 크기 다시확인(아톰 버튼에 없음?) */}
-                                    {tag1 === 'tag1' ? null : (
+                                    {!tag1 ? null : (
                                         <Button option='tag1' $width='55px' $height='25px' size='small'>
                                             {tag1}
                                         </Button>
                                     )}
-                                    {tag2 === 'tag2' ? null : (
+                                    {!tag2 ? null : (
                                         <Button option='tag1' $width='55px' $height='25px' size='small'>
                                             {tag2}
                                         </Button>
                                     )}
-                                    {tag3 === 'tag3' ? null : (
+                                    {!tag3 ? null : (
                                         <Button option='tag1' $width='55px' $height='25px' size='small'>
                                             {tag3}
                                         </Button>
@@ -144,16 +153,18 @@ export default function MusicBox(props: MusicBoxProps) {
                                 </S.MapMusicTagWrapper>
                             </S.MidWrapper>
                         </S.BigWrapper>
-                        <Image
-                            src={afterBtn}
-                            width={35}
-                            height={35}
-                            $unit='px'
-                            onClick={() => {
-                                nextMusicHandler('next');
-                            }}
-                        ></Image>
-                    </>
+                        <S.ImageRightOuter>
+                            <Image
+                                src={afterBtn}
+                                width={35}
+                                height={35}
+                                $unit='px'
+                                onClick={() => {
+                                    nextMusicHandler('next');
+                                }}
+                            ></Image>
+                        </S.ImageRightOuter>
+                    </S.MusicBoxInner>
                 ) : (
                     <p>반경 500m 음악만 재생 가능합니다.</p>
                 )}
