@@ -68,7 +68,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                     }
                 },
                 () -> {
-                    Member newMember = memberMapper.toMember(providerUser.getUserName(), providerUser.getEmail(), providerUser.getProvider());
+                    Member newMember = memberMapper.toMember(providerUser.getEmail(), providerUser.getProvider());
                     log.info("{}{}{}", newMember.getEmail(), newMember.getNickname(), providerUser.getProvider());
                     Member signupMember = memberRepository.save(newMember);
                     log.info("============ 최초 진입 {} ============", signupMember.getMemberId());
