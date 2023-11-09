@@ -1,25 +1,40 @@
 package com.ssafy.herehear.presentation.page
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.ssafy.herehear.presentation.data.AroundMusicDto
 import com.ssafy.herehear.presentation.retrofit.api.musicDetailRequest
-import com.ssafy.herehear.presentation.retrofit.data.response.MusicAroundData
-import com.ssafy.herehear.presentation.retrofit.data.response.MusicDetailData
+import com.ssafy.herehear.presentation.data.MusicDetailDto
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MusicList(
     personalCode: String,
-    musicInfoList: List<MusicAroundData>,
+    aroundMusicList: SnapshotStateList<AroundMusicDto>,
     navController: NavController
 ) {
     // music list 인덱스의 변화를 감지하는 상태
-    val index by remember { mutableStateOf(0) }
-    val musicDetail = remember { mutableStateOf(MusicDetailData()) }
+    val musicDetailList = remember { mutableStateListOf(MusicDetailDto()) }
 
-    musicDetailRequest(personalCode, musicInfoList[index].registeredMusicId, musicDetail)
+    for (item in aroundMusicList) {
+        musicDetailRequest(
+            personalCode,
+            item.registeredMusicId,
+            musicDetailList
+        )
+    }
 
-    MusicInfo(musicDetail, navController, index)
+    HorizontalPager(
+        pageCount = musicDetailList.size,
+        modifier = Modifier.fillMaxSize(),
+    ) { page ->
+        MusicInfo(musicDetailList[page], navController)
+    }
 }
