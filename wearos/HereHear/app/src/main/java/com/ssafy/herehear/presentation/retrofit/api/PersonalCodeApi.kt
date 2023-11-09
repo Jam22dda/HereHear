@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import com.ssafy.herehear.presentation.retrofit.RetrofitConnection
 import com.ssafy.herehear.presentation.retrofit.data.response.ApiResponse
-import com.ssafy.herehear.presentation.retrofit.data.response.AuthResponse
 import com.ssafy.herehear.presentation.retrofit.service.PersonalCodeService
 import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 import com.ssafy.herehear.presentation.util.writePersonalCodeFile
