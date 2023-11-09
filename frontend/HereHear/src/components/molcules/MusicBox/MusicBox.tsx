@@ -71,13 +71,6 @@ export default function MusicBox(props: MusicBoxProps) {
         }
     }, [pinIndex, isListNull]);
 
-    useEffect(() => {
-        console.log("tag1 ", tag1);
-        if (tag1 === "tag1") {
-            console.log("나는 동일하다");
-        }
-    }, [tag1]);
-
     function nextMusicHandler(type: string) {
         let nowPinIndex = pinIndex;
         if (type === "prev") {
