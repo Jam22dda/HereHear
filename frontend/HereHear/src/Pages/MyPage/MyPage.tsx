@@ -191,9 +191,9 @@ export default function MyPage() {
                             />
                         ))}
                     </S.MyItemWrapper>
-                    <Navbar></Navbar>
                 </S.MyPageWrapper>
             </div>
+            <Navbar></Navbar>
             {isModalOpen && (
                 <ModalBg>
                     <Modal toggleModal={() => toggleModal()}>
