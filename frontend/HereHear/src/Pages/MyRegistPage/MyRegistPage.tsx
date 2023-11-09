@@ -10,9 +10,9 @@ import { useGetRegistMusic } from "../../apis/Mypage/Quries/useGetRegistMusic";
 export default function MyRegistPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-    // const navigatePage = (path: string) => {
-    //     navigate(path);
-    // };
+    const navigatePage = (path: string) => {
+        navigate(path);
+    };
 
     interface RegistMusicType {
         albumImg: string;
@@ -22,7 +22,6 @@ export default function MyRegistPage() {
     }
 
     const RegistMusic: RegistMusicType[] = useGetRegistMusic();
-    console.log(RegistMusic);
 
     return (
         <div id="display">
@@ -42,7 +41,7 @@ export default function MyRegistPage() {
                 <Text
                     size="subtitle1"
                     fontWeight="bold"
-                    $margin="50px 0 30px 0"
+                    $margin="20px 0 48px 0"
                 >
                     내가 등록한 노래
                 </Text>
@@ -53,6 +52,11 @@ export default function MyRegistPage() {
                                 src={item.albumImg}
                                 songtitle={item.subject}
                                 artist={item.singer}
+                                onClick={() =>
+                                    navigatePage(
+                                        `/musicPlay/${item.registeredMusicId}`
+                                    )
+                                }
                             />
                         </S.MyRegistWrapper>
                     ))}

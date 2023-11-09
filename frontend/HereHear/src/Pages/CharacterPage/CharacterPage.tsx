@@ -31,7 +31,6 @@ const monzi = [
 export default function CharacterPage() {
     const [selectedItem, setSelectedItem] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    console.log(selectedItem);
     const handleItemClick = (idx: number) => {
         setSelectedItem(idx);
         setSignUpInfo({
@@ -46,7 +45,6 @@ export default function CharacterPage() {
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(SignUpInfoAtom);
     const { mutate } = useAddUser();
-    console.log(signUpInfo);
     const handleLogin = (signUpInfo: SignUpInfo) => {
         if (selectedItem !== 0) {
             mutate(signUpInfo);
@@ -75,13 +73,7 @@ export default function CharacterPage() {
                         />
                     ))}
                 </S.CharacterWrapper>
-                <Button
-                    option="save"
-                    size="large"
-                    $width="132px"
-                    $margin="60px 0 0 0"
-                    onClick={() => handleLogin(signUpInfo)}
-                >
+                <Button option="save" size="large" $width="132px" $margin="60px 0 0 0" onClick={() => handleLogin(signUpInfo)}>
                     저장하기
                 </Button>
             </S.CharacterPageWrapper>
@@ -89,27 +81,12 @@ export default function CharacterPage() {
                 <ModalBg>
                     <Modal toggleModal={() => toggleModal()}>
                         <S.CharacterModalWrapper>
-                            <CircleButton
-                                option="default"
-                                size="medium"
-                                onClick={toggleModal}
-                            >
-                                <Image
-                                    src={iconExit}
-                                    width={20}
-                                    height={20}
-                                    $unit="px"
-                                ></Image>
+                            <CircleButton option="default" size="medium" onClick={toggleModal}>
+                                <Image src={iconExit} width={20} height={20} $unit="px"></Image>
                             </CircleButton>
                         </S.CharacterModalWrapper>
                         <S.CharacterPageWrapper>
-                            <Image
-                                src={monziHerehear}
-                                width={100}
-                                height={100}
-                                $unit="px"
-                                $margin="0 0 30px 0"
-                            ></Image>
+                            <Image src={monziHerehear} width={100} height={100} $unit="px" $margin="0 0 30px 0"></Image>
                             <h2>캐릭터를 골라주세요!</h2>
                         </S.CharacterPageWrapper>
                     </Modal>

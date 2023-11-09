@@ -14,11 +14,15 @@ const navBarInfo = [
     { src: iconMap, path: "/core" },
     { src: iconMusiclist, path: "/listenedMusic" },
     { src: iconMusicplus, path: "/registMusic" },
-    { src: iconStatistics, path: "/selectMusic" },
+    { src: iconStatistics, path: "/statistic" },
     { src: iconMypage, path: "/mypage" },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+    active?: boolean;
+}
+
+export default function Navbar({ active }: NavbarProps) {
     const navigate = useNavigate();
 
     const navigatePage = (path: string) => {
@@ -26,7 +30,7 @@ export default function Navbar() {
     };
 
     return (
-        <S.StyledNavBarBackground>
+        <S.StyledNavBarBackground active={active}>
             <S.StyledNavBar>
                 {navBarInfo.map(({ src, path }) => {
                     return (
