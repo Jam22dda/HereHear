@@ -14,6 +14,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -157,9 +158,12 @@ class MainActivity : ComponentActivity() {
                             aroundMusicList
                         )
 
-                        if (aroundMusicList.size == 0) {
-                            navController.navigate(RouteType.NO_MUSIC.toString())
-                        } else {
+                        if (aroundMusicList.isEmpty()) {
+                            navController.navigate(RouteType.NO_MUSIC.toString()) {
+                                popUpTo(RouteType.MUSIC_LIST.toString()) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        } else if (aroundMusicList.isNotEmpty()) {
                             MusicList(
                                 personalCode = personalCode.value,
                                 aroundMusicList = aroundMusicList,
