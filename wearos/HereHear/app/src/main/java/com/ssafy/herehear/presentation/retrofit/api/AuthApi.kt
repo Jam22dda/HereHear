@@ -5,7 +5,6 @@ import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import com.ssafy.herehear.presentation.data.AuthDto
 import com.ssafy.herehear.presentation.retrofit.RetrofitConnection
-import com.ssafy.herehear.presentation.retrofit.data.response.ApiResponse
 import com.ssafy.herehear.presentation.retrofit.service.PersonalCodeService
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,12 +20,12 @@ fun authRequest(
     val retrofit = RetrofitConnection.getInstance().create(PersonalCodeService::class.java)
 
     retrofit.authPersonalCode(personalCode)
-        .enqueue(object : Callback<ApiResponse> {
+        .enqueue(object : Callback<com.ssafy.herehear.presentation.data.AuthResponse> {
             override fun onResponse(
-                call: Call<ApiResponse>,
-                response: Response<ApiResponse>
+                call: Call<com.ssafy.herehear.presentation.data.AuthResponse>,
+                authResponse: Response<com.ssafy.herehear.presentation.data.AuthResponse>
             ) {
-                val apiResult: AuthDto = response.body()?.data ?: AuthDto()
+                val apiResult: AuthDto = authResponse.body()?.data ?: AuthDto()
 
                 Log.d("[authRequest]", "authRequest API 호출 성공, result = ${apiResult.accessResult}")
                 if (apiResult.accessResult) {
@@ -41,7 +40,7 @@ fun authRequest(
                 }
             }
 
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+            override fun onFailure(call: Call<com.ssafy.herehear.presentation.data.AuthResponse>, t: Throwable) {
                 Log.d("[authRequest]", "authRequest API 호출 실패")
                 isLoginSuccess.value = "fail"
             }

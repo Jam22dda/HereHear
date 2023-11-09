@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import com.ssafy.herehear.presentation.retrofit.RetrofitConnection
-import com.ssafy.herehear.presentation.retrofit.data.response.ApiResponse
 import com.ssafy.herehear.presentation.retrofit.service.PersonalCodeService
 import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 import com.ssafy.herehear.presentation.util.writePersonalCodeFile
@@ -22,14 +21,14 @@ fun personalCodeApi(
     val retrofitAPI = RetrofitConnection.getInstance().create(PersonalCodeService::class.java)
 
     retrofitAPI.authPersonalCode(personalCode)
-        .enqueue(object : Callback<ApiResponse> {
+        .enqueue(object : Callback<com.ssafy.herehear.presentation.data.AuthResponse> {
             override fun onResponse(
-                call: Call<ApiResponse>,
-                response: Response<ApiResponse>
+                call: Call<com.ssafy.herehear.presentation.data.AuthResponse>,
+                authResponse: Response<com.ssafy.herehear.presentation.data.AuthResponse>
             ) {
                 Log.d("Retrofit", "personal code api 호출 성공")
-                Log.d("Retrofit", response.body().toString())
-                val result: ApiResponse? = response.body()
+                Log.d("Retrofit", authResponse.body().toString())
+                val result: com.ssafy.herehear.presentation.data.AuthResponse? = authResponse.body()
 
                 if (result?.data?.accessResult == true) {
                     baseContext.deletePersonalCodeFile("personalCode.txt")
@@ -44,7 +43,7 @@ fun personalCodeApi(
                 }
             }
 
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+            override fun onFailure(call: Call<com.ssafy.herehear.presentation.data.AuthResponse>, t: Throwable) {
                 Log.d("Retrofit", "personal code api 호출 실패")
             }
         })
