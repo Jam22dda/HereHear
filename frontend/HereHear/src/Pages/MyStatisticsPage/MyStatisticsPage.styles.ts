@@ -11,3 +11,11 @@ export const Profile = styled.div`
     align-items: center;
     justify-content: center;
 `;
+
+export const readyPageWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80vh;
+    justify-content: center;
+`;

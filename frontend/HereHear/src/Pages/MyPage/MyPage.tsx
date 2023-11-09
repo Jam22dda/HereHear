@@ -12,8 +12,8 @@ import iconBadge from "../../assets/MyPage/badges.png";
 import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 import { useNavigate } from "react-router-dom";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
-import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
-import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
+// import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
+// import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
 import { useGetMyAchievement } from "../../apis/Mypage/Quries/useGetMyAchievement";
 import Modal from "../../components/atoms/Modal/Modal";
 import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
@@ -25,6 +25,9 @@ import { changeNickname } from "../../types/user";
 import monziHerehear from "../../../public/images/monzi-herehear.png";
 import { useGetCheckNickname } from "../../apis/Login/Quries/useGetCheckNickname";
 import { useDebouncedCallback } from "use-debounce";
+import { useRecoilState } from "recoil";
+import { MyAchievementAtom } from "../../states/MypageAtoms";
+import iconBack from "../../assets/CircleButton/icon-back.png";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -37,13 +40,23 @@ export default function MyPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
     const navigatePage = (path: string) => {
-        navigate(path);
+        if (path === "/achievement") {
+            if (UserInfo.achievementId === null) {
+                navigate(path);
+            } else {
+                setMyAchievement(MyAchievement);
+                navigate(path);
+            }
+        } else {
+            navigate(path);
+        }
     };
 
     const UserInfo = useGetUserinfo();
-    const Follower = useGetFollower();
-    const Following = useGetFollowing();
+    // const Follower = useGetFollower();
+    // const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
+    const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [isBlanked, setIsBlanked] = useState(false);
@@ -79,8 +92,6 @@ export default function MyPage() {
 
     const { mutate: postNicknameMutate } = usePostNickname();
     const { data: checkNicknameData } = useGetCheckNickname(debouncedNickname);
-
-    console.log(checkNicknameData);
     const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
         setNickname(e.target.value);
         debouncedCheck(e.target.value);
@@ -100,6 +111,18 @@ export default function MyPage() {
     return (
         <div id="display">
             <div className="container">
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
+                </CircleButton>
                 <S.MyPageWrapper>
                     <S.Profile>
                         <Image
@@ -113,13 +136,18 @@ export default function MyPage() {
                         ></Image>
                     </S.Profile>
                     <S.MydataWrapper>
-                        <Image
-                            src={MyAchievement && MyAchievement.badge.badgeImg}
-                            width={24}
-                            height={24}
-                            $unit="px"
-                            $margin="0 4px 4px 0"
-                        ></Image>
+                        {MyAchievement && (
+                            <Image
+                                src={
+                                    MyAchievement &&
+                                    MyAchievement.badge.badgeImg
+                                }
+                                width={24}
+                                height={24}
+                                $unit="px"
+                                $margin="0 4px 4px 0"
+                            ></Image>
+                        )}
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
                         </Text>
@@ -140,7 +168,7 @@ export default function MyPage() {
                             ></Image>
                         </S.EditWrapper>
                     </S.MydataWrapper>
-                    <S.FollowWrapper>
+                    {/* <S.FollowWrapper>
                         <Button
                             option="tag_plus"
                             size="largeplus"
@@ -149,15 +177,10 @@ export default function MyPage() {
                         >
                             팔로잉 {Following?.length ?? 0}명
                         </Button>
-                        <Button
-                            option="tag_plus"
-                            size="largeplus"
-                            $width="130px"
-                            onClick={() => navigatePage("/follower")}
-                        >
+                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/follower")}>
                             팔로워 {Follower?.length ?? 0}명
                         </Button>
-                    </S.FollowWrapper>
+                    </S.FollowWrapper> */}
                     <S.MyItemWrapper>
                         {mypage.map((item, index) => (
                             <ItemBox
@@ -192,12 +215,14 @@ export default function MyPage() {
                         )}
                         {!isBlanked && !isDuplicated && (
                             <S.TextWrapper>
-                                <Text fontWeight="bold">
-                                    변경할 닉네임을 작성
+                                <Text
+                                    size="body2"
+                                    fontWeight="medium"
+                                    $margin="10px 0 28px 0"
+                                >
+                                    변경할 닉네임을 작성해 주세요!
                                 </Text>
-                                <Text $margin="0 0 28px 0" fontWeight="bold">
-                                    해주세요!
-                                </Text>
+
                                 <Input onChange={handleChangeNickname}></Input>
                                 <Button
                                     onClick={() => handleSaveNickname(nickname)}

@@ -1,15 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAroundMusicList } from "../mapAPI";
 
 const useGetAroundMusicList = (lat: number, lng: number) => {
-    const { data: musicAroundList } = useQuery({
+    const { data: musicAroundList, refetch } = useQuery({
         queryKey: ["musicAroundList", lat, lng],
         // queryFn: getAroundMusicList,
         queryFn: () => getAroundMusicList(lat, lng),
-        // enabled: false, // 쿼리를 비활성화하거나 활성화하는 플래그
+        enabled: false, // 쿼리를 비활성화하거나 활성화하는 플래그
     });
 
-    return { musicAroundList };
+    return { musicAroundList, refetch };
 };
 
 export { useGetAroundMusicList };
