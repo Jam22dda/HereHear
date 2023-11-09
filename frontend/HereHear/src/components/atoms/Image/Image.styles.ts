@@ -9,6 +9,7 @@ export interface ImageProps extends ComponentPropsWithRef<"img"> {
     $unit?: "rem" | "px" | "em" | "%";
     alignItems?: string;
     $borderRadius?: string;
+    onLoad?: () => void;
 }
 
 const ImageConatiner = styled.img<ImageProps>`
