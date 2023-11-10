@@ -17,6 +17,7 @@ public class ControllerAdvisor {
         CommonResponse response = new CommonResponse();
         response.setCode(e.getExceptionStatus().getCode());
         response.setMessage(e.getExceptionStatus().getMessage());
+        e.printStackTrace();
         return response;
     }
 
