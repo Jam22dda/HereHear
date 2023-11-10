@@ -41,5 +41,5 @@ export const YourItemWrapper = styled.div`
 
 export const FollowBtnWrapper = styled.div`
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
 `;
