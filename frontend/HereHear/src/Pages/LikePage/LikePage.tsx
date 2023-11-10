@@ -11,6 +11,9 @@ import { useGetLikeMusic } from "../../apis/Mypage/Quries/useGetLikeMusic";
 import { usePostLikeMusic } from "../../apis/Music/Mutations/useLikeMusic";
 import { registeredMusicId } from "../../types/music";
 import { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { YourIdAtom } from "../../states/MypageAtoms";
+import { useGetYourLikeMusic } from "../../apis/YourPage/Quries/useGetYourLikeMusic";
 
 export default function LikePage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -18,6 +21,8 @@ export default function LikePage() {
     const navigatePage = (path: string) => {
         navigate(path);
     };
+
+    const yourId = useRecoilValue(YourIdAtom);
 
     interface LikeMusicType {
         albumImg: string;
@@ -28,6 +33,7 @@ export default function LikePage() {
     }
 
     const LikeMusic: LikeMusicType[] = useGetLikeMusic();
+    const YourLikeMusic: LikeMusicType[] = useGetYourLikeMusic(yourId);
     const { mutate: postLikeMusicMutate } = usePostLikeMusic();
 
     const handleLikeMusicClick = (
@@ -77,58 +83,71 @@ export default function LikePage() {
                 >
                     내가 좋아요한 노래
                 </Text>
-                {LikeMusic &&
-                    LikeMusic.map((item: LikeMusicType, index: number) => (
-                        <S.LikeItemWrapper key={index}>
-                            <MusicItem
-                                src={item.albumImg}
-                                songtitle={item.subject}
-                                artist={item.singer}
-                                onClick={() =>
-                                    navigatePage(
-                                        `/musicPlay/${item.registeredMusicId}`
-                                    )
-                                }
-                            />
-                            {likeList[index] && likeList[index].isLiked ? (
-                                <CircleButton
-                                    option="gradDeActivated"
-                                    size="large"
-                                    onClick={() =>
-                                        handleLikeMusicClick(
-                                            item.registeredMusicId,
-                                            index
-                                        )
-                                    }
-                                >
-                                    <Image
-                                        src={iconHeart}
-                                        width={24}
-                                        height={20}
-                                        $unit="px"
-                                    ></Image>
-                                </CircleButton>
-                            ) : (
-                                <CircleButton
-                                    option="gradDeActivated"
-                                    size="large"
-                                    onClick={() =>
-                                        handleLikeMusicClick(
-                                            item.registeredMusicId,
-                                            index
-                                        )
-                                    }
-                                >
-                                    <Image
-                                        src={iconEmptyHeart}
-                                        width={24}
-                                        height={20}
-                                        $unit="px"
-                                    ></Image>
-                                </CircleButton>
-                            )}
-                        </S.LikeItemWrapper>
-                    ))}
+                {yourId === 0
+                    ? LikeMusic &&
+                      LikeMusic.map((item: LikeMusicType, index: number) => (
+                          <S.LikeItemWrapper key={index}>
+                              <MusicItem
+                                  src={item.albumImg}
+                                  songtitle={item.subject}
+                                  artist={item.singer}
+                                  onClick={() =>
+                                      navigatePage(
+                                          `/musicPlay/${item.registeredMusicId}`
+                                      )
+                                  }
+                              />
+                              {likeList[index] && likeList[index].isLiked ? (
+                                  <CircleButton
+                                      option="gradDeActivated"
+                                      size="large"
+                                      onClick={() =>
+                                          handleLikeMusicClick(
+                                              item.registeredMusicId,
+                                              index
+                                          )
+                                      }
+                                  >
+                                      <Image
+                                          src={iconHeart}
+                                          width={24}
+                                          height={20}
+                                          $unit="px"
+                                      ></Image>
+                                  </CircleButton>
+                              ) : (
+                                  <CircleButton
+                                      option="gradDeActivated"
+                                      size="large"
+                                      onClick={() =>
+                                          handleLikeMusicClick(
+                                              item.registeredMusicId,
+                                              index
+                                          )
+                                      }
+                                  >
+                                      <Image
+                                          src={iconEmptyHeart}
+                                          width={24}
+                                          height={20}
+                                          $unit="px"
+                                      ></Image>
+                                  </CircleButton>
+                              )}
+                          </S.LikeItemWrapper>
+                      ))
+                    : YourLikeMusic &&
+                      YourLikeMusic.map(
+                          (item: LikeMusicType, index: number) => (
+                              <S.LikeItemWrapper key={index}>
+                                  <MusicItem
+                                      src={item.albumImg}
+                                      songtitle={item.subject}
+                                      artist={item.singer}
+                                  />
+                              </S.LikeItemWrapper>
+                          )
+                      )}
             </div>
         </div>
     );

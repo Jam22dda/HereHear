@@ -12,6 +12,11 @@ import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 import { useNavigate } from "react-router-dom";
 import icon1102DJ from "../../../public/images/icon-1102dj.png";
 import { useGetYourinfo } from "../../apis/Mypage/Quries/useGetYourInfo";
+import { YourIdAtom } from "../../states/MypageAtoms";
+import { useRecoilValue } from "recoil";
+import { useGetYourFollowing } from "../../apis/YourPage/Quries/useGetYourFollowing";
+import { useGetYourFollower } from "../../apis/YourPage/Quries/useGetYourFollower";
+import { FollowingType } from "../../types/user";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -20,16 +25,18 @@ const mypage = [
     { src: iconMystatistics, name: "개인 통계", params: "/myStatistics" },
 ];
 
-export default function MyPage() {
-    // const { id } = useParams();
-
+export default function YourPage() {
+    const yourId = useRecoilValue(YourIdAtom);
+    console.log(yourId);
     const navigate = useNavigate(); // useNavigate 훅 사용
 
     const navigatePage = (path: string) => {
         navigate(path);
     };
 
-    const YourInfo = useGetYourinfo(14);
+    const YourInfo = useGetYourinfo(Number(yourId));
+    const YourFollowing: FollowingType[] = useGetYourFollowing(yourId);
+    const YourFollower: FollowingType[] = useGetYourFollower(yourId);
 
     return (
         <div id="display">
@@ -74,15 +81,17 @@ export default function MyPage() {
                             option="tag_plus"
                             size="largeplus"
                             $width="130px"
+                            onClick={() => navigatePage("/following")}
                         >
-                            팔로잉
+                            팔로잉 {YourFollowing?.length ?? 0}명
                         </Button>
                         <Button
                             option="tag_plus"
                             size="largeplus"
                             $width="130px"
+                            onClick={() => navigatePage("/follower")}
                         >
-                            팔로워
+                            팔로워 {YourFollower?.length ?? 0}명
                         </Button>
                     </S.FollowWrapper>
                     <S.YourItemWrapper>
@@ -96,8 +105,8 @@ export default function MyPage() {
                         ))}
                     </S.YourItemWrapper>
                 </S.YourPageWrapper>
-                <Navbar></Navbar>
             </div>
+            <Navbar></Navbar>
         </div>
     );
 }

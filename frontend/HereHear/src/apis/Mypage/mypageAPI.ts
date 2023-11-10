@@ -16,7 +16,7 @@ const getYourinfo = async (id: number) => {
         const response = await instance.get(`/member/info/${id}`);
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("다른 유저의 정보 가져오기 실패", error);
         throw error;
     }
 };

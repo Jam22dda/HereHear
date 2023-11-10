@@ -71,6 +71,21 @@ export default function MusicBox(props: MusicBoxProps) {
         }
     }, [pinIndex, isListNull]);
 
+    // 이 함수는 각 텍스트가 overflow 상태인지를 체크하고, 애니메이션 상태를 업데이트합니다.
+    const checkAndAnimateText = () => {
+        if (titleRef.current) {
+            const isTitleOverflow = checkOverflow(titleRef.current);
+            setIsTitleOverflowing(isTitleOverflow);
+            setAnimateTitle(isTitleOverflow);
+        }
+
+        if (artistRef.current) {
+            const isArtistOverflow = checkOverflow(artistRef.current);
+            setIsArtistOverflowing(isArtistOverflow);
+            setAnimateArtist(isArtistOverflow);
+        }
+    };
+
     function nextMusicHandler(type: string) {
         let nowPinIndex = pinIndex;
         if (type === "prev") {
@@ -83,6 +98,13 @@ export default function MusicBox(props: MusicBoxProps) {
 
         setPinId(props.musicAroundList[nowPinIndex].registeredMusicId);
         setPinIndex(nowPinIndex);
+
+        // 새로운 텍스트 로드를 위해 이미지 URL 상태를 업데이트합니다.
+        setImgUrl(props.musicAroundList[nowPinIndex].albumImg);
+        // 상태 업데이트 후 적절한 시간이 지난 후에 애니메이션 상태를 검사합니다.
+        setTimeout(() => {
+            checkAndAnimateText();
+        }, 0);
     }
 
     function OuterOnClickHandler() {
@@ -111,22 +133,13 @@ export default function MusicBox(props: MusicBoxProps) {
 
     // 이미지 로드 완료 후 각각의 텍스트에 대해 오버플로우 및 애니메이션 상태를 업데이트합니다.
     const imageOnLoad = () => {
-        if (titleRef.current) {
-            const isTitleOverflow = checkOverflow(titleRef.current);
-            setIsTitleOverflowing(isTitleOverflow);
-            setAnimateTitle(isTitleOverflow);
-        }
-
-        if (artistRef.current) {
-            const isArtistOverflow = checkOverflow(artistRef.current);
-            setIsArtistOverflowing(isArtistOverflow);
-            setAnimateArtist(isArtistOverflow);
-        }
+        checkAndAnimateText();
     };
 
     // 윈도우 크기가 변경될 때 오버플로우와 애니메이션 상태를 업데이트합니다.
     const handleResize = () => {
         imageOnLoad(); // 이미지 로드 함수를 호출하여 상태를 업데이트합니다.
+        checkAndAnimateText();
     };
 
     // Resize 이벤트 리스너를 설정합니다.
@@ -178,6 +191,7 @@ export default function MusicBox(props: MusicBoxProps) {
                             <S.MidWrapper>
                                 <S.MapTextrapper>
                                     <S.MarqueeText
+                                        key={title + pinIndex} // 이 부분을 추가합니다.
                                         ref={titleRef}
                                         size="body2"
                                         fontWeight="bold"
@@ -185,13 +199,14 @@ export default function MusicBox(props: MusicBoxProps) {
                                         $margin="0 0 5px"
                                         animate={
                                             isTitleOverflowing && animateTitle
-                                        } // 오버플로우가 있고 애니메이션 상태가 'true'일 때만 애니메이션을 활성화합니다.
+                                        }
                                         isOverflowing={isTitleOverflowing}
                                     >
                                         {title}
                                     </S.MarqueeText>
 
                                     <S.MarqueeText
+                                        key={singer + pinIndex}
                                         ref={artistRef}
                                         size="body2"
                                         fontWeight="medium"
