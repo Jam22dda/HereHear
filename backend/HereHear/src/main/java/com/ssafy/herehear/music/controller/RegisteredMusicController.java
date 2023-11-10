@@ -8,6 +8,7 @@ import com.ssafy.herehear.music.dto.response.*;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import com.ssafy.herehear.music.service.SseService;
 import com.ssafy.herehear.music.util.HourFilterUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class RegisteredMusicController {
     private final SseService sseService;
 
     @PostMapping
-    public CommonResponse registerMusic(Authentication authentication, @RequestBody RegisterMusicReqDto req) {
+    public CommonResponse registerMusic(Authentication authentication, @RequestBody @Valid RegisterMusicReqDto req) {
         List<SseResDto> sseResDto = registeredMusicService.registerMusic(Long.parseLong(authentication.getName()), req);
         sseService.notify(sseResDto);
         return new CommonResponse("200", "음악 등록");
