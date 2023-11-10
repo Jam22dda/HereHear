@@ -20,17 +20,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SseServiceImpl implements SseService {
-
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;// timeout 12시간
 
     private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
     private final SseRepositoryImpl sseRepositoryImpl;
     private final RegisterMusicMapper registerMusicMapper;
-
-    @Override
-    public SseEmitter subscribe(Long memberId) {
-        return createEmitter(memberId);
-    }
 
     @Override
     public void sendToClient(Long memberId, Object data) {
@@ -46,12 +40,7 @@ public class SseServiceImpl implements SseService {
     }
 
     @Override
-    public void notify(Object event) {
-        sendAllClient(event);
-    }
-
-    @Override
-    public void sendAllClient(Object data) {
+    public void notify(Object data) {
         sseRepositoryImpl.forEach((id, emitter) -> {
             try {
                 emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(data));
@@ -62,7 +51,7 @@ public class SseServiceImpl implements SseService {
     }
 
     @Override
-    public SseEmitter createEmitter(Long memberId) {
+    public SseEmitter subscribe(Long memberId) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         sseRepositoryImpl.save(memberId, emitter);
 
@@ -77,6 +66,7 @@ public class SseServiceImpl implements SseService {
     @Scheduled(cron = "0 0 * * * ?")//정각 마다 실행
 //    @Scheduled(fixedRate = 5000)//test
     public void checkForDataChanges() {
+        log.info("checkForDataChanges SSE 실행");
         List<SseResDto> sseResDtos = new ArrayList<>();
 
         //SSE 삭제
