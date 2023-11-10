@@ -206,6 +206,7 @@ export default function Core() {
 
     let musicPinIns = Object.assign({}, musicPin, {}); // musicPinIns를 밖으로 이동
 
+    // 이벤트 핸들러 등록 / 1회 실행
     useEffect(() => {
         if (eventSource && naverState && mapState) {
             // const sse = eventSource;
@@ -253,7 +254,6 @@ export default function Core() {
                         }
                     }
 
-                    console.log('LLLLLLLLLLLLList 이까지는 들어오는 거 같고');
                     // 음악 데이터를 Map 형태로 변경하여 저장
                     const musicMapIns: MusicMap = addList.reduce((map: MusicMap, music: Music) => {
                         const { registeredMusicId, ...otherProps } = music;
@@ -319,67 +319,114 @@ export default function Core() {
         }
     }, [eventSource, naverState, mapState]);
 
-    useEffect(() => {}, [musicPin]);
+    // 매초마다 현재 위치 정보 가져오기
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            // console.log('매초마다 출력');
+            // // lat 상태를 업데이트합니다. 콜백에서 현재 상태를 가져와서 0.0005를 더합니다.
+            // setLat(prevLat => prevLat + 0.0005);
+            // // lng 상태를 업데이트합니다. 콜백에서 현재 상태를 가져와서 0.0005를 더합니다.
+            // setLng(prevLng => prevLng + 0.0005);
+
+            // 현재 위치 가져오기
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    setLat(position.coords.latitude);
+                    setLng(position.coords.longitude);
+                },
+                error => {
+                    console.error('Error getting location:', error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                }
+            );
+        }, 1000); // 1000ms = 1초
+
+        // 컴포넌트가 언마운트되거나 재렌더링되기 전에 인터벌을 클리어합니다.
+        return () => clearInterval(intervalId);
+    }, []); // 빈 의존성 배열을 사용하여 마운트 시에만 인터벌을 설정합니다.
+
+    // 내 위도/경도에 맞게 마커와 원 이동시키기
+    useEffect(() => {
+        if (userPinState && circleState) {
+            console.log(' ');
+
+            // console.log((userPinState as any).map.center);
+
+            (userPinState as any).setPosition(new naver.maps.LatLng(lat, lng));
+            (circleState as any).setCenter(new naver.maps.LatLng(lat, lng));
+            // console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+        }
+    }, [lat, lng, userPinState, circleState]); // lat과 lng가 변경될 때마다 이 useEffect가 실행됩니다
+
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         console.log('하위');
+
+    //     }, 3000); // 3000ms = 3초
+    // }, []);
 
     // 지도 가운데 변경 (3초마다)
-    useEffect(() => {
-        if (mapState && naverState && userPinState && centerState) {
-            // mapState가 설정되었을 때만 인터벌을 시작합니다.
-            const intervalId = setInterval(() => {
-                (userPinState as any).setMap(null);
+    // useEffect(() => {
+    //     if (mapState && naverState && userPinState && centerState) {
+    //         // mapState가 설정되었을 때만 인터벌을 시작합니다.
+    //         const intervalId = setInterval(() => {
+    //             (userPinState as any).setMap(null);
 
-                let latitude: number;
-                let longitude: number;
+    //             let latitude: number;
+    //             let longitude: number;
 
-                // 현재 위치 가져오기
-                navigator.geolocation.getCurrentPosition(
-                    position => {
-                        latitude = position.coords.latitude;
-                        longitude = position.coords.longitude;
-                        // const { latitude, longitude } = position.coords;
+    //             // 현재 위치 가져오기
+    //             navigator.geolocation.getCurrentPosition(
+    //                 position => {
+    //                     latitude = position.coords.latitude;
+    //                     longitude = position.coords.longitude;
+    //                     // const { latitude, longitude } = position.coords;
 
-                        // console.log('Latitude:', latitude, 'Longitude:', longitude);
-                        setLat(latitude);
-                        setLng(longitude);
+    //                     // console.log('Latitude:', latitude, 'Longitude:', longitude);
+    //                     setLat(latitude);
+    //                     setLng(longitude);
 
-                        // 변경된 현재 위치 찍기
-                        const userPin = new (naverState as any).maps.Marker({
-                            position: new (naverState as any).maps.LatLng(latitude, longitude),
-                            // position: new naverState.maps.LatLng(33.3590628, 126.534361), // 에졔로 제주도 이동하게 만듦
-                            map: mapState,
-                            icon: {
-                                content: `
-                                    <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white; box-shadow: 3px 3px 5px #8496B4;"></div>
-                            `,
-                            },
-                        });
+    //                     // 변경된 현재 위치 찍기
+    //                     const userPin = new (naverState as any).maps.Marker({
+    //                         position: new (naverState as any).maps.LatLng(latitude, longitude),
+    //                         // position: new naverState.maps.LatLng(33.3590628, 126.534361), // 에졔로 제주도 이동하게 만듦
+    //                         map: mapState,
+    //                         icon: {
+    //                             content: `
+    //                                 <div style="width: 30px; height: 30px; background-color: blue; border-radius: 100%; border: 4px solid white; box-shadow: 3px 3px 5px #8496B4;"></div>
+    //                         `,
+    //                         },
+    //                     });
 
-                        // 현재 위치를 중심으로 하는 반투명한 원 생성
-                        const userCircle = new (naverState as any).maps.Circle({
-                            map: mapState,
-                            center: new (naverState as any).maps.LatLng(latitude, longitude),
-                            radius: 500, // 반지름을 미터 단위로 설정
-                            fillColor: 'rgba(51, 153, 255, 0.3)', // 반투명한 파란색으로 채움
-                            strokeColor: 'rgba(51, 153, 255, 0.6)', // 테두리 색
-                            strokeWeight: 2, // 테두리 두께
-                        });
+    //                     // 현재 위치를 중심으로 하는 반투명한 원 생성
+    //                     const userCircle = new (naverState as any).maps.Circle({
+    //                         map: mapState,
+    //                         center: new (naverState as any).maps.LatLng(latitude, longitude),
+    //                         radius: 500, // 반지름을 미터 단위로 설정
+    //                         fillColor: 'rgba(51, 153, 255, 0.3)', // 반투명한 파란색으로 채움
+    //                         strokeColor: 'rgba(51, 153, 255, 0.6)', // 테두리 색
+    //                         strokeWeight: 2, // 테두리 두께
+    //                     });
 
-                        setUserPinState(userPin);
-                    },
-                    error => {
-                        console.error('Error getting location:', error);
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        maximumAge: 0,
-                    }
-                );
-            }, 3000); // 3000ms = 3초
+    //                     setUserPinState(userPin);
+    //                 },
+    //                 error => {
+    //                     console.error('Error getting location:', error);
+    //                 },
+    //                 {
+    //                     enableHighAccuracy: true,
+    //                     maximumAge: 0,
+    //                 }
+    //             );
+    //         }, 3000); // 3000ms = 3초
 
-            // 컴포넌트가 언마운트될 때 인터벌을 클리어
-            return () => clearInterval(intervalId);
-        }
-    }, []);
+    //         // 컴포넌트가 언마운트될 때 인터벌을 클리어
+    //         return () => clearInterval(intervalId);
+    //     }
+    // }, [mapState, naverState, userPinState, centerState]);
 
     // 내가 이동할 때마다 위치 업데이트 시키기
     useEffect(() => {
