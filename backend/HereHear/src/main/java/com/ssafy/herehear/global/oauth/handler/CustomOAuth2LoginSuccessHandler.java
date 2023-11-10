@@ -63,7 +63,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             response.addCookie(cookie);
 
                             log.info("============ 기존 회원 {} ============", tempMember.getMemberId());
-                            redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken;
+                            redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken + "&id=" + tempMember.getMemberId();
                         }
                     }
                 },
