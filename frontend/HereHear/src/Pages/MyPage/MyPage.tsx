@@ -12,8 +12,8 @@ import iconBadge from "../../assets/MyPage/badges.png";
 import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 import { useNavigate } from "react-router-dom";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
-import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
-import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
+// import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
+// import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
 import { useGetMyAchievement } from "../../apis/Mypage/Quries/useGetMyAchievement";
 import Modal from "../../components/atoms/Modal/Modal";
 import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
@@ -59,8 +59,8 @@ export default function MyPage() {
     };
 
     const UserInfo = useGetUserinfo();
-    const Follower = useGetFollower();
-    const Following = useGetFollowing();
+    // const Follower = useGetFollower();
+    // const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
     const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -177,7 +177,7 @@ export default function MyPage() {
                             ></Image>
                         </S.EditWrapper>
                     </S.MydataWrapper>
-                    <S.FollowWrapper>
+                    {/* <S.FollowWrapper>
                         <Button
                             option="tag_plus"
                             size="largeplus"
@@ -194,7 +194,7 @@ export default function MyPage() {
                         >
                             팔로워 {Follower?.length ?? 0}명
                         </Button>
-                    </S.FollowWrapper>
+                    </S.FollowWrapper> */}
                     <S.MyItemWrapper>
                         {mypage.map((item, index) => (
                             <ItemBox
