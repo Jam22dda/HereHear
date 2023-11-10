@@ -1,11 +1,13 @@
 import * as S from "./ClockTest.styles";
 import clock from "../../../assets/ClockTest/icon-clock.png";
 import { Image } from "../../atoms/Image/Image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import halfCircle from "../../../assets/ClockTest/icon-halfCircle.png";
 
-// 이미지 컴포넌트입니다.
-export default function MapClock() {
+interface MapClockProps {
+    onClick?: () => void; // 이 prop은 선택적이므로 '?'를 사용합니다.
+}
+const MapClock: FC<MapClockProps> = ({ onClick }) => {
     // 현재 시간으로부터 초침의 위치를 계산합니다.
     const calculateDegrees = () => {
         const now = new Date();
@@ -20,8 +22,6 @@ export default function MapClock() {
         // return now.getSeconds() * 6;
     };
 
-    const onClickMent = () => {};
-
     const [degrees, setDegrees] = useState(calculateDegrees());
 
     useEffect(() => {
@@ -34,9 +34,11 @@ export default function MapClock() {
     }, []);
 
     return (
-        <S.ImageContainer onClick={onClickMent}>
+        <S.ImageContainer onClick={onClick}>
             <S.RotatingImage src={halfCircle} style={{ transform: `rotate(${degrees}deg)` }} />
             <Image className="bg" src={clock} width={100} height={100} $unit="%"></Image>
         </S.ImageContainer>
     );
-}
+};
+
+export default MapClock;
