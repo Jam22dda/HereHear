@@ -29,7 +29,7 @@ import SearchRegistMusicPage from "./Pages/SearchRegistMusicPage/SearchRegistMus
 import MyStatisticsPage from "./Pages/MyStatisticsPage/MyStatisticsPage.tsx";
 import RedirectHandler from "./RedirectHandler.tsx";
 import YourPage from "./Pages/YourPage/YourPage.tsx";
-import ClockTest from "./components/molcules/clocktest/ClockTest.tsx";
+import MapClock from "./components/molcules/clocktest/ClockTest.tsx";
 
 // import { Text } from "./components/atoms/Text/Text.styles.ts";
 
@@ -88,7 +88,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                             <Route path="/myStatistics" element={<MyStatisticsPage />}></Route>
                             {/* // 내 통계 */}
                             <Route path="/app" element={<App />}></Route>
-                            <Route path="/follow" element={<ClockTest />}></Route>
+                            <Route path="/follow" element={<MapClock />}></Route>
                         </Routes>
                         {/* </Suspense> */}
                     </QueryClientProvider>

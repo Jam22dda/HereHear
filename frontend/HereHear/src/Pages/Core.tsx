@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 // import './Core.styles';
-import * as S from './Core.styles';
-import markImage from '../assets/Core/Union.png';
-import gpsPinActImage from '../assets/Core/gpsPinActivated.png';
-import gpsPinDeactImage from '../assets/Core/gpsPinDeactivated.png';
-import MusicBox from '../components/molcules/MusicBox/MusicBox';
-import Navbar from '../components/molcules/Navbar/Navbar';
-import { useGetMapMusicList } from '../apis/Map/Queries/useGetMapMusicList';
-import { useGetAroundMusicList } from '../apis/Map/Queries/useGetAroundMusicList';
-import { useRecoilValue } from 'recoil';
-import { SignUpInfoAtom } from '../states/SignUpAtoms';
+import * as S from "./Core.styles";
+import markImage from "../assets/Core/Union.png";
+import gpsPinActImage from "../assets/Core/gpsPinActivated.png";
+import gpsPinDeactImage from "../assets/Core/gpsPinDeactivated.png";
+import MusicBox from "../components/molcules/MusicBox/MusicBox";
+import Navbar from "../components/molcules/Navbar/Navbar";
+import { useGetMapMusicList } from "../apis/Map/Queries/useGetMapMusicList";
+import { useGetAroundMusicList } from "../apis/Map/Queries/useGetAroundMusicList";
+import { useRecoilValue } from "recoil";
+import { SignUpInfoAtom } from "../states/SignUpAtoms";
+import MapClock from "../components/molcules/clocktest/ClockTest";
+import styled from "styled-components";
 
 export default function Core() {
     const signUpInfoAtom = useRecoilValue(SignUpInfoAtom);
@@ -45,8 +47,8 @@ export default function Core() {
     useEffect(() => {
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
+        const script = document.createElement("script");
+        script.type = "text/javascript";
         script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${apiKey}`;
 
         // 지도 초기화 완료 시 최초 1회 실행
@@ -54,7 +56,7 @@ export default function Core() {
             const naver = window.naver;
             setNaverState(naver);
 
-            const map = new naver.maps.Map('map', {
+            const map = new naver.maps.Map("map", {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
                 zoom: 15,
             });
@@ -62,11 +64,11 @@ export default function Core() {
             // 마우스 이벤트가 발생하면 자동으로 따라가기 취소하는 이벤트 추가
             // https://navermaps.github.io/maps.js.ncp/docs/tutorial-UI-Event.html
             // touchstart
-            window.addEventListener('mousedown', function () {
+            window.addEventListener("mousedown", function () {
                 setIsUpdate(false);
             });
 
-            window.addEventListener('touchstart', function () {
+            window.addEventListener("touchstart", function () {
                 setIsUpdate(false);
             });
 
@@ -108,7 +110,7 @@ export default function Core() {
                 });
 
                 // 마커 클릭 시 발생하는 이벤트
-                naver.maps.Event.addListener(pinIns[key], 'click', async function () {
+                naver.maps.Event.addListener(pinIns[key], "click", async function () {
                     // useGetAroundMusicList({ lat, lng });
 
                     const mal = await refetchMusicAroundList();
@@ -128,7 +130,7 @@ export default function Core() {
             setMusicPin(pinIns);
 
             if (!navigator.geolocation) {
-                console.error('Geolocation is not supported by your browser');
+                console.error("Geolocation is not supported by your browser");
 
                 return;
             }
@@ -138,7 +140,7 @@ export default function Core() {
 
             // 현재 위치 가져오기
             navigator.geolocation.getCurrentPosition(
-                position => {
+                (position) => {
                     latitude = position.coords.latitude;
                     longitude = position.coords.longitude;
                     // const { latitude, longitude } = position.coords;
@@ -162,10 +164,10 @@ export default function Core() {
                     );
 
                     const circle = new naver.maps.Circle({
-                        strokeColor: '#0000ff',
+                        strokeColor: "#0000ff",
                         strokeOpacity: 0.8,
                         strokeWeight: 1,
-                        fillColor: '#0000ff',
+                        fillColor: "#0000ff",
                         fillOpacity: 0.15,
                         center: new naver.maps.LatLng(latitude, longitude),
                         radius: 600,
@@ -181,8 +183,8 @@ export default function Core() {
                     setCenterState(center);
                     map.panTo(center);
                 },
-                error => {
-                    console.error('Error getting location:', error);
+                (error) => {
+                    console.error("Error getting location:", error);
                 },
                 {
                     enableHighAccuracy: true,
@@ -213,7 +215,7 @@ export default function Core() {
             // const sse = eventSource;
 
             // SSE 이벤트 핸들러를 등록합니다.
-            eventSource.addEventListener('sse', event => {
+            eventSource.addEventListener("sse", (event) => {
                 const eventData = JSON.parse(event.data);
 
                 if (Array.isArray(eventData)) {
@@ -262,7 +264,7 @@ export default function Core() {
                         return map;
                     }, {});
 
-                    setMusicMap(prev => Object.assign({}, prev, musicMapIns));
+                    setMusicMap((prev) => Object.assign({}, prev, musicMapIns));
 
                     const pinIns: any = {};
 
@@ -288,11 +290,11 @@ export default function Core() {
                         musicPinIns = Object.assign({}, musicPinIns, pinIns);
 
                         // 마커 클릭 시 발생하는 이벤트
-                        (naverState as any).maps.Event.addListener(pinIns[key], 'click', async function () {
+                        (naverState as any).maps.Event.addListener(pinIns[key], "click", async function () {
                             // useGetAroundMusicList({ lat, lng });
 
-                                const mal = await refetchMusicAroundList();
-                                setMusicAroundListState(mal.data);
+                            const mal = await refetchMusicAroundList();
+                            setMusicAroundListState(mal.data);
 
                             setIsSelect(true);
                             // console.log(`marker${key} clicked`);
@@ -309,8 +311,8 @@ export default function Core() {
             });
 
             // SSE 에러 핸들러를 등록합니다.
-            eventSource.addEventListener('error', error => {
-                console.error('SSE error:', error);
+            eventSource.addEventListener("error", (error) => {
+                console.error("SSE error:", error);
             });
 
             // SSE 연결이 닫힐 때의 핸들러를 등록합니다.
@@ -331,12 +333,12 @@ export default function Core() {
 
             // 현재 위치 가져오기
             navigator.geolocation.getCurrentPosition(
-                position => {
+                (position) => {
                     setLat(position.coords.latitude);
                     setLng(position.coords.longitude);
                 },
-                error => {
-                    console.error('Error getting location:', error);
+                (error) => {
+                    console.error("Error getting location:", error);
                 },
                 {
                     enableHighAccuracy: true,
@@ -352,7 +354,7 @@ export default function Core() {
     // 내 위도/경도에 맞게 마커와 원 이동시키기
     useEffect(() => {
         if (userPinState && circleState) {
-            console.log(' ');
+            console.log(" ");
 
             // console.log((userPinState as any).map.center);
 
@@ -450,7 +452,7 @@ export default function Core() {
     }, [isUpdate, lat, lng]);
 
     function handlerBtnClick() {
-        setIsUpdate(prev => !prev);
+        setIsUpdate((prev) => !prev);
     }
 
     return (
@@ -459,16 +461,19 @@ export default function Core() {
         // </div>
         <>
             <S.MapDisplay>
+                <S.ClockOuter>
+                    <MapClock></MapClock>
+                </S.ClockOuter>
                 {isUpdate === true ? (
                     <S.ImgOuter>
-                        <img src={gpsPinActImage} alt='gpsImage' onClick={handlerBtnClick} />
+                        <img src={gpsPinActImage} alt="gpsImage" onClick={handlerBtnClick} />
                     </S.ImgOuter>
                 ) : (
                     <S.ImgOuter>
-                        <img src={gpsPinDeactImage} alt='gpsImage' onClick={handlerBtnClick} />
+                        <img src={gpsPinDeactImage} alt="gpsImage" onClick={handlerBtnClick} />
                     </S.ImgOuter>
                 )}
-                <S.Map id='map'></S.Map>
+                <S.Map id="map"></S.Map>
                 {isSelect ? <MusicBox musicAroundList={musicAroundListState} pinId={userSelectPin} setIsSelect={setIsSelect}></MusicBox> : null}
                 {/* <MusicBox></MusicBox> */}
                 <Navbar active={true}></Navbar>
@@ -501,5 +506,5 @@ interface Music {
 }
 
 interface MusicMap {
-    [key: string]: Omit<Music, 'registeredMusicId'>;
+    [key: string]: Omit<Music, "registeredMusicId">;
 }
