@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class EquipAchievementDto {
 
-    @NotEmpty(message = "업적 id 값은 필수값 입니다")
+    @NotNull(message = "업적 id 값은 필수값 입니다")
     private Long achievementId;
 
 }
