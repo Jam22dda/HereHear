@@ -15,8 +15,8 @@ public class RegisterMusicReqDto {
     private Double lng;
 
     @NotNull(message = "위도는 필수로 입력해야 합니다")
-    @DecimalMin(value = "-90.0", message = "경도는 [-90.0, 90.0] 범위에 있어야 합니다")
-    @DecimalMax(value = "90.0", message = "경도는 [-90.0, 90.0] 범위에 있어야 합니다")
+    @DecimalMin(value = "-90.0", message = "위도는 [-90.0, 90.0] 범위에 있어야 합니다")
+    @DecimalMax(value = "90.0", message = "위도는 [-90.0, 90.0] 범위에 있어야 합니다")
     private Double lat;
 
     @Size(max = 100, message = "최대 100글짜까지 코멘트를 작성할 수 있습니다")
