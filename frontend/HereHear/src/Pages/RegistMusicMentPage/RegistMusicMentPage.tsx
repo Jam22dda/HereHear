@@ -37,7 +37,7 @@ export default function RegistMusicMent() {
             (error) => {
                 alert("사용자의 위치 정보 제공에 동의해주세요 !");
                 // TODO:위치정보 제공 동의 알림 확인버튼 눌렀을 때, 위치설정하는 페이지로 가도록...앱이랑 연동 되면 ..
-                console.error("Error Code = " + error.code + " - " + error.message);
+                console.error("사용자의 위치정보 없음" + error.code + " - " + error.message);
             }
         );
     }, []);
@@ -52,7 +52,7 @@ export default function RegistMusicMent() {
     const handleBack = () => {
         // 태그 상태를 초기화하고
         setSelectedTagIds([]);
-        console.log(selectedTagIds);
+        // console.log(selectedTagIds);
         // 이전 페이지로 이동합니다.
         navigate(-1);
     };
@@ -80,7 +80,7 @@ export default function RegistMusicMent() {
                 releaseTime: musicItem.releaseTime, // 발매 시간
                 musicOccasionIds: selectedTagIds.map((tag) => tag.id), // 선택된 태그 ID들
             };
-            console.log(musicInfo, "musicInfo 잘 들어가?");
+            // console.log(musicInfo, "musicInfo 잘 들어가?");
             addMusicMutation.mutate(musicInfo);
             setSelectedTagIds([]);
             navigate("/core");
