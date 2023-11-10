@@ -12,14 +12,21 @@ import { useFollow } from "../../apis/Mypage/Mutations/useFollow";
 import { memberId } from "../../types/user";
 import React, { useState, useEffect } from "react";
 import { FollowingType } from "../../types/user";
-// import { useRecoilState } from "recoil";
-// import { FollowingListAtom } from "../../states/MypageAtoms";
+import { YourIdAtom } from "../../states/MypageAtoms";
+import { useRecoilState } from "recoil";
+import { useGetYourFollowing } from "../../apis/YourPage/Quries/useGetYourFollowing";
 
 export default function Following() {
     const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigatePage = (path: string) => {
+        navigate(path);
+    };
     const [followingList, setFollowingList] = useState<FollowState[]>([]);
+    const [yourId, setYourId] = useRecoilState(YourIdAtom);
 
     const Following: FollowingType[] = useGetFollowing();
+    const YourFollowing: FollowingType[] = useGetYourFollowing(yourId);
+    console.log(Following);
     const { mutate: FollowUser } = useFollow();
     const { mutate: unFollowUser } = useUnFollow();
 
@@ -80,51 +87,87 @@ export default function Following() {
                     팔로잉 목록
                 </Text>
                 <S.FollowingListWrapper>
-                    {Following &&
-                        Following.map((item: FollowingType, index: number) => (
-                            <S.FollowingWrapper key={index}>
-                                <Follow
-                                    characterImage={
-                                        item.profileCharacter.characterImage
-                                    }
-                                    nickname={item.nickname}
-                                    titleName={
-                                        item.achievement?.title?.titleName ??
-                                        "뱃지가 없어용!"
-                                    }
-                                />
-                                {followingList[index] &&
-                                followingList[index].isFollowing ? (
-                                    <Button
-                                        option="unfollow"
-                                        size="medium"
-                                        $width="92px"
-                                        onClick={() =>
-                                            handleUnFollowClick(
-                                                item.memberId,
-                                                index
-                                            )
-                                        }
-                                    >
-                                        팔로잉
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        option="follow"
-                                        size="medium"
-                                        $width="92px"
-                                        onClick={() =>
-                                            handleFollowClick(
-                                                item.memberId,
-                                                index
-                                            )
-                                        }
-                                    >
-                                        팔로우
-                                    </Button>
-                                )}
-                            </S.FollowingWrapper>
-                        ))}
+                    {yourId === 0
+                        ? Following &&
+                          Following.map(
+                              (item: FollowingType, index: number) => (
+                                  <S.FollowingWrapper key={index}>
+                                      <Follow
+                                          onClick={() => {
+                                              navigatePage(
+                                                  `/mypage/${item.memberId}`
+                                              );
+                                              setYourId(item.memberId);
+                                          }}
+                                          characterImage={
+                                              item.profileCharacter
+                                                  .characterImage
+                                          }
+                                          nickname={item.nickname}
+                                          titleName={
+                                              item.achievement?.title
+                                                  ?.titleName ??
+                                              "뱃지가 없어용!"
+                                          }
+                                      />
+                                      {followingList[index] &&
+                                      followingList[index].isFollowing ? (
+                                          <Button
+                                              option="unfollow"
+                                              size="medium"
+                                              $width="92px"
+                                              onClick={() =>
+                                                  handleUnFollowClick(
+                                                      item.memberId,
+                                                      index
+                                                  )
+                                              }
+                                          >
+                                              팔로잉
+                                          </Button>
+                                      ) : (
+                                          <Button
+                                              option="follow"
+                                              size="medium"
+                                              $width="92px"
+                                              onClick={() =>
+                                                  handleFollowClick(
+                                                      item.memberId,
+                                                      index
+                                                  )
+                                              }
+                                          >
+                                              팔로우
+                                          </Button>
+                                      )}
+                                  </S.FollowingWrapper>
+                              )
+                          )
+                        : YourFollowing &&
+                          YourFollowing.map(
+                              (item: FollowingType, index: number) => (
+                                  <S.FollowingWrapper key={index}>
+                                      <Follow
+                                          onClick={() => {
+                                              navigatePage(
+                                                  `/mypage/${item.memberId}`
+                                              );
+                                              setYourId(item.memberId);
+                                          }}
+                                          characterImage={
+                                              item.profileCharacter
+                                                  .characterImage
+                                          }
+                                          nickname={item.nickname}
+                                          titleName={
+                                              item.achievement?.title
+                                                  ?.titleName ??
+                                              "뱃지가 없어용!"
+                                          }
+                                      />
+                                  </S.FollowingWrapper>
+                              )
+                          )}
                 </S.FollowingListWrapper>
             </div>
         </div>

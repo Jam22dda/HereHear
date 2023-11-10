@@ -14,6 +14,7 @@ import { SignUpInfoAtom } from '../states/SignUpAtoms';
 export default function Core() {
     const signUpInfoAtom = useRecoilValue(SignUpInfoAtom);
     const myId = signUpInfoAtom.memberId;
+    console.log(myId);
 
     const [isUpdate, setIsUpdate] = useState(false);
     const [lat, setLat] = useState(0); // 위도
@@ -290,8 +291,8 @@ export default function Core() {
                         (naverState as any).maps.Event.addListener(pinIns[key], 'click', async function () {
                             // useGetAroundMusicList({ lat, lng });
 
-                            const mal = await refetchMusicAroundList();
-                            setMusicAroundListState(mal.data);
+                                const mal = await refetchMusicAroundList();
+                                setMusicAroundListState(mal.data);
 
                             setIsSelect(true);
                             // console.log(`marker${key} clicked`);
@@ -313,7 +314,7 @@ export default function Core() {
             });
 
             // SSE 연결이 닫힐 때의 핸들러를 등록합니다.
-            eventSource.addEventListener('close', () => {
+            eventSource.addEventListener("close", () => {
                 // console.log('SSE connection closed.');
             });
         }

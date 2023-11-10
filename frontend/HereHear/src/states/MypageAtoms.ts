@@ -22,3 +22,8 @@ export const FollowingListAtom = atom<FollowingType[]>({
     key: "FollowingListAtom",
     default: [],
 });
+
+export const YourIdAtom = atom({
+    key: "YourIdAtom",
+    default: 0,
+});

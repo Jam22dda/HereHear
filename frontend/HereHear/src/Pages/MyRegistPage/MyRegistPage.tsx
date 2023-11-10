@@ -6,6 +6,9 @@ import iconBack from "../../assets/CircleButton/icon-back.png";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { Image } from "../../components/atoms/Image/Image";
 import { useGetRegistMusic } from "../../apis/Mypage/Quries/useGetRegistMusic";
+import { useGetYourRegistMusic } from "../../apis/YourPage/Quries/useGetYourRegistMusic";
+import { useRecoilValue } from "recoil";
+import { YourIdAtom } from "../../states/MypageAtoms";
 
 export default function MyRegistPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -13,6 +16,8 @@ export default function MyRegistPage() {
     const navigatePage = (path: string) => {
         navigate(path);
     };
+
+    const yourId = useRecoilValue(YourIdAtom);
 
     interface RegistMusicType {
         albumImg: string;
@@ -22,6 +27,7 @@ export default function MyRegistPage() {
     }
 
     const RegistMusic: RegistMusicType[] = useGetRegistMusic();
+    const YourRegistMusic: RegistMusicType[] = useGetYourRegistMusic(yourId);
 
     return (
         <div id="display">
@@ -45,28 +51,36 @@ export default function MyRegistPage() {
                 >
                     내가 등록한 노래
                 </Text>
-                {RegistMusic &&
-                    RegistMusic.map((item: RegistMusicType, index: number) => (
-                        <S.MyRegistWrapper key={index}>
-                            <MusicItem
-                                src={item.albumImg}
-                                songtitle={item.subject}
-                                artist={item.singer}
-                                onClick={() =>
-                                    navigatePage(
-                                        `/musicPlay/${item.registeredMusicId}`
-                                    )
-                                }
-                            />
-                        </S.MyRegistWrapper>
-                    ))}
-                {/* <S.MyRegistWrapper>
-                    <MusicItem
-                        src={BTS_answer}
-                        songtitle="Answer : Love Myself"
-                        artist="방탄소년단"
-                    ></MusicItem>
-                </S.MyRegistWrapper> */}
+                {yourId === 0
+                    ? RegistMusic &&
+                      RegistMusic.map(
+                          (item: RegistMusicType, index: number) => (
+                              <S.MyRegistWrapper key={index}>
+                                  <MusicItem
+                                      src={item.albumImg}
+                                      songtitle={item.subject}
+                                      artist={item.singer}
+                                      onClick={() =>
+                                          navigatePage(
+                                              `/musicPlay/${item.registeredMusicId}`
+                                          )
+                                      }
+                                  />
+                              </S.MyRegistWrapper>
+                          )
+                      )
+                    : YourRegistMusic &&
+                      YourRegistMusic.map(
+                          (item: RegistMusicType, index: number) => (
+                              <S.MyRegistWrapper key={index}>
+                                  <MusicItem
+                                      src={item.albumImg}
+                                      songtitle={item.subject}
+                                      artist={item.singer}
+                                  />
+                              </S.MyRegistWrapper>
+                          )
+                      )}
             </div>
         </div>
     );
