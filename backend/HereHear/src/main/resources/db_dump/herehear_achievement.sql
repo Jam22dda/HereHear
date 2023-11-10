@@ -22,18 +22,19 @@
 DROP TABLE IF EXISTS `achievement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `achievement` (
-  `count` int NOT NULL,
-  `achievement_id` bigint NOT NULL AUTO_INCREMENT,
-  `badge_code` bigint DEFAULT NULL,
-  `title_code` bigint DEFAULT NULL,
-  `category` enum('FOLLOWER','LIKE','MUSIC_REGISTRATION') DEFAULT NULL,
-  `mission` text,
-  PRIMARY KEY (`achievement_id`),
-  UNIQUE KEY `UK_qfymwe7ow9ttl6g4tslagcx72` (`badge_code`),
-  UNIQUE KEY `UK_a4rqla4g9erquq57ipom3vww9` (`title_code`),
-  CONSTRAINT `FK30qlvyojsgtab6qp7hbub44ma` FOREIGN KEY (`title_code`) REFERENCES `title_code` (`title_code`),
-  CONSTRAINT `FK6ljp5u4l7fjjnj06hnwjhh5ho` FOREIGN KEY (`badge_code`) REFERENCES `badge_code` (`badge_code`)
+CREATE TABLE `achievement`
+(
+    `count`          int    NOT NULL,
+    `achievement_id` bigint NOT NULL AUTO_INCREMENT,
+    `badge_code`     bigint DEFAULT NULL,
+    `title_code`     bigint DEFAULT NULL,
+    `category`       enum('FOLLOWER','LIKE','MUSIC_REGISTRATION') DEFAULT NULL,
+    `mission`        text,
+    PRIMARY KEY (`achievement_id`),
+    UNIQUE KEY `UK_qfymwe7ow9ttl6g4tslagcx72` (`badge_code`),
+    UNIQUE KEY `UK_a4rqla4g9erquq57ipom3vww9` (`title_code`),
+    CONSTRAINT `FK30qlvyojsgtab6qp7hbub44ma` FOREIGN KEY (`title_code`) REFERENCES `title_code` (`title_code`),
+    CONSTRAINT `FK6ljp5u4l7fjjnj06hnwjhh5ho` FOREIGN KEY (`badge_code`) REFERENCES `badge_code` (`badge_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,11 +42,26 @@ CREATE TABLE `achievement` (
 -- Dumping data for table `achievement`
 --
 
-LOCK TABLES `achievement` WRITE;
+LOCK
+TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (1,1,1,1,'MUSIC_REGISTRATION','사용자가 최초로 음악을 등록 했을 때'),(10,2,2,2,'MUSIC_REGISTRATION','사용자가 10곡을 등록했을 때'),(50,3,3,3,'MUSIC_REGISTRATION','사용자가 50곡을 등록했을 때'),(100,4,4,4,'MUSIC_REGISTRATION','사용자가 100곡을 등록했을 때'),(200,5,5,5,'MUSIC_REGISTRATION','사용자가 200곡을 등록했을 때'),(10,6,6,6,'LIKE','사용자가 등록한 음악이 좋아요를 10개 받았을 때'),(100,7,7,7,'LIKE','사용자가 등록한 음악이 좋아요를 100개 받았을 때'),(500,8,8,8,'LIKE','사용자가 등록한 음악이 좋아요를 500개 받았을 때'),(100,9,9,9,'LIKE','내가 등록한 음악의 누적합 최초 100개 좋아요를 받았을 때 '),(10,10,10,10,'FOLLOWER','팔로워가 10명 돌파 했을 때'),(50,11,11,11,'FOLLOWER','팔로워가 50명 돌파 했을 때'),(100,12,12,12,'FOLLOWER','팔로워가 100명 돌파 했을 때'),(500,13,13,13,'FOLLOWER','팔로워가 500명 돌파 했을 때');
+INSERT INTO `achievement`
+VALUES (1, 1, 1, 1, 'MUSIC_REGISTRATION', '사용자가 최초로 음악을 등록 했을 때'),
+       (10, 2, 2, 2, 'MUSIC_REGISTRATION', '사용자가 10곡을 등록했을 때'),
+       (50, 3, 3, 3, 'MUSIC_REGISTRATION', '사용자가 50곡을 등록했을 때'),
+       (100, 4, 4, 4, 'MUSIC_REGISTRATION', '사용자가 100곡을 등록했을 때'),
+       (200, 5, 5, 5, 'MUSIC_REGISTRATION', '사용자가 200곡을 등록했을 때'),
+       (10, 6, 6, 6, 'LIKE', '사용자가 등록한 음악이 좋아요를 10개 받았을 때'),
+       (100, 7, 7, 7, 'LIKE', '사용자가 등록한 음악이 좋아요를 100개 받았을 때'),
+       (500, 8, 8, 8, 'LIKE', '사용자가 등록한 음악이 좋아요를 500개 받았을 때'),
+       (100, 9, 9, 9, 'LIKE', '내가 등록한 음악의 누적합 최초 100개 좋아요를 받았을 때 '),
+       (10, 10, 10, 10, 'FOLLOWER', '팔로워가 10명 돌파 했을 때'),
+       (50, 11, 11, 11, 'FOLLOWER', '팔로워가 50명 돌파 했을 때'),
+       (100, 12, 12, 12, 'FOLLOWER', '팔로워가 100명 돌파 했을 때'),
+       (500, 13, 13, 13, 'FOLLOWER', '팔로워가 500명 돌파 했을 때');
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

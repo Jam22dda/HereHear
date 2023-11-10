@@ -51,6 +51,28 @@ public class MemberController {
         return new DataResponse<>("200", "팔로잉 목록 조회", followingList);
     }
 
+    @GetMapping("/follower/{targetId}")
+    public DataResponse<List<FollowerResDto>> getFollowerByTargetIdList(Authentication authentication, @PathVariable Long targetId) {
+        Long memberId = Long.parseLong(authentication.getName());
+
+        log.info("[대상의 팔로워 목록 조회] login memberId: {}, targetId: {}, time: {}", memberId, targetId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+
+        List<FollowerResDto> followerList = memberService.getFollowerByTargetIdList(memberId, targetId);
+
+        return new DataResponse<>("200", "대상의 팔로워 목록 조회", followerList);
+    }
+
+    @GetMapping("/following/{targetId}")
+    public DataResponse<List<FollowerResDto>> getFollowingByTargetIdList(Authentication authentication, @PathVariable Long targetId) {
+        Long memberId = Long.parseLong(authentication.getName());
+
+        log.info("[대상의 팔로잉 목록 조회] login memberId: {}, targetId: {}, time: {}", memberId, targetId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+
+        List<FollowerResDto> followingList = memberService.getFollowingByTargetIdList(memberId, targetId);
+
+        return new DataResponse<>("200", "대상의 팔로잉 목록 조회", followingList);
+    }
+
     @PostMapping("/follow")
     public CommonResponse follow(@RequestBody FollowReqDto followReqDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
