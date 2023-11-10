@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Map = styled.div`
     width: 100%;
@@ -23,4 +23,15 @@ export const ImgOuter = styled.div`
     img {
         width: 50px;
     }
+`;
+
+export const ClockOuter = styled.div`
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 996;
+
+    /* img {
+        width: 50px;
+    } */
 `;
