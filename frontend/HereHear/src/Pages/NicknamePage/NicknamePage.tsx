@@ -54,6 +54,10 @@ export default function NicknamePage() {
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newNickname = e.target.value;
+        if (id !== null) {
+            // id가 null이 아닐 때만 실행
+            localStorage.setItem("memberId", id);
+        }
         setSignUpInfo({
             ...signUpInfo,
             memberId: memberId,
