@@ -49,7 +49,7 @@ export default function SearchRegistMusic() {
         };
         // console.log(musicItemToSave, "musicItemToSave");
         setMusicItem(musicItemToSave); //리코일에 해당 음악정보 저장
-        console.log(item.releaseDate, "발매시간");
+        // console.log(item.releaseDate, "발매시간");
 
         navigate("/registMusicMent"); // 다른 페이지의 경로로 변경하세요
     };

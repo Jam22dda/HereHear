@@ -6,7 +6,7 @@ const getUserinfo = async () => {
         const response = await instance.get("/member/info");
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getUserinfo", error);
         throw error;
     }
 };
@@ -16,7 +16,7 @@ const getYourinfo = async (id: number) => {
         const response = await instance.get(`/member/info/${id}`);
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getYourinfo", error);
         throw error;
     }
 };
@@ -26,7 +26,7 @@ const getLikeMusic = async () => {
         const response = await instance.get("/like/list");
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getLikeMusic", error);
         throw error;
     }
 };
@@ -36,7 +36,7 @@ const getRegistMusic = async () => {
         const response = await instance.get("/music/my/list");
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getRegistMusic", error);
         throw error;
     }
 };
@@ -46,7 +46,7 @@ const getFollower = async () => {
         const response = await instance.get("/member/follower");
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getFollower", error);
         throw error;
     }
 };
@@ -56,7 +56,7 @@ const getFollowing = async () => {
         const response = await instance.get("/member/following");
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getFollowing", error);
         throw error;
     }
 };
@@ -66,7 +66,7 @@ const getAchievementList = async () => {
         const response = await instance.get("/achievement/myachievement");
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getAchievementList", error);
         throw error;
     }
 };
@@ -76,7 +76,7 @@ const getMyAchievement = async (achievementId: number | undefined) => {
         const response = await instance.get(`/achievement/${achievementId}`);
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching search music", error);
+        console.error("Error getMyAchievement", error);
         throw error;
     }
 };
@@ -86,15 +86,10 @@ interface postNicknameResponse {
     message: string;
 }
 
-const postNickname = async (
-    nickname: changeNickname
-): Promise<postNicknameResponse> => {
-    const response = await instance.post<postNicknameResponse>(
-        "/member/update/nickname",
-        {
-            nickname,
-        }
-    );
+const postNickname = async (nickname: changeNickname): Promise<postNicknameResponse> => {
+    const response = await instance.post<postNicknameResponse>("/member/update/nickname", {
+        nickname,
+    });
     return response.data;
 };
 
@@ -129,15 +124,10 @@ interface putAchievementResponse {
     message: string;
 }
 
-const putAchievement = async (
-    achievementId: achievementId
-): Promise<putAchievementResponse> => {
-    const response = await instance.put<putAchievementResponse>(
-        "/achievement/equip",
-        {
-            achievementId,
-        }
-    );
+const putAchievement = async (achievementId: achievementId): Promise<putAchievementResponse> => {
+    const response = await instance.put<putAchievementResponse>("/achievement/equip", {
+        achievementId,
+    });
     return response.data;
 };
 
