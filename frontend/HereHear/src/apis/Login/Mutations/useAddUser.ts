@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query"; // 1. 리액트쿼리 기본 제공값 -> .mutate로 입력한 값 담는 곳 (?)
-import { addUser } from "../loginAPI";
-import { SignUpInfo } from "../../../types/user";
-import { useNavigate } from "react-router-dom";
+import { useMutation } from '@tanstack/react-query'; // 1. 리액트쿼리 기본 제공값 -> .mutate로 입력한 값 담는 곳 (?)
+import { addUser } from '../loginAPI';
+import { SignUpInfo } from '../../../types/user';
+import { useNavigate } from 'react-router-dom';
 
 interface AddUserResponse {
     code: number;
@@ -16,13 +16,13 @@ const useAddUser = () => {
     };
     return useMutation<AddUserResponse, Error, SignUpInfo>({
         mutationFn: addUser,
-        onSuccess: (data) => {
-            localStorage.setItem("token", data.data);
-            navigatePage("/core");
-            console.log("회원 등록!", data);
+        onSuccess: data => {
+            localStorage.setItem('token', data.data);
+            navigatePage('/core');
+            // console.log("회원 등록!", data);
         },
-        onError: (error) => {
-            console.log("회원 등록 실패...", error);
+        onError: error => {
+            // console.log("회원 등록 실패...", error);
         },
     });
 };
