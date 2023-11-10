@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("Sign Up memberId: {}", findMember.getMemberId());
 
-        if (!checkNickname(signUpDto.getNickname()) && signUpDto.getNickname() != findMember.getNickname()) {
+        if (!checkNickname(signUpDto.getNickname())) {
             throw new CustomException(ExceptionStatus.NICKNAME_ALREADY_USED);
         }
 
