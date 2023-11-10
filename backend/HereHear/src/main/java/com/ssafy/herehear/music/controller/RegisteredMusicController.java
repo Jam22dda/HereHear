@@ -45,7 +45,6 @@ public class RegisteredMusicController {
         List<SseResDto> sseResDto = registeredMusicService.updateMyRegisteredMusic(Long.parseLong(authentication.getName()), req.getRegisteredMusicId());
         if(HourFilterUtils.checkHour(sseResDto))
             sseService.notify(sseResDto);
-
         return new CommonResponse("200", "등록한 음악 삭제");
     }
 
@@ -63,6 +62,5 @@ public class RegisteredMusicController {
     public DataResponse<List<MyRegisteredMusicResDto>> memberRegisteredMusicList(@PathVariable Long memberId) {
         return new DataResponse<>("200", "다른 유저가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
     }
-
 
 }
