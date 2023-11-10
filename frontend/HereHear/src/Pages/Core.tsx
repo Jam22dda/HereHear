@@ -8,8 +8,11 @@ import MusicBox from "../components/molcules/MusicBox/MusicBox";
 import Navbar from "../components/molcules/Navbar/Navbar";
 import { useGetMapMusicList } from "../apis/Map/Queries/useGetMapMusicList";
 import { useGetAroundMusicList } from "../apis/Map/Queries/useGetAroundMusicList";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { SignUpInfoAtom } from "../states/SignUpAtoms";
+import MapClock from "../components/molcules/clocktest/ClockTest";
+import styled from "styled-components";
+import Button from "../components/atoms/Button/Button";
 
 export default function Core() {
     const [signUpInfoAtom, setSignUpInfoAtom] = useRecoilState(SignUpInfoAtom);
@@ -54,6 +57,12 @@ export default function Core() {
     const [eventSource, setEventSource] = useState<EventSource | undefined>(
         undefined
     );
+
+    const [showButton, setShowButton] = useState(false);
+
+    const onClickMent = () => {
+        setShowButton((current) => !current);
+    };
 
     useEffect(() => {
         // 지도 초기화
@@ -331,8 +340,8 @@ export default function Core() {
                             async function () {
                                 // useGetAroundMusicList({ lat, lng });
 
-                                const mal = await refetchMusicAroundList();
-                                setMusicAroundListState(mal.data);
+                            const mal = await refetchMusicAroundList();
+                            setMusicAroundListState(mal.data);
 
                                 setIsSelect(true);
                                 // console.log(`marker${key} clicked`);
@@ -500,6 +509,14 @@ export default function Core() {
         // </div>
         <>
             <S.MapDisplay>
+                <S.ClockOuter>
+                    <MapClock onClick={onClickMent}></MapClock>
+                    {showButton && (
+                        <Button $width="14rem" $height="3.7rem" size="small" style={{ padding: "10px" }} option="tag_plus">
+                            현재 시간에서 ±3시간 사이에 등록된 노래가 지도에 표시돼요
+                        </Button>
+                    )}
+                </S.ClockOuter>
                 {isUpdate === true ? (
                     <S.ImgOuter>
                         <img
