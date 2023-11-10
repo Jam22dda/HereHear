@@ -8,15 +8,17 @@ export default function RedirectHandler() {
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const token = queryParams.get("token");
+        const memberId = queryParams.get("id");
 
         if (token) {
             localStorage.setItem("token", token);
 
-            if (location.pathname.startsWith("/oauth2/redirect")) {
-                // 필요한 경우 토큰을 사용하여 상태를 설정하거나 다른 처리를 수행
-                // ...
+            if (memberId) {
+                localStorage.setItem("memberId", memberId);
 
-                navigate("/core");
+                if (location.pathname.startsWith("/oauth2/redirect")) {
+                    navigate("/core");
+                }
             }
         }
     }, [location, navigate]);
