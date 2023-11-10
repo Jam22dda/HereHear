@@ -13,6 +13,7 @@ import Heart from '../../assets/CircleButton/icon-heart.png';
 import youtube from '../../assets/CircleButton/icon-youtubePlay.png';
 import { usePostLikeMusic } from '../../apis/Music/Mutations/useLikeMusic';
 import { useGetMusicPlay } from '../../apis/Music/Quries/useGetMusicPlay';
+import { useMusicHistory } from '../../apis/Music/Mutations/useMusicHistory';
 
 export default function MusicPlay() {
     const { id } = useParams();
@@ -25,6 +26,7 @@ export default function MusicPlay() {
 
     //좋아요 API
     const { mutate: postLikeMusicMutate } = usePostLikeMusic();
+    const { mutate: postMusicHostiryMutate } = useMusicHistory();
 
     // 좋아요체크
 
@@ -37,6 +39,16 @@ export default function MusicPlay() {
             postLikeMusicMutate(MusicNumber);
         }
     };
+
+    const registMusicHistory = () => {
+        console.log("---------", MusicNumber);
+        if (MusicNumber !== null) {
+            postMusicHostiryMutate(MusicNumber);
+
+
+        }
+    }
+
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
 
@@ -102,7 +114,8 @@ export default function MusicPlay() {
                     <Image
                         src={youtube}
                         width={6}
-                        onClick={() => {
+                        onClick={() => { 
+                            registMusicHistory()
                             const subjectEncoded = encodeURIComponent(musicPlay.data.subject);
                             const singerEncoded = encodeURIComponent(musicPlay.data.singer);
                             const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
