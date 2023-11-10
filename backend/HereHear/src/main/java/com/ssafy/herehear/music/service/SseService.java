@@ -10,8 +10,4 @@ public interface SseService {
     void notify(Object event);
 
     void sendToClient(Long memberId, Object data);
-
-    SseEmitter createEmitter(Long memberId);
-
-    void sendAllClient(Object data);
 }

@@ -41,6 +41,7 @@ public class AroundServiceImpl implements AroundService {
     }
 
     @Override
+    @Transactional
     public List<AroundMusicResDto> getAroundSearchMusic(AroundSearchReqDto aroundSearchReqDto) {
         log.info("[주변 음악 검색] AroundSearchReqDto: " + aroundSearchReqDto);
 
@@ -55,7 +56,7 @@ public class AroundServiceImpl implements AroundService {
                                 aroundRepositoryImpl.findByOccasionName(registeredMusic.getRegisteredMusicId())
                         )
                 ).toList();
-        log.info("getAroundMusicList: " + aroundMusicResDtos);
+        log.info("getAroundSearchMusic: " + aroundMusicResDtos);
 
         return aroundMusicResDtos;
     }
