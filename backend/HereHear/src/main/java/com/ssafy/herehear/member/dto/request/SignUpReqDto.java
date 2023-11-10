@@ -1,12 +1,14 @@
 package com.ssafy.herehear.member.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
 public class SignUpReqDto {
+    @NotNull(message = "회원 id 값은 필수값 입니다.")
     private Long memberId;
 
     @NotEmpty(message = "닉네임은 필수값 입니다.")
@@ -15,6 +17,6 @@ public class SignUpReqDto {
     @Size(max = 20, message = "최대 20글짜까지 입력이 가능합니다.")
     private String nickname;
 
-    @NotEmpty(message = "초기 프로필 캐릭터는 필수로 선택해야 합니다")
+    @NotNull(message = "초기 프로필 캐릭터는 필수로 선택해야 합니다")
     private Long profileCharacterCode;
 }
