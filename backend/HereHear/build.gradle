@@ -68,6 +68,9 @@ dependencies {
     // 23.11.10 모니터링 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // 23.11.10 validation 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 //jacocoTestReport {
