@@ -37,13 +37,16 @@ export default function RegistMusicMent() {
             (error) => {
                 alert("사용자의 위치 정보 제공에 동의해주세요 !");
                 // TODO:위치정보 제공 동의 알림 확인버튼 눌렀을 때, 위치설정하는 페이지로 가도록...앱이랑 연동 되면 ..
-                console.error("사용자의 위치정보 없음" + error.code + " - " + error.message);
+                console.error(
+                    "Error Code = " + error.code + " - " + error.message
+                );
             }
         );
     }, []);
     // const selectedTagIds = useRecoilValue(selectedTagState); // 선택한 태그 리코일에서 불러오기
     // console.log(selectedTagIds, "태그 리스트");
-    const [selectedTagIds, setSelectedTagIds] = useRecoilState(selectedTagState);
+    const [selectedTagIds, setSelectedTagIds] =
+        useRecoilState(selectedTagState);
     const musicItem = useRecoilValue(musicItemState); // 선택한 노래 리코일에서 불러오기
 
     const [isOpenModal, setOpenModal] = useState<boolean>(false);
@@ -97,29 +100,61 @@ export default function RegistMusicMent() {
                     </>
                 )}
 
-                <CircleButton option="default2" size="medium" onClick={handleBack}>
-                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={handleBack}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
                 </CircleButton>
                 <Text size="subtitle1" fontWeight="bold" $marginTop="20px">
                     음악 등록
                 </Text>
                 <S.RegistMusicWrapper>
                     <AlbumCover src={musicItem.src}></AlbumCover>
-                    <Text $textAlign="center" size="body2" fontWeight="bold" $marginTop="40px">
+                    <Text
+                        $textAlign="center"
+                        size="body2"
+                        fontWeight="bold"
+                        $marginTop="40px"
+                    >
                         {musicItem.songtitle}
                     </Text>
-                    <Text $textAlign="center" size="body2" fontWeight="medium" $marginTop="5px">
+                    <Text
+                        $textAlign="center"
+                        size="body2"
+                        fontWeight="medium"
+                        $marginTop="5px"
+                    >
                         {musicItem.artist}
                     </Text>
 
-                    <Button option="tag_plus" size="mediumplus" $width="96px" $margin="20px 0 10px 0 " onClick={openModal}>
+                    <Button
+                        option="tag_plus"
+                        size="mediumplus"
+                        $width="96px"
+                        $margin="20px 0 10px 0 "
+                        onClick={openModal}
+                    >
                         태그추가 +
                     </Button>
 
                     {selectedTagIds.length > 0 && (
                         <S.SelectTagWrapper>
                             {selectedTagIds.map((tag, index) => (
-                                <Button option="tag1" size="medium" $margin="5px" $width="80px" key={index} tag={tag.name}></Button>
+                                <Button
+                                    option="tag1"
+                                    size="medium"
+                                    $margin="5px"
+                                    $width="80px"
+                                    key={index}
+                                    tag={tag.name}
+                                ></Button>
                             ))}
                         </S.SelectTagWrapper>
                     )}
@@ -131,7 +166,16 @@ export default function RegistMusicMent() {
                             message;
                         }}
                     ></MessagePlus>
-                    <Button option="save" size="large" $width="132px" $margin="15px 0 0 0" onClick={registerMusic}>
+                    <Button
+                        option="save"
+                        size="large"
+                        $width="132px"
+                        $margin="15px 0 0 0"
+                        onClick={() => {
+                            registerMusic();
+                            window.location.reload();
+                        }}
+                    >
                         등록하기
                     </Button>
                 </S.RegistMusicWrapper>

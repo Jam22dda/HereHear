@@ -86,10 +86,15 @@ interface postNicknameResponse {
     message: string;
 }
 
-const postNickname = async (nickname: changeNickname): Promise<postNicknameResponse> => {
-    const response = await instance.post<postNicknameResponse>("/member/update/nickname", {
-        nickname,
-    });
+const postNickname = async (
+    nickname: changeNickname
+): Promise<postNicknameResponse> => {
+    const response = await instance.post<postNicknameResponse>(
+        "/member/update/nickname",
+        {
+            nickname,
+        }
+    );
     return response.data;
 };
 
@@ -124,10 +129,15 @@ interface putAchievementResponse {
     message: string;
 }
 
-const putAchievement = async (achievementId: achievementId): Promise<putAchievementResponse> => {
-    const response = await instance.put<putAchievementResponse>("/achievement/equip", {
-        achievementId,
-    });
+const putAchievement = async (
+    achievementId: achievementId
+): Promise<putAchievementResponse> => {
+    const response = await instance.put<putAchievementResponse>(
+        "/achievement/equip",
+        {
+            achievementId,
+        }
+    );
     return response.data;
 };
 

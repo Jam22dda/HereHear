@@ -71,10 +71,10 @@ const MapMusicTagWrapper = styled.div`
 `;
 
 const scroll = keyframes`
-  from {
+  0% {
     transform: translateX(0%);
   }
-  to {
+  100% {
     transform: translateX(-100%);
   }
 `;
@@ -83,6 +83,7 @@ const scroll = keyframes`
 interface MarqueeTextProps {
     isOverflowing: boolean;
     animate: boolean;
+    key: string; // key prop을 추가합니다.
 }
 
 // MarqueeText를 styled-component로 정의할 때 해당 타입을 적용합니다.
@@ -91,10 +92,12 @@ const MarqueeText = styled(Text)<MarqueeTextProps>`
     display: inline-block;
     width: 160px;
     min-width: 100%;
-    animation: ${scroll} 10s linear infinite;
+    animation: ${(props) =>
+            props.isOverflowing && props.animate ? scroll : "none"}
+        10s linear infinite;
     animation-play-state: ${(props) => (props.animate ? "running" : "paused")};
     animation-delay: ${(props) =>
-        props.isOverflowing && !props.animate ? "3s" : "0s"};
+        props.isOverflowing && props.animate ? "3s" : "0s"};
     animation-fill-mode: forwards;
 `;
 

@@ -8,15 +8,17 @@ interface FollowProps {
     nickname: string;
     characterImage: string;
     titleName?: string;
+    onClick?: () => void;
 }
 
 export default function Follow({
     nickname,
     characterImage,
     titleName = "",
+    onClick = () => {},
 }: FollowProps) {
     return (
-        <S.FollowWrapper>
+        <S.FollowWrapper onClick={onClick}>
             <CircleButton option="follow" size="large">
                 <Image src={characterImage} width={32} height={32} $unit="px" />
             </CircleButton>
