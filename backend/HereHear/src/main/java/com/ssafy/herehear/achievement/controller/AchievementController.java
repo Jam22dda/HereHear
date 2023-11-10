@@ -7,6 +7,7 @@ import com.ssafy.herehear.achievement.service.AchievementService;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -43,7 +44,7 @@ public class AchievementController {
     }
 
     @PutMapping("/equip")
-    public CommonResponse equipAchievement(@RequestBody EquipAchievementDto equipAchievementDto, Authentication authentication) {
+    public CommonResponse equipAchievement(@RequestBody @Valid EquipAchievementDto equipAchievementDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
 
         log.info("[칭호, 뱃지 장착] memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
