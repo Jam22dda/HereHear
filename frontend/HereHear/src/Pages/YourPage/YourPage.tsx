@@ -17,6 +17,13 @@ import { useRecoilValue } from "recoil";
 import { useGetYourFollowing } from "../../apis/YourPage/Quries/useGetYourFollowing";
 import { useGetYourFollower } from "../../apis/YourPage/Quries/useGetYourFollower";
 import { FollowingType } from "../../types/user";
+import CircleButton from "../../components/atoms/CircleButton/CircleButton";
+import iconBack from "../../assets/CircleButton/icon-back.png";
+import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
+import { useEffect, useState } from "react";
+import { useUnFollow } from "../../apis/Mypage/Mutations/useUnFollow";
+import { useFollow } from "../../apis/Mypage/Mutations/useFollow";
+import { memberId } from "../../types/user";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -37,14 +44,64 @@ export default function YourPage() {
     const YourInfo = useGetYourinfo(Number(yourId));
     const YourFollowing: FollowingType[] = useGetYourFollowing(yourId);
     const YourFollower: FollowingType[] = useGetYourFollower(yourId);
+    const Following: FollowingType[] = useGetFollowing();
+    const [isFollowing, setIsFollowing] = useState(false);
+    const { mutate: FollowUser } = useFollow();
+    const { mutate: unFollowUser } = useUnFollow();
+
+    useEffect(() => {
+        if (Following && yourId) {
+            // 팔로잉 목록에서 yourId와 일치하는 memberId 찾기
+            const isFollowing = Following.some(
+                (following) => following.memberId === yourId
+            );
+            setIsFollowing(isFollowing);
+        }
+    }, [Following, yourId]);
+
+    const handleFollowClick = (memberId: memberId) => {
+        FollowUser(memberId);
+    };
+
+    const handleUnFollowClick = (memberId: memberId) => {
+        unFollowUser({ memberId });
+    };
 
     return (
         <div id="display">
             <div className="container">
                 <S.FollowBtnWrapper>
-                    <Button option="follow" size="medium" $width="70px">
-                        팔로우
-                    </Button>
+                    <CircleButton
+                        option="default2"
+                        size="medium"
+                        onClick={() => navigate(-1)}
+                    >
+                        <Image
+                            src={iconBack}
+                            width={10}
+                            height={18}
+                            $unit="px"
+                        ></Image>
+                    </CircleButton>
+                    {isFollowing && isFollowing ? (
+                        <Button
+                            option="unfollow"
+                            size="medium"
+                            $width="70px"
+                            onClick={() => handleUnFollowClick(yourId)}
+                        >
+                            팔로잉
+                        </Button>
+                    ) : (
+                        <Button
+                            option="follow"
+                            size="medium"
+                            $width="70px"
+                            onClick={() => handleFollowClick(yourId)}
+                        >
+                            팔로우
+                        </Button>
+                    )}
                 </S.FollowBtnWrapper>
                 <S.YourPageWrapper>
                     <S.Profile>
