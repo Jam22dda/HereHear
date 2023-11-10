@@ -6,6 +6,7 @@ import com.ssafy.herehear.admin.service.AdminService;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/achievement")
-    public CommonResponse createAchievement(@RequestBody CreateAchievementDto createAchievementDto) {
+    public CommonResponse createAchievement(@RequestBody @Valid CreateAchievementDto createAchievementDto) {
         log.info("[업적 등록] createAchievementDto: {}", createAchievementDto);
 
         adminService.createAchievement(createAchievementDto);
