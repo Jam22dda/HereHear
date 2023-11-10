@@ -9,15 +9,13 @@ import Button from "../../components/atoms/Button/Button";
 import ItemBox from "../../components/molcules/ItemBox/ItemBox";
 import { useGetAchievementList } from "../../apis/Mypage/Quries/useGetAchievementList";
 import { useRecoilValue } from "recoil";
-import { MyAchievementAtom } from "../../states/MypageAtoms";
+import { MyAchievementAtom, YourIdAtom } from "../../states/MypageAtoms";
 import { usePutAchievement } from "../../apis/Mypage/Mutations/usePutAchievement";
 import { achievementId } from "../../types/user";
 import Modal from "../../components/atoms/Modal/Modal";
 import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
 import iconExit from "../../../public/images/icon-exit.png";
 import iconInformation from "../../assets/Achievement/icon-information.png";
-// import iconChevronBack from "../../assets/Achievement/icon-chevron-back.png";
-// import iconChevronForward from "../../assets/Achievement/icon-chevron-forward.png";
 
 interface AchievementType {
     achievementId: number;
@@ -42,6 +40,7 @@ export default function Achievement() {
         navigate(path);
     };
 
+    const yourId = useRecoilValue(YourIdAtom);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleModal = () => {
@@ -187,19 +186,21 @@ export default function Achievement() {
                             </S.PaginationButton>
                         ))}
                     </S.PaginationContainer>
-                    <Button
-                        option="save"
-                        size="large"
-                        $width="132px"
-                        $margin="60px 0 0 0"
-                        onClick={() => {
-                            handlePutAchievement(selectedItem);
-                            navigatePage("/mypage");
-                            window.location.reload();
-                        }}
-                    >
-                        저장하기
-                    </Button>
+                    {yourId === 0 && (
+                        <Button
+                            option="save"
+                            size="large"
+                            $width="132px"
+                            $margin="60px 0 0 0"
+                            onClick={() => {
+                                handlePutAchievement(selectedItem);
+                                navigatePage("/mypage");
+                                window.location.reload();
+                            }}
+                        >
+                            저장하기
+                        </Button>
+                    )}
                 </S.AchievementPageWrapper>
             </div>
             {isModalOpen && (
