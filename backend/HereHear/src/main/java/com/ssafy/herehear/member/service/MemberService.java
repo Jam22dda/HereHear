@@ -31,4 +31,8 @@ public interface MemberService {
     void unfollow(Long memberId, Long followingMemberId);
 
     boolean checkNickname(String nickname);
+
+    List<FollowerResDto> getFollowerByTargetIdList(Long memberId, Long targetId);
+
+    List<FollowerResDto> getFollowingByTargetIdList(Long memberId, Long targetId);
 }

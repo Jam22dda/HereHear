@@ -44,22 +44,21 @@ public class LikeMusicServiceImpl implements LikeMusicService {
                     likeMusicRepository.save(likeMusic);
                 }
         );
-        log.info("registerLike success");
+        log.info("registerlikeMusic success");
     }
 
     @Override
     @Transactional
     public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
-        MemberUtil.findMember(memberId);
+        log.info("[나의/다른 유저의 좋아요 음악 목록 조회]: memberId: "+ memberId);
 
-        // 좋아요 목록 조회
         List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicRepositoryImpl.findByLikeMusics(memberId).stream()
                 .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
                         findRegisteredMusic,
                         likeMusicRepositoryImpl.findByRegisteredMusicLike(memberId,findRegisteredMusic.getRegisteredMusicId()).isPresent())
                 )
                 .toList();
-        log.info("getMusicHistoryList: "+ likeRegisteredMusicResDtos);
+        log.info("likeMusicList: "+ likeRegisteredMusicResDtos);
 
         return likeRegisteredMusicResDtos;
     }

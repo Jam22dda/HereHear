@@ -141,8 +141,30 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
+    public List<FollowerResDto> getFollowerByTargetIdList(Long memberId, Long targetId) {
+        Set<Long> followingSet = followRepository.findByFollowingMemberId(memberId).stream()
+                .map(Follow::getFollowMemberId).collect(Collectors.toSet());
+
+        return followRepository.findByFollowerMemberId(targetId).stream()
+                .map(follow -> MemberMapper.INSTANCE.toFollowerListDto(follow.getMember(), follow.getMember().getAchievement(), followingSet.contains(follow.getMember().getMemberId())))
+                .toList();
+    }
+
+    @Override
+    @Transactional
     public List<FollowerResDto> getFollowingList(Long memberId) {
         return followRepository.findByFollowingMemberId(memberId).stream()
+                .map(follow -> {
+                    Member followingMember = MemberUtil.findMember(follow.getFollowMemberId());
+                    Optional<Follow> isFollowed = followRepository.isFollowed(follow.getFollowMemberId(), memberId);
+                    return MemberMapper.INSTANCE.toFollowerListDto(followingMember, followingMember.getAchievement(),
+                            isFollowed.isPresent());
+                }).toList();
+    }
+
+    @Override
+    public List<FollowerResDto> getFollowingByTargetIdList(Long memberId, Long targetId) {
+        return followRepository.findByFollowingMemberId(targetId).stream()
                 .map(follow -> {
                     Member followingMember = MemberUtil.findMember(follow.getFollowMemberId());
                     Optional<Follow> isFollowed = followRepository.isFollowed(follow.getFollowMemberId(), memberId);
@@ -180,4 +202,5 @@ public class MemberServiceImpl implements MemberService {
     public boolean checkNickname(String nickname) {
         return memberRepository.findByNickname(nickname).isEmpty();
     }
+
 }

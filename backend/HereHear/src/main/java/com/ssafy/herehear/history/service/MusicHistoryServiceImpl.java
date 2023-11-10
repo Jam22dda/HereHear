@@ -56,7 +56,6 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
     @Transactional
     public void deletePlayMusic(long memberId, long registeredMusicId){
         log.info("[최근 들은 음악 삭제] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
-        MemberUtil.findMember(memberId);
 
         findMusicHistory(memberId, registeredMusicId)
                 .ifPresentOrElse(
@@ -71,7 +70,7 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
     @Override
     @Transactional
     public List<PlayRegisteredMusicResDto> getMusicHistoryList(long memberId){
-        MemberUtil.findMember(memberId);
+        log.info("[최근 들은 음악 조회] memberId: "+memberId);
 
         List<PlayRegisteredMusicResDto> playRegisteredMusicResDtos = musicHistoryRepositoryImpl.findByMusicHistorys(memberId).stream()
                 .map(findRegisteredMusic -> musicHistoryMapper.toPlayRegisteredMusicResDto(
