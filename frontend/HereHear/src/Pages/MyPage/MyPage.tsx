@@ -1,5 +1,5 @@
 import { Image } from "../../components/atoms/Image/Image";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import * as S from "./MyPage.styles";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import iconEdit from "../../assets/MyPage/icon-edit.png";
@@ -12,8 +12,8 @@ import iconBadge from "../../assets/MyPage/badges.png";
 import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 import { useNavigate } from "react-router-dom";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
-// import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
-// import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
+import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
+import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
 import { useGetMyAchievement } from "../../apis/Mypage/Quries/useGetMyAchievement";
 import Modal from "../../components/atoms/Modal/Modal";
 import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
@@ -26,7 +26,7 @@ import monziHerehear from "../../../public/images/monzi-herehear.png";
 import { useGetCheckNickname } from "../../apis/Login/Quries/useGetCheckNickname";
 import { useDebouncedCallback } from "use-debounce";
 import { useRecoilState } from "recoil";
-import { MyAchievementAtom } from "../../states/MypageAtoms";
+import { MyAchievementAtom, YourIdAtom } from "../../states/MypageAtoms";
 import iconBack from "../../assets/CircleButton/icon-back.png";
 
 const mypage = [
@@ -38,6 +38,12 @@ const mypage = [
 
 export default function MyPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
+    const [memberId, setMemberId] = useRecoilState(YourIdAtom); // memberId를 0으로 바꿔주기 위해
+    console.log(memberId);
+
+    useEffect(() => {
+        setMemberId(0);
+    }, []);
 
     const navigatePage = (path: string) => {
         if (path === "/achievement") {
@@ -53,8 +59,8 @@ export default function MyPage() {
     };
 
     const UserInfo = useGetUserinfo();
-    // const Follower = useGetFollower();
-    // const Following = useGetFollowing();
+    const Follower = useGetFollower();
+    const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
     const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -171,7 +177,7 @@ export default function MyPage() {
                             ></Image>
                         </S.EditWrapper>
                     </S.MydataWrapper>
-                    {/* <S.FollowWrapper>
+                    <S.FollowWrapper>
                         <Button
                             option="tag_plus"
                             size="largeplus"
@@ -180,10 +186,15 @@ export default function MyPage() {
                         >
                             팔로잉 {Following?.length ?? 0}명
                         </Button>
-                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/follower")}>
+                        <Button
+                            option="tag_plus"
+                            size="largeplus"
+                            $width="130px"
+                            onClick={() => navigatePage("/follower")}
+                        >
                             팔로워 {Follower?.length ?? 0}명
                         </Button>
-                    </S.FollowWrapper> */}
+                    </S.FollowWrapper>
                     <S.MyItemWrapper>
                         {mypage.map((item, index) => (
                             <ItemBox
