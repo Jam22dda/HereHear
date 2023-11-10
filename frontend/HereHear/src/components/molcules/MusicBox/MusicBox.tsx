@@ -269,7 +269,7 @@ export default function MusicBox(props: MusicBoxProps) {
                         </S.ImageRightOuter>
                     </S.MusicBoxInner>
                 ) : (
-                    <p>반경 500m 음악만 재생 가능합니다.</p>
+                    <p>반경 500m 음악만 조회 가능합니다.</p>
                 )}
             </S.MusicBox>
         </S.Outer>

@@ -55,7 +55,7 @@ export default function RegistMusicMent() {
     const handleBack = () => {
         // 태그 상태를 초기화하고
         setSelectedTagIds([]);
-        console.log(selectedTagIds);
+        // console.log(selectedTagIds);
         // 이전 페이지로 이동합니다.
         navigate(-1);
     };
@@ -83,7 +83,7 @@ export default function RegistMusicMent() {
                 releaseTime: musicItem.releaseTime, // 발매 시간
                 musicOccasionIds: selectedTagIds.map((tag) => tag.id), // 선택된 태그 ID들
             };
-            console.log(musicInfo, "musicInfo 잘 들어가?");
+            // console.log(musicInfo, "musicInfo 잘 들어가?");
             addMusicMutation.mutate(musicInfo);
             setSelectedTagIds([]);
             navigate("/core");

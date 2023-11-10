@@ -16,7 +16,7 @@ const useGetMusicPlay = (registeredMusicId: number | null) => {
     });
 
     if (error) {
-        console.error("Error fetching search music", error);
+        // console.error("Error fetching search music", error);
         return { musicPlay: undefined, isLoading, isError: true };
     }
 
