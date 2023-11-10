@@ -20,10 +20,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String email;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String nickname;
 
     @CreatedDate
