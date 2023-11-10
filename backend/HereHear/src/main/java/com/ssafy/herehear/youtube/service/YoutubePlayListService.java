@@ -23,6 +23,7 @@ public class YoutubePlayListService {
     private static final WebClient webClient = WebClient.builder().baseUrl(SEARCH_URL).build();
 
     public String selectPlayList() {
+        log.info("유튜브 재생목록 리스트 확인");
         Mono<String> response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/playlists")
@@ -48,6 +49,7 @@ public class YoutubePlayListService {
     }
 
     public String insertPlayList() {
+        log.info("유튜브 재생목록 추가");
         String jsonBody = "{" +
                 "\"snippet\": {" +
                 "\"title\": \"HereHear\"," +
@@ -74,6 +76,7 @@ public class YoutubePlayListService {
         try {
             String result = response.block();
             JSONObject jsonResponse = new JSONObject(result);
+            log.info("insertPlayList 완료");
             return jsonResponse.getString("id");
         } catch (Exception e) {
             throw new CustomException(ExceptionStatus.NOT_FOUND_YOUTUBE_PLAYLIST_ID);
@@ -81,6 +84,7 @@ public class YoutubePlayListService {
     }
 
     public String selectPlayListItem(String searchName) {
+        log.info("유튜브 영상 검색: "+searchName);
         Mono<String> response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/search")
@@ -103,6 +107,7 @@ public class YoutubePlayListService {
     }
 
     public void addPlayListItem(String playlistId, String videoId) {
+        log.info("[유튜브 재생목록에 영상 추가]: "+playlistId+", "+videoId);
         String jsonBody = "{"
                 + "\"snippet\": {"
                 + "\"playlistId\": \"" + playlistId + "\","
@@ -125,7 +130,7 @@ public class YoutubePlayListService {
                 .bodyToMono(String.class);
 
         String result = response.block();
-        log.info("유튜브 영상 추가 result: "+result);
+        log.info("addPlayListItem result: "+result);
     }
 
 }

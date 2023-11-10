@@ -144,6 +144,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Override
     @Transactional
     public List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId) {
+        log.info("[나의/다른 유저 등록 음악 조회] memberId: " + memberId);
         MemberUtil.findMember(memberId);
 
         List<MyRegisteredMusicResDto> myRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
