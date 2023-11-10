@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { unFollow } from "../mypageAPI";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { unFollow } from '../mypageAPI';
 
 interface unFollowResponse {
     code: number;
@@ -13,13 +13,13 @@ interface UnFollowRequest {
 const useUnFollow = () => {
     const queryClient = useQueryClient();
     return useMutation<unFollowResponse, Error, UnFollowRequest>({
-        mutationFn: (UnFollowRequest) => unFollow(UnFollowRequest.memberId),
+        mutationFn: UnFollowRequest => unFollow(UnFollowRequest.memberId),
         onSuccess: () => {
-            console.log("언팔로우 성공!");
-            queryClient.invalidateQueries({ queryKey: ["Follower"] });
+            // console.log("언팔로우 성공!");
+            queryClient.invalidateQueries({ queryKey: ['Follower'] });
         },
         onError: (error: Error) => {
-            console.log("언팔로우 실패:", error.message);
+            // console.log("언팔로우 실패:", error.message);
         },
     });
 };
