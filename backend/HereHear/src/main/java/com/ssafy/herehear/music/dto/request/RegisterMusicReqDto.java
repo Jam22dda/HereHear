@@ -9,12 +9,12 @@ import java.util.List;
 @Getter
 @ToString
 public class RegisterMusicReqDto {
-    @NotEmpty(message = "경도는 필수로 입력해야 합니다")
+    @NotNull(message = "경도는 필수로 입력해야 합니다")
     @DecimalMin(value = "-180.0", message = "경도는 [-180.0, 180.0] 범위에 있어야 합니다")
     @DecimalMax(value = "180.0", message = "경도는 [-180.0, 180.0] 범위에 있어야 합니다")
     private Double lng;
 
-    @NotEmpty(message = "위도는 필수로 입력해야 합니다")
+    @NotNull(message = "위도는 필수로 입력해야 합니다")
     @DecimalMin(value = "-90.0", message = "경도는 [-90.0, 90.0] 범위에 있어야 합니다")
     @DecimalMax(value = "90.0", message = "경도는 [-90.0, 90.0] 범위에 있어야 합니다")
     private Double lat;
