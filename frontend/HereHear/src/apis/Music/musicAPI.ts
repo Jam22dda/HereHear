@@ -73,4 +73,12 @@ const getListenedMusic = async () => {
     }
 };
 
-export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic, getListenedMusic };
+const postMusicHistory = async (registeredMusicId: registeredMusicId): Promise<postLikeMusicResponse> => {
+    const response = await instance.post<postLikeMusicResponse>('/history', {
+        registeredMusicId,
+    });
+    return response.data;
+};
+
+
+export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic, getListenedMusic, postMusicHistory};
