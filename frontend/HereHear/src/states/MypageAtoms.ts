@@ -25,5 +25,15 @@ export const FollowingListAtom = atom<FollowingType[]>({
 
 export const YourIdAtom = atom({
     key: "YourIdAtom",
-    default: 0,
+    default: parseInt(localStorage.getItem("yourId") || "0", 10),
+});
+
+export const BackCheckAtom = atom({
+    key: "BackCheckAtom",
+    default: "",
+});
+
+export const IsWhosPageAtom = atom({
+    key: "IsWhosPageAtom",
+    default: "",
 });

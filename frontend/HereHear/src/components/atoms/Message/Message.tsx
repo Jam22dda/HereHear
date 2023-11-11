@@ -1,11 +1,16 @@
 import * as S from "./Message.styles";
 import { Text } from "../Text/Text.styles";
 import { Image } from "../Image/Image";
+import { SignUpInfoAtom } from "../../../states/SignUpAtoms";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+
 interface MessageProps {
     comment: string;
     createTime: string;
     nickname: string;
     characterImage: string;
+    musicRegistId: number;
 }
 
 export default function Message({
@@ -13,7 +18,16 @@ export default function Message({
     createTime,
     nickname,
     characterImage,
+    musicRegistId,
 }: MessageProps) {
+    const navigate = useNavigate();
+    const navigatePage = (path: string) => {
+        navigate(path);
+    };
+    const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
+    const myId = mySignUpInfo.memberId;
+    const musicRegistIdNumber = parseInt(musicRegistId, 10);
+
     return (
         <S.Message>
             <Text size="small1" fontWeight="medium">
@@ -23,8 +37,13 @@ export default function Message({
                 <Text size="small3" fontWeight="medium">
                     {createTime}
                 </Text>
-                {/* TODO: 캐릭터 넣기, 날짜랑 작성자 묶기 */}
-                <S.userWrapper>
+                <S.userWrapper
+                    onClick={() => {
+                        myId === musicRegistIdNumber
+                            ? navigatePage("/mypage")
+                            : navigatePage(`/mypage/${musicRegistIdNumber}`);
+                    }}
+                >
                     <Image src={characterImage} width={2}></Image>
                     <Text
                         size="small3"

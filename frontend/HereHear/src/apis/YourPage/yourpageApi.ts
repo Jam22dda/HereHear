@@ -40,9 +40,20 @@ const getYourFollower = async (id: number) => {
     }
 };
 
+const getYourAchievement = async (id: number) => {
+    try {
+        const response = await instance.get(`/achievement/list/${id}`);
+        return response.data.data;
+    } catch (error) {
+        console.error("다른 유저의 업적 목록 가져오기 실패", error);
+        throw error;
+    }
+};
+
 export {
     getYourLikeMusic,
     getYourRegistMusic,
     getYourFollowing,
     getYourFollower,
+    getYourAchievement,
 };
