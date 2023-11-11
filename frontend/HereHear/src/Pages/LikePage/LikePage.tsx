@@ -81,7 +81,7 @@ export default function LikePage() {
                     fontWeight="bold"
                     $margin="20px 0 48px 0"
                 >
-                    내가 좋아요한 노래
+                    좋아요한 노래
                 </Text>
                 {yourId === 0
                     ? LikeMusic &&
