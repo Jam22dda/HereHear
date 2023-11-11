@@ -39,6 +39,7 @@ public class ControllerAdvisor {
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     public CommonResponse exceptionHandler(Exception e) {
         // 디버깅을 위한 로그 출력
         e.printStackTrace();
