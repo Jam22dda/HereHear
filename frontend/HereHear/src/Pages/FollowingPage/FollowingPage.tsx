@@ -13,22 +13,24 @@ import { memberId } from "../../types/user";
 import React, { useState, useEffect } from "react";
 import { FollowingType } from "../../types/user";
 import { YourIdAtom } from "../../states/MypageAtoms";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useGetYourFollowing } from "../../apis/YourPage/Quries/useGetYourFollowing";
+import { SignUpInfoAtom } from "../../states/SignUpAtoms";
 
 export default function Following() {
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
     const navigatePage = (path: string) => {
         navigate(path);
     };
     const [followingList, setFollowingList] = useState<FollowState[]>([]);
     const [yourId, setYourId] = useRecoilState(YourIdAtom);
-
     const Following: FollowingType[] = useGetFollowing();
     const YourFollowing: FollowingType[] = useGetYourFollowing(yourId);
-    console.log(Following);
     const { mutate: FollowUser } = useFollow();
     const { mutate: unFollowUser } = useUnFollow();
+    const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
+    const myId = mySignUpInfo.memberId;
+    console.log(myId);
 
     interface FollowState {
         isFollowing: boolean;
@@ -41,9 +43,9 @@ export default function Following() {
         }
     }, [Following]);
 
-    // useEffect(() => {
-    //     setFollowingList(Following);
-    // }, [Following]);
+    const handleSetYourId = (yourId: memberId) => {
+        localStorage.setItem("yourId", yourId.toString());
+    };
 
     const handleFollowClick = (memberId: memberId, index: number) => {
         FollowUser(memberId);
@@ -98,6 +100,7 @@ export default function Following() {
                                                   `/mypage/${item.memberId}`
                                               );
                                               setYourId(item.memberId);
+                                              handleSetYourId(item.memberId);
                                           }}
                                           characterImage={
                                               item.profileCharacter
@@ -150,7 +153,9 @@ export default function Following() {
                                       <Follow
                                           onClick={() => {
                                               navigatePage(
-                                                  `/mypage/${item.memberId}`
+                                                  item.memberId === myId
+                                                      ? "/mypage"
+                                                      : `/mypage/${item.memberId}`
                                               );
                                               setYourId(item.memberId);
                                           }}
