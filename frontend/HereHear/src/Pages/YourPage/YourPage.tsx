@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import icon1102DJ from "../../../public/images/icon-1102dj.png";
 import { useGetYourinfo } from "../../apis/Mypage/Quries/useGetYourInfo";
 import { YourIdAtom } from "../../states/MypageAtoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { useGetYourFollowing } from "../../apis/YourPage/Quries/useGetYourFollowing";
 import { useGetYourFollower } from "../../apis/YourPage/Quries/useGetYourFollower";
 import { FollowingType } from "../../types/user";
@@ -33,9 +33,8 @@ const mypage = [
 ];
 
 export default function YourPage() {
-    const yourId = useRecoilValue(YourIdAtom);
-    console.log(yourId);
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const [yourId, setYourId] = useRecoilState(YourIdAtom);
+    const navigate = useNavigate();
 
     const navigatePage = (path: string) => {
         navigate(path);
@@ -48,7 +47,6 @@ export default function YourPage() {
     const [isFollowing, setIsFollowing] = useState(false);
     const { mutate: FollowUser } = useFollow();
     const { mutate: unFollowUser } = useUnFollow();
-
     useEffect(() => {
         if (Following && yourId) {
             // 팔로잉 목록에서 yourId와 일치하는 memberId 찾기
@@ -60,10 +58,12 @@ export default function YourPage() {
     }, [Following, yourId]);
 
     const handleFollowClick = (memberId: memberId) => {
+        setIsFollowing((prev) => !prev);
         FollowUser(memberId);
     };
 
     const handleUnFollowClick = (memberId: memberId) => {
+        setIsFollowing((prev) => !prev);
         unFollowUser({ memberId });
     };
 
@@ -74,7 +74,10 @@ export default function YourPage() {
                     <CircleButton
                         option="default2"
                         size="medium"
-                        onClick={() => navigate(-1)}
+                        onClick={() => {
+                            navigate(-1);
+                            setYourId(0);
+                        }}
                     >
                         <Image
                             src={iconBack}

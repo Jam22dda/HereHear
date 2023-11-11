@@ -12,11 +12,15 @@ import { useUnFollow } from "../../apis/Mypage/Mutations/useUnFollow";
 import { memberId } from "../../types/user";
 import { useGetYourFollower } from "../../apis/YourPage/Quries/useGetYourFollower";
 import { YourIdAtom } from "../../states/MypageAtoms";
-import { useRecoilState } from "recoil";
+import { SignUpInfoAtom } from "../../states/SignUpAtoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { FollowingType } from "../../types/user";
 
 export default function Follower() {
     const navigate = useNavigate(); // useNavigate 훅 사용
+    const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
+    const myId = mySignUpInfo.memberId;
+    console.log(myId);
 
     const navigatePage = (path: string) => {
         navigate(path);
@@ -24,6 +28,10 @@ export default function Follower() {
 
     const [yourId, setYourId] = useRecoilState(YourIdAtom);
     const YourFollower: FollowingType[] = useGetYourFollower(yourId);
+
+    const handleSetYourId = (yourId: memberId) => {
+        localStorage.setItem("yourId", yourId.toString());
+    };
 
     interface FollowerType {
         memberId: number;
@@ -91,6 +99,7 @@ export default function Follower() {
                                   onClick={() => {
                                       navigatePage(`/mypage/${item.memberId}`);
                                       setYourId(item.memberId);
+                                      handleSetYourId(item.memberId);
                                   }}
                                   characterImage={
                                       item.profileCharacter.characterImage
@@ -129,10 +138,14 @@ export default function Follower() {
                       ))
                     : YourFollower &&
                       YourFollower.map((item: FollowerType, index: number) => (
-                          <S.FollowerWrapper key={index}>
+                          <S.YourFollowerWrapper key={index}>
                               <Follow
                                   onClick={() => {
-                                      navigatePage(`/mypage/${item.memberId}`);
+                                      navigatePage(
+                                          item.memberId === myId
+                                              ? "/mypage"
+                                              : `/mypage/${item.memberId}`
+                                      );
                                       setYourId(item.memberId);
                                   }}
                                   characterImage={
@@ -144,31 +157,7 @@ export default function Follower() {
                                       "뱃지가 없어용!"
                                   }
                               />
-                              {item.isFollowed && (
-                                  <Button
-                                      option="unfollow"
-                                      size="medium"
-                                      $width="92px"
-                                      onClick={() =>
-                                          handleUnFollowClick(item.memberId)
-                                      }
-                                  >
-                                      팔로잉
-                                  </Button>
-                              )}
-                              {!item.isFollowed && (
-                                  <Button
-                                      option="follow"
-                                      size="medium"
-                                      $width="92px"
-                                      onClick={() =>
-                                          handleFollowClick(item.memberId)
-                                      }
-                                  >
-                                      팔로우
-                                  </Button>
-                              )}
-                          </S.FollowerWrapper>
+                          </S.YourFollowerWrapper>
                       ))}
             </div>
         </div>
