@@ -4,7 +4,7 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.music.dto.request.AroundSearchReqDto;
 import com.ssafy.herehear.music.dto.response.AroundMusicResDto;
 import com.ssafy.herehear.music.mapper.AroundMapper;
-import com.ssafy.herehear.music.repository.musicRepositoryImpl.AroundRepositoryImpl;
+import com.ssafy.herehear.music.repository.AroundRepository;
 import com.ssafy.herehear.music.service.AroundService;
 import com.ssafy.herehear.music.util.HourFilterUtils;
 import jakarta.transaction.Transactional;
@@ -20,19 +20,19 @@ import java.util.List;
 public class AroundServiceImpl implements AroundService {
     private static final double EARTH_RADIUS = 6371.0; // 지구 반지름 (킬로미터)
 
-    private final AroundRepositoryImpl aroundRepositoryImpl;
+    private final AroundRepository aroundRepository;
     private final AroundMapper aroundMapper;
 
     @Override
     @Transactional
     public List<AroundMusicResDto> getAroundMusicList(Double lat, Double lng) {
-        log.info("[주변 음악 조회] lat: " + lat+", lng: "+lng);
+        log.info("[주변 음악 조회] lat: " + lat + ", lng: " + lng);
 
-        List<AroundMusicResDto> aroundMusicResDtos = findByAroundMusics(lat, lng, aroundRepositoryImpl.findByRegisterMusics()).stream()
+        List<AroundMusicResDto> aroundMusicResDtos = findByAroundMusics(lat, lng, aroundRepository.findByRegisterMusics()).stream()
                 .filter(HourFilterUtils::findHourFilter)
                 .map(registeredMusic -> aroundMapper.toAroundMusicResDto(
                                 registeredMusic,
-                                aroundRepositoryImpl.findByOccasionName(registeredMusic.getRegisteredMusicId())
+                                aroundRepository.findByOccasionName(registeredMusic.getRegisteredMusicId())
                         )
                 ).toList();
         log.info("getAroundMusicList: " + aroundMusicResDtos);
@@ -46,14 +46,13 @@ public class AroundServiceImpl implements AroundService {
         log.info("[주변 음악 검색] AroundSearchReqDto: " + aroundSearchReqDto);
 
         List<AroundMusicResDto> aroundMusicResDtos = findByAroundMusics(
-                        aroundSearchReqDto.getLat(),
-                        aroundSearchReqDto.getLng(),
-                        aroundRepositoryImpl.findByAroundSearchMusics(aroundSearchReqDto.getKeyword(),aroundSearchReqDto.getOccasions())
-                ).stream()
-                .filter(HourFilterUtils::findHourFilter)
+                aroundSearchReqDto.getLat(),
+                aroundSearchReqDto.getLng(),
+                aroundRepository.findByAroundSearchMusics(aroundSearchReqDto.getKeyword(), aroundSearchReqDto.getOccasions())
+        ).stream()
                 .map(registeredMusic -> aroundMapper.toAroundMusicResDto(
                                 registeredMusic,
-                                aroundRepositoryImpl.findByOccasionName(registeredMusic.getRegisteredMusicId())
+                                aroundRepository.findByOccasionName(registeredMusic.getRegisteredMusicId())
                         )
                 ).toList();
         log.info("getAroundSearchMusic: " + aroundMusicResDtos);
