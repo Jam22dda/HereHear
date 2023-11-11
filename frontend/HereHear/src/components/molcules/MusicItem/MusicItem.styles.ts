@@ -19,7 +19,7 @@ const MusicTextWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    margin-left: 16px;
+    margin-left: 12px;
     overflow: hidden; /* 텍스트가 넘칠 경우 숨김 처리합니다. */
     height: 50px;
 `;
@@ -34,12 +34,11 @@ interface MarqueeTextProps {
 const MarqueeText = styled(Text)<MarqueeTextProps>`
     white-space: nowrap;
     display: inline-block;
-    width: 230px;
+    width: 215px;
     min-width: 100%;
     animation: ${scroll} 10s linear infinite;
     animation-play-state: ${(props) => (props.animate ? "running" : "paused")};
-    animation-delay: ${(props) =>
-        props.isOverflowing && !props.animate ? "3s" : "0s"};
+    animation-delay: ${(props) => (props.isOverflowing && !props.animate ? "3s" : "0s")};
     animation-fill-mode: forwards;
 `;
 
