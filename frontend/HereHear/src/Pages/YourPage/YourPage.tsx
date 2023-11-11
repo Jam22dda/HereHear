@@ -10,7 +10,6 @@ import iconLikemusic from "../../assets/MyPage/icon-likemusic.png";
 import iconBadge from "../../assets/MyPage/badges.png";
 import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 import { useNavigate } from "react-router-dom";
-import icon1102DJ from "../../../public/images/icon-1102dj.png";
 import { useGetYourinfo } from "../../apis/Mypage/Quries/useGetYourInfo";
 import { YourIdAtom } from "../../states/MypageAtoms";
 import { useRecoilState } from "recoil";
@@ -24,6 +23,7 @@ import { useEffect, useState } from "react";
 import { useUnFollow } from "../../apis/Mypage/Mutations/useUnFollow";
 import { useFollow } from "../../apis/Mypage/Mutations/useFollow";
 import { memberId } from "../../types/user";
+import { useGetYourAchievement } from "../../apis/Mypage/Quries/useGetMyAchievement";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -41,12 +41,15 @@ export default function YourPage() {
     };
 
     const YourInfo = useGetYourinfo(Number(yourId));
+    console.log(YourInfo?.achievementId);
     const YourFollowing: FollowingType[] = useGetYourFollowing(yourId);
     const YourFollower: FollowingType[] = useGetYourFollower(yourId);
     const Following: FollowingType[] = useGetFollowing();
     const [isFollowing, setIsFollowing] = useState(false);
     const { mutate: FollowUser } = useFollow();
     const { mutate: unFollowUser } = useUnFollow();
+    const YourAchievement = useGetYourAchievement(YourInfo?.achievementId);
+    console.log(YourAchievement);
     useEffect(() => {
         if (Following && yourId) {
             // 팔로잉 목록에서 yourId와 일치하는 memberId 찾기
@@ -119,15 +122,20 @@ export default function YourPage() {
                         ></Image>
                     </S.Profile>
                     <S.YourdataWrapper>
-                        <Image
-                            src={icon1102DJ}
-                            width={24}
-                            height={24}
-                            $unit="px"
-                            $margin="0 4px 4px 0"
-                        ></Image>
+                        {YourAchievement && (
+                            <Image
+                                src={
+                                    YourAchievement &&
+                                    YourAchievement.badge.badgeImg
+                                }
+                                width={24}
+                                height={24}
+                                $unit="px"
+                                $margin="0 4px 4px 0"
+                            ></Image>
+                        )}
                         <Text size="body1" fontWeight="bold">
-                            신규 DJ
+                            {YourAchievement && YourAchievement.title.titleName}
                         </Text>
                         <Text size="body1" $marginLeft="4px">
                             {YourInfo && YourInfo.nickname}
