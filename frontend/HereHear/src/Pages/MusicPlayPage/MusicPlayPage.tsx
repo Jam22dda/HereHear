@@ -14,7 +14,7 @@ import youtube from "../../assets/CircleButton/icon-youtubePlay.png";
 import { usePostLikeMusic } from "../../apis/Music/Mutations/useLikeMusic";
 import { useGetMusicPlay } from "../../apis/Music/Quries/useGetMusicPlay";
 import { useMusicHistory } from "../../apis/Music/Mutations/useMusicHistory";
-import { memberId } from "../../apis/Mypage/Mutations/useFollow";
+// import { memberId } from "../../apis/Mypage/Mutations/useFollow";
 
 export default function MusicPlay() {
     const { id } = useParams();
