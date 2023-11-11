@@ -10,8 +10,10 @@ import { useGetMapMusicList } from "../apis/Map/Queries/useGetMapMusicList";
 import { useGetAroundMusicList } from "../apis/Map/Queries/useGetAroundMusicList";
 import { useRecoilState } from "recoil";
 import { SignUpInfoAtom } from "../states/SignUpAtoms";
+import { Image } from "../components/atoms/Image/Image";
 import MapClock from "../components/molcules/clocktest/ClockTest";
 import Button from "../components/atoms/Button/Button";
+import eventBox from "../../src/assets/Core/icon-eventbox.png";
 
 export default function Core() {
     const [signUpInfoAtom, setSignUpInfoAtom] = useRecoilState(SignUpInfoAtom);
@@ -58,6 +60,11 @@ export default function Core() {
 
     const onClickMent = () => {
         setShowButton((current) => !current);
+    };
+
+    const onclickGoogleForm = () => {
+        const googleForm = "https://docs.google.com/forms/d/e/1FAIpQLSc-Sioln9kYTZ8gktfEv0EAahQPDEpwe-Sm9QLzvYdFVDHG9Q/viewform?usp=sf_link";
+        window.location.href = googleForm;
     };
 
     useEffect(() => {
@@ -485,6 +492,9 @@ export default function Core() {
                         </Button>
                     )}
                 </S.ClockOuter>
+                <S.giftOuter>
+                    <Image width={4} height={4} src={eventBox} onClick={onclickGoogleForm}></Image>
+                </S.giftOuter>
                 {isUpdate === true ? (
                     <S.ImgOuter>
                         <img src={gpsPinActImage} alt="gpsImage" onClick={handlerBtnClick} />

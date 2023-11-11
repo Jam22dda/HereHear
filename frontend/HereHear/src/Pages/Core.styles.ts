@@ -35,6 +35,12 @@ export const ClockOuter = styled.div`
         width: 50px;
     } */
 `;
+export const giftOuter = styled.div`
+    position: absolute;
+    top: 100px;
+    left: 20px;
+    z-index: 996;
+`;
 
 export const NavbarWrapper = styled.div`
     display: flex;
