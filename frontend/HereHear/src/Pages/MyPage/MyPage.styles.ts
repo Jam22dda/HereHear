@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const Profile = styled.div`
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     border-radius: 120px;
     box-shadow: ${({ theme }) => theme.shadow.shadow_smallbtn};
     margin: 0 0 8px 0;
@@ -38,6 +38,9 @@ export const MyItemWrapper = styled.div`
     gap: 24px;
     justify-content: center;
     margin-top: 32px;
+    padding: 10px 0 80px;
+    height: 34vh;
+    overflow: auto;
 `;
 
 export const EditWrapper = styled.button`
@@ -55,4 +58,20 @@ export const TextWrapper = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 12px;
+`;
+export const ScrollWrapper = styled.div`
+    /* padding-bottom: 100px; */
+    /* padding: 10px 0; */
+    height: 65vh;
+    overflow: auto;
+`;
+export const NavbarWrapper = styled.div`
+    display: flex;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    bottom: 115px;
+    /* z-index: 996; */
+    /* 기타 필요한 스타일링 */
 `;
