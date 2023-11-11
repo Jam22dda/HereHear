@@ -14,28 +14,20 @@ export const MusicItemWrapper = styled.div`
 // `;
 
 export const ScrollWrapper = styled.div`
-    /* padding-bottom: 100px; */
-    /* padding: 10px 0; */
-    height: 65vh;
+    height: calc(100vh - 250px);
+    padding-bottom: 20px;
     overflow: auto;
+    /* width: auto; */
 `;
-
-// export const NavbarWrapper = styled.div`
-//     display: flex;
-//     left: 0;
-//     width: 100%;
-//     justify-content: center;
-//     /* position: absolute; */
-//     /* 기타 필요한 스타일링 */
-// `;
 
 export const NavbarWrapper = styled.div`
     display: flex;
     left: 0;
     width: 100%;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     bottom: 115px;
-    /* z-index: 996; */
+    z-index: 10px;
+
     /* 기타 필요한 스타일링 */
 `;
