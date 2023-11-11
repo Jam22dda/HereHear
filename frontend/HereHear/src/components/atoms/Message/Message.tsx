@@ -26,7 +26,7 @@ export default function Message({
     };
     const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
     const myId = mySignUpInfo.memberId;
-    const musicRegistIdNumber = parseInt(musicRegistId, 10);
+    const musicRegistIdNumber = musicRegistId;
 
     return (
         <S.Message>
