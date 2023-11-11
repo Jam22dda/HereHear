@@ -26,7 +26,7 @@ export default function Core() {
     }, [setSignUpInfoAtom]);
 
     const myId = signUpInfoAtom.memberId;
-    console.log(myId);
+    // console.log(myId);
 
     const [isUpdate, setIsUpdate] = useState(false);
     const [lat, setLat] = useState(0); // 위도

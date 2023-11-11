@@ -49,7 +49,7 @@ export default function MyRegistPage() {
                     fontWeight="bold"
                     $margin="20px 0 48px 0"
                 >
-                    내가 등록한 노래
+                    등록한 노래
                 </Text>
                 {yourId === 0
                     ? RegistMusic &&
