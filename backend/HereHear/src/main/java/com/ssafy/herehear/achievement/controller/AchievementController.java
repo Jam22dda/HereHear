@@ -32,6 +32,15 @@ public class AchievementController {
         return new DataResponse<>("200", "업적리스트 조회", achievementDtoList);
     }
 
+    @GetMapping("/list/{targetId}")
+    public DataResponse<List<MemberAchievementDto>> getAchievementByTargetList(Authentication authentication, @PathVariable Long targetId) {
+        log.info("[대상의 업적리스트 조회] targetId: {}, time: {}", targetId, TimeFormatUtil.formatTime(LocalDateTime.now()));
+
+        List<MemberAchievementDto> myAchievementList = achievementService.getMyAchievementList(targetId);
+
+        return new DataResponse<>("200", "대상의 달성한 업적 조회", myAchievementList);
+    }
+
     @GetMapping("/myachievement")
     public DataResponse<List<MemberAchievementDto>> getMyTitle(Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
