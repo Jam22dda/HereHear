@@ -35,3 +35,14 @@ export const ClockOuter = styled.div`
         width: 50px;
     } */
 `;
+
+export const NavbarWrapper = styled.div`
+    display: flex;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    bottom: 115px;
+    /* z-index: 996; */
+    /* 기타 필요한 스타일링 */
+`;
