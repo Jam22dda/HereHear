@@ -28,58 +28,36 @@ export default function ListenedMusicPage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigate(-1)}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="20px 0 48px 0"
-                >
+                <Text size="subtitle1" fontWeight="bold" $margin="20px 0 48px 0">
                     최근 들은 노래 리스트
                 </Text>
-                {ListenedMusic &&
-                    ListenedMusic.map(
-                        (item: ListenedMusicType, index: number) => (
+                <S.ScrollWrapper>
+                    {ListenedMusic &&
+                        ListenedMusic.map((item: ListenedMusicType, index: number) => (
                             <S.MusicItemWrapper key={index}>
-                                <MusicItem
-                                    src={item.albumImg}
-                                    songtitle={item.subject}
-                                    artist={item.singer}
-                                />
+                                <MusicItem src={item.albumImg} songtitle={item.subject} artist={item.singer} />
                                 <CircleButton
                                     option="gradDeActivated"
                                     size="large"
                                     onClick={() => {
-                                        const subjectEncoded =
-                                            encodeURIComponent(item.subject);
-                                        const singerEncoded =
-                                            encodeURIComponent(item.singer);
+                                        const subjectEncoded = encodeURIComponent(item.subject);
+                                        const singerEncoded = encodeURIComponent(item.singer);
                                         const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
                                         window.location.href = youtubeSearchUrl;
                                     }}
                                 >
-                                    <Image
-                                        src={iconArrowForward}
-                                        width={24}
-                                        height={20}
-                                        $unit="px"
-                                    ></Image>
+                                    <Image src={iconArrowForward} width={24} height={20} $unit="px"></Image>
                                 </CircleButton>
                             </S.MusicItemWrapper>
-                        )
-                    )}
+                        ))}
+                </S.ScrollWrapper>
+                <S.NavbarWrapper>
+                    <Navbar></Navbar>
+                </S.NavbarWrapper>
             </div>
-            <Navbar></Navbar>
         </div>
     );
 }

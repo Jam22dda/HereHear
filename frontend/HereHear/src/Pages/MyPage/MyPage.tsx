@@ -12,8 +12,8 @@ import iconBadge from "../../assets/MyPage/badges.png";
 import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
 import { useNavigate } from "react-router-dom";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
-// import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
-// import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
+import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
+import { useGetFollowing } from "../../apis/Mypage/Quries/useGetFollowing";
 import { useGetMyAchievement } from "../../apis/Mypage/Quries/useGetMyAchievement";
 import Modal from "../../components/atoms/Modal/Modal";
 import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
@@ -38,8 +38,7 @@ const mypage = [
 
 export default function MyPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
-    const [memberId, setMemberId] = useRecoilState(YourIdAtom); // memberId를 0으로 바꿔주기 위해
-    console.log(memberId);
+    const [, setMemberId] = useRecoilState(YourIdAtom); // memberId를 0으로 바꿔주기 위해
 
     useEffect(() => {
         setMemberId(0);
@@ -59,24 +58,19 @@ export default function MyPage() {
     };
 
     const UserInfo = useGetUserinfo();
-    // const Follower = useGetFollower();
-    // const Following = useGetFollowing();
+    const Follower = useGetFollower();
+    const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
-    const [myAchievement, setMyAchievement] = useRecoilState(MyAchievementAtom);
+    const [, setMyAchievement] = useRecoilState(MyAchievementAtom);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [isBlanked, setIsBlanked] = useState(false);
     const [isDuplicated, setIsDuplicated] = useState(false);
     const [debouncedNickname, setDebouncedNickname] = useState("");
 
-    const debouncedCheck = useDebouncedCallback(
-        // function
-        (value) => {
-            setDebouncedNickname(value);
-        },
-        // delay in ms
-        500
-    );
+    const debouncedCheck = useDebouncedCallback((value) => {
+        setDebouncedNickname(value);
+    }, 500);
 
     const toggleModal = () => {
         setIsModalOpen((prev) => !prev);
@@ -125,37 +119,15 @@ export default function MyPage() {
                         window.location.reload();
                     }}
                 >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
                 <S.MyPageWrapper>
                     <S.Profile>
-                        <Image
-                            src={
-                                UserInfo &&
-                                UserInfo.profileCharacter.characterImage
-                            }
-                            width={140}
-                            height={140}
-                            $unit="px"
-                        ></Image>
+                        <Image src={UserInfo && UserInfo.profileCharacter.characterImage} width={120} height={120} $unit="px"></Image>
                     </S.Profile>
                     <S.MydataWrapper>
                         {MyAchievement && (
-                            <Image
-                                src={
-                                    MyAchievement &&
-                                    MyAchievement.badge.badgeImg
-                                }
-                                width={24}
-                                height={24}
-                                $unit="px"
-                                $margin="0 4px 4px 0"
-                            ></Image>
+                            <Image src={MyAchievement && MyAchievement.badge.badgeImg} width={24} height={24} $unit="px" $margin="0 4px 4px 0"></Image>
                         )}
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
@@ -167,120 +139,64 @@ export default function MyPage() {
                             님
                         </Text>
                         <S.EditWrapper>
-                            <Image
-                                src={iconEdit}
-                                width={16}
-                                height={16}
-                                $unit="px"
-                                $margin="0 0 0 4px"
-                                onClick={handleEdit}
-                            ></Image>
+                            <Image src={iconEdit} width={16} height={16} $unit="px" $margin="0 0 0 4px" onClick={handleEdit}></Image>
                         </S.EditWrapper>
                     </S.MydataWrapper>
-                    {/* <S.FollowWrapper>
-                        <Button
-                            option="tag_plus"
-                            size="largeplus"
-                            $width="130px"
-                            onClick={() => navigatePage("/following")}
-                        >
+                    <S.FollowWrapper>
+                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/following")}>
                             팔로잉 {Following?.length ?? 0}명
                         </Button>
-                        <Button
-                            option="tag_plus"
-                            size="largeplus"
-                            $width="130px"
-                            onClick={() => navigatePage("/follower")}
-                        >
+                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/follower")}>
                             팔로워 {Follower?.length ?? 0}명
                         </Button>
-                    </S.FollowWrapper> */}
+                    </S.FollowWrapper>
                     <S.MyItemWrapper>
                         {mypage.map((item, index) => (
-                            <ItemBox
-                                key={index}
-                                src={item.src}
-                                title={item.name}
-                                onClick={() => navigatePage(item.params)}
-                            />
+                            <ItemBox key={index} src={item.src} title={item.name} onClick={() => navigatePage(item.params)} />
                         ))}
                     </S.MyItemWrapper>
                 </S.MyPageWrapper>
+                <S.NavbarWrapper>
+                    <Navbar></Navbar>
+                </S.NavbarWrapper>
             </div>
-            <Navbar></Navbar>
+
             {isModalOpen && (
                 <ModalBg>
                     <Modal toggleModal={() => toggleModal()}>
                         {!isBlanked && !isDuplicated && (
                             <S.ExitWrapper>
-                                <CircleButton
-                                    option="default"
-                                    size="medium"
-                                    onClick={toggleModal}
-                                >
-                                    <Image
-                                        src={iconExit}
-                                        width={20}
-                                        height={20}
-                                        $unit="px"
-                                    ></Image>
+                                <CircleButton option="default" size="medium" onClick={toggleModal}>
+                                    <Image src={iconExit} width={20} height={20} $unit="px"></Image>
                                 </CircleButton>
                             </S.ExitWrapper>
                         )}
                         {!isBlanked && !isDuplicated && (
                             <S.TextWrapper>
-                                <Text
-                                    size="body2"
-                                    fontWeight="medium"
-                                    $margin="10px 0 28px 0"
-                                >
+                                <Text size="body2" fontWeight="medium" $margin="10px 0 28px 0">
                                     변경할 닉네임을 작성해 주세요!
                                 </Text>
 
                                 <Input onChange={handleChangeNickname}></Input>
-                                <Button
-                                    onClick={() => handleSaveNickname(nickname)}
-                                    $width="130px"
-                                    $margin="32px 0 0 0"
-                                >
+                                <Button onClick={() => handleSaveNickname(nickname)} $width="130px" $margin="32px 0 0 0">
                                     저장하기
                                 </Button>
                             </S.TextWrapper>
                         )}
                         {isBlanked && (
                             <S.TextWrapper>
-                                <Image
-                                    src={monziHerehear}
-                                    width={100}
-                                    height={100}
-                                    $unit="px"
-                                    $margin="0 0 30px 0"
-                                ></Image>
+                                <Image src={monziHerehear} width={100} height={100} $unit="px" $margin="0 0 30px 0"></Image>
                                 <h2>닉네임을 입력해주세요!</h2>
-                                <Button
-                                    onClick={handleBlanked}
-                                    $width="130px"
-                                    $margin="32px 0 0 0"
-                                >
+                                <Button onClick={handleBlanked} $width="130px" $margin="32px 0 0 0">
                                     다시 입력하기
                                 </Button>
                             </S.TextWrapper>
                         )}
                         {isDuplicated && (
                             <S.TextWrapper>
-                                <Image
-                                    src={monziHerehear}
-                                    width={100}
-                                    height={100}
-                                    $unit="px"
-                                    $margin="0 0 30px 0"
-                                ></Image>
+                                <Image src={monziHerehear} width={100} height={100} $unit="px" $margin="0 0 30px 0"></Image>
                                 <h2>닉네임이 중복되었습니다!</h2>
-                                <Button
-                                    onClick={handleDuplicated}
-                                    $width="130px"
-                                    $margin="32px 0 0 0"
-                                >
+                                <Button onClick={handleDuplicated} $width="130px" $margin="32px 0 0 0">
                                     다시 입력하기
                                 </Button>
                             </S.TextWrapper>
