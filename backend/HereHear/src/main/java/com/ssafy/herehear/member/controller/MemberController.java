@@ -12,9 +12,13 @@ import com.ssafy.herehear.member.dto.response.FollowerResDto;
 import com.ssafy.herehear.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -22,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@Validated
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -96,7 +101,11 @@ public class MemberController {
     }
 
     @GetMapping("/check/nickname/{nickname}")
-    public DataResponse<Map<String, Boolean>> checkNickname(@PathVariable("nickname") String nickname) {
+    public DataResponse<Map<String, Boolean>> checkNickname(@PathVariable("nickname")
+                                                            @Pattern(regexp = "^(?=.*[a-zA-Z가-힣]).{1,20}$",
+                                                                    message = "최소 하나의 영문, 한글과 숫자가 포함된 20글자 이내로 작성해야 합니다.")
+                                                            @Size(max = 20, message = "최대 20글짜까지 입력이 가능합니다.")
+                                                            String nickname) {
         boolean isAvailable = memberService.checkNickname(nickname);
         Map<String, Boolean> response = Map.of("isAvailable", isAvailable);
         String message = isAvailable ? "사용 가능한 닉네임 입니다" : "이미 사용중인 닉네임 입니다";
@@ -104,7 +113,7 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public DataResponse signUp(@RequestBody SignUpReqDto req, HttpServletResponse response) {
+    public DataResponse signUp(@RequestBody @Valid SignUpReqDto req, HttpServletResponse response) {
         String accessToken = memberService.signUp(req, response);
         return new DataResponse("200", "회원 가입이 완료되었습니다", accessToken);
     }
@@ -127,7 +136,7 @@ public class MemberController {
     }
 
     @PostMapping("/update/nickname")
-    public CommonResponse updateNickname(@RequestBody UpdateMemberReqDto updateMemberReqDto, Authentication authentication) {
+    public CommonResponse updateNickname(@RequestBody @Valid UpdateMemberReqDto updateMemberReqDto, Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
         memberService.updateNickname(updateMemberReqDto, memberId);
         return new CommonResponse("200", "닉네임 변경을 성공하였습니다");

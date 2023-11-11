@@ -1,13 +1,13 @@
 package com.ssafy.herehear.music.controller;
 
-import com.ssafy.herehear.global.exception.CustomException;
-import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import com.ssafy.herehear.music.dto.response.MusicInfoResDto;
 import com.ssafy.herehear.music.service.MusicService;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,20 +18,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/music")
 @Slf4j
-@CrossOrigin("*")
+@Validated
 public class SearchMusicController {
 
     private final MusicService musicService;
 
     @GetMapping("/search")
-    public DataResponse<Map<String, Object>> searchMusic(@RequestParam String keyword,
+    public DataResponse<Map<String, Object>> searchMusic(@RequestParam @NotEmpty(message = "검색어는 필수 입력값 입니다") String keyword,
                                                          @RequestParam(required = false) Integer limit,
                                                          @RequestParam(required = false) Integer page) {
-
         log.info("[음악 검색] keyword: {}, limit: {}, page: {}, time {} ", keyword, limit, page, TimeFormatUtil.formatTime(LocalDateTime.now()));
-
-        // 검색어가 비었다면 에러
-        if (keyword == null) throw new CustomException(ExceptionStatus.KEYWORD_NOT_FOUND);
 
         // 기본 출력 개수 설정
         if (limit == null) limit = 10;
