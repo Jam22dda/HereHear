@@ -3,6 +3,7 @@ package com.ssafy.herehear.music.controller;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import com.ssafy.herehear.music.service.SseService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -23,7 +24,8 @@ public class SseController {
     private final SseService sseService;
 
     @GetMapping(value = "/subscribe/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(@PathVariable Long memberId) {
+    public SseEmitter subscribe(@PathVariable Long memberId, HttpServletResponse response) {
+        response.setHeader("X-Accel-Buffering", "no");
         log.info("[SSE Subscribe] 구독 시도, memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
         SseEmitter sseEmitter = sseService.subscribe(memberId);
         sseService.sendToClient(memberId, new CommonResponse("200", "SSE 구독완료"));
