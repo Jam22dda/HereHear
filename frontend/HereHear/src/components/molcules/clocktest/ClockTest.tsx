@@ -24,11 +24,26 @@ const MapClock: FC<MapClockProps> = ({ onClick }) => {
   };
 
   const [degrees, setDegrees] = useState(calculateDegrees());
-  const hours = new Date().getHours();
+  const [currentImage, setCurrentImage] = useState("");
 
   useEffect(() => {
+    const updateImageBasedOnTime = () => {
+      const hours = new Date().getHours(); // 현재 시간을 24시간 형태로 가져옴
+
+      if (hours < 6) {
+        setCurrentImage(dawnCircle); // 새벽 이미지
+      } else if (hours < 12) {
+        setCurrentImage(morningCircle); // 오전 이미지
+      } else if (hours < 18) {
+        setCurrentImage(noonCircle); // 오후 이미지
+      } else {
+        setCurrentImage(nightCircle); // 밤 이미지
+      }
+    };
+
     const interval = setInterval(() => {
       // console.log("interval", calculateDegrees());
+      updateImageBasedOnTime();
       setDegrees(calculateDegrees());
     }, 1000);
 
@@ -38,15 +53,7 @@ const MapClock: FC<MapClockProps> = ({ onClick }) => {
   return (
     <S.ImageContainer onClick={onClick}>
       {/* 새벽, 오전, 오후, 밤 시간에 따라 이미지 변경 */}
-      {hours < 6 ? (
-        <S.RotatingImage src={dawnCircle} style={{ transform: `rotate(${degrees}deg)` }} />
-      ) : hours < 12 ? (
-        <S.RotatingImage src={morningCircle} style={{ transform: `rotate(${degrees}deg)` }} />
-      ) : hours < 18 ? (
-        <S.RotatingImage src={noonCircle} style={{ transform: `rotate(${degrees}deg)` }} />
-      ) : (
-        <S.RotatingImage src={nightCircle} style={{ transform: `rotate(${degrees}deg)` }} />
-      )}
+      <S.RotatingImage src={currentImage} style={{ transform: `rotate(${degrees}deg)` }} />
       <Image className="bg" src={clock} width={100} height={100} $unit="%"></Image>
     </S.ImageContainer>
   );
