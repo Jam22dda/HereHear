@@ -2,6 +2,8 @@ package com.ssafy.herehear.presentation.page
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,15 +38,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.AppCard
-import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.Card
 import androidx.wear.compose.material.Text
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ssafy.herehear.R
 import com.ssafy.herehear.presentation.data.MusicDetailDto
+import com.ssafy.herehear.presentation.retrofit.api.likeMusicRequest
 
 @Composable
-fun MusicInfo(musicDetailDto: MusicDetailDto, navController: NavController) {
+fun MusicInfo(musicDetailDto: MusicDetailDto, personalCode: String, navController: NavController) {
+    val isFavorite = remember {
+        mutableStateOf(musicDetailDto.like)
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -85,9 +94,15 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, navController: NavController) {
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.play_back),
-                                contentDescription = "play_back",
-                                modifier = Modifier.width(25.dp)
+                                painter = painterResource(id = R.drawable.icon_map),
+                                contentDescription = "to map",
+                                modifier = Modifier
+                                    .width(25.dp)
+                                    .clickable {
+                                        navController.navigate(RouteType.MAP.toString()) {
+                                            popUpTo(0) { inclusive = true }
+                                        }
+                                    }
                             )
                         }
                         Box(
@@ -103,7 +118,7 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, navController: NavController) {
                                     style = TextStyle(
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.DarkGray
+                                        color = Color.Black
                                     )
                                 )
                                 Spacer(modifier = Modifier.height(1.dp))
@@ -122,10 +137,25 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, navController: NavController) {
                             modifier = Modifier.weight(1f),
                             contentAlignment = Alignment.Center
                         ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.play_forward),
+//                                contentDescription = "play_forward",
+//                                modifier = Modifier.width(25.dp),
+//                            )
                             Image(
-                                painter = painterResource(id = R.drawable.play_forward),
-                                contentDescription = "play_forward",
-                                modifier = Modifier.width(25.dp),
+                                painter = if (isFavorite.value) painterResource(id = R.drawable.favorite) else painterResource(
+                                    id = R.drawable.favorite_border
+                                ),
+                                contentDescription = "favorite",
+                                modifier = Modifier
+                                    .width(25.dp)
+                                    .clickable {
+                                        likeMusicRequest(
+                                            personalCode,
+                                            musicDetailDto.registeredMusicId,
+                                            isFavorite
+                                        )
+                                    },
                             )
                         }
                     }
@@ -134,14 +164,24 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, navController: NavController) {
         }
 
         item {
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(10.dp))
         }
 
         item {
             Row {
                 for (tag in musicDetailDto.occasionName) {
-                    Text(text = "#$tag")
-                    Spacer(modifier = Modifier.width(3.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(Color.DarkGray, RoundedCornerShape(5.dp))
+                            .padding(3.dp),
+                    ) {
+                        Text(
+                            text = "$tag",
+                            style = TextStyle(fontSize = 11.sp, color = Color.LightGray)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
                 }
             }
         }
@@ -174,13 +214,35 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, navController: NavController) {
         }
 
         item {
-            Row {
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "좋아요 버튼")
-                }
-                Spacer(modifier = Modifier.width(10.dp))
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "음악 링크")
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 25.dp, end = 25.dp, bottom = 10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Card(
+                    onClick = {
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                ) {
+                    Row(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.play_circle),
+                            contentDescription = "play",
+                            modifier = Modifier
+                                .height(16.dp)
+                                .width(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(7.dp))
+                        Text(
+                            text = "음악 재생하기",
+                            style = TextStyle(fontSize = 10.sp)
+                        )
+                    }
                 }
             }
         }
