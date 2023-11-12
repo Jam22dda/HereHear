@@ -1,7 +1,6 @@
 package com.ssafy.herehear.like.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.herehear.entity.LikeMusic;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -35,16 +34,6 @@ public class LikeMusicDslRepositoryImpl implements LikeMusicDslRepository {
                         registeredMusic.registeredMusicId.eq(registeredMusicId)
                                 .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
                 )
-                .fetchOne()
-        );
-    }
-
-    @Override
-    public Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId) {
-        return Optional.ofNullable( jpaQueryFactory.select(likeMusic)
-                .from(likeMusic)
-                .where(likeMusic.registeredMusic.registeredMusicId.eq(registeredMusicId)
-                        .and(likeMusic.member.memberId.eq(memberId)))
                 .fetchOne()
         );
     }

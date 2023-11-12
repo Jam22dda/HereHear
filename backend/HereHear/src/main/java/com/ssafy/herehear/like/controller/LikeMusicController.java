@@ -29,12 +29,12 @@ public class LikeMusicController {
     @GetMapping("/list")
     public DataResponse<List<LikeRegisteredMusicResDto>> likeMusicList(Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getName());
-        return new DataResponse<>("200", ConstantsUtil.LIKE_LIST, likeMusicService.likeMusicList(memberId));
+        return new DataResponse<>("200", ConstantsUtil.LIKE_LIST, likeMusicService.likeMusicList(memberId, ConstantsUtil.LIKE_LIST));
     }
 
     @GetMapping("/list/{memberId}")
     public DataResponse<List<LikeRegisteredMusicResDto>> likeMemberMusicList(@PathVariable Long memberId) {
-        return new DataResponse<>("200", ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, likeMusicService.likeMusicList(memberId));
+        return new DataResponse<>("200", ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, likeMusicService.likeMusicList(memberId, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC));
     }
 
 }
