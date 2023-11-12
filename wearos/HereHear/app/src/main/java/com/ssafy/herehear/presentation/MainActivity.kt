@@ -30,13 +30,16 @@ import com.ssafy.herehear.R
 import com.ssafy.herehear.presentation.data.AroundMusicDto
 import com.ssafy.herehear.presentation.data.MusicInfoDto
 import com.ssafy.herehear.presentation.data.GpsDto
+import com.ssafy.herehear.presentation.data.MusicDetailDto
 import com.ssafy.herehear.presentation.page.Landing
 import com.ssafy.herehear.presentation.page.MainMap
 import com.ssafy.herehear.presentation.page.MusicList
+import com.ssafy.herehear.presentation.page.MyPage
 import com.ssafy.herehear.presentation.page.NoMusicAround
 import com.ssafy.herehear.presentation.page.RouteType
 import com.ssafy.herehear.presentation.retrofit.api.aroundMusicRequest
 import com.ssafy.herehear.presentation.retrofit.api.authRequest
+import com.ssafy.herehear.presentation.retrofit.api.musicDetailRequest
 import com.ssafy.herehear.presentation.retrofit.api.musicListRequest
 import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 import com.ssafy.herehear.presentation.util.getCurrentLocation
@@ -148,15 +151,20 @@ class MainActivity : ComponentActivity() {
 
                     // 현재 gps 위치 가져오기
                     val gpsState = remember { mutableStateOf(GpsDto()) }
-                    getCurrentLocation(mainActivity, gpsState)
+                    LaunchedEffect(key1 = gpsState) {
+                        getCurrentLocation(mainActivity, gpsState)
+                    }
 
                     if (gpsState.value.latitude != 0.0 && gpsState.value.longitude != 0.0) {
-                        aroundMusicRequest(
-                            personalCode.value,
-                            gpsState.value.latitude,
-                            gpsState.value.longitude,
-                            aroundMusicList
-                        )
+                        Log.d("[GPS TEST]", gpsState.value.toString())
+                        LaunchedEffect(key1 = aroundMusicList, key2 = gpsState) {
+                            aroundMusicRequest(
+                                personalCode.value,
+                                gpsState.value.latitude,
+                                gpsState.value.longitude,
+                                aroundMusicList
+                            )
+                        }
 
                         if (aroundMusicList.isEmpty()) {
                             navController.navigate(RouteType.NO_MUSIC.toString()) {
@@ -164,9 +172,10 @@ class MainActivity : ComponentActivity() {
                                 launchSingleTop = true
                             }
                         } else if (aroundMusicList.isNotEmpty()) {
+                            Log.d("[MusicList 렌더링", aroundMusicList.toString())
                             MusicList(
                                 personalCode = personalCode.value,
-                                aroundMusicList = aroundMusicList,
+                                aroundMusicList = aroundMusicList.toList(),
                                 navController = navController
                             )
                         }
@@ -175,6 +184,10 @@ class MainActivity : ComponentActivity() {
 
                 composable(RouteType.NO_MUSIC.toString()) {
                     NoMusicAround(around = 500)
+                }
+
+                composable(RouteType.MY_PAGE.toString()) {
+                    MyPage(personalCode.value)
                 }
             }
             // 라우팅 경로 등록 -- end
