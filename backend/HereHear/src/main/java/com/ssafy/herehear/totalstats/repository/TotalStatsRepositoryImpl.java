@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.ssafy.herehear.entity.QOccasion.occasion;
 import static com.ssafy.herehear.entity.QLikeMusic.likeMusic;
+import static com.ssafy.herehear.entity.QMusicOccasion.musicOccasion;
 import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
 
 @Component
@@ -27,6 +29,19 @@ public class TotalStatsRepositoryImpl implements TotalStatsRepository{
                 .groupBy(likeMusic.registeredMusic.registeredMusicId)
                 .orderBy(likeMusic.registeredMusic.count().desc())
                 .limit(4)
+                .fetch();
+    }
+
+    public List<Tuple> findByTagsSort(){
+        return jpaQueryFactory.select(Projections.tuple(musicOccasion.occasion.occasionName.as("tagName"), musicOccasion.occasion.occasionCode.count().as("tagCount")))
+                .from(musicOccasion)
+                .join(musicOccasion.registeredMusic, registeredMusic)
+                .join(musicOccasion.occasion, occasion)
+                .where(musicOccasion.registeredMusic.createTime.between(LocalDateTime.now().minusWeeks(1), LocalDateTime.now())
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
+                .groupBy(musicOccasion.occasion.occasionCode)
+                .orderBy(musicOccasion.occasion.occasionCode.count().desc())
+                .limit(5)
                 .fetch();
     }
 
