@@ -27,8 +27,7 @@ public class SseController {
     public SseEmitter subscribe(@PathVariable Long memberId, HttpServletResponse response) {
         response.setHeader("X-Accel-Buffering", "no");
         log.info("[SSE Subscribe] 구독 시도, memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
-        SseEmitter sseEmitter = sseService.subscribe(memberId);
-        sseService.sendToClient(memberId, new CommonResponse("200", "SSE 구독완료"));
+        SseEmitter sseEmitter = sseService.subscribe(memberId, new CommonResponse("200", "SSE 구독완료"));
         log.info("[SSE Subscribe] 구독 완료, memberId: {}, time: {}", memberId, TimeFormatUtil.formatTime(LocalDateTime.now()));
 
         return sseEmitter;

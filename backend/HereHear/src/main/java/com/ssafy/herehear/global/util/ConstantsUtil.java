@@ -26,7 +26,10 @@ public final class ConstantsUtil {
     public static final String HISTORY_DELETE_MUSIC = "최근 들은 음악 삭제";
     public static final String HISTORY_MUSIC_LIST = "최근 들은 음악 조회";
 
-
+    /**
+     * SSE 로그 메시지 타이틀
+     */
+    public static final String SSE_SCHEDULER = "SSE Scheduler";
 
 
 
