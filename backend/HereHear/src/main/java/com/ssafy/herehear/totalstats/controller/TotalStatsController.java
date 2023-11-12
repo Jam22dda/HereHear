@@ -2,6 +2,7 @@ package com.ssafy.herehear.totalstats.controller;
 
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.ConstantsUtil;
+import com.ssafy.herehear.totalstats.dto.TotalStatsMusicResDto;
 import com.ssafy.herehear.totalstats.dto.TotalStatsLikesResDto;
 import com.ssafy.herehear.totalstats.dto.TotalStatsTagsResDto;
 import com.ssafy.herehear.totalstats.service.TotalStatsService;
@@ -27,6 +28,11 @@ public class TotalStatsController {
     @GetMapping("/tags")
     public DataResponse<List<TotalStatsTagsResDto>> tagsTop5() {
         return new DataResponse<>("200", ConstantsUtil.TOTAL_STATS_TAGS, totalStatsService.getTagsTop5());
+    }
+
+    @GetMapping("/music")
+    public DataResponse<TotalStatsMusicResDto> topHistoryMusic() {
+        return new DataResponse<>("200", ConstantsUtil.TOTAL_STATS_HISTORY_MUSIC, totalStatsService.getTopHistoryMusic());
     }
 
 }
