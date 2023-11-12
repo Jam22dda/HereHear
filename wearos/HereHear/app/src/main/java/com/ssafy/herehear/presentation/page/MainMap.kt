@@ -8,7 +8,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -115,9 +118,10 @@ fun MainMap(
         Box(
             modifier = Modifier
                 .background(Color.Transparent)
-                .fillMaxWidth(0.2f)
+                .fillMaxWidth(0.6f)
                 .padding(bottom = 10.dp)
                 .align(Alignment.BottomCenter),
+            contentAlignment = Alignment.Center
         ) {
             // list 버튼 클릭시 버튼을 진하게 변경하는 이벤트 -- start
             val interactionSource = remember { MutableInteractionSource() }
@@ -136,21 +140,34 @@ fun MainMap(
 
 
             // list 버튼 이미지 -- start
-            Image(
-                painter = painterResource(id = R.drawable.list_btn),
-                contentDescription = "list_btn",
-                alpha = alpha.value,
-                modifier = Modifier
-                    .width(30.dp)
-                    .height(30.dp)
-                    .align(Alignment.Center)
-                    .clickable(
-                        indication = null,  // 클릭 시 시각적 피드백 없음
-                        interactionSource = interactionSource
-                    ) {
-                        navController.navigate(RouteType.MUSIC_LIST.toString())
-                    }
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_playlist),
+                    contentDescription = "list_btn",
+                    alpha = alpha.value,
+                    modifier = Modifier
+                        .width(30.dp)
+                        .height(30.dp)
+//                        .align(Alignment.Center)
+                        .clickable(
+                            indication = null,  // 클릭 시 시각적 피드백 없음
+                            interactionSource = interactionSource
+                        ) {
+                            navController.navigate(RouteType.MUSIC_LIST.toString())
+                        }
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.icon_setting),
+                    contentDescription = "전체 메뉴",
+                    modifier = Modifier
+                        .width(30.dp)
+                        .height(30.dp)
+                )
+            }
             // list 버튼 이미지 -- end
         }
     }
