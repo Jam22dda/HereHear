@@ -50,7 +50,6 @@ export default function Achievement() {
 
     const MyAchievementList = useGetAchievementList();
     const YourAchievement = useGetYourAchievement(yourId);
-    console.log(YourAchievement);
     const MyAchievement = useRecoilValue(MyAchievementAtom);
     const [modalContent, setModalContent] = useState<AchievementType | null>(
         null
@@ -220,10 +219,6 @@ export default function Achievement() {
                                               <ItemBox
                                                   src={item.badge.badgeImg}
                                                   title={item.title.titleName} // Display the index within the title
-                                                  $isselected={
-                                                      displayIndex ===
-                                                      selectedItem
-                                                  }
                                                   onClick={() => {
                                                       if (
                                                           item.clearTime !==
