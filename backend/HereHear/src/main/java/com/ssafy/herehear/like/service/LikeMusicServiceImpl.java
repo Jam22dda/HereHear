@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,50 +30,44 @@ public class LikeMusicServiceImpl implements LikeMusicService {
 
     @Override
     @Transactional
-    public void registerlikeMusic(Long memberId, Long registeredMusicId){
-        log.info("[{}] memberId: {}, registeredMusicId: {}", ConstantsUtil.LIKE_REGISTER_DELETE,memberId,registeredMusicId);
+    public void registerlikeMusic(Long memberId, Long registeredMusicId) {
+        log.info("[{}] memberId: {}, registeredMusicId: {}", ConstantsUtil.LIKE_REGISTER_DELETE, memberId, registeredMusicId);
 
-        findLikeMusic(memberId, registeredMusicId).ifPresentOrElse(
-                likeMusicRepository::delete,
-                () -> {
-                    LikeMusic likeMusic = LikeMusic.builder()
-                            .id(findMemberMusicId(memberId,registeredMusicId))
-                            .member(MemberUtil.findMember(memberId))
-                            .registeredMusic(findByRegisterMusic(registeredMusicId))
-                            .build();
-                    likeMusicRepository.save(likeMusic);
-                }
-        );
+        likeMusicRepository.findById(findMemberMusicId(memberId, registeredMusicId))
+                .ifPresentOrElse(
+                        likeMusicRepository::delete,
+                        () -> {
+                            LikeMusic likeMusic = LikeMusic.builder()
+                                    .id(findMemberMusicId(memberId, registeredMusicId))
+                                    .member(MemberUtil.findMember(memberId))
+                                    .registeredMusic(findByRegisterMusic(registeredMusicId))
+                                    .build();
+                            likeMusicRepository.save(likeMusic);
+                        }
+                );
         log.info("[{}] 성공", ConstantsUtil.LIKE_REGISTER_DELETE);
     }
 
     @Override
     @Transactional
-    public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
-        log.info("[{}], [{}] memberId: {}", ConstantsUtil.LIKE_LIST, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, memberId);
+    public List<LikeRegisteredMusicResDto> likeMusicList(long memberId, String contents) {
+        log.info("[{}], [{}] memberId: {}", contents, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, memberId);
 
-        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicDslRepository.findByLikeMusics(memberId).stream()
-                .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
-                        findRegisteredMusic,
-                        likeMusicDslRepository.findByRegisteredMusicLike(memberId,findRegisteredMusic.getRegisteredMusicId()).isPresent())
-                )
+        List<LikeRegisteredMusicResDto> result = likeMusicDslRepository.findByLikeMusics(memberId).stream()
+                .map(registeredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(registeredMusic,true))
                 .toList();
-        log.info("[{}], [{}] likeMusicList: {}", ConstantsUtil.LIKE_LIST, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, likeRegisteredMusicResDtos);
+        log.info("[{}], [{}] likeMusicList: {}", contents, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, result);
 
-        return likeRegisteredMusicResDtos;
+        return result;
     }
 
-    public Optional<LikeMusic> findLikeMusic(long memberId, long registeredMusicId){
-        return likeMusicRepository.findById(findMemberMusicId(memberId, registeredMusicId));
-    }
-
-    private RegisteredMusic findByRegisterMusic(long registeredMusicId){
+    private RegisteredMusic findByRegisterMusic(long registeredMusicId) {
         return likeMusicDslRepository.findByRegisterMusic(registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
         );
     }
 
-    private MemberMusicId findMemberMusicId(long memberId, long registeredMusicId){
+    private MemberMusicId findMemberMusicId(long memberId, long registeredMusicId) {
         return MemberMusicId.builder().memberId(memberId).registeredMusicId(registeredMusicId).build();
     }
 
