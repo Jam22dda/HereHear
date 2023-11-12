@@ -51,12 +51,12 @@ public class LikeMusicServiceImpl implements LikeMusicService {
     @Override
     @Transactional
     public List<LikeRegisteredMusicResDto> likeMusicList(long memberId, String contents) {
-        log.info("[{}], [{}] memberId: {}", contents, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, memberId);
+        log.info("[{}] memberId: {}", contents, memberId);
 
         List<LikeRegisteredMusicResDto> result = likeMusicDslRepository.findByLikeMusics(memberId).stream()
                 .map(registeredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(registeredMusic,true))
                 .toList();
-        log.info("[{}], [{}] likeMusicList: {}", contents, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, result);
+        log.info("[{}] likeMusicList: {}", contents, result);
 
         return result;
     }
