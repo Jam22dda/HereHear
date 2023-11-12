@@ -3,6 +3,7 @@ package com.ssafy.herehear.totalstats.service;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.totalstats.dto.TotalStatsLikesResDto;
+import com.ssafy.herehear.totalstats.dto.TotalStatsMusicResDto;
 import com.ssafy.herehear.totalstats.dto.TotalStatsTagsResDto;
 import com.ssafy.herehear.totalstats.mapper.TotalStatsMapper;
 import com.ssafy.herehear.totalstats.repository.TotalStatsRepository;
@@ -47,5 +48,15 @@ public class TotalStatsServiceImpl implements TotalStatsService {
         return totalStatsLikesResDtos;
     }
 
+    @Override
+    @Transactional
+    public TotalStatsMusicResDto getTopHistoryMusic() {
+        log.info("[{}]", ConstantsUtil.TOTAL_STATS_HISTORY_MUSIC);
+
+        TotalStatsMusicResDto totalStatsMusicResDtos = totalStatsMapper.toTotalStatsMusicResDto(totalStatsRepository.findByTopHistoryMusic());
+        log.info("[{}] 성공: {}", ConstantsUtil.TOTAL_STATS_HISTORY_MUSIC, totalStatsMusicResDtos);
+
+        return totalStatsMusicResDtos;
+    }
 
 }
