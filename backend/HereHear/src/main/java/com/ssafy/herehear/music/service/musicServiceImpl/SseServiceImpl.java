@@ -7,6 +7,7 @@ import com.ssafy.herehear.music.repository.RegisteredMusicDslRepository;
 import com.ssafy.herehear.music.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -19,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
 @Service
+@EnableScheduling
 @RequiredArgsConstructor
 public class SseServiceImpl implements SseService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;
@@ -74,7 +76,7 @@ public class SseServiceImpl implements SseService {
                 .toList();
         log.info("[{}] 삭제 result: {}", ConstantsUtil.SSE_SCHEDULER,deleteSseResDto);
 
-        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-180,181).stream()
+        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-178,180).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
                 .toList();
         log.info("[{}] 추가 result: {}", ConstantsUtil.SSE_SCHEDULER,addSseResDto);
