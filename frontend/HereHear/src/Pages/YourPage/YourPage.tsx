@@ -53,9 +53,7 @@ export default function YourPage() {
     useEffect(() => {
         if (Following && yourId) {
             // 팔로잉 목록에서 yourId와 일치하는 memberId 찾기
-            const isFollowing = Following.some(
-                (following) => following.memberId === yourId
-            );
+            const isFollowing = Following.some((following) => following.memberId === yourId);
             setIsFollowing(isFollowing);
         }
     }, [Following, yourId]);
@@ -82,57 +80,25 @@ export default function YourPage() {
                             setYourId(0);
                         }}
                     >
-                        <Image
-                            src={iconBack}
-                            width={10}
-                            height={18}
-                            $unit="px"
-                        ></Image>
+                        <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                     </CircleButton>
                     {isFollowing && isFollowing ? (
-                        <Button
-                            option="unfollow"
-                            size="medium"
-                            $width="70px"
-                            onClick={() => handleUnFollowClick(yourId)}
-                        >
+                        <Button option="unfollow" size="medium" $width="70px" onClick={() => handleUnFollowClick(yourId)}>
                             팔로잉
                         </Button>
                     ) : (
-                        <Button
-                            option="follow"
-                            size="medium"
-                            $width="70px"
-                            onClick={() => handleFollowClick(yourId)}
-                        >
+                        <Button option="follow" size="medium" $width="70px" onClick={() => handleFollowClick(yourId)}>
                             팔로우
                         </Button>
                     )}
                 </S.FollowBtnWrapper>
                 <S.YourPageWrapper>
                     <S.Profile>
-                        <Image
-                            src={
-                                YourInfo &&
-                                YourInfo.profileCharacter.characterImage
-                            }
-                            width={140}
-                            height={140}
-                            $unit="px"
-                        ></Image>
+                        <Image src={YourInfo && YourInfo.profileCharacter.characterImage} width={140} height={140} $unit="px"></Image>
                     </S.Profile>
                     <S.YourdataWrapper>
                         {YourAchievement && (
-                            <Image
-                                src={
-                                    YourAchievement &&
-                                    YourAchievement.badge.badgeImg
-                                }
-                                width={24}
-                                height={24}
-                                $unit="px"
-                                $margin="0 4px 4px 0"
-                            ></Image>
+                            <Image src={YourAchievement && YourAchievement.badge.badgeImg} width={24} height={24} $unit="px" $margin="0 4px 4px 0"></Image>
                         )}
                         <Text size="body1" fontWeight="bold">
                             {YourAchievement && YourAchievement.title.titleName}
@@ -145,36 +111,23 @@ export default function YourPage() {
                         </Text>
                     </S.YourdataWrapper>
                     <S.FollowWrapper>
-                        <Button
-                            option="tag_plus"
-                            size="largeplus"
-                            $width="130px"
-                            onClick={() => navigatePage("/following")}
-                        >
+                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/following")}>
                             팔로잉 {YourFollowing?.length ?? 0}명
                         </Button>
-                        <Button
-                            option="tag_plus"
-                            size="largeplus"
-                            $width="130px"
-                            onClick={() => navigatePage("/follower")}
-                        >
+                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/follower")}>
                             팔로워 {YourFollower?.length ?? 0}명
                         </Button>
                     </S.FollowWrapper>
                     <S.YourItemWrapper>
                         {mypage.map((item, index) => (
-                            <ItemBox
-                                key={index}
-                                src={item.src}
-                                title={item.name}
-                                onClick={() => navigatePage(item.params)}
-                            />
+                            <ItemBox key={index} src={item.src} title={item.name} onClick={() => navigatePage(item.params)} />
                         ))}
                     </S.YourItemWrapper>
                 </S.YourPageWrapper>
+                <S.NavbarWrapper>
+                    <Navbar></Navbar>
+                </S.NavbarWrapper>
             </div>
-            <Navbar></Navbar>
         </div>
     );
 }
