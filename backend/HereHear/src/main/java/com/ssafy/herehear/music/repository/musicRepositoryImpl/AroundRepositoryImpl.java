@@ -20,20 +20,6 @@ public class AroundRepositoryImpl implements AroundRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<RegisteredMusic> findByRegisterMusics() {
-        return jpaQueryFactory.selectFrom(registeredMusic)
-                .where(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
-                .fetch();
-    }
-
-    @Override
-    public List<String> findByOccasionName(long registeredMusicId) {
-        return jpaQueryFactory.select(musicOccasion.occasion.occasionName)
-                .from(musicOccasion)
-                .where(musicOccasion.registeredMusic.registeredMusicId.eq(registeredMusicId))
-                .fetch();
-    }
-
     public List<RegisteredMusic> findByAroundSearchMusics(String keyword, List<Long> occasions) {
         BooleanBuilder builder = new BooleanBuilder();
 

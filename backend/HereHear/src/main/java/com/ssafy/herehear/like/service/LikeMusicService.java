@@ -7,6 +7,6 @@ public interface LikeMusicService {
 
     void registerlikeMusic(Long memberId, Long registeredMusicId);
 
-    List<LikeRegisteredMusicResDto> likeMusicList(long memberId);
+    List<LikeRegisteredMusicResDto> likeMusicList(long memberId, String contents);
 
 }

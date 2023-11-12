@@ -22,6 +22,7 @@ public class TotalStatsRepositoryImpl implements TotalStatsRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    @Override
     public List<Tuple> findByLikesSort(){
         return jpaQueryFactory.select(Projections.tuple(registeredMusic, likeMusic.registeredMusic.count().as("likeCount")))
                 .from(likeMusic)
@@ -34,6 +35,7 @@ public class TotalStatsRepositoryImpl implements TotalStatsRepository{
                 .fetch();
     }
 
+    @Override
     public List<Tuple> findByTagsSort(){
         return jpaQueryFactory.select(Projections.tuple(musicOccasion.occasion.occasionName.as("tagName"), musicOccasion.occasion.occasionCode.count().as("tagCount")))
                 .from(musicOccasion)
@@ -47,6 +49,7 @@ public class TotalStatsRepositoryImpl implements TotalStatsRepository{
                 .fetch();
     }
 
+    @Override
     public RegisteredMusic findByTopHistoryMusic(){
         return jpaQueryFactory.select(musicHistory.registeredMusic)
                 .from(musicHistory)

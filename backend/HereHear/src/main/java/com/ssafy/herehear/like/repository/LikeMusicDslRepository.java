@@ -1,6 +1,5 @@
 package com.ssafy.herehear.like.repository;
 
-import com.ssafy.herehear.entity.LikeMusic;
 import com.ssafy.herehear.entity.RegisteredMusic;
 
 import java.util.List;
@@ -11,7 +10,5 @@ public interface LikeMusicDslRepository {
     List<RegisteredMusic> findByLikeMusics(long memberId);
 
     Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId);
-
-    Optional<LikeMusic> findByRegisteredMusicLike(long memberId, long registeredMusicId);
 
 }

@@ -2,9 +2,11 @@ package com.ssafy.herehear.like.controller;
 
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
+import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.like.service.LikeMusicService;
 import com.ssafy.herehear.like.dto.request.MusicRegisteredIdReqDto;
 import com.ssafy.herehear.like.dto.response.LikeRegisteredMusicResDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +21,21 @@ public class LikeMusicController {
     private final LikeMusicService likeMusicService;
 
     @PostMapping
-    public CommonResponse registerlikeMusic(Authentication authentication, @RequestBody MusicRegisteredIdReqDto req){
-        Long memberId = Long.parseLong(authentication.getName());
-        likeMusicService.registerlikeMusic(memberId,req.getRegisteredMusicId());
-        return new CommonResponse("200","좋아요 등록 및 취소");
+    public CommonResponse registerlikeMusic(Authentication authentication, @RequestBody @Valid MusicRegisteredIdReqDto req) {
+        likeMusicService.registerlikeMusic(Long.parseLong(authentication.getName()), req.getRegisteredMusicId());
+        return new CommonResponse("200", ConstantsUtil.LIKE_REGISTER_DELETE);
     }
 
     @GetMapping("/list")
     public DataResponse<List<LikeRegisteredMusicResDto>> likeMusicList(Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
-        return new DataResponse<>("200", "좋아요 음악 목록 조회", likeMusicService.likeMusicList(memberId));
+        return new DataResponse<>("200", ConstantsUtil.LIKE_LIST,
+                likeMusicService.likeMusicList(Long.parseLong(authentication.getName()), ConstantsUtil.LIKE_LIST));
     }
 
     @GetMapping("/list/{memberId}")
     public DataResponse<List<LikeRegisteredMusicResDto>> likeMemberMusicList(@PathVariable Long memberId) {
-        return new DataResponse<>("200", "다른 유저의 좋아요한 음악 조회", likeMusicService.likeMusicList(memberId));
+        return new DataResponse<>("200", ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC,
+                likeMusicService.likeMusicList(memberId, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC));
     }
 
 }
