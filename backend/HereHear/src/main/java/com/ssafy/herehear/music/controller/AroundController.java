@@ -4,6 +4,7 @@ import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.music.dto.request.AroundSearchReqDto;
 import com.ssafy.herehear.music.dto.response.AroundMusicResDto;
 import com.ssafy.herehear.music.service.AroundService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class AroundController {
     }
 
     @PostMapping("/search")
-    public DataResponse<List<AroundMusicResDto>> aroundSearchMusic(@RequestBody AroundSearchReqDto aroundSearchReqDto) {
+    public DataResponse<List<AroundMusicResDto>> aroundSearchMusic(@RequestBody @Valid AroundSearchReqDto aroundSearchReqDto) {
         return new DataResponse<>("200", "주변 음악 검색", aroundService.getAroundSearchMusic(aroundSearchReqDto));
     }
 
