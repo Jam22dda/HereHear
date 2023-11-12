@@ -4,7 +4,7 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 
 import java.util.List;
 
-public interface AroundRepositoryCustom{
+public interface AroundRepository {
 
     List<RegisteredMusic> findByRegisterMusics();
 
