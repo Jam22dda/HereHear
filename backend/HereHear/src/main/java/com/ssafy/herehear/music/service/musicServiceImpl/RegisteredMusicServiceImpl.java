@@ -97,7 +97,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     public List<RegisteredMusicMapResDto> getRegisteredMusicList() {
         log.info("[{}]", ConstantsUtil.ALL_REGISTERED_MUSIC);
 
-        List<RegisteredMusicMapResDto> registeredMusicMapResDtos = registeredMusicRepository.findMusicInTimeRange().stream()
+        List<RegisteredMusicMapResDto> registeredMusicMapResDtos = registeredMusicDslRepository.findByRegisterMusics(180,180).stream()
                 .map(registerMusicMapper::toRegisteredMusicListResDto)
                 .toList();
         log.info("[{}] 성공, result: {}", ConstantsUtil.ALL_REGISTERED_MUSIC, registeredMusicMapResDtos);

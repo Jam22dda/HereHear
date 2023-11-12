@@ -5,8 +5,6 @@ import com.ssafy.herehear.music.dto.response.SseResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
 import com.ssafy.herehear.music.repository.RegisteredMusicDslRepository;
 import com.ssafy.herehear.music.service.SseService;
-import com.ssafy.herehear.music.util.HourFilterUtils;
-import com.ssafy.herehear.music.util.TimeRangeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -53,6 +51,7 @@ public class SseServiceImpl implements SseService {
     @Override
     public void notifyAllMembers(Object data) {
         log.info("[{}] 모든 사용자 전달 result: {}",ConstantsUtil.SSE_SCHEDULER, data);
+
         List<SseEmitter> deadEmitters = Collections.synchronizedList(new ArrayList<>());
         emitters.forEach(emitter -> {
             try {
@@ -65,19 +64,17 @@ public class SseServiceImpl implements SseService {
         emitters.removeAll(deadEmitters);
     }
 
-    @Scheduled(cron = "0 1 * * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public void checkForDataChanges() {
         log.info("[{}] 실행", ConstantsUtil.SSE_SCHEDULER);
         List<SseResDto> sseResDtos = new ArrayList<>();
 
-        List<SseResDto> deleteSseResDto = registeredMusicDslRepository.findByRegisterMusics(1, TimeRangeType.BEFORE_TYPE).stream()
-                .filter(HourFilterUtils::beforeTimeFilter)
+        List<SseResDto> deleteSseResDto = registeredMusicDslRepository.findByRegisterMusics(181,-180).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(0, registeredMusic))
                 .toList();
         log.info("[{}] 삭제 result: {}", ConstantsUtil.SSE_SCHEDULER,deleteSseResDto);
 
-        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(1, TimeRangeType.AFTER_TYPE).stream()
-                .filter(HourFilterUtils::afterTimeFilter)
+        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-180,181).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
                 .toList();
         log.info("[{}] 추가 result: {}", ConstantsUtil.SSE_SCHEDULER,addSseResDto);

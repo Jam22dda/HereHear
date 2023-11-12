@@ -14,7 +14,7 @@ public interface RegisteredMusicDslRepository {
 
     List<String> findByOccasionName(long registeredMusicId);
 
-    List<RegisteredMusic> findByRegisterMusics();
+    List<RegisteredMusic> findByRegisterMusics(int minutesBefore, int minutesAfter);
 
     Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);
 

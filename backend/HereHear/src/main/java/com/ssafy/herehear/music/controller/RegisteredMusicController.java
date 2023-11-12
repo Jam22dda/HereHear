@@ -3,17 +3,19 @@ package com.ssafy.herehear.music.controller;
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
 import com.ssafy.herehear.global.util.ConstantsUtil;
-import com.ssafy.herehear.music.dto.request.UpdateMusicIdReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
+import com.ssafy.herehear.music.dto.request.UpdateMusicIdReqDto;
 import com.ssafy.herehear.music.dto.response.*;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
 import com.ssafy.herehear.music.service.SseService;
-import com.ssafy.herehear.music.util.HourFilterUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
@@ -45,7 +47,7 @@ public class RegisteredMusicController {
     @PutMapping
     public CommonResponse updateMyRegisteredMusic(Authentication authentication, @RequestBody @Valid UpdateMusicIdReqDto req) {
         List<SseResDto> sseResDto = registeredMusicService.updateMyRegisteredMusic(Long.parseLong(authentication.getName()), req.getRegisteredMusicId());
-        if(HourFilterUtils.checkTime(sseResDto))
+        if(findHourFilter(sseResDto.get(0)))
             sseService.notifyAllMembers(sseResDto);
         return new CommonResponse("200", ConstantsUtil.MUSIC_DELETE);
     }
@@ -67,4 +69,9 @@ public class RegisteredMusicController {
                 registeredMusicService.getMyRegisteredMusicList(memberId, ConstantsUtil.OTHER_MEMBER_REGISTERED_MUSIC));
     }
 
+    private boolean findHourFilter(SseResDto sseResDto){
+        LocalTime currentTime = LocalDateTime.now().toLocalTime();
+        long hoursDifference = ChronoUnit.HOURS.between(currentTime, sseResDto.getCreateTime());
+        return hoursDifference > -3 && hoursDifference < 3 || hoursDifference >= 21 || hoursDifference <= -21;
+    }
 }
