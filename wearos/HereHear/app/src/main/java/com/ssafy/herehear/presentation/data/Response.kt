@@ -27,3 +27,17 @@ data class AroundMusicListResponse(
     val message: String,
     val data: List<AroundMusicDto>
 )
+
+// 멤머 정보 조회
+data class MemberInfoResponse(
+    val code: String,
+    val message: String,
+    val data: MemberInfoDto
+)
+
+// 업적 정보 조회
+data class AchievementResponse(
+    val code: String,
+    val message: String,
+    val data: AchievementDto
+)
