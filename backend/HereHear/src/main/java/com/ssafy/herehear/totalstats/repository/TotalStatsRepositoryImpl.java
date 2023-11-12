@@ -3,6 +3,7 @@ package com.ssafy.herehear.totalstats.repository;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.herehear.entity.RegisteredMusic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 import static com.ssafy.herehear.entity.QOccasion.occasion;
 import static com.ssafy.herehear.entity.QLikeMusic.likeMusic;
+import static com.ssafy.herehear.entity.QMusicHistory.musicHistory;
 import static com.ssafy.herehear.entity.QMusicOccasion.musicOccasion;
 import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
 
@@ -37,7 +39,7 @@ public class TotalStatsRepositoryImpl implements TotalStatsRepository{
                 .from(musicOccasion)
                 .join(musicOccasion.registeredMusic, registeredMusic)
                 .join(musicOccasion.occasion, occasion)
-                .where(musicOccasion.registeredMusic.createTime.between(LocalDateTime.now().minusWeeks(1), LocalDateTime.now())
+                .where(registeredMusic.createTime.between(LocalDateTime.now().minusWeeks(1), LocalDateTime.now())
                         .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
                 .groupBy(musicOccasion.occasion.occasionCode)
                 .orderBy(musicOccasion.occasion.occasionCode.count().desc())
@@ -45,4 +47,15 @@ public class TotalStatsRepositoryImpl implements TotalStatsRepository{
                 .fetch();
     }
 
+    public RegisteredMusic findByTopHistoryMusic(){
+        return jpaQueryFactory.select(musicHistory.registeredMusic)
+                .from(musicHistory)
+                .join(musicHistory.registeredMusic, registeredMusic)
+                .where(registeredMusic.createTime.between(LocalDateTime.now().minusWeeks(1), LocalDateTime.now())
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
+                .groupBy(musicHistory.registeredMusic.registeredMusicId)
+                .orderBy(musicHistory.registeredMusic.registeredMusicId.count().desc())
+                .limit(1)
+                .fetchOne();
+    }
 }
