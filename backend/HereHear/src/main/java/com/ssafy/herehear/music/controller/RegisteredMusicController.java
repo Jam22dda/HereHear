@@ -2,6 +2,7 @@ package com.ssafy.herehear.music.controller;
 
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
+import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.music.dto.request.UpdateMusicIdReqDto;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.*;
@@ -26,42 +27,44 @@ public class RegisteredMusicController {
     @PostMapping
     public CommonResponse registerMusic(Authentication authentication, @RequestBody @Valid RegisterMusicReqDto req) {
         List<SseResDto> sseResDto = registeredMusicService.registerMusic(Long.parseLong(authentication.getName()), req);
-        sseService.notify(sseResDto);
-        return new CommonResponse("200", "음악 등록");
+        sseService.notifyAllMembers(sseResDto);
+        return new CommonResponse("200", ConstantsUtil.MUSIC_REGISTER);
     }
 
     @GetMapping("/tag")
     public DataResponse<List<OccasionResDto>> readTag() {
-        return new DataResponse<>("200", "전체 태그 조회", registeredMusicService.getAllTags());
+        return new DataResponse<>("200", ConstantsUtil.ALL_TAGS, registeredMusicService.getAllTags());
     }
 
     @GetMapping("/{registeredMusicId}")
     public DataResponse<RegisteredMusicDetailsResDto> registeredMusicDetails(Authentication authentication, @PathVariable long registeredMusicId) {
-        Long memberId = Long.parseLong(authentication.getName());
-        return new DataResponse<>("200", "음악 상세 조회", registeredMusicService.getRegisteredMusicDetails(memberId,registeredMusicId));
+        return new DataResponse<>("200", ConstantsUtil.MUSIC_DETAILS,
+                registeredMusicService.getRegisteredMusicDetails(Long.parseLong(authentication.getName()),registeredMusicId));
     }
 
     @PutMapping
-    public CommonResponse updateMyRegisteredMusic(Authentication authentication, @RequestBody UpdateMusicIdReqDto req) {
+    public CommonResponse updateMyRegisteredMusic(Authentication authentication, @RequestBody @Valid UpdateMusicIdReqDto req) {
         List<SseResDto> sseResDto = registeredMusicService.updateMyRegisteredMusic(Long.parseLong(authentication.getName()), req.getRegisteredMusicId());
-        if(HourFilterUtils.checkHour(sseResDto))
-            sseService.notify(sseResDto);
-        return new CommonResponse("200", "등록한 음악 삭제");
+        if(HourFilterUtils.checkTime(sseResDto))
+            sseService.notifyAllMembers(sseResDto);
+        return new CommonResponse("200", ConstantsUtil.MUSIC_DELETE);
     }
 
     @GetMapping("/list")
     public DataResponse<List<RegisteredMusicMapResDto>> registeredMusicList() {
-        return new DataResponse<>("200", "전체 음악 조회", registeredMusicService.getRegisteredMusicList());
+        return new DataResponse<>("200", ConstantsUtil.ALL_REGISTERED_MUSIC, registeredMusicService.getRegisteredMusicList());
     }
 
     @GetMapping("/my/list")
     public DataResponse<List<MyRegisteredMusicResDto>> myRegisteredMusicList(Authentication authentication) {
-        return new DataResponse<>("200", "내가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(Long.parseLong(authentication.getName())));
+        return new DataResponse<>("200", ConstantsUtil.MY_REGISTERED_MUSIC,
+                registeredMusicService.getMyRegisteredMusicList(Long.parseLong(authentication.getName()), ConstantsUtil.MY_REGISTERED_MUSIC));
     }
 
     @GetMapping("/list/{memberId}")
     public DataResponse<List<MyRegisteredMusicResDto>> memberRegisteredMusicList(@PathVariable Long memberId) {
-        return new DataResponse<>("200", "다른 유저가 등록한 음악 조회", registeredMusicService.getMyRegisteredMusicList(memberId));
+        return new DataResponse<>("200", ConstantsUtil.OTHER_MEMBER_REGISTERED_MUSIC,
+                registeredMusicService.getMyRegisteredMusicList(memberId, ConstantsUtil.OTHER_MEMBER_REGISTERED_MUSIC));
     }
 
 }

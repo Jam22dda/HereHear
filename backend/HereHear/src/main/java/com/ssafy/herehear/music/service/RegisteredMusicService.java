@@ -17,5 +17,5 @@ public interface RegisteredMusicService {
 
     List<SseResDto> updateMyRegisteredMusic(long memberId, long registeredMusicId);
 
-    List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId);
+    List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId, String contents);
 }

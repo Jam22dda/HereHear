@@ -31,6 +31,15 @@ public final class ConstantsUtil {
      */
     public static final String SSE_SCHEDULER = "SSE Scheduler";
 
-
+    /**
+     * Music 로그 메시지 타이틀
+     */
+    public static final String MUSIC_REGISTER = "음악 등록";
+    public static final String ALL_TAGS = "전체 태그 조회";
+    public static final String MUSIC_DETAILS = "음악 상세 조회";
+    public static final String MUSIC_DELETE = "등록한 음악 삭제";
+    public static final String ALL_REGISTERED_MUSIC = "전체 음악 조회";
+    public static final String MY_REGISTERED_MUSIC = "내가 등록한 음악 조회";
+    public static final String OTHER_MEMBER_REGISTERED_MUSIC = "다른 유저가 등록한 음악 조회";
 
 }

@@ -6,7 +6,7 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import java.util.List;
 import java.util.Optional;
 
-public interface RegisteredMusicRepositoryCustom {
+public interface RegisteredMusicDslRepository {
 
     Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId);
 
