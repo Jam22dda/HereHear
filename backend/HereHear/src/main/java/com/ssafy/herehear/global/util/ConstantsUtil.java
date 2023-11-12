@@ -42,4 +42,10 @@ public final class ConstantsUtil {
     public static final String MY_REGISTERED_MUSIC = "내가 등록한 음악 조회";
     public static final String OTHER_MEMBER_REGISTERED_MUSIC = "다른 유저가 등록한 음악 조회";
 
+    /**
+     * Music 로그 메시지 타이틀
+     */
+    public static final String AROUND_MUSIC = "주변 음악 조회";
+    public static final String AROUND_MUSIC_SEARCH = "주변 음악 검색";
+
 }
