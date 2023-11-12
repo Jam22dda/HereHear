@@ -23,7 +23,6 @@ export const MyPageWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     height: auto; // 100vh 또는 120vh 대신 auto를 사용하여 내용에 따라 높이가 결정되도록 변경합니다.
-
     overflow: auto; // 스크롤이 필요한 경우 내부에만 적용됩니다.
     padding-bottom: 60px;
 `;
