@@ -76,7 +76,7 @@ public class SseServiceImpl implements SseService {
                 .toList();
         log.info("[{}] 삭제 result: {}", ConstantsUtil.SSE_SCHEDULER,deleteSseResDto);
 
-        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-178,180).stream()
+        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-179,180).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
                 .toList();
         log.info("[{}] 추가 result: {}", ConstantsUtil.SSE_SCHEDULER,addSseResDto);
