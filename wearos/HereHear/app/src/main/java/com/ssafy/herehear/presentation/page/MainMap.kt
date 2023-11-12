@@ -42,8 +42,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.ssafy.herehear.R
-import com.ssafy.herehear.presentation.data.MusicInfoDto
 import com.ssafy.herehear.presentation.data.GpsDto
+import com.ssafy.herehear.presentation.data.MusicInfoDto
 
 @Composable
 fun MainMap(
@@ -166,6 +166,12 @@ fun MainMap(
                     modifier = Modifier
                         .width(30.dp)
                         .height(30.dp)
+                        .clickable(
+                            indication = null,  // 클릭 시 시각적 피드백 없음
+                            interactionSource = interactionSource
+                        ) {
+                            navController.navigate(RouteType.MY_PAGE.toString())
+                        }
                 )
             }
             // list 버튼 이미지 -- end
