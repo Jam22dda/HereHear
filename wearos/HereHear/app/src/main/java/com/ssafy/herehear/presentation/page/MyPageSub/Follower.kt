@@ -108,5 +108,9 @@ fun Follower(
                 }
             }
         }
+
+        item {
+            Spacer(modifier = Modifier.height(25.dp))
+        }
     }
 }
