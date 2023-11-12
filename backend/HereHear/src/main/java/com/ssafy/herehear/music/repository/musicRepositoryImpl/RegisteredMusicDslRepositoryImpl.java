@@ -64,8 +64,15 @@ public class RegisteredMusicDslRepositoryImpl implements RegisteredMusicDslRepos
         int endMinutesOfDay = currentMinutesOfDay + minutesAfter;
 
         JPAQuery<RegisteredMusic> query = new JPAQuery<>(entityManager);
-
-        if (startMinutesOfDay < 0) {
+        if (startMinutesOfDay < 0  && endMinutesOfDay < 0 ) {
+            // start 시간과 end 타임이 둘다 자정을 넘어가는 경우 자정을 넘어가는 경우 (아침)
+            query.select(registeredMusic)
+                    .from(registeredMusic)
+                    .where(registeredMusic.createTime.hour().multiply(60).add(registeredMusic.createTime.minute())
+                            .goe(1440 + startMinutesOfDay)
+                            .and(registeredMusic.createTime.hour().multiply(60).add(registeredMusic.createTime.minute())
+                                    .loe(1440 + endMinutesOfDay)));
+        } else if (startMinutesOfDay < 0) {
             // 자정을 넘어가는 경우 (아침)
             query.select(registeredMusic)
                     .from(registeredMusic)
@@ -73,7 +80,15 @@ public class RegisteredMusicDslRepositoryImpl implements RegisteredMusicDslRepos
                             .goe(1440 + startMinutesOfDay)
                             .or(registeredMusic.createTime.hour().multiply(60).add(registeredMusic.createTime.minute())
                                     .loe(endMinutesOfDay)));
-        } else if (endMinutesOfDay >= 1440) {
+        }else if (startMinutesOfDay >= 1440 && endMinutesOfDay >= 1440) {
+            //  start 시간과 end 타임이 둘다 자정을 넘어가는 경우 (밤)
+            query.select(registeredMusic)
+                    .from(registeredMusic)
+                    .where(registeredMusic.createTime.hour().multiply(60).add(registeredMusic.createTime.minute())
+                            .goe(startMinutesOfDay - 1440) //24시간 * 60분
+                            .and(registeredMusic.createTime.hour().multiply(60).add(registeredMusic.createTime.minute())
+                                    .lt(endMinutesOfDay - 1440)));
+        }else if (endMinutesOfDay >= 1440) {
             // 자정을 넘어가는 경우 (밤)
             query.select(registeredMusic)
                     .from(registeredMusic)
