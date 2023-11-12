@@ -20,21 +20,21 @@ public class LikeMusicController {
     private final LikeMusicService likeMusicService;
 
     @PostMapping
-    public CommonResponse registerlikeMusic(Authentication authentication, @RequestBody MusicRegisteredIdReqDto req){
-        Long memberId = Long.parseLong(authentication.getName());
-        likeMusicService.registerlikeMusic(memberId,req.getRegisteredMusicId());
+    public CommonResponse registerlikeMusic(Authentication authentication, @RequestBody MusicRegisteredIdReqDto req) {
+        likeMusicService.registerlikeMusic(Long.parseLong(authentication.getName()), req.getRegisteredMusicId());
         return new CommonResponse("200", ConstantsUtil.LIKE_REGISTER_DELETE);
     }
 
     @GetMapping("/list")
     public DataResponse<List<LikeRegisteredMusicResDto>> likeMusicList(Authentication authentication) {
-        Long memberId = Long.parseLong(authentication.getName());
-        return new DataResponse<>("200", ConstantsUtil.LIKE_LIST, likeMusicService.likeMusicList(memberId, ConstantsUtil.LIKE_LIST));
+        return new DataResponse<>("200", ConstantsUtil.LIKE_LIST,
+                likeMusicService.likeMusicList(Long.parseLong(authentication.getName()), ConstantsUtil.LIKE_LIST));
     }
 
     @GetMapping("/list/{memberId}")
     public DataResponse<List<LikeRegisteredMusicResDto>> likeMemberMusicList(@PathVariable Long memberId) {
-        return new DataResponse<>("200", ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, likeMusicService.likeMusicList(memberId, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC));
+        return new DataResponse<>("200", ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC,
+                likeMusicService.likeMusicList(memberId, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC));
     }
 
 }
