@@ -30,16 +30,18 @@ import com.ssafy.herehear.R
 import com.ssafy.herehear.presentation.data.AroundMusicDto
 import com.ssafy.herehear.presentation.data.MusicInfoDto
 import com.ssafy.herehear.presentation.data.GpsDto
-import com.ssafy.herehear.presentation.data.MusicDetailDto
 import com.ssafy.herehear.presentation.page.Landing
 import com.ssafy.herehear.presentation.page.MainMap
 import com.ssafy.herehear.presentation.page.MusicList
 import com.ssafy.herehear.presentation.page.MyPage
+import com.ssafy.herehear.presentation.page.MyPageSub.Follower
+import com.ssafy.herehear.presentation.page.MyPageSub.Following
+import com.ssafy.herehear.presentation.page.MyPageSub.LikeMusic
+import com.ssafy.herehear.presentation.page.MyPageSub.RecentMusic
 import com.ssafy.herehear.presentation.page.NoMusicAround
 import com.ssafy.herehear.presentation.page.RouteType
 import com.ssafy.herehear.presentation.retrofit.api.aroundMusicRequest
 import com.ssafy.herehear.presentation.retrofit.api.authRequest
-import com.ssafy.herehear.presentation.retrofit.api.musicDetailRequest
 import com.ssafy.herehear.presentation.retrofit.api.musicListRequest
 import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 import com.ssafy.herehear.presentation.util.getCurrentLocation
@@ -187,8 +189,29 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable(RouteType.MY_PAGE.toString()) {
-                    MyPage(personalCode.value)
+                    MyPage(personalCode.value, navController)
                 }
+
+                composable(RouteType.FOLLOWING.toString()) {
+                    Following(personalCode.value)
+                }
+
+                composable(RouteType.FOLLOWER.toString()) {
+                    Follower(personalCode.value)
+                }
+
+                composable(RouteType.RECENT_MUSIC.toString()) {
+                    RecentMusic(personalCode.value)
+                }
+
+                composable(RouteType.LIKE_MUSIC.toString()) {
+                    LikeMusic(personalCode.value)
+                }
+
+                composable(RouteType.ACHIEVEMENT.toString()) {
+
+                }
+
             }
             // 라우팅 경로 등록 -- end
         }

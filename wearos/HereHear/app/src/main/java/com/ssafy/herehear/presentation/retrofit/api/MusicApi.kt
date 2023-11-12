@@ -106,6 +106,32 @@ fun likeMusicRequest(
                 Log.d("[likeMusicRequest]", response.toString())
                 isFavorite.value = !isFavorite.value
             }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Log.d("[likeMusicRequest]", "like music request fail")
+            }
+        })
+}
+
+fun likeMusicListRequest(
+    personalCode: String,
+    registeredMusicId: Int,
+    isFavoriteList: SnapshotStateList<Boolean>,
+    index: Int,
+) {
+    val retrofit = RetrofitConnection.getInstance().create(MusicService::class.java)
+
+    val postLikeRequest = PostLikeRequest(registeredMusicId)
+    retrofit.postLike(personalCode, postLikeRequest)
+        .enqueue(object : Callback<Unit> {
+            override fun onResponse(
+                call: Call<Unit>,
+                response: Response<Unit>
+            ) {
+                Log.d("[likeMusicListRequest]", response.toString())
+                isFavoriteList[index] = !isFavoriteList[index]
+            }
+
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 Log.d("[likeMusicRequest]", "like music request fail")
             }
