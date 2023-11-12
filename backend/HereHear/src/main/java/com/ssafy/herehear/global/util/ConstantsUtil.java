@@ -19,6 +19,13 @@ public final class ConstantsUtil {
     public static final String LIKE_LIST = "좋아요 음악 목록 조회";
     public static final String OTHER_MEMBER_LIKE_MUSIC = "다른 유저의 좋아요한 음악 조회";
 
+    /**
+     * History 로그 메시지 타이틀
+     */
+    public static final String HISTORY_REGISTER_MUSIC = "최근 들은 음악 등록";
+    public static final String HISTORY_DELETE_MUSIC = "최근 들은 음악 삭제";
+    public static final String HISTORY_MUSIC_LIST = "최근 들은 음악 조회";
+
 
 
 
