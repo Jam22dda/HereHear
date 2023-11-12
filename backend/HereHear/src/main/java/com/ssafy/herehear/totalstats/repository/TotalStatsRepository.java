@@ -8,4 +8,5 @@ public interface TotalStatsRepository {
 
     List<Tuple> findByLikesSort();
 
+    List<Tuple> findByTagsSort();
 }
