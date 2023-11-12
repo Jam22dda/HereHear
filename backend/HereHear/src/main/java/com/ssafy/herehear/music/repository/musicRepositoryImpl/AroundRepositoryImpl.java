@@ -4,7 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herehear.entity.RegisteredMusic;
-import com.ssafy.herehear.music.repository.AroundRepositoryCustom;
+import com.ssafy.herehear.music.repository.AroundRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
 
 @Component
 @RequiredArgsConstructor
-public class AroundRepositoryImpl implements AroundRepositoryCustom {
+public class AroundRepositoryImpl implements AroundRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
