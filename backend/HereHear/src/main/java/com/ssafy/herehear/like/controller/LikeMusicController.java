@@ -6,6 +6,7 @@ import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.like.service.LikeMusicService;
 import com.ssafy.herehear.like.dto.request.MusicRegisteredIdReqDto;
 import com.ssafy.herehear.like.dto.response.LikeRegisteredMusicResDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class LikeMusicController {
     private final LikeMusicService likeMusicService;
 
     @PostMapping
-    public CommonResponse registerlikeMusic(Authentication authentication, @RequestBody MusicRegisteredIdReqDto req) {
+    public CommonResponse registerlikeMusic(Authentication authentication, @RequestBody @Valid MusicRegisteredIdReqDto req) {
         likeMusicService.registerlikeMusic(Long.parseLong(authentication.getName()), req.getRegisteredMusicId());
         return new CommonResponse("200", ConstantsUtil.LIKE_REGISTER_DELETE);
     }
