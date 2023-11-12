@@ -5,6 +5,7 @@ import com.ssafy.herehear.entity.MemberMusicId;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.like.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.like.mapper.LikeMusicMapper;
@@ -31,7 +32,7 @@ public class LikeMusicServiceImpl implements LikeMusicService {
     @Override
     @Transactional
     public void registerlikeMusic(Long memberId, Long registeredMusicId){
-        log.info("[좋아요 등록 및 취소] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
+        log.info("[{}] memberId: {}, registeredMusicId: {}", ConstantsUtil.LIKE_REGISTER_DELETE,memberId,registeredMusicId);
 
         findLikeMusic(memberId, registeredMusicId).ifPresentOrElse(
                 likeMusicRepository::delete,
@@ -44,13 +45,13 @@ public class LikeMusicServiceImpl implements LikeMusicService {
                     likeMusicRepository.save(likeMusic);
                 }
         );
-        log.info("registerlikeMusic success");
+        log.info("[{}] 성공", ConstantsUtil.LIKE_REGISTER_DELETE);
     }
 
     @Override
     @Transactional
     public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
-        log.info("[나의/다른 유저의 좋아요 음악 목록 조회]: memberId: "+ memberId);
+        log.info("[{}], [{}] memberId: {}", ConstantsUtil.LIKE_LIST, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, memberId);
 
         List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicDslRepository.findByLikeMusics(memberId).stream()
                 .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
@@ -58,7 +59,7 @@ public class LikeMusicServiceImpl implements LikeMusicService {
                         likeMusicDslRepository.findByRegisteredMusicLike(memberId,findRegisteredMusic.getRegisteredMusicId()).isPresent())
                 )
                 .toList();
-        log.info("likeMusicList: "+ likeRegisteredMusicResDtos);
+        log.info("[{}], [{}] likeMusicList: {}", ConstantsUtil.LIKE_LIST, ConstantsUtil.OTHER_MEMBER_LIKE_MUSIC, likeRegisteredMusicResDtos);
 
         return likeRegisteredMusicResDtos;
     }
