@@ -17,6 +17,7 @@ public class MusicHistoryDslRepositoryImpl implements MusicHistoryDslRepository 
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    @Override
     public List<RegisteredMusic> findByMusicHistorys(long memberId) {
         return jpaQueryFactory.select(registeredMusic)
                 .from(musicHistory)

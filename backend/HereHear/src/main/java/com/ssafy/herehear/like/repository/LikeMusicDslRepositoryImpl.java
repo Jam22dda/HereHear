@@ -17,6 +17,7 @@ public class LikeMusicDslRepositoryImpl implements LikeMusicDslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    @Override
     public List<RegisteredMusic> findByLikeMusics(long memberId) {
         return jpaQueryFactory.select(registeredMusic)
                 .from(likeMusic)
