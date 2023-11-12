@@ -2,7 +2,8 @@ import * as S from "./Message.styles";
 import { Text } from "../Text/Text.styles";
 import { Image } from "../Image/Image";
 import { SignUpInfoAtom } from "../../../states/SignUpAtoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { YourIdAtom } from "../../../states/MypageAtoms";
 import { useNavigate } from "react-router-dom";
 
 interface MessageProps {
@@ -25,6 +26,7 @@ export default function Message({
         navigate(path);
     };
     const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
+    const [yourId, setYourId] = useRecoilState(YourIdAtom);
     const myId = mySignUpInfo.memberId;
     const musicRegistIdNumber = musicRegistId;
 
@@ -39,9 +41,16 @@ export default function Message({
                 </Text>
                 <S.userWrapper
                     onClick={() => {
-                        myId === musicRegistIdNumber
-                            ? navigatePage("/mypage")
-                            : navigatePage(`/mypage/${musicRegistIdNumber}`);
+                        {
+                            myId == musicRegistIdNumber
+                                ? navigatePage("/mypage")
+                                : navigatePage(
+                                      `/mypage/${musicRegistIdNumber}`
+                                  );
+                            myId == musicRegistIdNumber
+                                ? setYourId(0)
+                                : setYourId(musicRegistIdNumber);
+                        }
                     }}
                 >
                     <Image src={characterImage} width={2}></Image>
