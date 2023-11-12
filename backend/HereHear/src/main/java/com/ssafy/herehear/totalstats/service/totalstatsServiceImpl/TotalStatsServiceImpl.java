@@ -1,4 +1,4 @@
-package com.ssafy.herehear.totalstats.service;
+package com.ssafy.herehear.totalstats.service.totalstatsServiceImpl;
 
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.util.ConstantsUtil;
@@ -7,6 +7,7 @@ import com.ssafy.herehear.totalstats.dto.TotalStatsMusicResDto;
 import com.ssafy.herehear.totalstats.dto.TotalStatsTagsResDto;
 import com.ssafy.herehear.totalstats.mapper.TotalStatsMapper;
 import com.ssafy.herehear.totalstats.repository.TotalStatsRepository;
+import com.ssafy.herehear.totalstats.service.TotalStatsService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
