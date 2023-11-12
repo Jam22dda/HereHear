@@ -8,8 +8,8 @@ import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.like.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.like.mapper.LikeMusicMapper;
+import com.ssafy.herehear.like.repository.LikeMusicDslRepository;
 import com.ssafy.herehear.like.repository.LikeMusicRepository;
-import com.ssafy.herehear.like.repository.LikeMusicRepositoryImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class LikeMusicServiceImpl implements LikeMusicService {
 
     private final LikeMusicRepository likeMusicRepository;
-    private final LikeMusicRepositoryImpl likeMusicRepositoryImpl;
+    private final LikeMusicDslRepository likeMusicDslRepository;
 
     private final LikeMusicMapper likeMusicMapper;
 
@@ -52,10 +52,10 @@ public class LikeMusicServiceImpl implements LikeMusicService {
     public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
         log.info("[나의/다른 유저의 좋아요 음악 목록 조회]: memberId: "+ memberId);
 
-        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicRepositoryImpl.findByLikeMusics(memberId).stream()
+        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicDslRepository.findByLikeMusics(memberId).stream()
                 .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
                         findRegisteredMusic,
-                        likeMusicRepositoryImpl.findByRegisteredMusicLike(memberId,findRegisteredMusic.getRegisteredMusicId()).isPresent())
+                        likeMusicDslRepository.findByRegisteredMusicLike(memberId,findRegisteredMusic.getRegisteredMusicId()).isPresent())
                 )
                 .toList();
         log.info("likeMusicList: "+ likeRegisteredMusicResDtos);
@@ -68,7 +68,7 @@ public class LikeMusicServiceImpl implements LikeMusicService {
     }
 
     private RegisteredMusic findByRegisterMusic(long registeredMusicId){
-        return likeMusicRepositoryImpl.findByRegisterMusic(registeredMusicId).orElseThrow(
+        return likeMusicDslRepository.findByRegisterMusic(registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
         );
     }

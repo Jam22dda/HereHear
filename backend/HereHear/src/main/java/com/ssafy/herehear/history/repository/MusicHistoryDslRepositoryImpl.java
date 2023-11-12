@@ -15,7 +15,7 @@ import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
 
 @Component
 @RequiredArgsConstructor
-public class MusicHistoryRepositoryImpl implements MusicHistoryRepositoryCustom {
+public class MusicHistoryDslRepositoryImpl implements MusicHistoryDslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 

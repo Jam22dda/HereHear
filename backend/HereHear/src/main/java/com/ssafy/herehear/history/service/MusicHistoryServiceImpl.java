@@ -8,8 +8,8 @@ import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.history.dto.response.PlayRegisteredMusicResDto;
 import com.ssafy.herehear.history.mapper.MusicHistoryMapper;
+import com.ssafy.herehear.history.repository.MusicHistoryDslRepository;
 import com.ssafy.herehear.history.repository.MusicHistoryRepository;
-import com.ssafy.herehear.history.repository.MusicHistoryRepositoryImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class MusicHistoryServiceImpl implements MusicHistoryService{
 
     private final MusicHistoryRepository musicHistoryRepository;
-    private final MusicHistoryRepositoryImpl musicHistoryRepositoryImpl;
+    private final MusicHistoryDslRepository musicHistoryDslRepository;
 
     private final MusicHistoryMapper musicHistoryMapper;
 
@@ -72,10 +72,10 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
     public List<PlayRegisteredMusicResDto> getMusicHistoryList(long memberId){
         log.info("[최근 들은 음악 조회] memberId: "+memberId);
 
-        List<PlayRegisteredMusicResDto> playRegisteredMusicResDtos = musicHistoryRepositoryImpl.findByMusicHistorys(memberId).stream()
+        List<PlayRegisteredMusicResDto> playRegisteredMusicResDtos = musicHistoryDslRepository.findByMusicHistorys(memberId).stream()
                 .map(findRegisteredMusic -> musicHistoryMapper.toPlayRegisteredMusicResDto(
                         findRegisteredMusic,
-                        musicHistoryRepositoryImpl.findByRegisteredMusicLike(
+                        musicHistoryDslRepository.findByRegisteredMusicLike(
                                 memberId,
                                 findRegisteredMusic.getRegisteredMusicId()
                         ).isPresent())
@@ -91,7 +91,7 @@ public class MusicHistoryServiceImpl implements MusicHistoryService{
     }
 
     private RegisteredMusic findByRegisterMusic(long registeredMusicId){
-        return musicHistoryRepositoryImpl.findByRegisterMusic(registeredMusicId).orElseThrow(
+        return musicHistoryDslRepository.findByRegisterMusic(registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
         );
     }
