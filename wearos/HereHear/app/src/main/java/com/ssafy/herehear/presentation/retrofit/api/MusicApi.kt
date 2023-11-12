@@ -1,6 +1,7 @@
 package com.ssafy.herehear.presentation.retrofit.api
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.ssafy.herehear.presentation.data.AroundMusicDto
 import com.ssafy.herehear.presentation.data.AroundMusicListResponse
@@ -9,6 +10,7 @@ import com.ssafy.herehear.presentation.data.MusicInfoDto
 import com.ssafy.herehear.presentation.data.MusicDetailDto
 import com.ssafy.herehear.presentation.data.MusicDetailResponse
 import com.ssafy.herehear.presentation.data.MusicListResponse
+import com.ssafy.herehear.presentation.data.request.PostLikeRequest
 import com.ssafy.herehear.presentation.retrofit.service.MusicService
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,7 +18,7 @@ import retrofit2.Response
 
 fun musicListRequest(
     personalCode: String,
-    musicList: SnapshotStateList<MusicInfoDto>,
+    musicDetailList: SnapshotStateList<MusicInfoDto>,
 ) {
     val retrofit = RetrofitConnection.getInstance().create(MusicService::class.java)
 
@@ -27,9 +29,9 @@ fun musicListRequest(
                 response: Response<MusicListResponse>
             ) {
                 Log.d("[musicListRequest]", response.toString())
-                musicList.clear()
-                musicList.addAll(response.body()?.data ?: listOf())
-                Log.d("[musicListRequest]", musicList.toString())
+                musicDetailList.clear()
+                musicDetailList.addAll(response.body()?.data ?: listOf())
+                Log.d("[musicListRequest]", musicDetailList.toString())
             }
 
             override fun onFailure(call: Call<MusicListResponse>, t: Throwable) {
@@ -83,6 +85,29 @@ fun aroundMusicRequest(
 
             override fun onFailure(call: Call<AroundMusicListResponse>, t: Throwable) {
                 Log.d("[aroundMusicRequest]", "around music request fail")
+            }
+        })
+}
+
+fun likeMusicRequest(
+    personalCode: String,
+    registeredMusicId: Int,
+    isFavorite: MutableState<Boolean>,
+) {
+    val retrofit = RetrofitConnection.getInstance().create(MusicService::class.java)
+
+    val postLikeRequest = PostLikeRequest(registeredMusicId)
+    retrofit.postLike(personalCode, postLikeRequest)
+        .enqueue(object : Callback<Unit> {
+            override fun onResponse(
+                call: Call<Unit>,
+                response: Response<Unit>
+            ) {
+                Log.d("[likeMusicRequest]", response.toString())
+                isFavorite.value = !isFavorite.value
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Log.d("[likeMusicRequest]", "like music request fail")
             }
         })
 }

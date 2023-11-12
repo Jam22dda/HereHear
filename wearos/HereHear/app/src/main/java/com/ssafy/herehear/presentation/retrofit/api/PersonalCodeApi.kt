@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import com.ssafy.herehear.presentation.retrofit.RetrofitConnection
-import com.ssafy.herehear.presentation.retrofit.service.PersonalCodeService
+import com.ssafy.herehear.presentation.retrofit.service.AuthService
 import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 import com.ssafy.herehear.presentation.util.writePersonalCodeFile
 import retrofit2.Call
@@ -18,7 +18,7 @@ fun personalCodeApi(
     navController: NavHostController,
     baseContext: Context
 ) {
-    val retrofitAPI = RetrofitConnection.getInstance().create(PersonalCodeService::class.java)
+    val retrofitAPI = RetrofitConnection.getInstance().create(AuthService::class.java)
 
     retrofitAPI.authPersonalCode(personalCode)
         .enqueue(object : Callback<com.ssafy.herehear.presentation.data.AuthResponse> {
