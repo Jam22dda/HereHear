@@ -1,9 +1,10 @@
-package com.ssafy.herehear.totalstats.repository;
+package com.ssafy.herehear.totalstats.repository.totalstatsRepositoryImpl;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herehear.entity.RegisteredMusic;
+import com.ssafy.herehear.totalstats.repository.TotalStatsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
