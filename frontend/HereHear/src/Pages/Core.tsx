@@ -219,15 +219,14 @@ export default function Core() {
             // const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
             const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-            if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
-                setEventSource(new EventSource(`${serverUrl}/music/subscribe/${myId}`));
-            }
+            setEventSource(new EventSource(`${serverUrl}/music/subscribe/${myId}`));
         };
 
         document.body.appendChild(script);
 
         // 컴포넌트 언마운트 시 스크립트 제거
         return () => {
+            eventSource?.close();
             document.body.removeChild(script);
         };
     }, []);
