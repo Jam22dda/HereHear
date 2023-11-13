@@ -1,5 +1,18 @@
 //Landing.styles.ts
-import styled from "styled-components";
+import styled from 'styled-components';
+
+export const PwaBtn = styled.button`
+    border-radius: 30px;
+    width: 288px;
+    height: 78px;
+    background-color: ${({ theme }) => theme.color.pink3};
+    box-shadow: ${({ theme }) => theme.shadow.shadow_btn};
+    position: fixed;
+    bottom: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 
 export const LoginBtn = styled.button`
     border-radius: 30px;
