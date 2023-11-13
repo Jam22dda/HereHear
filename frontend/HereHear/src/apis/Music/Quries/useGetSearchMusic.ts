@@ -12,7 +12,7 @@ const useGetSearchMusic = (keyword: string, page: number) => {
     });
 
     if (error) {
-        // console.error("Error fetching search music", error);
+        console.error("Error fetching search music", error);
     }
 
     return { searchMusic };
