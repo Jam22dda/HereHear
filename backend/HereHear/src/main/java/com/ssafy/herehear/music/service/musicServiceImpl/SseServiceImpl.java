@@ -1,92 +1,107 @@
 package com.ssafy.herehear.music.service.musicServiceImpl;
 
+import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.music.dto.response.SseResDto;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
-import com.ssafy.herehear.music.repository.musicRepositoryImpl.RegisteredMusicRepositoryImpl;
-import com.ssafy.herehear.music.repository.musicRepositoryImpl.SseRepositoryImpl;
+import com.ssafy.herehear.music.repository.RegisteredMusicDslRepository;
 import com.ssafy.herehear.music.service.SseService;
-import com.ssafy.herehear.music.util.HourFilterUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
 @Service
+@EnableScheduling
 @RequiredArgsConstructor
 public class SseServiceImpl implements SseService {
-    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;// timeout 12시간
+    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;
+    private final Map<Long, SseEmitter> emittersMap = new ConcurrentHashMap<>();
 
-    private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
-    private final SseRepositoryImpl sseRepositoryImpl;
+    private final RegisteredMusicDslRepository registeredMusicDslRepository;
     private final RegisterMusicMapper registerMusicMapper;
 
+
     @Override
-    public void sendToClient(Long memberId, Object data) {
-        SseEmitter emitter = sseRepositoryImpl.get(memberId);
-        if (emitter != null) {
-            try {
-                emitter.send(SseEmitter.event().id(String.valueOf(memberId)).name("sse").data(data));
-            } catch (IOException exception) {
-                sseRepositoryImpl.deleteById(memberId);
-                emitter.completeWithError(exception);
-            }
+    public SseEmitter subscribe(Long memberId, Object data) {
+        SseEmitter existingEmitter = emittersMap.get(memberId);
+
+        // 기존 사용자가 있으면 해당 Emitter를 끊도록 메시지를 보내고 새 Emitter 반환
+        if (existingEmitter != null) {
+            log.info("[기존 SSE 연결 해제] memberId: {}, mapSize: {}", memberId, emittersMap.size());
+            existingEmitter.complete();
         }
-    }
 
-    @Override
-    public void notify(Object data) {
-        sseRepositoryImpl.forEach((id, emitter) -> {
-            try {
-                emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(data));
-            } catch (IOException exception) {
-                log.info("sendAllClient exception: "+exception);
-            }
-        });
-    }
+        SseEmitter emitter = getSseEmitter(memberId);
 
-    @Override
-    public SseEmitter subscribe(Long memberId) {
-        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        sseRepositoryImpl.save(memberId, emitter);
+        emittersMap.put(memberId, emitter);
 
-        // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제한다.
-        emitter.onCompletion(() -> sseRepositoryImpl.deleteById(memberId));
-        // Emitter가 타임아웃 되었을 때(지정된 시간동안 어떠한 이벤트도 전송되지 않았을 때) Emitter를 삭제한다.
-        emitter.onTimeout(() -> sseRepositoryImpl.deleteById(memberId));
+        try {
+            emitter.send(SseEmitter.event().id(String.valueOf(memberId)).name("subscribe").data(data));
+        } catch (IOException e) {
+            emitter.completeWithError(e);
+        }
 
         return emitter;
     }
 
-    @Scheduled(cron = "0 0 * * * ?")//정각 마다 실행
-//    @Scheduled(fixedRate = 5000)//test
+    private SseEmitter getSseEmitter(Long memberId) {
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+
+        emitter.onCompletion(() -> {
+            emittersMap.remove(memberId);
+            emitter.complete();
+            log.info("[{}] Completion mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size());
+        });
+        emitter.onTimeout(() -> {
+            emittersMap.remove(memberId);
+            log.info("[{}] Timeout mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size());
+        });
+        emitter.onError(e -> log.info("[{}] Error mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size()));
+        return emitter;
+    }
+
+    @Override
+    public void notifyAllMembers(Object data) {
+        log.info("[{}] 모든 사용자 전달 result: {}", ConstantsUtil.SSE_SCHEDULER, data);
+
+        for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
+            SseEmitter emitter = entry.getValue();
+            try {
+                // 데이터를 이벤트로 각 Emitter에 보냅니다.
+                emitter.send(SseEmitter.event().name("notification").data(data));
+            } catch (IOException e) {
+                // 오류가 발생한 경우, Emitter를 종료합니다.
+                emitter.completeWithError(e);
+            }
+        }
+
+    }
+
+    @Scheduled(cron = "0 * * * * ?")
     public void checkForDataChanges() {
-        log.info("checkForDataChanges SSE 실행");
+        log.info("[{}] 실행", ConstantsUtil.SSE_SCHEDULER);
         List<SseResDto> sseResDtos = new ArrayList<>();
 
-        //SSE 삭제
-        List<SseResDto> deleteSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-                .filter(HourFilterUtils::beforeHourFilter)
+        List<SseResDto> deleteSseResDto = registeredMusicDslRepository.findByRegisterMusics(181, -180).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(0, registeredMusic))
                 .toList();
+        log.info("[{}] 삭제 result: {}", ConstantsUtil.SSE_SCHEDULER, deleteSseResDto);
 
-        //SSE 추가
-        List<SseResDto> addSseResDto = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-                .filter(HourFilterUtils::afterHourFilter)
+        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-179, 180).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
                 .toList();
-
+        log.info("[{}] 추가 result: {}", ConstantsUtil.SSE_SCHEDULER, addSseResDto);
 
         sseResDtos.addAll(deleteSseResDto);
         sseResDtos.addAll(addSseResDto);
-        log.info("checkForDataChanges sseResDtos: "+ sseResDtos);
-
-        notify(sseResDtos);
+        notifyAllMembers(sseResDtos);
     }
-
 }

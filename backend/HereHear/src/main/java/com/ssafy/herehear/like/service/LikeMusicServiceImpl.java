@@ -5,18 +5,18 @@ import com.ssafy.herehear.entity.MemberMusicId;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.like.dto.response.LikeRegisteredMusicResDto;
 import com.ssafy.herehear.like.mapper.LikeMusicMapper;
+import com.ssafy.herehear.like.repository.LikeMusicDslRepository;
 import com.ssafy.herehear.like.repository.LikeMusicRepository;
-import com.ssafy.herehear.like.repository.LikeMusicRepositoryImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,56 +24,50 @@ import java.util.Optional;
 public class LikeMusicServiceImpl implements LikeMusicService {
 
     private final LikeMusicRepository likeMusicRepository;
-    private final LikeMusicRepositoryImpl likeMusicRepositoryImpl;
+    private final LikeMusicDslRepository likeMusicDslRepository;
 
     private final LikeMusicMapper likeMusicMapper;
 
     @Override
     @Transactional
-    public void registerlikeMusic(Long memberId, Long registeredMusicId){
-        log.info("[좋아요 등록 및 취소] memberId: "+memberId+", registeredMusicId: "+registeredMusicId);
+    public void registerlikeMusic(Long memberId, Long registeredMusicId) {
+        log.info("[{}] memberId: {}, registeredMusicId: {}", ConstantsUtil.LIKE_REGISTER_DELETE, memberId, registeredMusicId);
 
-        findLikeMusic(memberId, registeredMusicId).ifPresentOrElse(
-                likeMusicRepository::delete,
-                () -> {
-                    LikeMusic likeMusic = LikeMusic.builder()
-                            .id(findMemberMusicId(memberId,registeredMusicId))
-                            .member(MemberUtil.findMember(memberId))
-                            .registeredMusic(findByRegisterMusic(registeredMusicId))
-                            .build();
-                    likeMusicRepository.save(likeMusic);
-                }
-        );
-        log.info("registerlikeMusic success");
+        likeMusicRepository.findById(findMemberMusicId(memberId, registeredMusicId))
+                .ifPresentOrElse(
+                        likeMusicRepository::delete,
+                        () -> {
+                            LikeMusic likeMusic = LikeMusic.builder()
+                                    .id(findMemberMusicId(memberId, registeredMusicId))
+                                    .member(MemberUtil.findMember(memberId))
+                                    .registeredMusic(findByRegisterMusic(registeredMusicId))
+                                    .build();
+                            likeMusicRepository.save(likeMusic);
+                        }
+                );
+        log.info("[{}] 성공", ConstantsUtil.LIKE_REGISTER_DELETE);
     }
 
     @Override
     @Transactional
-    public List<LikeRegisteredMusicResDto> likeMusicList(long memberId){
-        log.info("[나의/다른 유저의 좋아요 음악 목록 조회]: memberId: "+ memberId);
+    public List<LikeRegisteredMusicResDto> likeMusicList(long memberId, String contents) {
+        log.info("[{}] memberId: {}", contents, memberId);
 
-        List<LikeRegisteredMusicResDto> likeRegisteredMusicResDtos = likeMusicRepositoryImpl.findByLikeMusics(memberId).stream()
-                .map(findRegisteredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(
-                        findRegisteredMusic,
-                        likeMusicRepositoryImpl.findByRegisteredMusicLike(memberId,findRegisteredMusic.getRegisteredMusicId()).isPresent())
-                )
+        List<LikeRegisteredMusicResDto> result = likeMusicDslRepository.findByLikeMusics(memberId).stream()
+                .map(registeredMusic -> likeMusicMapper.toLikeRegisteredMusicResDto(registeredMusic,true))
                 .toList();
-        log.info("likeMusicList: "+ likeRegisteredMusicResDtos);
+        log.info("[{}] likeMusicList: {}", contents, result);
 
-        return likeRegisteredMusicResDtos;
+        return result;
     }
 
-    public Optional<LikeMusic> findLikeMusic(long memberId, long registeredMusicId){
-        return likeMusicRepository.findById(findMemberMusicId(memberId, registeredMusicId));
-    }
-
-    private RegisteredMusic findByRegisterMusic(long registeredMusicId){
-        return likeMusicRepositoryImpl.findByRegisterMusic(registeredMusicId).orElseThrow(
+    private RegisteredMusic findByRegisterMusic(long registeredMusicId) {
+        return likeMusicDslRepository.findByRegisterMusic(registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
         );
     }
 
-    private MemberMusicId findMemberMusicId(long memberId, long registeredMusicId){
+    private MemberMusicId findMemberMusicId(long memberId, long registeredMusicId) {
         return MemberMusicId.builder().memberId(memberId).registeredMusicId(registeredMusicId).build();
     }
 

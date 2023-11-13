@@ -4,7 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.herehear.entity.RegisteredMusic;
-import com.ssafy.herehear.music.repository.AroundRepositoryCustom;
+import com.ssafy.herehear.music.repository.AroundRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,25 +15,11 @@ import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
 
 @Component
 @RequiredArgsConstructor
-public class AroundRepositoryImpl implements AroundRepositoryCustom {
+public class AroundRepositoryImpl implements AroundRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<RegisteredMusic> findByRegisterMusics() {
-        return jpaQueryFactory.selectFrom(registeredMusic)
-                .where(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse()))
-                .fetch();
-    }
-
-    @Override
-    public List<String> findByOccasionName(long registeredMusicId) {
-        return jpaQueryFactory.select(musicOccasion.occasion.occasionName)
-                .from(musicOccasion)
-                .where(musicOccasion.registeredMusic.registeredMusicId.eq(registeredMusicId))
-                .fetch();
-    }
-
     public List<RegisteredMusic> findByAroundSearchMusics(String keyword, List<Long> occasions) {
         BooleanBuilder builder = new BooleanBuilder();
 
