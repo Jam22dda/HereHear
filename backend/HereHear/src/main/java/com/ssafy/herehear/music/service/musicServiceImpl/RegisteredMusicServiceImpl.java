@@ -6,17 +6,13 @@ import com.ssafy.herehear.entity.ProfileCharacter;
 import com.ssafy.herehear.entity.RegisteredMusic;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
+import com.ssafy.herehear.global.util.ConstantsUtil;
 import com.ssafy.herehear.global.util.MemberUtil;
 import com.ssafy.herehear.music.dto.request.RegisterMusicReqDto;
 import com.ssafy.herehear.music.dto.response.*;
 import com.ssafy.herehear.music.mapper.RegisterMusicMapper;
-import com.ssafy.herehear.music.repository.MusicOccasionRepository;
-import com.ssafy.herehear.music.repository.OccasionRepository;
-import com.ssafy.herehear.music.repository.ProfileCharacterRepository;
-import com.ssafy.herehear.music.repository.RegisteredMusicRepository;
-import com.ssafy.herehear.music.repository.musicRepositoryImpl.RegisteredMusicRepositoryImpl;
+import com.ssafy.herehear.music.repository.*;
 import com.ssafy.herehear.music.service.RegisteredMusicService;
-import com.ssafy.herehear.music.util.HourFilterUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,31 +34,26 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     private final MusicOccasionRepository musicOccasionRepository;
     private final RegisteredMusicRepository registeredMusicRepository;
     private final ProfileCharacterRepository profileCharacterRepository;
-    private final RegisteredMusicRepositoryImpl registeredMusicRepositoryImpl;
+    private final RegisteredMusicDslRepository registeredMusicDslRepository;
 
     private final RegisterMusicMapper registerMusicMapper;
 
     @Override
     @Transactional
     public List<SseResDto> registerMusic(Long memberId, RegisterMusicReqDto registerMusicReqDto) {
-        log.info(logComment("음악 등록", memberId, registerMusicReqDto));
+        log.info("[{}] memberId: {}, registerMusicReqDto: {}", ConstantsUtil.MUSIC_REGISTER, memberId, registerMusicReqDto);
 
-        Member member = MemberUtil.findMember(memberId);
+        RegisteredMusic registeredMusic = registeredMusicRepository.save(
+                registerMusicMapper.toRegisteredMusic(MemberUtil.findMember(memberId), registerMusicReqDto));
+        log.info("[{}] registeredMusicId: {}", ConstantsUtil.MUSIC_REGISTER, registeredMusic.getRegisteredMusicId());
 
-        //음악 등록
-        RegisteredMusic registeredMusic = registeredMusicRepository.save(registerMusicMapper.toRegisteredMusic(member, registerMusicReqDto));
-        log.info("registerMusic registeredMusicId: " + registeredMusic.getRegisteredMusicId());
-
-        //상황 태그 등록
-        for (long occasionId : registerMusicReqDto.getMusicOccasionIds()) {
+        for (long occasionId : registerMusicReqDto.getMusicOccasionIds())
             musicOccasionRepository.save(registerMusicMapper.toMusicOccasion(findOccasion(occasionId), registeredMusic));
-        }
-        log.info("registerMusic success");
+        log.info("[{}] 상황 태그 등록 성공", ConstantsUtil.MUSIC_REGISTER);
 
-        //SSE 등록 이벤트
         List<SseResDto> sseResDtos = new ArrayList<>();
         sseResDtos.add(registerMusicMapper.toSseResDto(1, registeredMusic));
-        log.info("registerMusic SseResDto: " + sseResDtos);
+        log.info("[{}] SSE 등록 이벤트 sseResDtos: {}", ConstantsUtil.MUSIC_REGISTER, sseResDtos);
 
         return sseResDtos;
     }
@@ -70,12 +61,12 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Override
     @Transactional
     public List<OccasionResDto> getAllTags() {
+        log.info("[{}]", ConstantsUtil.ALL_TAGS);
 
-        //전체 태그 조회
         List<OccasionResDto> occasionResDtos = occasionRepository.findAll().stream()
                 .map(registerMusicMapper::toOccasionResDto)
                 .toList();
-        log.info("getAllTags: " + occasionResDtos);
+        log.info("[{}] AllTags: {}", ConstantsUtil.ALL_TAGS,occasionResDtos);
 
         return occasionResDtos;
     }
@@ -83,23 +74,20 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Override
     @Transactional
     public RegisteredMusicDetailsResDto getRegisteredMusicDetails(long memberId, long registeredMusicId) {
-        log.info(logComment("음악 상세 조회", memberId, registeredMusicId));
-        MemberUtil.findMember(memberId);
-        Member member = findByRegisterMusic(registeredMusicId).getMember();
+        log.info("[{}] memberId: {}, registeredMusicId: {}", ConstantsUtil.MUSIC_DETAILS,memberId,registeredMusicId);
 
-        //음악 상세 조회
+        Member registerMember = findByRegisterMusic(registeredMusicId).getMember();
         RegisteredMusicDetailsResDto registeredMusicDetailsResDto = registerMusicMapper.toRegisteredMusicDetailsResDto(
-                member,
+                registerMember,
                 findByRegisterMusic(registeredMusicId),
-                findRegisteredMusicLike(memberId, registeredMusicId),
-                findByProfileCharacter(member.getProfileCharacter().getProfileCharacterId()),
-                registeredMusicRepositoryImpl.findByOccasionName(registeredMusicId)
+                registeredMusicDslRepository.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent(),
+                findByProfileCharacter(registerMember.getProfileCharacter().getProfileCharacterId()),
+                registeredMusicDslRepository.findByOccasionName(registeredMusicId)
         );
-        log.info("getRegisteredMusicDetails: " + registeredMusicDetailsResDto);
+        log.info("[{}] 성공  result: {}", ConstantsUtil.MUSIC_DETAILS, registeredMusicDetailsResDto);
 
-        //날짜 형식 변환
         registeredMusicDetailsResDto.setCreateTime(convertAndSetCreateTime(registeredMusicDetailsResDto.getCreateTime()));
-        log.info("convert getRegisteredMusicDetails: " + registeredMusicDetailsResDto);
+        log.info("[{}] 날짜 변환: {}", ConstantsUtil.MUSIC_DETAILS,registeredMusicDetailsResDto);
 
         return registeredMusicDetailsResDto;
     }
@@ -107,13 +95,12 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Override
     @Transactional
     public List<RegisteredMusicMapResDto> getRegisteredMusicList() {
+        log.info("[{}]", ConstantsUtil.ALL_REGISTERED_MUSIC);
 
-        //전체 음악 조회
-        List<RegisteredMusicMapResDto> registeredMusicMapResDtos = registeredMusicRepositoryImpl.findByRegisterMusics().stream()
-                .filter(HourFilterUtils::findHourFilter)
+        List<RegisteredMusicMapResDto> registeredMusicMapResDtos = registeredMusicDslRepository.findByRegisterMusics(180,180).stream()
                 .map(registerMusicMapper::toRegisteredMusicListResDto)
                 .toList();
-        log.info("getRegisteredMusicList: " + registeredMusicMapResDtos);
+        log.info("[{}] 성공, result: {}", ConstantsUtil.ALL_REGISTERED_MUSIC, registeredMusicMapResDtos);
 
         return registeredMusicMapResDtos;
     }
@@ -121,36 +108,31 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     @Override
     @Transactional
     public List<SseResDto> updateMyRegisteredMusic(long memberId, long registeredMusicId) {
-        log.info(logComment("등록한 음악 삭제", memberId, registeredMusicId));
+        log.info("[{}] memberId: {}, registeredMusicId: {}", ConstantsUtil.MUSIC_DELETE,memberId,registeredMusicId);
 
-        MemberUtil.findMember(memberId);
-
-        RegisteredMusic findRegisteredMusic = registeredMusicRepositoryImpl.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
+        RegisteredMusic findRegisteredMusic = registeredMusicDslRepository.findByMyRegisterMusic(memberId, registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
         );
         findRegisteredMusic.updateRegisteredMusic(true);
         registeredMusicRepository.save(findRegisteredMusic);
+        log.info("[{}] 성공", ConstantsUtil.MUSIC_DELETE);
 
-        log.info("updateMyRegisteredMusic success");
-
-        //SSE 삭제 이벤트
         List<SseResDto> sseResDtos = new ArrayList<>();
         sseResDtos.add(registerMusicMapper.toSseResDto(0, findRegisteredMusic));
-        log.info("updateMyRegisteredMusic SseResDto: " + sseResDtos);
+        log.info("[{}] SSE 삭제 이벤트 sseResDtos: {}", ConstantsUtil.MUSIC_DELETE, sseResDtos);
 
         return sseResDtos;
     }
 
     @Override
     @Transactional
-    public List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId) {
-        log.info("[나의/다른 유저 등록 음악 조회] memberId: " + memberId);
-        MemberUtil.findMember(memberId);
+    public List<MyRegisteredMusicResDto> getMyRegisteredMusicList(long memberId, String contents) {
+        log.info("[{}] memberId: {}",contents, memberId);
 
-        List<MyRegisteredMusicResDto> myRegisteredMusicResDtos = registeredMusicRepositoryImpl.findByMyRegisterMusics(memberId).stream()
+        List<MyRegisteredMusicResDto> myRegisteredMusicResDtos = registeredMusicDslRepository.findByMyRegisterMusics(memberId).stream()
                 .map(registerMusicMapper::toMyRegisteredMusicResDto)
                 .toList();
-        log.info("getMyRegisteredMusicList: " + myRegisteredMusicResDtos);
+        log.info("[{}] 성공 result: {}",contents, myRegisteredMusicResDtos);
 
         return myRegisteredMusicResDtos;
     }
@@ -162,7 +144,7 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
     }
 
     public RegisteredMusic findByRegisterMusic(long registeredMusicId) {
-        return registeredMusicRepositoryImpl.findByRegisterMusic(registeredMusicId).orElseThrow(
+        return registeredMusicDslRepository.findByRegisterMusic(registeredMusicId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.NOT_FOUND_REGISTERED_MUSIC)
         );
     }
@@ -171,10 +153,6 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
         return profileCharacterRepository.findById(profileCharacterId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.PROFILE_CHARACTER_NOT_FOUND)
         );
-    }
-
-    public boolean findRegisteredMusicLike(long memberId, long registeredMusicId) {
-        return registeredMusicRepositoryImpl.findByRegisteredMusicLike(memberId, registeredMusicId).isPresent();
     }
 
     public String convertAndSetCreateTime(String createTime) {
@@ -186,7 +164,4 @@ public class RegisteredMusicServiceImpl implements RegisteredMusicService {
         return dateTime.format(DateTimeFormatter.ofPattern("MM월 dd일 HH시"));
     }
 
-    public String logComment(String title, long memberId, Object req) {
-        return "[" + title + "] memberId: " + memberId + ", data: " + req;
-    }
 }
