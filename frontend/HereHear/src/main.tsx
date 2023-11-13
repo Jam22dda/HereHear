@@ -30,7 +30,7 @@ import MyStatisticsPage from "./Pages/MyStatisticsPage/MyStatisticsPage.tsx";
 import RedirectHandler from "./RedirectHandler.tsx";
 import YourPage from "./Pages/YourPage/YourPage.tsx";
 import MapClock from "./components/molcules/clocktest/ClockTest.tsx";
-
+import OnBoardingPage from "./Pages/OnBoardingPage/OnBoardingPage.tsx";
 // import { Text } from "./components/atoms/Text/Text.styles.ts";
 
 const queryClient = new QueryClient({
@@ -54,6 +54,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                         <RedirectHandler />
                         <Routes>
                             <Route path="/" element={<Landing />}></Route>
+                            <Route
+                                path="/onboarding"
+                                element={<OnBoardingPage />}
+                            ></Route>
                             <Route
                                 path="/memberInfo"
                                 element={<NicknamePage />}

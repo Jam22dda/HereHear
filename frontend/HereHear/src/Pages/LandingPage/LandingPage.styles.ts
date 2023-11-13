@@ -1,5 +1,5 @@
 //Landing.styles.ts
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const PwaBtn = styled.button`
     border-radius: 30px;
@@ -14,7 +14,7 @@ export const PwaBtn = styled.button`
     align-items: center;
 `;
 
-export const LoginBtn = styled.button`
+export const KaKaoLoginBtn = styled.button`
     border-radius: 30px;
     width: 288px;
     height: 78px;
@@ -22,6 +22,19 @@ export const LoginBtn = styled.button`
     box-shadow: ${({ theme }) => theme.shadow.shadow_btn};
     position: fixed;
     bottom: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const GoogleLoginBtn = styled.button`
+    border-radius: 30px;
+    width: 288px;
+    height: 78px;
+    background-color: ${({ theme }) => theme.color.white};
+    box-shadow: ${({ theme }) => theme.shadow.shadow_btn};
+    position: fixed;
+    bottom: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
