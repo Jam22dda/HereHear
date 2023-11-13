@@ -487,8 +487,8 @@ export default function Core() {
                 <S.ClockOuter>
                     <MapClock onClick={onClickMent}></MapClock>
                     {showButton && (
-                        <Button $width="14rem" $height="3.7rem" size="small" style={{ padding: "10px" }} option="tag_plus">
-                            현재 시간에서 ±3시간 사이에 등록된 노래가 지도에 표시돼요
+                        <Button $width="11rem" $height="4rem" size="small" style={{ padding: "10px" }} option="tag_plus">
+                            현재 시간에서 ±3시간 사이에 등록된 노래가 표시돼요
                         </Button>
                     )}
                 </S.ClockOuter>
