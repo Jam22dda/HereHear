@@ -1,7 +1,9 @@
 package com.ssafy.herehear.presentation.page
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +48,7 @@ import com.ssafy.herehear.R
 import com.ssafy.herehear.presentation.data.MusicDetailDto
 import com.ssafy.herehear.presentation.retrofit.api.likeMusicRequest
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MusicInfo(musicDetailDto: MusicDetailDto, personalCode: String, navController: NavController) {
     val isFavorite = remember {
@@ -119,7 +122,8 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, personalCode: String, navControlle
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.Black
-                                    )
+                                    ),
+                                    modifier = Modifier.basicMarquee()
                                 )
                                 Spacer(modifier = Modifier.height(1.dp))
                                 Text(
@@ -129,7 +133,8 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, personalCode: String, navControlle
                                         fontSize = 12.sp,
                                         color = Color.DarkGray,
                                         fontFamily = FontFamily.SansSerif
-                                    )
+                                    ),
+                                    modifier = Modifier.basicMarquee()
                                 )
                             }
                         }
