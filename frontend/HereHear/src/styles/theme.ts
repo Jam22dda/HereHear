@@ -19,6 +19,8 @@ const color = {
     pink2: "#FD8C8A",
     nav: "rgba(246, 245, 246, 0.50)",
     white2: "#F4F8FE",
+    skyblue: "#A9D2FA",
+    pink3: "#FFB6EB",
 } as const;
 
 const fontSize = {
@@ -57,7 +59,6 @@ const shadow = {
     shadow_itembox: "-3px -3px 4px 0px #FFF, 2px 2px 4px 0px #CACDEE;",
     shadow_itembox_selected:
         "5px 5px 10px 10px #FFF, -5px -5px 10px 10px #FFF;",
-    shadow_play_selected: "-1px -1px 2px 0px #EDF2FF, 2px 2px 4px 0px #CACDEE;",
 } as const;
 
 const gradient = {
