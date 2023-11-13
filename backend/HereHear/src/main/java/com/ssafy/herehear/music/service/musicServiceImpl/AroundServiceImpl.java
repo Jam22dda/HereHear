@@ -57,7 +57,7 @@ public class AroundServiceImpl implements AroundService {
     }
 
     public List<RegisteredMusic> findByAroundMusics(double lat, double lng, List<RegisteredMusic> allMusics) {
-        double radiusInKm = 0.6; // 500미터를 킬로미터로 변환
+        double radiusInKm = 2.0; // 반경 2km
         return allMusics.stream()
                 .filter(music -> {
                     double distance = calculateHaversineDistance(lat, lng, music.getLat(), music.getLng());
