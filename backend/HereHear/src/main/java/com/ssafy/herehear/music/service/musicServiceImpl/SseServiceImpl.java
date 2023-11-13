@@ -34,26 +34,10 @@ public class SseServiceImpl implements SseService {
         SseEmitter existingEmitter = emittersMap.get(memberId);
 
         // 기존 사용자가 있으면 해당 Emitter를 끊도록 메시지를 보내고 새 Emitter 반환
-        if (existingEmitter != null) {
-            try {
-                existingEmitter.send(SseEmitter.event().name("disconnect"));
-                existingEmitter.complete();
-            } catch (IOException e) {
-                existingEmitter.completeWithError(e);
-            }
-        }
+        if (existingEmitter != null) 
+            existingEmitter.complete();
 
-        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-
-        emitter.onCompletion(() -> {
-            emittersMap.remove(memberId);
-            log.info("SseEmitter 연결 끊어짐 mapSize: {}", emittersMap.size());
-        });
-        emitter.onTimeout(() -> {
-            emittersMap.remove(memberId);
-            log.info("SSE Timeout mapSize: {}", emittersMap.size());
-        });
-        emitter.onError(e -> log.info("SSE Error mapSize: {}", emittersMap.size()));
+        SseEmitter emitter = getSseEmitter(memberId);
 
         emittersMap.put(memberId, emitter);
 
@@ -66,9 +50,25 @@ public class SseServiceImpl implements SseService {
         return emitter;
     }
 
+    private SseEmitter getSseEmitter(Long memberId) {
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+
+        emitter.onCompletion(() -> {
+            emittersMap.remove(memberId);
+            emitter.complete();
+            log.info("[{}] Completion mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size());
+        });
+        emitter.onTimeout(() -> {
+            emittersMap.remove(memberId);
+            log.info("[{}] Timeout mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size());
+        });
+        emitter.onError(e -> log.info("[{}] Error mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size()));
+        return emitter;
+    }
+
     @Override
     public void notifyAllMembers(Object data) {
-        log.info("[{}] 모든 사용자 전달 result: {}",ConstantsUtil.SSE_SCHEDULER, data);
+        log.info("[{}] 모든 사용자 전달 result: {}", ConstantsUtil.SSE_SCHEDULER, data);
 
         for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
             SseEmitter emitter = entry.getValue();
@@ -88,15 +88,15 @@ public class SseServiceImpl implements SseService {
         log.info("[{}] 실행", ConstantsUtil.SSE_SCHEDULER);
         List<SseResDto> sseResDtos = new ArrayList<>();
 
-        List<SseResDto> deleteSseResDto = registeredMusicDslRepository.findByRegisterMusics(181,-180).stream()
+        List<SseResDto> deleteSseResDto = registeredMusicDslRepository.findByRegisterMusics(181, -180).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(0, registeredMusic))
                 .toList();
-        log.info("[{}] 삭제 result: {}", ConstantsUtil.SSE_SCHEDULER,deleteSseResDto);
+        log.info("[{}] 삭제 result: {}", ConstantsUtil.SSE_SCHEDULER, deleteSseResDto);
 
-        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-179,180).stream()
+        List<SseResDto> addSseResDto = registeredMusicDslRepository.findByRegisterMusics(-179, 180).stream()
                 .map(registeredMusic -> registerMusicMapper.toSseResDto(1, registeredMusic))
                 .toList();
-        log.info("[{}] 추가 result: {}", ConstantsUtil.SSE_SCHEDULER,addSseResDto);
+        log.info("[{}] 추가 result: {}", ConstantsUtil.SSE_SCHEDULER, addSseResDto);
 
         sseResDtos.addAll(deleteSseResDto);
         sseResDtos.addAll(addSseResDto);
