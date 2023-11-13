@@ -34,8 +34,10 @@ public class SseServiceImpl implements SseService {
         SseEmitter existingEmitter = emittersMap.get(memberId);
 
         // 기존 사용자가 있으면 해당 Emitter를 끊도록 메시지를 보내고 새 Emitter 반환
-        if (existingEmitter != null) 
+        if (existingEmitter != null) {
+            log.info("[기존 SSE 연결 해제] memberId: {}, mapSize: {}", memberId, emittersMap.size());
             existingEmitter.complete();
+        }
 
         SseEmitter emitter = getSseEmitter(memberId);
 
