@@ -288,7 +288,29 @@ export default function StatisticsPage() {
                         artist={artistLabels[0]}
                     ></MusicItem>
                     <CircleButton option="gradActivated" size="large">
-                        <Image src={Heart} width={25} $unit="px"></Image>
+                        <S.HeartContainer>
+                            <Image
+                                src={Heart}
+                                width={25}
+                                $unit="px"
+                                style={{ position: "relative" }}
+                            />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0}
+                            />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.2}
+                            />{" "}
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.4}
+                            />{" "}
+                        </S.HeartContainer>
                     </CircleButton>
                 </S.LikeMusicBox>
                 <S.TextWrapper style={{ margin: "60px 0 10px 0" }}>
@@ -355,7 +377,21 @@ export default function StatisticsPage() {
                                 $unit="px"
                                 style={{ position: "relative" }}
                             />
-                            <S.AnimatedHeart src={Heart} alt="Heart" />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0}
+                            />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.2}
+                            />{" "}
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.4}
+                            />{" "}
                         </S.HeartContainer>
                     </CircleButton>
                 </S.LikeMusicBox>
