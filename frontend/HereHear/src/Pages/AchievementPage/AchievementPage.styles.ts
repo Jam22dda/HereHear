@@ -10,7 +10,7 @@ export const AchievementPageWrapper = styled.div`
 export const AchievementWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 54px;
+    gap: 40px;
     justify-content: center;
     /* min-height: 117vw; */
 `;
