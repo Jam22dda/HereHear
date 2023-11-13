@@ -226,7 +226,6 @@ export default function Core() {
 
         // 컴포넌트 언마운트 시 스크립트 제거
         return () => {
-            eventSource?.close();
             document.body.removeChild(script);
         };
     }, []);
