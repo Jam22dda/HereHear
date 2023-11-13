@@ -138,13 +138,10 @@ export default function StatisticsPage() {
     const options = {
         plugins: {
             datalabels: {
-                align: "center",
-                anchor: "center",
                 color: "#6F83B1",
                 font: {
                     weight: "bold", // 글자 두께
                     size: 18, // 글자 크기
-                    family: "Arial", // 글꼴
                 },
             },
             legend: {
@@ -190,13 +187,10 @@ export default function StatisticsPage() {
         responsive: true,
         plugins: {
             datalabels: {
-                align: "center",
-                anchor: "center",
                 color: "#6F83B1",
                 font: {
                     weight: "bold", // 글자 두께
                     size: 18, // 글자 크기
-                    family: "Arial", // 글꼴
                 },
             },
             legend: {
