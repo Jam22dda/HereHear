@@ -99,11 +99,11 @@ export default function MusicPlay() {
                         <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
                     </CircleButton>
 
-                    <Text size="body2" fontWeight="bold" $marginTop="10px">
-                        {musicPlay.data.singer}
-                    </Text>
-                    <Text size="body2" fontWeight="medium" $marginTop="5px">
+                    <Text size="body2" fontWeight="medium" $marginTop="10px">
                         {musicPlay.data.subject}
+                    </Text>
+                    <Text size="body2" fontWeight="bold" $marginTop="5px">
+                        {musicPlay.data.singer}
                     </Text>
                     <Message
                         comment={musicPlay.data.comment}
