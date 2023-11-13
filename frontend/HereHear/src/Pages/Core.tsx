@@ -219,7 +219,9 @@ export default function Core() {
             // const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
             const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-            setEventSource(new EventSource(`${serverUrl}/music/subscribe/${myId}`));
+            if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
+                setEventSource(new EventSource(`${serverUrl}/music/subscribe/${myId}`));
+            }
         };
 
         document.body.appendChild(script);
