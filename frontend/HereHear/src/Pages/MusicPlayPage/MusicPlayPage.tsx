@@ -117,25 +117,12 @@ export default function MusicPlay() {
                                 $unit="px"
                             ></Image>
                         </CircleButton>
-                    ) : (
-                        <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
-                            <Image src={emptyHeart} width={23} height={21} $unit="px"></Image>
-                        </CircleButton>
-                    )} */}
-
-                    <CircleButton
-                        option={isLiked ? "pinkActivated" : "pinkDeActivated"}
-                        style={{ marginLeft: "17rem" }}
-                        onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
-                    >
-                        <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
-                    </CircleButton>
-
-                    <Text size="body2" fontWeight="medium" $marginTop="10px">
-                        {musicPlay.data.subject}
-                    </Text>
-                    <Text size="body2" fontWeight="bold" $marginTop="5px">
+                    )}
+                    <Text size="body2" fontWeight="bold" $marginTop="20px">
                         {musicPlay.data.singer}
+                    </Text>
+                    <Text size="body2" fontWeight="medium" $marginTop="5px">
+                        {musicPlay.data.subject}
                     </Text>
                     <Message
                         comment={musicPlay.data.comment}
