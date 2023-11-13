@@ -6,7 +6,7 @@ import com.ssafy.herehear.entity.RegisteredMusic;
 import java.util.List;
 import java.util.Optional;
 
-public interface RegisteredMusicRepositoryCustom {
+public interface RegisteredMusicDslRepository {
 
     Optional<RegisteredMusic> findByRegisterMusic(long registeredMusicId);
 
@@ -14,7 +14,7 @@ public interface RegisteredMusicRepositoryCustom {
 
     List<String> findByOccasionName(long registeredMusicId);
 
-    List<RegisteredMusic> findByRegisterMusics();
+    List<RegisteredMusic> findByRegisterMusics(int minutesBefore, int minutesAfter);
 
     Optional<RegisteredMusic> findByMyRegisterMusic(long memberId, long registeredMusicId);
 

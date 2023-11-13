@@ -5,9 +5,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface SseService {
 
-    SseEmitter subscribe(Long memberId);
+    void notifyAllMembers(Object event);
 
-    void notify(Object event);
+    SseEmitter subscribe(Long memberId, Object data);
 
-    void sendToClient(Long memberId, Object data);
 }
