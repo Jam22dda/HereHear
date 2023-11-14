@@ -21,7 +21,8 @@ public class MonthlyStatisticsRepositoryImpl implements MonthlyStatisticsReposit
     public List<RegisteredMusic> findByMonthlyRegisteredMusics(){
         return jpaQueryFactory.select(registeredMusic)
                 .from(registeredMusic)
-                .where(registeredMusic.createTime.between(LocalDateTime.now().minusMonths(1), LocalDateTime.now()))
+                .where(registeredMusic.createTime.between(LocalDateTime.now().minusMonths(2), LocalDateTime.now().minusMonths(1))
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
                 .fetch();
     }
 
