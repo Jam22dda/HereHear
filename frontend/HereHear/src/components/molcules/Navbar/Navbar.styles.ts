@@ -1,5 +1,5 @@
 //NavBar.styles.ts
-import styled from "styled-components";
+import styled from 'styled-components';
 
 // Nav안에 하나씩 묶은 wrapper
 export const StyledNavBar = styled.div`

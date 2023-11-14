@@ -1,12 +1,12 @@
 // import React from "react";
-import * as S from "./MusicBox.styles";
-import { Image } from "../../atoms/Image/Image";
+import * as S from './MusicBox.styles';
+import { Image } from '../../atoms/Image/Image';
 // import { Text } from "../../atoms/Text/Text.styles";
-import afterBtn from "../../../assets/MusicBox/icon-musicAfterBtn.png";
-import beforeBtn from "../../../assets/MusicBox/icon-musicBeforeBtn.png";
-import Button from "../../atoms/Button/Button";
-import { useNavigate } from "react-router-dom";
-import React, { useRef, useState, useEffect } from "react";
+import afterBtn from '../../../assets/MusicBox/icon-musicAfterBtn.png';
+import beforeBtn from '../../../assets/MusicBox/icon-musicBeforeBtn.png';
+import Button from '../../atoms/Button/Button';
+import { useNavigate } from 'react-router-dom';
+import React, { useRef, useState, useEffect } from 'react';
 
 // {isSelect ? <MusicBox musicAroundList={musicAroundList} pinId={userSelectPin} setIsSelect={setIsSelect}></MusicBox> : null}
 interface MusicItem {
@@ -25,14 +25,14 @@ interface MusicBoxProps {
 }
 
 export default function MusicBox(props: MusicBoxProps) {
-    const [title, setTitle] = useState("title");
-    const [singer, setSinger] = useState("singer");
+    const [title, setTitle] = useState('title');
+    const [singer, setSinger] = useState('singer');
     const [pinId, setPinId] = useState(0);
     const [pinIndex, setPinIndex] = useState(0);
-    const [tag1, setTag1] = useState("tag1");
-    const [tag2, setTag2] = useState("tag2");
-    const [tag3, setTag3] = useState("tag3");
-    const [imgUrl, setImgUrl] = useState("");
+    const [tag1, setTag1] = useState('tag1');
+    const [tag2, setTag2] = useState('tag2');
+    const [tag3, setTag3] = useState('tag3');
+    const [imgUrl, setImgUrl] = useState('');
     const [isListNull, setIsListNull] = useState(true);
     const [isNearNull, setIsNearListNull] = useState(true);
 
@@ -88,7 +88,7 @@ export default function MusicBox(props: MusicBoxProps) {
 
     function nextMusicHandler(type: string) {
         let nowPinIndex = pinIndex;
-        if (type === "prev") {
+        if (type === 'prev') {
             nowPinIndex -= 1;
             if (nowPinIndex < 0) nowPinIndex = props.musicAroundList.length - 1;
         } else {
@@ -111,9 +111,7 @@ export default function MusicBox(props: MusicBoxProps) {
         props.setIsSelect(false);
     }
 
-    function InnerOnClickHandler(
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>
-    ) {
+    function InnerOnClickHandler(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         event.stopPropagation(); // 이벤트가 상위 DOM으로 전파되지 않도록 막음
     }
 
@@ -144,11 +142,11 @@ export default function MusicBox(props: MusicBoxProps) {
 
     // Resize 이벤트 리스너를 설정합니다.
     useEffect(() => {
-        window.addEventListener("resize", handleResize);
+        window.addEventListener('resize', handleResize);
 
         // 컴포넌트가 언마운트될 때 이벤트 리스너를 정리합니다.
         return () => {
-            window.removeEventListener("resize", handleResize);
+            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
@@ -168,9 +166,9 @@ export default function MusicBox(props: MusicBoxProps) {
                                 src={beforeBtn}
                                 width={35}
                                 height={35}
-                                $unit="px"
+                                $unit='px'
                                 onClick={() => {
-                                    nextMusicHandler("prev");
+                                    nextMusicHandler('prev');
                                 }}
                             ></Image>
                         </S.ImageLeftOuter>
@@ -179,27 +177,17 @@ export default function MusicBox(props: MusicBoxProps) {
                                 navigate(`/musicPlay/${pinId}`);
                             }}
                         >
-                            <Image
-                                className="album_img"
-                                src={imgUrl}
-                                width={100}
-                                height={100}
-                                $unit="px"
-                                $borderRadius="10px"
-                                onLoad={imageOnLoad}
-                            />
+                            <Image className='album_img' src={imgUrl} width={100} height={100} $unit='px' $borderRadius='10px' onLoad={imageOnLoad} />
                             <S.MidWrapper>
                                 <S.MapTextrapper>
                                     <S.MarqueeText
                                         key={title + pinIndex} // 이 부분을 추가합니다.
                                         ref={titleRef}
-                                        size="body2"
-                                        fontWeight="bold"
-                                        color="main2"
-                                        $margin="0 0 5px"
-                                        animate={
-                                            isTitleOverflowing && animateTitle
-                                        }
+                                        size='body2'
+                                        fontWeight='bold'
+                                        color='main2'
+                                        $margin='0 0 5px'
+                                        animate={isTitleOverflowing && animateTitle}
                                         isOverflowing={isTitleOverflowing}
                                     >
                                         {title}
@@ -208,13 +196,11 @@ export default function MusicBox(props: MusicBoxProps) {
                                     <S.MarqueeText
                                         key={singer + pinIndex}
                                         ref={artistRef}
-                                        size="body2"
-                                        fontWeight="medium"
-                                        color="main2"
-                                        $margin="0 0 10px"
-                                        animate={
-                                            isTitleOverflowing && animateArtist
-                                        }
+                                        size='body2'
+                                        fontWeight='medium'
+                                        color='main2'
+                                        $margin='0 0 10px'
+                                        animate={isTitleOverflowing && animateArtist}
                                         isOverflowing={isArtistOverflowing}
                                     >
                                         {singer}
@@ -224,32 +210,17 @@ export default function MusicBox(props: MusicBoxProps) {
                                 <S.MapMusicTagWrapper>
                                     {/* TODO:버튼 크기 다시확인(아톰 버튼에 없음?) */}
                                     {!tag1 ? null : (
-                                        <Button
-                                            option="tag1"
-                                            $width="55px"
-                                            $height="25px"
-                                            size="small"
-                                        >
+                                        <Button option='tag1' $width='55px' $height='25px' size='small'>
                                             {tag1}
                                         </Button>
                                     )}
                                     {!tag2 ? null : (
-                                        <Button
-                                            option="tag1"
-                                            $width="55px"
-                                            $height="25px"
-                                            size="small"
-                                        >
+                                        <Button option='tag1' $width='55px' $height='25px' size='small'>
                                             {tag2}
                                         </Button>
                                     )}
                                     {!tag3 ? null : (
-                                        <Button
-                                            option="tag1"
-                                            $width="55px"
-                                            $height="25px"
-                                            size="small"
-                                        >
+                                        <Button option='tag1' $width='55px' $height='25px' size='small'>
                                             {tag3}
                                         </Button>
                                     )}
@@ -261,15 +232,15 @@ export default function MusicBox(props: MusicBoxProps) {
                                 src={afterBtn}
                                 width={35}
                                 height={35}
-                                $unit="px"
+                                $unit='px'
                                 onClick={() => {
-                                    nextMusicHandler("next");
+                                    nextMusicHandler('next');
                                 }}
                             ></Image>
                         </S.ImageRightOuter>
                     </S.MusicBoxInner>
                 ) : (
-                    <p>반경 500m 음악만 조회 가능합니다.</p>
+                    <p>반경 2km 이내 음악만 조회 가능합니다.</p>
                 )}
             </S.MusicBox>
         </S.Outer>
