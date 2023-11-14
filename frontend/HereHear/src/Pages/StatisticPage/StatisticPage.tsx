@@ -2,18 +2,17 @@ import * as S from "./StatisticPage.styles";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import { Image } from "../../components/atoms/Image/Image";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
+import youtube from "../../assets/CircleButton/youtube-black.png";
+import trophy from "../../assets/Statistic/icon-trophy.png";
 import iconBack from "../../assets/CircleButton/icon-back.png";
 import { useNavigate } from "react-router-dom";
 // import monzi from "../../../public/images/monzi-herehear.png";
 // import iconBack from "../../assets/CircleButton/icon-back.png";
 import MusicItem from "../../components/molcules/MusicItem/MusicItem";
-import LoveMyself from "../../../public/images/BTS_answer.jpg";
 import Heart from "../../assets/CircleButton/icon-heart.png";
 import { useGetLikeStatistics } from "../../apis/Statistics/Quries/useGetLikeStatistics";
 import { useGetTagStatistics } from "../../apis/Statistics/Quries/useGetTagStatistics";
 import { useGetListenStatistics } from "../../apis/Statistics/Quries/useGetListentatistics";
-import { useState } from "react";
-
 import { Bar, Pie } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
@@ -70,9 +69,9 @@ export default function StatisticsPage() {
     const LikeStatistics = useGetLikeStatistics();
     const TagStatistics = useGetTagStatistics();
     const ListenStatistics = useGetListenStatistics();
-    console.log(LikeStatistics);
-    console.log(TagStatistics);
-    console.log(ListenStatistics);
+    // console.log(LikeStatistics, "LikeStatistics");
+    // console.log(TagStatistics);
+    // console.log(ListenStatistics);
 
     function getCurrentMonthAndWeek(): { month: string; week: number } {
         const now = new Date();
@@ -94,6 +93,8 @@ export default function StatisticsPage() {
         subject: string;
     }
 
+    const likemmusicImage: string[] = LikeStatistics && LikeStatistics.length > 0 ? LikeStatistics.map((record: likemusic) => record.albumImg) : [];
+    // console.log(likemmusicImage, "likemmusicImage");
     const musicLabels: string[] = LikeStatistics && LikeStatistics.length > 0 ? LikeStatistics.map((record: likemusic) => record.subject) : [];
     const artistLabels: string[] = LikeStatistics && LikeStatistics.length > 0 ? LikeStatistics.map((record: likemusic) => record.singer) : [];
     const likeCount: string[] = LikeStatistics && LikeStatistics.length > 0 ? LikeStatistics.map((record: likemusic) => record.likeCount) : [];
@@ -194,14 +195,17 @@ export default function StatisticsPage() {
                 <CircleButton option="default2" size="medium" onClick={() => navigatePage("/core")}>
                     <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text size="subtitle1" fontWeight="bold" $margin="20px 0 48px 0">
-                    {month} {week}주차 차트
-                </Text>
+                <S.TitleWrapper>
+                    <Text size="subtitle1" fontWeight="bold">
+                        {month} {week}주차 차트
+                    </Text>
+                    <Image src={trophy} width={2.5} $margin="0 0 0 3px"></Image>
+                </S.TitleWrapper>
                 <Text size="body2" $margin="0 0 8px 0">
                     가장 많이 공감을 받은 노래는
                 </Text>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         {artistLabels[0]}
                     </Text>
                     <Text size="body2" $marginLeft="4px">
@@ -209,11 +213,11 @@ export default function StatisticsPage() {
                     </Text>
                 </S.TextWrapper>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         '{musicLabels[0]}'
                     </Text>
                     <Text size="body2" $marginLeft="4px">
-                        이예요
+                        에요
                     </Text>
                 </S.TextWrapper>
                 <Bar style={{ marginTop: "30px" }} data={data} options={options} />
@@ -230,35 +234,19 @@ export default function StatisticsPage() {
                             </S.Label>
                         ))}
                 </S.LabelWrapper>
-                <S.LikeMusicBox>
-                    <MusicItem src={LoveMyself} songtitle={musicLabels[0]} artist={artistLabels[0]}></MusicItem>
-                    <CircleButton option="gradActivated" size="large">
-                        <S.HeartContainer>
-                            <Image
-                                src={Heart}
-                                width={25}
-                                $unit="px"
-                                style={{ position: "relative" }}
-                            />
-                            <S.AnimatedHeart
-                                src={Heart}
-                                alt="Heart"
-                                delay={0}
-                            />
-                            <S.AnimatedHeart
-                                src={Heart}
-                                alt="Heart"
-                                delay={0.2}
-                            />{" "}
-                            <S.AnimatedHeart
-                                src={Heart}
-                                alt="Heart"
-                                delay={0.4}
-                            />{" "}
-                        </S.HeartContainer>
-                    </CircleButton>
-                </S.LikeMusicBox>
-                <S.TextWrapper style={{ margin: "60px 0 10px 0" }}>
+                <S.MystatisticWrapper>
+                    <S.LikeMusicBox>
+                        <MusicItem src={likemmusicImage[0]} songtitle={musicLabels[0]} artist={artistLabels[0]}></MusicItem>
+                        <CircleButton option="gradActivated" size="large">
+                            <S.HeartContainer>
+                                <Image src={Heart} width={25} $unit="px" style={{ position: "relative" }} />
+                                <S.AnimatedHeart src={Heart} alt="Heart" delay={0} />
+                                <S.AnimatedHeart src={Heart} alt="Heart" delay={0.2} /> <S.AnimatedHeart src={Heart} alt="Heart" delay={0.4} />{" "}
+                            </S.HeartContainer>
+                        </CircleButton>
+                    </S.LikeMusicBox>
+                </S.MystatisticWrapper>
+                <S.TextWrapper style={{ margin: "76px 0 10px 0" }}>
                     <Text size="body2" style={{ lineHeight: "36px" }}>
                         많은 사람들이
                     </Text>
@@ -270,8 +258,10 @@ export default function StatisticsPage() {
                 <Text size="body2" $margin="0 0 8px 0">
                     음악과 함께 해요
                 </Text>
-                <Pie style={{ marginTop: "32px" }} data={piedata} options={pieoptions} />
-                <S.LabelWrapper>
+                <S.chartWrapper>
+                    <Pie style={{ maxWidth: "270px", maxHeight: "270px" }} data={piedata} options={pieoptions} />
+                </S.chartWrapper>
+                <S.LabelWrapper2>
                     {tagNameLabels &&
                         tagNameLabels.map((music, index) => (
                             <S.Label
@@ -283,12 +273,13 @@ export default function StatisticsPage() {
                                 {music}
                             </S.Label>
                         ))}
-                </S.LabelWrapper>
-                <Text size="body2" $margin="60px 0 8px 0">
-                    가장 많은 사람들이 들은 노래는
+                </S.LabelWrapper2>
+
+                <Text size="body2" $margin="76px 0 8px 0">
+                    이번주 가장 많이 클릭 된 음악은
                 </Text>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         {ListenStatistics && ListenStatistics.singer}
                     </Text>
                     <Text size="body2" $marginLeft="4px">
@@ -296,45 +287,27 @@ export default function StatisticsPage() {
                     </Text>
                 </S.TextWrapper>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         '{ListenStatistics && ListenStatistics.subject}'
                     </Text>
                     <Text size="body2" $marginLeft="4px">
-                        이예요
+                        에요
                     </Text>
                 </S.TextWrapper>
-                <S.LikeMusicBox style={{ margin: "30px 0 60px 0" }}>
-                    <MusicItem
-                        src={ListenStatistics && ListenStatistics.albumImg}
-                        songtitle={ListenStatistics && ListenStatistics.subject}
-                        artist={ListenStatistics && ListenStatistics.singer}
-                    ></MusicItem>
-                    <CircleButton option="gradActivated" size="large">
-                        <S.HeartContainer>
-                            <Image
-                                src={Heart}
-                                width={25}
-                                $unit="px"
-                                style={{ position: "relative" }}
-                            />
-                            <S.AnimatedHeart
-                                src={Heart}
-                                alt="Heart"
-                                delay={0}
-                            />
-                            <S.AnimatedHeart
-                                src={Heart}
-                                alt="Heart"
-                                delay={0.2}
-                            />{" "}
-                            <S.AnimatedHeart
-                                src={Heart}
-                                alt="Heart"
-                                delay={0.4}
-                            />{" "}
-                        </S.HeartContainer>
-                    </CircleButton>
-                </S.LikeMusicBox>
+                <S.MystatisticWrapper>
+                    <S.LikeMusicBox style={{ margin: "30px 0 60px 0" }}>
+                        <MusicItem
+                            src={ListenStatistics && ListenStatistics.albumImg}
+                            songtitle={ListenStatistics && ListenStatistics.subject}
+                            artist={ListenStatistics && ListenStatistics.singer}
+                        ></MusicItem>
+                        <CircleButton option="gradActivated" size="large">
+                            <S.HeartContainer>
+                                <Image src={youtube} width={25} $unit="px" style={{ position: "relative" }} />
+                            </S.HeartContainer>
+                        </CircleButton>
+                    </S.LikeMusicBox>
+                </S.MystatisticWrapper>
             </div>
         </div>
     );
