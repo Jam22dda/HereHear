@@ -47,6 +47,8 @@ public class RegisteredMusic {
     @Column(length = 10)
     private String releaseTime;
 
+    private String spotifyUri;
+
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createTime;
