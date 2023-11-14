@@ -12,7 +12,8 @@ const useGetMusicPlay = (registeredMusicId: number | null) => {
     } = useQuery({
         queryKey: ["musicPlay", debouncedMusicId],
         queryFn: () => getMusicPlay(debouncedMusicId!),
-        enabled: debouncedMusicId !== null && typeof debouncedMusicId === "number",
+        enabled:
+            debouncedMusicId !== null && typeof debouncedMusicId === "number",
     });
 
     if (error) {
