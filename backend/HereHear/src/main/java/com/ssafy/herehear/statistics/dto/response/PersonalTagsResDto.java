@@ -2,7 +2,6 @@ package com.ssafy.herehear.statistics.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 

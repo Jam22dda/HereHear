@@ -44,7 +44,7 @@ public class SseServiceImpl implements SseService {
         emittersMap.put(memberId, emitter);
 
         try {
-            emitter.send(SseEmitter.event().id(String.valueOf(memberId)).name("subscribe").data(data));
+            emitter.send(SseEmitter.event().id(String.valueOf(memberId)).name("sse").data(data));
         } catch (IOException e) {
             emitter.completeWithError(e);
         }
@@ -76,7 +76,7 @@ public class SseServiceImpl implements SseService {
             SseEmitter emitter = entry.getValue();
             try {
                 // 데이터를 이벤트로 각 Emitter에 보냅니다.
-                emitter.send(SseEmitter.event().name("notification").data(data));
+                emitter.send(SseEmitter.event().name("sse").data(data));
             } catch (IOException e) {
                 // 오류가 발생한 경우, Emitter를 종료합니다.
                 emitter.completeWithError(e);
