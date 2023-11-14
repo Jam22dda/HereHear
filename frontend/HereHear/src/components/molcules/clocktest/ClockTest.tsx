@@ -7,6 +7,10 @@ import dawnCircle from "../../../assets/ClockTest/icon-halfCircle-dawn.png";
 import morningCircle from "../../../assets/ClockTest/icon-halfCircle-morning.png";
 import noonCircle from "../../../assets/ClockTest/icon-halfCircle-noon.png";
 import nightCircle from "../../../assets/ClockTest/icon-halfCircle-night.png";
+import clockHour from "../../../assets/ClockTest/icon-clockHour.png";
+import clockMinutes from "../../../assets/ClockTest/icon-clockMinute.png";
+import clockSecond from "../../../assets/ClockTest/icon-clockSecond.png";
+import centerCircle from "../../../assets/ClockTest/icon-centerCircle.png"
 
 interface MapClockProps {
   onClick?: () => void; // 이 prop은 선택적이므로 '?'를 사용합니다.
@@ -23,7 +27,32 @@ const MapClock: FC<MapClockProps> = ({ onClick }) => {
     return degrees;
   };
 
+  const calculateHourDegrees = () => {
+    const now = new Date();
+    const hour = now.getHours() % 12;
+    const minutes = now.getMinutes();
+
+    return hour * 30 + minutes * 0.5;
+  };
+
+  const calculateMinuteDegrees = () => {
+    const now = new Date();
+    const minutes = now.getMinutes();
+
+    return minutes * 6;
+  };
+
+  const calculateSecondDegrees = () => {
+    const now = new Date();
+    const second = now.getSeconds();
+
+    return second * 6;
+  };
+
   const [degrees, setDegrees] = useState(calculateDegrees());
+  const [hourDegrees, setHourDegrees] = useState(calculateHourDegrees());
+  const [minuteDegrees, setMinuteDegrees] = useState(calculateMinuteDegrees());
+  const [secondDegrees, setSecondDegrees] = useState(calculateSecondDegrees());
   const [currentImage, setCurrentImage] = useState("");
 
   useEffect(() => {
@@ -42,9 +71,11 @@ const MapClock: FC<MapClockProps> = ({ onClick }) => {
     };
 
     const interval = setInterval(() => {
-      // console.log("interval", calculateDegrees());
       updateImageBasedOnTime();
       setDegrees(calculateDegrees());
+      setHourDegrees(calculateHourDegrees());
+      setMinuteDegrees(calculateMinuteDegrees());
+      setSecondDegrees(calculateSecondDegrees());
     }, 1000);
 
     return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
@@ -54,6 +85,11 @@ const MapClock: FC<MapClockProps> = ({ onClick }) => {
     <S.ImageContainer onClick={onClick}>
       {/* 새벽, 오전, 오후, 밤 시간에 따라 이미지 변경 */}
       <S.RotatingImage src={currentImage} style={{ transform: `rotate(${degrees}deg)` }} />
+      <S.RotatingImage src={clockHour} style={{ transform: `rotate(${hourDegrees}deg)` }} />
+      <S.RotatingImage src={clockMinutes} style={{ transform: `rotate(${minuteDegrees}deg)` }} />
+      <S.RotatingImage src={clockSecond} style={{ transform: `rotate(${secondDegrees}deg)` }} />
+      <S.RotatingImage src={centerCircle} style={{ transform: `rotate(${degrees}deg)` }} />
+
       <Image className="bg" src={clock} width={100} height={100} $unit="%"></Image>
     </S.ImageContainer>
   );
