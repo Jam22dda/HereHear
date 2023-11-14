@@ -2,12 +2,13 @@ import * as S from "./StatisticPage.styles";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import { Image } from "../../components/atoms/Image/Image";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
+import youtube from "../../assets/CircleButton/youtube-black.png";
+import trophy from "../../assets/Statistic/icon-trophy.png";
 import iconBack from "../../assets/CircleButton/icon-back.png";
 import { useNavigate } from "react-router-dom";
 // import monzi from "../../../public/images/monzi-herehear.png";
 // import iconBack from "../../assets/CircleButton/icon-back.png";
 import MusicItem from "../../components/molcules/MusicItem/MusicItem";
-import LoveMyself from "../../../public/images/BTS_answer.jpg";
 import Heart from "../../assets/CircleButton/icon-heart.png";
 import { useGetLikeStatistics } from "../../apis/Statistics/Quries/useGetLikeStatistics";
 import { useGetTagStatistics } from "../../apis/Statistics/Quries/useGetTagStatistics";
@@ -80,9 +81,9 @@ export default function StatisticsPage() {
     const LikeStatistics = useGetLikeStatistics();
     const TagStatistics = useGetTagStatistics();
     const ListenStatistics = useGetListenStatistics();
-    console.log(LikeStatistics);
-    console.log(TagStatistics);
-    console.log(ListenStatistics);
+    // console.log(LikeStatistics, "LikeStatistics");
+    // console.log(TagStatistics);
+    // console.log(ListenStatistics);
 
     function getCurrentMonthAndWeek(): { month: string; week: number } {
         const now = new Date();
@@ -250,18 +251,17 @@ export default function StatisticsPage() {
                         $unit="px"
                     ></Image>
                 </CircleButton>
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="20px 0 48px 0"
-                >
-                    {month} {week}주차 차트
-                </Text>
+                <S.TitleWrapper>
+                    <Text size="subtitle1" fontWeight="bold">
+                        {month} {week}주차 차트
+                    </Text>
+                    <Image src={trophy} width={2.5} $margin="0 0 0 3px"></Image>
+                </S.TitleWrapper>
                 <Text size="body2" $margin="0 0 8px 0">
                     가장 많이 공감을 받은 노래는
                 </Text>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         {artistLabels[0]}
                     </Text>
                     <Text size="body2" $marginLeft="4px">
@@ -269,11 +269,11 @@ export default function StatisticsPage() {
                     </Text>
                 </S.TextWrapper>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         '{musicLabels[0]}'
                     </Text>
                     <Text size="body2" $marginLeft="4px">
-                        이예요
+                        에요
                     </Text>
                 </S.TextWrapper>
                 <Bar
@@ -352,9 +352,13 @@ export default function StatisticsPage() {
                         때
                     </Text>
                 </S.TextWrapper>
-                <Text size="body2">음악과 함께 해요</Text>
-                <Pie data={piedata} options={pieoptions} />
-                <S.LabelWrapper style={{ margin: "30px 0 120px 0" }}>
+                <Text size="body2" $margin="0 0 8px 0">
+                    음악과 함께 해요
+                </Text>
+                <S.chartWrapper>
+                    <Pie style={{ maxWidth: "270px", maxHeight: "270px" }} data={piedata} options={pieoptions} />
+                </S.chartWrapper>
+                <S.LabelWrapper2>
                     {tagNameLabels &&
                         tagNameLabels.map((music, index) => (
                             <S.Label
@@ -367,12 +371,13 @@ export default function StatisticsPage() {
                                 {music}
                             </S.Label>
                         ))}
-                </S.LabelWrapper>
-                <Text size="body2" $margin="0 0 8px 0">
-                    가장 많은 사람들이 들은 노래는
+                </S.LabelWrapper2>
+
+                <Text size="body2" $margin="76px 0 8px 0">
+                    이번주 가장 많이 클릭 된 음악은
                 </Text>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         {ListenStatistics && ListenStatistics.singer}
                     </Text>
                     <Text size="body2" $marginLeft="4px">
@@ -380,11 +385,11 @@ export default function StatisticsPage() {
                     </Text>
                 </S.TextWrapper>
                 <S.TextWrapper>
-                    <Text size="subtitle1" fontWeight="bold">
+                    <Text size="body1" fontWeight="bold">
                         '{ListenStatistics && ListenStatistics.subject}'
                     </Text>
                     <Text size="body2" $marginLeft="4px">
-                        이예요
+                        에요
                     </Text>
                 </S.TextWrapper>
                 <S.BoxWrapper>
