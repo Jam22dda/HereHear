@@ -118,12 +118,13 @@ export default function MusicPlay() {
                             ></Image>
                         </CircleButton>
                     )}
-                    <Text size="body2" fontWeight="bold" $marginTop="20px">
-                        {musicPlay.data.singer}
-                    </Text>
-                    <Text size="body2" fontWeight="medium" $marginTop="5px">
+                    <Text size="body2" fontWeight="medium" $marginTop="10px">
                         {musicPlay.data.subject}
                     </Text>
+                    <Text size="body2" fontWeight="bold" $marginTop="5px">
+                        {musicPlay.data.singer}
+                    </Text>
+
                     <Message
                         comment={musicPlay.data.comment}
                         createTime={musicPlay.data.createTime}
