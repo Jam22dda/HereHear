@@ -19,11 +19,9 @@ export const RegistMusicContainer = styled.div`
     /* 기존 스타일 */
     padding-bottom: 30px; // 여기에 padding-bottom 추가
 `;
-// export const WholeWrapper = styled.div`
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     margin-top: 20px;
-//     padding-bottom: 48px;
-//     /* width: 90vw; //TODO:1차배포때 임의로 500px 지정 */
-// `;
+
+export const NoResultsText = styled.div`
+    text-align: center;
+    color: #757575; // 원하는 색상으로 변경
+    margin-top: 20px; // 원하는 마진으로 변경
+`;
