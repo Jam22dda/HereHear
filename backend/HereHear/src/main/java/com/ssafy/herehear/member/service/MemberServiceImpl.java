@@ -5,9 +5,9 @@ import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.entity.ProfileCharacter;
 import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
-import com.ssafy.herehear.global.util.CookieUtil;
 import com.ssafy.herehear.global.util.JwtProvider;
 import com.ssafy.herehear.global.util.MemberUtil;
+import com.ssafy.herehear.global.util.RedisUtils;
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
@@ -17,7 +17,6 @@ import com.ssafy.herehear.member.mapper.MemberMapper;
 import com.ssafy.herehear.member.repository.FollowRepository;
 import com.ssafy.herehear.member.repository.MemberRepository;
 import com.ssafy.herehear.member.repository.ProfileCharacterRepository;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
     private final JwtProvider jwtProvider;
     private static final String REFRESH_TOKEN = "refreshToken";
+    private final RedisUtils redisUtils;
 
     @Override
     @Transactional
@@ -68,8 +68,9 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtProvider.createAccessToken(findMember);
 
         String refreshToken = jwtProvider.createRefreshToken();
-        Cookie cookie = CookieUtil.createCookie(refreshToken);
-        response.addCookie(cookie);
+        redisUtils.set(findMember.getMemberId().toString(), refreshToken,60 * 24 * 365);
+//        Cookie cookie = CookieUtil.createCookie(refreshToken);
+//        response.addCookie(cookie);
 
         return accessToken;
     }
@@ -101,11 +102,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie cookie = CookieUtil.getCookie(request, REFRESH_TOKEN).orElseThrow(
-                () -> new CustomException(ExceptionStatus.TOKEN_NOT_FOUND_IN_COOKIE)
-        );
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        redisUtils.delete(jwtProvider.getAccessToken(request));
+//        Cookie cookie = CookieUtil.getCookie(request, REFRESH_TOKEN).orElseThrow(
+//                () -> new CustomException(ExceptionStatus.TOKEN_NOT_FOUND_IN_COOKIE)
+//        );
+//        cookie.setMaxAge(0);
+//        response.addCookie(cookie);
     }
 
     @Override
