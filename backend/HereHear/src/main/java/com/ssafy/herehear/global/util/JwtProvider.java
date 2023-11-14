@@ -1,6 +1,8 @@
 package com.ssafy.herehear.global.util;
 
 import com.ssafy.herehear.entity.Member;
+import com.ssafy.herehear.global.exception.CustomException;
+import com.ssafy.herehear.global.exception.ExceptionStatus;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +25,8 @@ public class JwtProvider {
 
     @Value("${auth.secretKey}")
     private String SECRET_KEY;
+
+    private final RedisUtils redisUtils;
 
 
 //    private static final Long ACCESS_TOEKN_VALIDATE_TIME = 1000L * 60 * 30;
@@ -52,12 +56,14 @@ public class JwtProvider {
         Date expireDate = new Date(now.getTime() + REFRESH_TOKEN_VALIDATE_TIME);
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-        return Jwts.builder()
-                .setSubject("refresh")
-                .setIssuedAt(now)
-                .setExpiration(expireDate)
-                .signWith(key, SignatureAlgorithm.HS512)
-                .compact();
+        String refreshToken =  Jwts.builder()
+                                .setSubject("refresh")
+                                .setIssuedAt(now)
+                                .setExpiration(expireDate)
+                                .signWith(key, SignatureAlgorithm.HS512)
+                                .compact();
+
+        return refreshToken;
     }
 
     public boolean validatateToken(String token) {
@@ -68,6 +74,9 @@ public class JwtProvider {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
+            if(redisUtils.hasKey(token)) {
+                throw new CustomException(ExceptionStatus.TOKEN_IS_DELETED);
+            }
             return true;
         } catch (MalformedJwtException e) { // 유효하지 않은 jwt
             throw new MalformedJwtException("jwt not valid");
