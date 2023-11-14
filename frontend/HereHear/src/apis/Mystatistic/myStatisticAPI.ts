@@ -3,19 +3,19 @@ import { instance } from "../instance";
 const getMyLikeCount = async () => {
     try {
         const response = await instance.get("/statistics/likecount");
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error("Error getMyLikeCount", error);
         throw error;
     }
 };
 
-const getHereTime = async () => {
+const getHearTime = async () => {
     try {
         const response = await instance.get("/statistics/heartime");
-        return response.data;
+        return response.data.data;
     } catch (error) {
-        console.error("Error getHereTime", error);
+        console.error("Error getHearTime", error);
         throw error;
     }
 };
@@ -23,11 +23,12 @@ const getHereTime = async () => {
 const getMyTagCount = async () => {
     try {
         const response = await instance.get("/statistics/tags");
-        return response.data;
+        return response.data.data.tagResDtoList;
+        // console.log(response.data.data.tagResDtoList, "response.data.data.tagResDtoList");
     } catch (error) {
         console.error("Error getMyTagCount", error);
         throw error;
     }
 };
 
-export { getMyLikeCount, getHereTime, getMyTagCount };
+export { getMyLikeCount, getHearTime, getMyTagCount };
