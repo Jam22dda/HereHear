@@ -8,7 +8,7 @@ export const PwaBtn = styled.button`
     background-color: ${({ theme }) => theme.color.pink3};
     box-shadow: ${({ theme }) => theme.shadow.shadow_btn};
     position: fixed;
-    bottom: 140px;
+    bottom: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,5 +64,5 @@ export const LoginWrapper = styled.div`
     width: 200px;
     justify-content: space-between;
     position: fixed;
-    bottom: 250px;
+    bottom: 140px;
 `;
