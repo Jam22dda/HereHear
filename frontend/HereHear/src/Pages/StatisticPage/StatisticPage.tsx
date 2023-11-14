@@ -140,7 +140,7 @@ export default function StatisticsPage() {
             datalabels: {
                 color: "#6F83B1",
                 font: {
-                    weight: "bold", // 글자 두께
+                    weight: "bold" as const, // 글자 두께
                     size: 18, // 글자 크기
                 },
             },
@@ -189,7 +189,7 @@ export default function StatisticsPage() {
             datalabels: {
                 color: "#6F83B1",
                 font: {
-                    weight: "bold", // 글자 두께
+                    weight: "bold" as const, // 글자 두께
                     size: 18, // 글자 크기
                 },
             },
