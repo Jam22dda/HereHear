@@ -117,13 +117,10 @@ export default function StatisticsPage() {
     const options = {
         plugins: {
             datalabels: {
-                align: "center",
-                anchor: "center",
                 color: "#6F83B1",
                 font: {
-                    weight: "bold", // 글자 두께
+                    weight: "bold" as const, // 글자 두께
                     size: 18, // 글자 크기
-                    family: "Arial", // 글꼴
                 },
             },
             legend: {
@@ -163,13 +160,10 @@ export default function StatisticsPage() {
         responsive: true,
         plugins: {
             datalabels: {
-                align: "center",
-                anchor: "center",
                 color: "#6F83B1",
                 font: {
-                    weight: "bold", // 글자 두께
+                    weight: "bold" as const, // 글자 두께
                     size: 18, // 글자 크기
-                    family: "Arial", // 글꼴
                 },
             },
             legend: {
@@ -239,7 +233,29 @@ export default function StatisticsPage() {
                 <S.LikeMusicBox>
                     <MusicItem src={LoveMyself} songtitle={musicLabels[0]} artist={artistLabels[0]}></MusicItem>
                     <CircleButton option="gradActivated" size="large">
-                        <Image src={Heart} width={25} $unit="px"></Image>
+                        <S.HeartContainer>
+                            <Image
+                                src={Heart}
+                                width={25}
+                                $unit="px"
+                                style={{ position: "relative" }}
+                            />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0}
+                            />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.2}
+                            />{" "}
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.4}
+                            />{" "}
+                        </S.HeartContainer>
                     </CircleButton>
                 </S.LikeMusicBox>
                 <S.TextWrapper style={{ margin: "60px 0 10px 0" }}>
@@ -295,8 +311,27 @@ export default function StatisticsPage() {
                     ></MusicItem>
                     <CircleButton option="gradActivated" size="large">
                         <S.HeartContainer>
-                            <Image src={Heart} width={25} $unit="px" style={{ position: "relative" }} />
-                            <S.AnimatedHeart src={Heart} alt="Heart" />
+                            <Image
+                                src={Heart}
+                                width={25}
+                                $unit="px"
+                                style={{ position: "relative" }}
+                            />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0}
+                            />
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.2}
+                            />{" "}
+                            <S.AnimatedHeart
+                                src={Heart}
+                                alt="Heart"
+                                delay={0.4}
+                            />{" "}
                         </S.HeartContainer>
                     </CircleButton>
                 </S.LikeMusicBox>

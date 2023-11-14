@@ -67,12 +67,18 @@ const floatHeart = keyframes`
   }
 `;
 
-export const AnimatedHeart = styled.img`
+interface AnimatedHeartProps {
+    delay: number;
+}
+
+export const AnimatedHeart = styled.img<AnimatedHeartProps>`
     position: absolute;
-    top: 50%; /* 컨테이너의 중앙에 위치 */
-    left: 50%; /* 컨테이너의 중앙에 위치 */
-    transform: translate(-50%, -50%); /* 애니메이션 시작 전 이미지를 중앙에 정렬 */
-    animation: ${floatHeart} 2s ease-in-out forwards;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ${floatHeart} 2s ease-in-out infinite; /* infinite를 추가하여 무한 반복 */
+    animation-delay: ${(props) =>
+        props.delay}s; /* delay를 설정하여 각 하트가 다른 시간에 시작하도록 함 */
     width: 25px;
 `;
 
