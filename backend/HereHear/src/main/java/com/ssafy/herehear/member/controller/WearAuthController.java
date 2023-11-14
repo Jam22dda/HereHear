@@ -31,9 +31,18 @@ public class WearAuthController {
     @GetMapping("/wearos/personalCode")
     public DataResponse<WearPersonalCodeDto> getPersonalCode(Authentication authentication) {
         Long memberId = Long.parseLong(authentication.getPrincipal().toString());
-        log.info("[WearOS PersonalCode 발급] memberId: {}", memberId);
+        log.info("[WearOS PersonalCode 조회] memberId: {}", memberId);
 
         WearPersonalCodeDto personalCode = wearAuthService.getPersonalCode(memberId);
+        return new DataResponse<>("200", "PersonalCode 조회 성공", personalCode);
+    }
+
+    @PostMapping("/wearos/personalCode")
+    public DataResponse<WearPersonalCodeDto> registerPersonalCode(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getPrincipal().toString());
+        log.info("[WearOS PersonalCode 발급] memberId: {}", memberId);
+
+        WearPersonalCodeDto personalCode = wearAuthService.registerPersonalCode(memberId);
         return new DataResponse<>("200", "PersonalCode 발급 성공", personalCode);
     }
 
