@@ -29,17 +29,7 @@ import {
     // Plugin,
 } from "chart.js";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    ArcElement,
-    PieController,
-    ChartDataLabels
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PieController, ChartDataLabels);
 
 // const shadowPlugin: Plugin<"bar"> = {
 //     // 'bar' 타입을 명시적으로 제공합니다.
@@ -88,9 +78,7 @@ export default function StatisticsPage() {
         const now = new Date();
         const month = now.toLocaleString("default", { month: "long" }); // 현재 월을 문자열로 가져옵니다.
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        const weekNumber = Math.ceil(
-            (now.getDate() + startOfMonth.getDay()) / 7
-        ); // 현재 주차를 계산합니다.
+        const weekNumber = Math.ceil((now.getDate() + startOfMonth.getDay()) / 7); // 현재 주차를 계산합니다.
 
         return { month, week: weekNumber };
     }
@@ -106,18 +94,9 @@ export default function StatisticsPage() {
         subject: string;
     }
 
-    const musicLabels: string[] =
-        LikeStatistics && LikeStatistics.length > 0
-            ? LikeStatistics.map((record: likemusic) => record.subject)
-            : [];
-    const artistLabels: string[] =
-        LikeStatistics && LikeStatistics.length > 0
-            ? LikeStatistics.map((record: likemusic) => record.singer)
-            : [];
-    const likeCount: string[] =
-        LikeStatistics && LikeStatistics.length > 0
-            ? LikeStatistics.map((record: likemusic) => record.likeCount)
-            : [];
+    const musicLabels: string[] = LikeStatistics && LikeStatistics.length > 0 ? LikeStatistics.map((record: likemusic) => record.subject) : [];
+    const artistLabels: string[] = LikeStatistics && LikeStatistics.length > 0 ? LikeStatistics.map((record: likemusic) => record.singer) : [];
+    const likeCount: string[] = LikeStatistics && LikeStatistics.length > 0 ? LikeStatistics.map((record: likemusic) => record.likeCount) : [];
 
     const likeColors = ["#FFC0EC", "#FFF0CB", "#BDDDFD", "#F9D6D5"];
     const tagColors = ["#FFC0EC", "#BDDDFD", "#FFF0CB", "#96ebbc", "#F9D6D5"];
@@ -176,15 +155,9 @@ export default function StatisticsPage() {
         tagName: string;
     }
 
-    const tagNameLabels: string[] =
-        TagStatistics && TagStatistics.length > 0
-            ? TagStatistics.map((record: musicTag) => record.tagName)
-            : [];
+    const tagNameLabels: string[] = TagStatistics && TagStatistics.length > 0 ? TagStatistics.map((record: musicTag) => record.tagName) : [];
 
-    const tagCount: string[] =
-        TagStatistics && TagStatistics.length > 0
-            ? TagStatistics.map((record: musicTag) => record.tagCount)
-            : [];
+    const tagCount: string[] = TagStatistics && TagStatistics.length > 0 ? TagStatistics.map((record: musicTag) => record.tagCount) : [];
 
     const pieoptions = {
         responsive: true,
@@ -214,13 +187,7 @@ export default function StatisticsPage() {
             {
                 label: "TagCount",
                 data: tagCount,
-                backgroundColor: [
-                    "#FF65D0",
-                    "#85C2FF",
-                    "#FFDD84",
-                    "#75DFA4",
-                    "#FAA09F",
-                ],
+                backgroundColor: ["#FF65D0", "#85C2FF", "#FFDD84", "#75DFA4", "#FAA09F"],
                 hoverOffset: 6,
                 // borderWidth: 0,
             },
@@ -230,23 +197,10 @@ export default function StatisticsPage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigatePage("/core")}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigatePage("/core")}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="20px 0 48px 0"
-                >
+                <Text size="subtitle1" fontWeight="bold" $margin="20px 0 48px 0">
                     {month} {week}주차 차트
                 </Text>
                 <Text size="body2" $margin="0 0 8px 0">
@@ -268,19 +222,14 @@ export default function StatisticsPage() {
                         이예요
                     </Text>
                 </S.TextWrapper>
-                <Bar
-                    style={{ marginTop: "30px" }}
-                    data={data}
-                    options={options}
-                />
+                <Bar style={{ marginTop: "30px" }} data={data} options={options} />
                 <S.LabelWrapper>
                     {musicLabels &&
                         musicLabels.map((music, index) => (
                             <S.Label
                                 key={index}
                                 style={{
-                                    backgroundColor:
-                                        likeColors[index % likeColors.length],
+                                    backgroundColor: likeColors[index % likeColors.length],
                                 }}
                             >
                                 {music}
@@ -288,11 +237,7 @@ export default function StatisticsPage() {
                         ))}
                 </S.LabelWrapper>
                 <S.LikeMusicBox>
-                    <MusicItem
-                        src={LoveMyself}
-                        songtitle={musicLabels[0]}
-                        artist={artistLabels[0]}
-                    ></MusicItem>
+                    <MusicItem src={LoveMyself} songtitle={musicLabels[0]} artist={artistLabels[0]}></MusicItem>
                     <CircleButton option="gradActivated" size="large">
                         <Image src={Heart} width={25} $unit="px"></Image>
                     </CircleButton>
@@ -301,7 +246,7 @@ export default function StatisticsPage() {
                     <Text size="body2" style={{ lineHeight: "36px" }}>
                         많은 사람들이
                     </Text>
-                    <S.Tag bgColor="#FFF0CB">{tagNameLabels[0]}</S.Tag>
+                    <S.Tag style={{ backgroundColor: tagColors[0] }}>{tagNameLabels[0]}</S.Tag>
                     <Text size="body2" style={{ lineHeight: "36px" }}>
                         때
                     </Text>
@@ -309,19 +254,14 @@ export default function StatisticsPage() {
                 <Text size="body2" $margin="0 0 8px 0">
                     음악과 함께 해요
                 </Text>
-                <Pie
-                    style={{ marginTop: "32px" }}
-                    data={piedata}
-                    options={pieoptions}
-                />
+                <Pie style={{ marginTop: "32px" }} data={piedata} options={pieoptions} />
                 <S.LabelWrapper>
                     {tagNameLabels &&
                         tagNameLabels.map((music, index) => (
                             <S.Label
                                 key={index}
                                 style={{
-                                    backgroundColor:
-                                        tagColors[index % tagColors.length],
+                                    backgroundColor: tagColors[index % tagColors.length],
                                 }}
                             >
                                 {music}
@@ -355,12 +295,7 @@ export default function StatisticsPage() {
                     ></MusicItem>
                     <CircleButton option="gradActivated" size="large">
                         <S.HeartContainer>
-                            <Image
-                                src={Heart}
-                                width={25}
-                                $unit="px"
-                                style={{ position: "relative" }}
-                            />
+                            <Image src={Heart} width={25} $unit="px" style={{ position: "relative" }} />
                             <S.AnimatedHeart src={Heart} alt="Heart" />
                         </S.HeartContainer>
                     </CircleButton>

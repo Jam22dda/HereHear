@@ -39,11 +39,11 @@ export const LikeMusicBox = styled.div`
     justify-content: center;
 `;
 
-interface TagProps {
-    bgColor: string;
-}
+// interface TagProps {
+//     bgcolor: string;
+// }
 
-export const Tag = styled.div<TagProps>`
+export const Tag = styled.div`
     width: 100px;
     height: 36px;
     border-radius: 40px;
@@ -52,7 +52,6 @@ export const Tag = styled.div<TagProps>`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${(props) => props.bgColor};
     margin: 0 8px 0 8px;
     box-shadow: ${({ theme }) => theme.shadow.shadow_play_selected};
 `;
@@ -72,10 +71,7 @@ export const AnimatedHeart = styled.img`
     position: absolute;
     top: 50%; /* 컨테이너의 중앙에 위치 */
     left: 50%; /* 컨테이너의 중앙에 위치 */
-    transform: translate(
-        -50%,
-        -50%
-    ); /* 애니메이션 시작 전 이미지를 중앙에 정렬 */
+    transform: translate(-50%, -50%); /* 애니메이션 시작 전 이미지를 중앙에 정렬 */
     animation: ${floatHeart} 2s ease-in-out forwards;
     width: 25px;
 `;
