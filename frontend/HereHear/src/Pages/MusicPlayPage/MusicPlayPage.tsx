@@ -14,7 +14,8 @@ import youtube from "../../assets/CircleButton/icon-youtubePlay.png";
 import { usePostLikeMusic } from "../../apis/Music/Mutations/useLikeMusic";
 import { useGetMusicPlay } from "../../apis/Music/Quries/useGetMusicPlay";
 import { useMusicHistory } from "../../apis/Music/Mutations/useMusicHistory";
-// import { memberId } from "../../apis/Mypage/Mutations/useFollow";
+import { SignUpInfoAtom } from "../../states/SignUpAtoms";
+import { useRecoilValue } from "recoil";
 
 export default function MusicPlay() {
     const { id } = useParams();
@@ -51,6 +52,9 @@ export default function MusicPlay() {
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
     console.log(musicPlay);
+    const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
+    const myId = mySignUpInfo.memberId;
+    // console.log(myId == musicPlay.data.memberId);
 
     useEffect(() => {
         if (musicPlay) {
@@ -71,35 +75,50 @@ export default function MusicPlay() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
-                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
                 </CircleButton>
                 <S.MusicPlayWrapper>
                     <S.SelectTagWrapper>
                         {occasionName.map((item: string, index: number) => (
-                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item}></Button>
+                            <Button
+                                option="unfollow"
+                                $shadow=""
+                                size="mediumplus"
+                                $margin="5px"
+                                $width="80px"
+                                key={index}
+                                tag={item}
+                            ></Button>
                         ))}
                     </S.SelectTagWrapper>
                     <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
-                    {/* {isLiked ? (
-                        <CircleButton option="pinkActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
-                            <Image src={Heart} width={23} height={21} $unit="px"></Image>
+                    {myId !== parseInt(musicPlay.data.memberId, 10) && (
+                        <CircleButton
+                            option={
+                                isLiked ? "pinkActivated" : "pinkDeActivated"
+                            }
+                            style={{ marginLeft: "17rem" }}
+                            onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
+                        >
+                            <Image
+                                src={isLiked ? Heart : emptyHeart}
+                                width={23}
+                                height={21}
+                                $unit="px"
+                            ></Image>
                         </CircleButton>
-                    ) : (
-                        <CircleButton option="pinkDeActivated" style={{ marginLeft: "17rem" }} onClick={toggleLike}>
-                            <Image src={emptyHeart} width={23} height={21} $unit="px"></Image>
-                        </CircleButton>
-                    )} */}
-
-                    <CircleButton
-                        option={isLiked ? "pinkActivated" : "pinkDeActivated"}
-                        style={{ marginLeft: "17rem" }}
-                        onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
-                    >
-                        <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
-                    </CircleButton>
-
-                    <Text size="body2" fontWeight="bold" $marginTop="10px">
+                    )}
+                    <Text size="body2" fontWeight="bold" $marginTop="20px">
                         {musicPlay.data.singer}
                     </Text>
                     <Text size="body2" fontWeight="medium" $marginTop="5px">
@@ -117,8 +136,12 @@ export default function MusicPlay() {
                         width={6}
                         onClick={() => {
                             registMusicHistory();
-                            const subjectEncoded = encodeURIComponent(musicPlay.data.subject);
-                            const singerEncoded = encodeURIComponent(musicPlay.data.singer);
+                            const subjectEncoded = encodeURIComponent(
+                                musicPlay.data.subject
+                            );
+                            const singerEncoded = encodeURIComponent(
+                                musicPlay.data.singer
+                            );
                             const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
                             window.location.href = youtubeSearchUrl;
                         }}

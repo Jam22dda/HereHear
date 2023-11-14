@@ -34,11 +34,12 @@ interface MarqueeTextProps {
 const MarqueeText = styled(Text)<MarqueeTextProps>`
     white-space: nowrap;
     display: inline-block;
-    width: 215px;
+    width: 190px;
     min-width: 100%;
     animation: ${scroll} 10s linear infinite;
     animation-play-state: ${(props) => (props.animate ? "running" : "paused")};
-    animation-delay: ${(props) => (props.isOverflowing && !props.animate ? "3s" : "0s")};
+    animation-delay: ${(props) =>
+        props.isOverflowing && !props.animate ? "3s" : "0s"};
     animation-fill-mode: forwards;
 `;
 
