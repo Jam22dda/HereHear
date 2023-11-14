@@ -48,6 +48,8 @@ export default function Core() {
     const [userSelectPin, setUserSelectPin] = useState(0);
     const [circleState, setCircleState] = useState();
 
+    const [loadingWait, setLoadingWait] = useState(true);
+
     // 외부로부터 입력된 데이터
     const { musicList, refetch } = useGetMapMusicList();
     const { musicAroundList, refetch: refetchMusicAroundList } = useGetAroundMusicList(lat, lng);
@@ -200,6 +202,7 @@ export default function Core() {
                     });
 
                     setCircleState(circle);
+                    setLoadingWait(false);
 
                     // 현재 위치로 맵 가운데를 변경시키기
                     const center = new naver.maps.LatLng(latitude, longitude);
@@ -235,7 +238,7 @@ export default function Core() {
         if (eventSource) {
             // 컴포넌트가 언마운트될 때 실행될 로직
             return () => {
-                console.log(eventSource);
+                // console.log(eventSource);
 
                 eventSource.close();
             };
@@ -494,8 +497,15 @@ export default function Core() {
         // <div id='map__display'>
         //     <div id='map'></div>
         // </div>
-        <>
+        <div id='display'>
             <S.MapDisplay>
+                {loadingWait && (
+                    <S.WaitWrapper>
+                        <img src='/images/icon-purplestar.png' alt='img' className='floating' />
+                        <p>세상에 음악을 뿌리는 중..</p>
+                    </S.WaitWrapper>
+                )}
+
                 <S.ClockOuter>
                     <MapClock onClick={onClickMent}></MapClock>
                     {showButton && (
@@ -523,7 +533,7 @@ export default function Core() {
                     <Navbar active={true}></Navbar>
                 </S.NavbarWrapper>
             </S.MapDisplay>
-        </>
+        </div>
     );
 }
 
