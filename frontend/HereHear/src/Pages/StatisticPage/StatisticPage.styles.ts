@@ -89,3 +89,9 @@ export const HeartContainer = styled.div`
     width: 25px;
     height: 25px;
 `;
+
+export const BoxWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 120px;
+`;
