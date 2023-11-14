@@ -9,14 +9,14 @@ const aFilesToCache: string[] = [
 // install event
 // 서비스워커를 설치
 self.addEventListener('install', (pEvent: any) => {
-    // console.log('서비스워커 설치');
-    // // 캐싱할 파일 저장
-    // pEvent.waitUntil(
-    //     caches.open(sCacheName).then((pCache: Cache) => {
-    //         // console.log('파일을 캐시에 저장');
-    //         return pCache.addAll(aFilesToCache);
-    //     })
-    // );
+    console.log('서비스워커 설치');
+    // 캐싱할 파일 저장
+    pEvent.waitUntil(
+        caches.open(sCacheName).then((pCache: Cache) => {
+            // console.log('파일을 캐시에 저장');
+            return pCache.addAll(aFilesToCache);
+        })
+    );
 });
 
 // activate event
