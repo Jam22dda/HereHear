@@ -48,6 +48,8 @@ export default function Core() {
     const [userSelectPin, setUserSelectPin] = useState(0);
     const [circleState, setCircleState] = useState();
 
+    const [loadingWait, setLoadingWait] = useState(true);
+
     // 외부로부터 입력된 데이터
     const { musicList, refetch } = useGetMapMusicList();
     const { musicAroundList, refetch: refetchMusicAroundList } = useGetAroundMusicList(lat, lng);
@@ -81,7 +83,7 @@ export default function Core() {
 
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
-                zoom: 15,
+                zoom: 14,
             });
 
             // 마우스 이벤트가 발생하면 자동으로 따라가기 취소하는 이벤트 추가
@@ -193,13 +195,14 @@ export default function Core() {
                         fillColor: '#0000ff',
                         fillOpacity: 0.15,
                         center: new naver.maps.LatLng(latitude, longitude),
-                        radius: 600,
+                        radius: 2000,
                         zIndex: 100,
                         clickable: true,
                         map: map,
                     });
 
                     setCircleState(circle);
+                    setLoadingWait(false);
 
                     // 현재 위치로 맵 가운데를 변경시키기
                     const center = new naver.maps.LatLng(latitude, longitude);
@@ -235,7 +238,7 @@ export default function Core() {
         if (eventSource) {
             // 컴포넌트가 언마운트될 때 실행될 로직
             return () => {
-                console.log(eventSource);
+                // console.log(eventSource);
 
                 eventSource.close();
             };
@@ -496,10 +499,17 @@ export default function Core() {
         // </div>
         <>
             <S.MapDisplay>
+                {loadingWait && (
+                    <S.WaitWrapper>
+                        <img src='/images/icon-purplestar.png' alt='img' className='floating' />
+                        <p>세상에 음악을 뿌리는 중..</p>
+                    </S.WaitWrapper>
+                )}
+
                 <S.ClockOuter>
                     <MapClock onClick={onClickMent}></MapClock>
                     {showButton && (
-                        <Button $width="11rem" $height="4rem" size="small" style={{ padding: "10px" }} option="tag_plus">
+                        <Button $width='11rem' $height='4rem' size='small' style={{ padding: '10px' }} option='tag_plus'>
                             현재 시간에서 ±3시간 사이에 등록된 노래가 표시돼요
                         </Button>
                     )}

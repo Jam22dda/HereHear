@@ -28,19 +28,19 @@ self.addEventListener('activate', (pEvent: any) => {
 // fetch event
 // 데이터 요청시 수행
 self.addEventListener('fetch', (pEvent: any) => {
-    pEvent.respondWith(
-        // 오프라인에서 데이터 색인
-        caches
-            .match(pEvent.request)
-            .then((response: Response | undefined) => {
-                // 캐시에 없는 데이터인 경우
-                if (!response) {
-                    // console.log('네트워크에서 데이터 요청', pEvent.request);
-                    return fetch(pEvent.request, { mode: 'cors' });
-                }
-                // console.log('캐시에서 데이터 요청', pEvent.request);
-                return response;
-            })
-            .catch((err: Error) => console.log(err))
-    );
+    // pEvent.respondWith(
+    //     // 오프라인에서 데이터 색인
+    //     caches
+    //         .match(pEvent.request)
+    //         .then((response: Response | undefined) => {
+    //             // 캐시에 없는 데이터인 경우
+    //             if (!response) {
+    //                 // console.log('네트워크에서 데이터 요청', pEvent.request);
+    //                 return fetch(pEvent.request, { mode: 'cors' });
+    //             }
+    //             // console.log('캐시에서 데이터 요청', pEvent.request);
+    //             return response;
+    //         })
+    //         .catch((err: Error) => console.log(err))
+    // );
 });

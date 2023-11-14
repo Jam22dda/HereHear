@@ -345,7 +345,9 @@ export default function StatisticsPage() {
                     <Text size="body2" style={{ lineHeight: "36px" }}>
                         많은 사람들이
                     </Text>
-                    <S.Tag bgColor="#FFF0CB">{tagNameLabels[0]}</S.Tag>
+                    <S.Tag style={{ backgroundColor: tagColors[0] }}>
+                        {tagNameLabels[0]}
+                    </S.Tag>
                     <Text size="body2" style={{ lineHeight: "36px" }}>
                         때
                     </Text>

@@ -39,11 +39,11 @@ export const LikeMusicBox = styled.div`
     justify-content: center;
 `;
 
-interface TagProps {
-    bgColor: string;
-}
+// interface TagProps {
+//     bgcolor: string;
+// }
 
-export const Tag = styled.div<TagProps>`
+export const Tag = styled.div`
     width: 100px;
     height: 36px;
     border-radius: 40px;
@@ -52,7 +52,6 @@ export const Tag = styled.div<TagProps>`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${(props) => props.bgColor};
     margin: 0 8px 0 8px;
     box-shadow: ${({ theme }) => theme.shadow.shadow_play_selected};
 `;
