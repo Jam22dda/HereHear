@@ -81,7 +81,7 @@ export default function Core() {
 
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.3595704, 127.105399),
-                zoom: 15,
+                zoom: 14,
             });
 
             // 마우스 이벤트가 발생하면 자동으로 따라가기 취소하는 이벤트 추가
@@ -193,7 +193,7 @@ export default function Core() {
                         fillColor: '#0000ff',
                         fillOpacity: 0.15,
                         center: new naver.maps.LatLng(latitude, longitude),
-                        radius: 600,
+                        radius: 2000,
                         zIndex: 100,
                         clickable: true,
                         map: map,
@@ -499,7 +499,7 @@ export default function Core() {
                 <S.ClockOuter>
                     <MapClock onClick={onClickMent}></MapClock>
                     {showButton && (
-                        <Button $width="11rem" $height="4rem" size="small" style={{ padding: "10px" }} option="tag_plus">
+                        <Button $width='11rem' $height='4rem' size='small' style={{ padding: '10px' }} option='tag_plus'>
                             현재 시간에서 ±3시간 사이에 등록된 노래가 표시돼요
                         </Button>
                     )}
