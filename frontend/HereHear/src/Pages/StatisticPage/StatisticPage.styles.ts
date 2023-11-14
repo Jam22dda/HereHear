@@ -4,12 +4,19 @@ export const TextWrapper = styled.div`
     display: flex;
     align-items: center;
     flex-wrap: wrap; /* 이 부분을 추가합니다. */
+    margin-bottom: 4px;
 `;
 
 export const LabelWrapper = styled.div`
     display: flex;
     justify-content: space-around;
     margin: 16px 0 40px 0;
+    align-items: center;
+`;
+export const LabelWrapper2 = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin: 36px 0 12px 0;
     align-items: center;
 `;
 
@@ -23,7 +30,7 @@ export const Label = styled.div`
     height: 30px;
     white-space: nowrap; /* 텍스트를 줄 바꿈 없이 한 줄로 설정 */
     overflow: hidden; /* 내용이 넘칠 경우 숨김 처리 */
-    text-overflow: ellipsis; /* 넘치는 텍스트를 말줄임표로 표시 */
+    /* text-overflow: ellipsis; 넘치는 텍스트를 말줄임표로 표시 */
     line-height: 20px;
     text-align: center;
 `;
@@ -77,8 +84,7 @@ export const AnimatedHeart = styled.img<AnimatedHeartProps>`
     left: 50%;
     transform: translate(-50%, -50%);
     animation: ${floatHeart} 2s ease-in-out infinite; /* infinite를 추가하여 무한 반복 */
-    animation-delay: ${(props) =>
-        props.delay}s; /* delay를 설정하여 각 하트가 다른 시간에 시작하도록 함 */
+    animation-delay: ${(props) => props.delay}s; /* delay를 설정하여 각 하트가 다른 시간에 시작하도록 함 */
     width: 25px;
 `;
 
@@ -89,8 +95,23 @@ export const HeartContainer = styled.div`
     height: 25px;
 `;
 
-export const BoxWrapper = styled.div`
+export const chartWrapper = styled.div`
     display: flex;
+    align-items: center;
     justify-content: center;
-    margin-bottom: 120px;
+    width: 100%;
+    /* margin-top: 24px; */
+`;
+
+export const TitleWrapper = styled.div`
+    display: flex;
+    align-items: end;
+    margin: 20px 0 56px;
+    /* flex-direction: column; */
+`;
+
+export const MystatisticWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 `;
