@@ -82,15 +82,19 @@ export default function Achievement() {
     const totalPages = Math.ceil(MyAchievementList?.length / itemsPerPage);
     const goToPage = (pageNumber: number) => setCurrentPage(pageNumber);
 
-    const currentItems = MyAchievementList?.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
+    const currentItems = Array.isArray(MyAchievementList)
+        ? MyAchievementList.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+          )
+        : [];
 
-    const yourCurrentItems = YourAchievement?.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
+    const yourCurrentItems = Array.isArray(YourAchievement)
+        ? YourAchievement.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+          )
+        : [];
 
     return (
         <div id="display">
