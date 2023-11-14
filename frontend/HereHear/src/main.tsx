@@ -31,6 +31,7 @@ import RedirectHandler from "./RedirectHandler.tsx";
 import YourPage from "./Pages/YourPage/YourPage.tsx";
 import MapClock from "./components/molcules/clocktest/ClockTest.tsx";
 import OnBoardingPage from "./Pages/OnBoardingPage/OnBoardingPage.tsx";
+import SpotifyPlayer from "./Pages/SpotifyPlayerPage/SpotifyPlayerPage.tsx";
 // import { Text } from "./components/atoms/Text/Text.styles.ts";
 
 const queryClient = new QueryClient({
@@ -139,6 +140,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                                 path="/follow"
                                 element={<MapClock />}
                             ></Route>
+
+                            {/* spotify */}
+                            <Route
+                                path="/spotify"
+                                element={<SpotifyPlayer/>}
+                            ></Route>
+                                
                         </Routes>
                         {/* </Suspense> */}
                     </QueryClientProvider>
