@@ -6,7 +6,7 @@ import IconKakao from "../../assets/Landing/icon-kakao.png";
 import IconDown from "../../assets/Landing/icon-down.png";
 import logo from "../../assets/Landing/logo-herehear.png";
 import IconGoogle from "../../assets/Landing/icon-google.png";
-// import axios from "axios";
+import IconSpotify from "../../assets/Landing/icon-spotify.png";
 
 export default function Landing() {
     // const id = "angel";
@@ -58,51 +58,57 @@ export default function Landing() {
 
     return (
         <div id="display">
-            <S.LandingWrapper className="container">
-                <Image
-                    width={70}
-                    $unit="%"
-                    src={logo}
-                    $margin="120px 0 0 0"
-                ></Image>
-                {installPrompt && (
-                    <S.PwaBtn onClick={handleInstallClick}>
-                        <Image
-                            src={IconDown}
-                            width={24}
-                            height={20}
-                            $unit="px"
-                            $margin="0 8px 0 0"
-                        ></Image>
-                        <Text size="body1" fontWeight="bold">
-                            앱 설치하기
-                        </Text>
-                    </S.PwaBtn>
-                )}
-                {/* <S.GoogleLoginBtn onClick={() => navigatePage("google")}>
+            <div className="container">
+                <S.LandingWrapper>
                     <Image
-                        src={IconGoogle}
-                        width={24}
-                        $unit="px"
-                        $margin="0 8px 0 0"
+                        width={70}
+                        $unit="%"
+                        src={logo}
+                        $margin="120px 0 0 0"
                     ></Image>
-                    <Text size="body1" fontWeight="bold">
-                        구글 로그인
-                    </Text>
-                </S.GoogleLoginBtn> */}
-                <S.KaKaoLoginBtn onClick={() => navigatePage("kakao")}>
-                    <Image
-                        src={IconKakao}
-                        width={24}
-                        height={20}
-                        $unit="px"
-                        $margin="0 8px 0 0"
-                    ></Image>
-                    <Text size="body1" fontWeight="bold">
-                        카카오 로그인
-                    </Text>
-                </S.KaKaoLoginBtn>
-            </S.LandingWrapper>
+                    {installPrompt && (
+                        <S.PwaBtn onClick={handleInstallClick}>
+                            <Image
+                                src={IconDown}
+                                width={24}
+                                height={20}
+                                $unit="px"
+                                $margin="0 8px 0 0"
+                            ></Image>
+                            <Text size="body1" fontWeight="bold">
+                                앱 설치하기
+                            </Text>
+                        </S.PwaBtn>
+                    )}
+                    <S.LoginWrapper>
+                        <S.KaKaoLoginBtn onClick={() => navigatePage("kakao")}>
+                            <Image
+                                src={IconKakao}
+                                width={85}
+                                $unit="px"
+                            ></Image>
+                        </S.KaKaoLoginBtn>
+                        <S.GoogleLoginBtn
+                            onClick={() => navigatePage("google")}
+                        >
+                            <Image
+                                src={IconGoogle}
+                                width={24}
+                                $unit="px"
+                            ></Image>
+                        </S.GoogleLoginBtn>
+                        <S.SpotifyLoginBtn
+                            onClick={() => navigatePage("spotify")}
+                        >
+                            <Image
+                                src={IconSpotify}
+                                width={50}
+                                $unit="px"
+                            ></Image>
+                        </S.SpotifyLoginBtn>
+                    </S.LoginWrapper>
+                </S.LandingWrapper>
+            </div>
         </div>
     );
 }
