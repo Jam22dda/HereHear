@@ -30,6 +30,7 @@ public final class ConstantsUtil {
      * SSE 로그 메시지 타이틀
      */
     public static final String SSE_SCHEDULER = "SSE Scheduler";
+    public static final String SSE_EVENT = "SSE 이벤트";
 
     /**
      * Music 로그 메시지 타이틀
