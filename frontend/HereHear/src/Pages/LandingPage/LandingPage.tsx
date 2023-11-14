@@ -6,7 +6,7 @@ import IconKakao from "../../assets/Landing/icon-kakao.png";
 import IconDown from "../../assets/Landing/icon-down.png";
 import logo from "../../assets/Landing/logo-herehear.png";
 import IconGoogle from "../../assets/Landing/icon-google.png";
-import IconSpotify from "../../assets/Landing/icon-spotify.png";
+// import IconSpotify from "../../assets/Landing/icon-spotify.png";
 
 export default function Landing() {
     // const id = "angel";
@@ -20,16 +20,10 @@ export default function Landing() {
     const [installPrompt, setInstallPrompt] = useState<any>(null);
 
     useEffect(() => {
-        window.addEventListener(
-            "beforeinstallprompt",
-            handleBeforeInstallPrompt
-        );
+        window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
         return () => {
-            window.removeEventListener(
-                "beforeinstallprompt",
-                handleBeforeInstallPrompt
-            );
+            window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
         };
     }, []);
 
@@ -42,17 +36,15 @@ export default function Landing() {
         if (installPrompt) {
             installPrompt.prompt();
 
-            installPrompt.userChoice.then(
-                (choiceResult: { outcome: string }) => {
-                    if (choiceResult.outcome === "accepted") {
-                        // console.log('사용자가 설치 프롬프트에 동의했습니다.');
-                    } else {
-                        // console.log('사용자가 설치 프롬프트를 무시했습니다.');
-                    }
-
-                    setInstallPrompt(null);
+            installPrompt.userChoice.then((choiceResult: { outcome: string }) => {
+                if (choiceResult.outcome === "accepted") {
+                    // console.log('사용자가 설치 프롬프트에 동의했습니다.');
+                } else {
+                    // console.log('사용자가 설치 프롬프트를 무시했습니다.');
                 }
-            );
+
+                setInstallPrompt(null);
+            });
         }
     };
 
@@ -60,21 +52,10 @@ export default function Landing() {
         <div id="display">
             <div className="container">
                 <S.LandingWrapper>
-                    <Image
-                        width={70}
-                        $unit="%"
-                        src={logo}
-                        $margin="120px 0 0 0"
-                    ></Image>
+                    <Image width={70} $unit="%" src={logo} $margin="120px 0 0 0"></Image>
                     {installPrompt && (
                         <S.PwaBtn onClick={handleInstallClick}>
-                            <Image
-                                src={IconDown}
-                                width={24}
-                                height={20}
-                                $unit="px"
-                                $margin="0 8px 0 0"
-                            ></Image>
+                            <Image src={IconDown} width={24} height={20} $unit="px" $margin="0 8px 0 0"></Image>
                             <Text size="body1" fontWeight="bold">
                                 앱 설치하기
                             </Text>
@@ -82,22 +63,12 @@ export default function Landing() {
                     )}
                     <S.LoginWrapper>
                         <S.KaKaoLoginBtn onClick={() => navigatePage("kakao")}>
-                            <Image
-                                src={IconKakao}
-                                width={85}
-                                $unit="px"
-                            ></Image>
+                            <Image src={IconKakao} width={85} $unit="px"></Image>
                         </S.KaKaoLoginBtn>
-                        <S.GoogleLoginBtn
-                            onClick={() => navigatePage("google")}
-                        >
-                            <Image
-                                src={IconGoogle}
-                                width={24}
-                                $unit="px"
-                            ></Image>
+                        <S.GoogleLoginBtn onClick={() => navigatePage("google")}>
+                            <Image src={IconGoogle} width={24} $unit="px"></Image>
                         </S.GoogleLoginBtn>
-                        <S.SpotifyLoginBtn
+                        {/* <S.SpotifyLoginBtn
                             onClick={() => navigatePage("spotify")}
                         >
                             <Image
@@ -105,7 +76,7 @@ export default function Landing() {
                                 width={50}
                                 $unit="px"
                             ></Image>
-                        </S.SpotifyLoginBtn>
+                        </S.SpotifyLoginBtn> */}
                     </S.LoginWrapper>
                 </S.LandingWrapper>
             </div>
