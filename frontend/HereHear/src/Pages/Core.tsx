@@ -497,7 +497,7 @@ export default function Core() {
         // <div id='map__display'>
         //     <div id='map'></div>
         // </div>
-        <>
+        <div id='display'>
             <S.MapDisplay>
                 {loadingWait && (
                     <S.WaitWrapper>
@@ -533,7 +533,7 @@ export default function Core() {
                     <Navbar active={true}></Navbar>
                 </S.NavbarWrapper>
             </S.MapDisplay>
-        </>
+        </div>
     );
 }
 
