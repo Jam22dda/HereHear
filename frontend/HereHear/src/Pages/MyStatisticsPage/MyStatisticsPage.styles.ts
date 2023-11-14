@@ -11,7 +11,12 @@ import styled from "styled-components";
 //     align-items: center;
 //     justify-content: center;
 // `;
-
+export const TitleWrapper = styled.div`
+    display: flex;
+    align-items: end;
+    margin: 20px 0 56px;
+    /* flex-direction: column; */
+`;
 export const MystatisticWrapper = styled.div`
     display: flex;
     align-items: center;
@@ -90,3 +95,17 @@ export const LikeBox = styled.div`
     align-items: center;
     justify-content: space-around;
 `;
+
+export const chartWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+`;
+
+// export const chartSize = styled.div`;
+//     width: 200px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// `;
