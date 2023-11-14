@@ -14,7 +14,8 @@ import youtube from "../../assets/CircleButton/icon-youtubePlay.png";
 import { usePostLikeMusic } from "../../apis/Music/Mutations/useLikeMusic";
 import { useGetMusicPlay } from "../../apis/Music/Quries/useGetMusicPlay";
 import { useMusicHistory } from "../../apis/Music/Mutations/useMusicHistory";
-// import { memberId } from "../../apis/Mypage/Mutations/useFollow";
+import { SignUpInfoAtom } from "../../states/SignUpAtoms";
+import { useRecoilValue } from "recoil";
 
 export default function MusicPlay() {
     const { id } = useParams();
@@ -51,6 +52,9 @@ export default function MusicPlay() {
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
     console.log(musicPlay);
+    const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
+    const myId = mySignUpInfo.memberId;
+    // console.log(myId == musicPlay.data.memberId);
 
     useEffect(() => {
         if (musicPlay) {
@@ -81,20 +85,13 @@ export default function MusicPlay() {
                         ))}
                     </S.SelectTagWrapper>
                     <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
-                    {/* {myId !== parseInt(musicPlay.data.memberId, 10) && (
+                    {myId !== parseInt(musicPlay.data.memberId, 10) && (
                         <CircleButton
-                            option={
-                                isLiked ? "pinkActivated" : "pinkDeActivated"
-                            }
+                            option={isLiked ? "pinkActivated" : "pinkDeActivated"}
                             style={{ marginLeft: "17rem" }}
                             onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
                         >
-                            <Image
-                                src={isLiked ? Heart : emptyHeart}
-                                width={23}
-                                height={21}
-                                $unit="px"
-                            ></Image>
+                            <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
                         </CircleButton>
                     )}
                     <Text size="body2" fontWeight="medium" $marginTop="10px">
