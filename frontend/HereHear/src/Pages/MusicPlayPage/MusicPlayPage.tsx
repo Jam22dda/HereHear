@@ -43,7 +43,6 @@ export default function MusicPlay() {
     };
 
     const registMusicHistory = () => {
-        // console.log("---------", MusicNumber);
         if (MusicNumber !== null) {
             postMusicHostiryMutate(MusicNumber);
         }
