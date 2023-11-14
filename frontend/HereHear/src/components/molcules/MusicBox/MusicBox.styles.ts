@@ -1,6 +1,6 @@
 // import theme from "../../../styles/theme";
-import styled, { keyframes } from "styled-components";
-import { Text } from "../../atoms/Text/Text.styles";
+import styled, { keyframes } from 'styled-components';
+import { Text } from '../../atoms/Text/Text.styles';
 
 const Outer = styled.div`
     width: 100%;
@@ -18,10 +18,10 @@ const MusicBox = styled.div`
     align-items: center;
     justify-content: center;
     background-color: ${({ theme }) => theme.color.white1};
-    box-shadow: ${({ theme }) => theme.shadow.shadow_dark};
     position: absolute;
     bottom: 130px;
     z-index: 998;
+    box-shadow: ${({ theme }) => theme.shadow.shadow_btn};
 
     /* @media screen and (max-width: 425px) {
         width: 303px;
@@ -92,24 +92,10 @@ const MarqueeText = styled(Text)<MarqueeTextProps>`
     display: inline-block;
     width: 160px;
     min-width: 100%;
-    animation: ${(props) =>
-            props.isOverflowing && props.animate ? scroll : "none"}
-        10s linear infinite;
-    animation-play-state: ${(props) => (props.animate ? "running" : "paused")};
-    animation-delay: ${(props) =>
-        props.isOverflowing && props.animate ? "3s" : "0s"};
+    animation: ${props => (props.isOverflowing && props.animate ? scroll : 'none')} 10s linear infinite;
+    animation-play-state: ${props => (props.animate ? 'running' : 'paused')};
+    animation-delay: ${props => (props.isOverflowing && props.animate ? '3s' : '0s')};
     animation-fill-mode: forwards;
 `;
 
-export {
-    MusicBox,
-    BigWrapper,
-    MidWrapper,
-    MapMusicTagWrapper,
-    MapTextrapper,
-    Outer,
-    MusicBoxInner,
-    ImageLeftOuter,
-    ImageRightOuter,
-    MarqueeText,
-};
+export { MusicBox, BigWrapper, MidWrapper, MapMusicTagWrapper, MapTextrapper, Outer, MusicBoxInner, ImageLeftOuter, ImageRightOuter, MarqueeText };
