@@ -3,12 +3,12 @@ package com.ssafy.herehear.global.oauth.handler;
 import com.ssafy.herehear.entity.Member;
 import com.ssafy.herehear.global.oauth.model.PrincipalUser;
 import com.ssafy.herehear.global.oauth.model.ProviderUser;
-import com.ssafy.herehear.global.util.CookieUtil;
+import com.ssafy.herehear.global.oauth.service.OAuth2TokenService;
 import com.ssafy.herehear.global.util.JwtProvider;
+import com.ssafy.herehear.global.util.RedisUtils;
 import com.ssafy.herehear.member.mapper.MemberMapper;
 import com.ssafy.herehear.member.repository.MemberRepository;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,8 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
     private final JwtProvider jwtProvider;
+    private final RedisUtils redisUtils;
+    private final OAuth2TokenService oAuth2TokenService;
 
     @Value("${auth.redirectUrl}")
     private String REDIRECT_ENDPOINT;
@@ -41,6 +43,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
         PrincipalUser principalUser = (PrincipalUser)authentication.getPrincipal();
         ProviderUser providerUser = principalUser.getProviderUser();
         log.info("provider: {}", providerUser.getProvider());
+
 
         Optional<Member> member = memberRepository.findByEmailAndProvider(providerUser.getEmail(),
                 providerUser.getProvider());
@@ -58,9 +61,9 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                         } else {
                             String accessToken = jwtProvider.createAccessToken(member.get());
                             String refreshToken = jwtProvider.createRefreshToken();
-
-                            Cookie cookie = CookieUtil.createCookie(refreshToken);
-                            response.addCookie(cookie);
+                            redisUtils.set(tempMember.getMemberId().toString(), refreshToken, 60 * 24 * 365);
+//                                Cookie cookie = CookieUtil.createCookie(refreshToken);
+//                                response.addCookie(cookie);
 
                             log.info("============ 기존 회원 {} ============", tempMember.getMemberId());
                             redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken + "&id=" + tempMember.getMemberId();
