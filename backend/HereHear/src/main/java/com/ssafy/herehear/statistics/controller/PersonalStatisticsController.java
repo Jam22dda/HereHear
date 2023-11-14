@@ -19,6 +19,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonalStatisticsController {
     private final PersonalStatisticsService personalStatisticsService;
 
+    @GetMapping("/likecount")
+    public DataResponse<Integer> getLikeCount(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        int likeCount = personalStatisticsService.getLikeCount(memberId);
+        return new DataResponse<>("200", "전체 좋아요 갯수 조회에 성공하였습니다.", likeCount);
+    }
+
+    @GetMapping("/heartime")
+    public DataResponse<PersonalHearTimeResDto> getHearTime(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        PersonalHearTimeResDto personalHearTimeResDto = personalStatisticsService.getHearTime(memberId);
+        return new DataResponse<>("200", "가장 많이 듣는 시간대 통계 조회에 성공하였습니다.", personalHearTimeResDto);
+    }
+
+    @GetMapping("/tags")
+    public DataResponse<PersonalTagsResDto> getPersonalTags(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        PersonalTagsResDto personalTagsResDto = personalStatisticsService.getPersonalTags(memberId);
+        return new DataResponse<>("200", "개인 태그 개수 조회에 성공하였습니다.", personalTagsResDto);
+    }
+
     @GetMapping("/likecount/{memberId}")
     public DataResponse<Integer> getYourLikeCount(@RequestParam("memberId") long memberId) {
         int likeCount = personalStatisticsService.getLikeCount(memberId);
