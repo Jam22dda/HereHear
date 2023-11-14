@@ -2,10 +2,13 @@ package com.ssafy.herehear.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,5 +26,20 @@ public class WearOsPersonalCode {
     private Member member;
 
     @CreatedDate
-    private String lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
+
+    @Builder
+    public WearOsPersonalCode(String personalCode, Member member, LocalDateTime lastModifiedDate) {
+        this.personalCode = personalCode;
+        this.member = member;
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void updatePersonalCode(String personalCode) {
+        this.personalCode = personalCode;
+    }
+
+    public void updateLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 }
