@@ -14,8 +14,9 @@ public enum ExceptionStatus {
      * 회원 관련 STATUS CODE
      */
     TOKEN_EXPIRED("-1000", "토큰이 만료되었습니다."),
-    REFRESH_TOKEN_EXPIRED("-1001", "토큰이 만료되었습니다."),
+    REFRESH_TOKEN_EXPIRED("-1001", "리프레시 토큰이 만료되었습니다."),
     TOKEN_NOT_FOUND_IN_COOKIE("-1002", "토큰이 없습니다."),
+    TOKEN_IS_DELETED("-1004", "사용할 수 없는 토큰입니다."),
 
     MEMBER_NOT_FOUND("-2000", "사용자를 찾을 수 없습니다."),
     FOLLOW_NOT_FOUND("-2001", "팔로우를 찾을 수 없습니다."),
