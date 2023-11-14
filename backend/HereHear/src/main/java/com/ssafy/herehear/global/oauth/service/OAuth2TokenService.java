@@ -18,7 +18,7 @@ public class OAuth2TokenService {
     private final OAuth2AuthorizedClientService authorizedClientService;
     private final RedisUtils redisUtils;
 
-    public void setTokens(Authentication authentication, String provider) {
+    public void setTokens(Authentication authentication, String provider, Long memberId) {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
 
         OAuth2AuthorizedClient client = authorizedClientService
@@ -29,11 +29,11 @@ public class OAuth2TokenService {
         if (client != null) {
             OAuth2AccessToken accessToken = client.getAccessToken();
             OAuth2RefreshToken refreshToken = client.getRefreshToken();
-            redisUtils.setHashValue(provider+"AccessToken", oauthToken.getName(), accessToken.getTokenValue());
+            redisUtils.setHashValue(provider+"AccessToken", memberId.toString(), accessToken.getTokenValue());
             log.info(provider + " Access Token: " + accessToken.getTokenValue());
 
             if(refreshToken != null) {
-                redisUtils.setHashValue(provider+"RefreshToken", oauthToken.getName(), refreshToken.getTokenValue());
+                redisUtils.setHashValue(provider+"RefreshToken", memberId.toString(), refreshToken.getTokenValue());
                 log.info(provider + " Refresh Token: " + refreshToken.getTokenValue());
             }
         }
