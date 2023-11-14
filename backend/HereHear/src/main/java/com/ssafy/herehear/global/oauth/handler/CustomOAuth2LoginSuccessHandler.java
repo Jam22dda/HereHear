@@ -47,6 +47,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 
         Optional<Member> member = memberRepository.findByEmailAndProvider(providerUser.getEmail(),
                 providerUser.getProvider());
+        Long memberId = 0L;
 
         member.ifPresentOrElse(
                 tempMember -> {
@@ -69,6 +70,9 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken + "&id=" + tempMember.getMemberId();
                         }
                     }
+                        if(!providerUser.getProvider().equals("kakao")) {
+                            oAuth2TokenService.setTokens(authentication, providerUser.getProvider(), tempMember.getMemberId());
+                        }
                     },
                     () -> {
                         Member newMember = memberMapper.toMember(providerUser.getEmail(), providerUser.getProvider());
@@ -76,11 +80,12 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                         Member signupMember = memberRepository.save(newMember);
                         log.info("============ 최초 진입 {} ============", signupMember.getMemberId());
                         redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
+                        if(!providerUser.getProvider().equals("kakao")) {
+                            oAuth2TokenService.setTokens(authentication, providerUser.getProvider(), signupMember.getMemberId());
+                        }
                     }
             );
-        if(!providerUser.getProvider().equals("kakao")) {
-            oAuth2TokenService.setTokens(authentication, providerUser.getProvider());
-        }
+
 
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
