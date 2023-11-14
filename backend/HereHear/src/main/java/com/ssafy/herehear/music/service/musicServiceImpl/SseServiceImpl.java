@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
 @Service
@@ -72,17 +71,20 @@ public class SseServiceImpl implements SseService {
     public void notifyAllMembers(Object data) {
         log.info("[{}] 모든 사용자 전달 result: {}", ConstantsUtil.SSE_SCHEDULER, data);
 
-        for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
-            SseEmitter emitter = entry.getValue();
-            try {
-                // 데이터를 이벤트로 각 Emitter에 보냅니다.
-                emitter.send(SseEmitter.event().name("sse").data(data));
-            } catch (IOException e) {
-                // 오류가 발생한 경우, Emitter를 종료합니다.
-                emitter.completeWithError(e);
+        synchronized(emittersMap) {
+            for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
+                SseEmitter emitter = entry.getValue();
+                try {
+                    // 데이터를 이벤트로 각 Emitter에 보냅니다.
+                    synchronized(emitter) {
+                        emitter.send(SseEmitter.event().name("sse").data(data));
+                    }
+                } catch (IOException e) {
+                    // 오류가 발생한 경우, Emitter를 종료합니다.
+                    emitter.completeWithError(e);
+                }
             }
         }
-
     }
 
     @Scheduled(cron = "0 * * * * ?")
