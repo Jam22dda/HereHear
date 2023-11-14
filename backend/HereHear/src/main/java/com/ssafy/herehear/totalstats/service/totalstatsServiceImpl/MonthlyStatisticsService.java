@@ -19,17 +19,17 @@ public class MonthlyStatisticsService {
     private final RegisteredMusicRepository registeredMusicRepository;
     private final MonthlyStatisticsRepository monthlyStatisticsRepository;
 
-    @Scheduled(cron = "0 0 0 1 * ?")
+    @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void updateIsDeletedToFalse() {
-        log.info("매월 1일 직전 한 달간의 음악 삭제 실행");
+        log.info("매일 지난 한 달간의 음악 삭제 실행");
 
         for (RegisteredMusic registeredMusic : monthlyStatisticsRepository.findByMonthlyRegisteredMusics()) {
             registeredMusic.updateRegisteredMusic(false);
             registeredMusicRepository.save(registeredMusic);
         }
 
-        log.info("매월 1일 직전 한 달간의 음악 삭제 성공");
+        log.info("매일 지난 한 달간의 음악 삭제 성공");
     }
 
 }
