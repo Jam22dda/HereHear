@@ -30,6 +30,8 @@ export const ClockOuter = styled.div`
     top: 20px;
     left: 20px;
     z-index: 996;
+    display: flex;
+    /* flex-direction: column; */
 
     /* img {
         width: 50px;
