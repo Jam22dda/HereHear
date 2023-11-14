@@ -7,6 +7,7 @@ import com.ssafy.herehear.global.exception.CustomException;
 import com.ssafy.herehear.global.exception.ExceptionStatus;
 import com.ssafy.herehear.global.util.JwtProvider;
 import com.ssafy.herehear.global.util.MemberUtil;
+import com.ssafy.herehear.global.util.RedisUtils;
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateCharacterReqDto;
 import com.ssafy.herehear.member.dto.request.UpdateMemberReqDto;
