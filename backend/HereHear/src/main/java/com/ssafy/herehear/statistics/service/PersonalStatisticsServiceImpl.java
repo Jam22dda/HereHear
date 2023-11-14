@@ -39,7 +39,6 @@ public class PersonalStatisticsServiceImpl implements PersonalStatisticsService 
 
         String[] ment = {"00~03시", "03~06시", "06~09시", "09~12시",
                 "12~15시", "15~18시", "18~21시", "21~24시"};
-        int[] time = new int[8];
         Map<String, Integer> timeMap = new HashMap<>();
 
         for(String key : ment) {
@@ -56,11 +55,6 @@ public class PersonalStatisticsServiceImpl implements PersonalStatisticsService 
                 maxIndex = i/3;
             }
         }
-
-        for(String key : ment) {
-            log.info("{}", timeMap.get(key));
-        }
-
 
         return PersonalHearTimeResDto.builder()
                 .time(timeMap)
