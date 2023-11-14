@@ -69,15 +69,18 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             redirectUrl = REDIRECT_ENDPOINT + "/oauth2/redirect?token=" + accessToken + "&id=" + tempMember.getMemberId();
                         }
                     }
-                },
-                () -> {
-                    Member newMember = memberMapper.toMember(providerUser.getEmail(), providerUser.getProvider());
-                    log.info("{}{}{}", newMember.getEmail(), newMember.getNickname(), providerUser.getProvider());
-                    Member signupMember = memberRepository.save(newMember);
-                    log.info("============ 최초 진입 {} ============", signupMember.getMemberId());
-                    redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
-                }
-        );
+                    },
+                    () -> {
+                        Member newMember = memberMapper.toMember(providerUser.getEmail(), providerUser.getProvider());
+                        log.info("{}{}{}", newMember.getEmail(), newMember.getNickname(), providerUser.getProvider());
+                        Member signupMember = memberRepository.save(newMember);
+                        log.info("============ 최초 진입 {} ============", signupMember.getMemberId());
+                        redirectUrl = REDIRECT_ENDPOINT + "/memberInfo?id=" + signupMember.getMemberId();
+                    }
+            );
+        if(!providerUser.getProvider().equals("kakao")) {
+            oAuth2TokenService.setTokens(authentication, providerUser.getProvider());
+        }
 
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
