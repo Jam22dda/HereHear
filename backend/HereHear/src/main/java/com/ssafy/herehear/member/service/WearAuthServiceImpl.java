@@ -11,6 +11,7 @@ import com.ssafy.herehear.member.repository.WearOsPersonalCodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -23,6 +24,7 @@ public class WearAuthServiceImpl implements WearAuthService {
     private final WearOsPersonalCodeRepository wearOsPersonalCodeRepository;
 
     @Override
+    @Transactional
     public WearOsPersonalCodeDto personalCodeValidation(String personalCode) {
         WearOsPersonalCode wearOsPersonalCode = wearOsPersonalCodeRepository.findByPersonalCode(personalCode)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.PERSONAL_CODE_IS_INVALID));
@@ -35,7 +37,8 @@ public class WearAuthServiceImpl implements WearAuthService {
     }
 
     @Override
-    public WearPersonalCodeDto getPersonalCode(Long memberId) {
+    @Transactional
+    public WearPersonalCodeDto registerPersonalCode(Long memberId) {
         Member member = MemberUtil.findMember(memberId);
 
         StringBuilder sb = new StringBuilder(6);
@@ -61,5 +64,16 @@ public class WearAuthServiceImpl implements WearAuthService {
 
         return WearPersonalCodeDto.builder()
                 .personalCode(sb.toString()).build();
+    }
+
+    @Override
+    @Transactional
+    public WearPersonalCodeDto getPersonalCode(Long memberId) {
+        WearOsPersonalCode wearOsPersonalCode = wearOsPersonalCodeRepository.findByMember_MemberId(memberId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.PERSONAL_CODE_IS_INVALID));
+
+        return WearPersonalCodeDto.builder()
+                .personalCode(wearOsPersonalCode.getPersonalCode())
+                .build();
     }
 }
