@@ -39,6 +39,7 @@ export default function MyStatisticsPage() {
     const MyTagCount = useGetMyTagCount();
     const MyLikeCount = useGetMyLikeCount();
     const HearTime = useGetHearTime();
+    // console.log(HearTime);
     const UserInfo = useGetUserinfo();
 
     // console.log(HearTime.mostTime, "HearTime나옴?");
@@ -49,13 +50,17 @@ export default function MyStatisticsPage() {
     const isAllZeros = timeValues.every((value) => value === 0);
     useEffect(() => {
         if (HearTime && HearTime.time) {
-            const timeLabels = Object.keys(HearTime.time);
-            const timeValues = Object.values(HearTime.time).map(Number);
+            const timeEntries = Object.entries(HearTime.time)
+                .map(([key, value]) => ({ time: key, count: Number(value) }))
+                .sort((a, b) => a.time.localeCompare(b.time)); // 시간대를 정렬
 
+            const timeLabels = timeEntries.map((entry) => entry.time);
+            const timeValues = timeEntries.map((entry) => entry.count);
+            // console.log(timeLabels);
             setTimeLabels(timeLabels); // 새로 추가된 상태
             setTimeValues(timeValues); // 새로 추가된 상태
         } else {
-            console.log("데이터가 없습니다");
+            // console.log("데이터가 없습니다");
         }
     }, [HearTime]);
 
