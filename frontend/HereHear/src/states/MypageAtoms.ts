@@ -37,3 +37,8 @@ export const IsWhosPageAtom = atom({
     key: "IsWhosPageAtom",
     default: "",
 });
+
+export const GetKeyAtom = atom({
+    key: "GetKeyAtom",
+    default: localStorage.getItem("myKey") || "",
+});
