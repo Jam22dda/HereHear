@@ -42,10 +42,10 @@ public class SpotifyController {
     }
 
     @GetMapping("/pause")
-    public CommonResponse playMusic(Authentication authentication) {
+    public DataResponse playMusic(Authentication authentication) {
         long memberId = Long.parseLong(authentication.getName());
-        musicService.pauseMusic(memberId);
-        return new CommonResponse("200", "노래 정지를 성공하였습니다");
+        int progressMs = musicService.pauseMusic(memberId);
+        return new DataResponse("200", "노래 정지를 성공하였습니다", progressMs);
     }
 
     @PostMapping("/add")
