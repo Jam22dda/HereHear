@@ -5,4 +5,5 @@ import lombok.Getter;
 @Getter
 public class PlayMusicReqDto {
     private String trackId;
+    private int positionMs;
 }

@@ -2,6 +2,7 @@ package com.ssafy.herehear.music.service.musicServiceImpl;
 
 import com.ssafy.herehear.global.util.JsonUtil;
 import com.ssafy.herehear.global.util.RedisUtils;
+import com.ssafy.herehear.music.dto.request.PlayMusicReqDto;
 import com.ssafy.herehear.music.dto.response.MusicInfoResDto;
 import com.ssafy.herehear.music.dto.response.spotify.GetDevice;
 import com.ssafy.herehear.music.dto.response.spotify.SpotifyMusic;
@@ -142,10 +143,11 @@ public class SpotifyMusicService implements MusicService {
     }
 
     @Override
-    public void startMusic(long memberId, String trackId) {
+    public void startMusic(long memberId, PlayMusicReqDto playMusicReqDto) {
         WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
 
-        String jsonBody = "{\"uris\": [\"" + trackId + "\"]}";
+        String jsonBody = "{\"uris\": [\"" + playMusicReqDto.getTrackId() + "\"]," +
+                "\"position_ms\":" + playMusicReqDto.getPositionMs() + "}";
 
         webClient.put()
                 .uri(uriBuilder -> uriBuilder
