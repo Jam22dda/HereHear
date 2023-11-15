@@ -2,6 +2,7 @@ package com.ssafy.herehear.member.controller;
 
 import com.ssafy.herehear.global.response.CommonResponse;
 import com.ssafy.herehear.global.response.DataResponse;
+import com.ssafy.herehear.global.util.RedisUtils;
 import com.ssafy.herehear.global.util.TimeFormatUtil;
 import com.ssafy.herehear.member.dto.request.FollowReqDto;
 import com.ssafy.herehear.member.dto.request.SignUpReqDto;
@@ -33,6 +34,7 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+    private final RedisUtils redisUtils;
 
     @GetMapping("/follower")
     public DataResponse<List<FollowerResDto>> getFollowerList(Authentication authentication) {
@@ -154,5 +156,19 @@ public class MemberController {
         Long memberId = Long.parseLong(authentication.getName());
         memberService.deleteMember(memberId);
         return new CommonResponse("200", "회원 탈퇴가 완료되었습니다");
+    }
+
+    @GetMapping("/google")
+    public DataResponse test(Authentication authentication) {
+        log.info("{}", authentication.getName());
+        String accessToken = redisUtils.getHashValue("googleAccessToken", authentication.getName());
+        return new DataResponse("200", "제발", accessToken);
+    }
+
+    @GetMapping("/spotify")
+    public DataResponse testSpotify(Authentication authentication) {
+        log.info("{}", authentication.getName());
+        String accessToken = redisUtils.getHashValue("spotifyAccessToken", authentication.getName());
+        return new DataResponse("200", "제발", accessToken);
     }
 }
