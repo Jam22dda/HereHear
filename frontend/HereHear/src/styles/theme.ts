@@ -70,6 +70,8 @@ const gradient = {
     gradient5: "linear-gradient(141deg, #7E8BEE 14.8%, #5E6FE4 89.51%)",
     angular:
         "conic-gradient(from 135deg at 79.6% -13.32%, rgba(98, 132, 255, 0.30) 0deg, rgba(255, 150, 200, 0.30) 47.61769652366638deg, rgba(249, 229, 232, 0.30) 99.69967246055603deg, rgba(169, 212, 255, 0.30) 186.6353988647461deg, rgba(251, 183, 212, 0.30) 234.49278831481934deg)",
+    pickActive:
+        "linear-gradient(139deg, rgba(255, 77, 37, 0.60) 14.88%, rgba(255, 77, 37, 0.60) 14.89%, rgba(255, 139, 123, 0.52) 83.59%",
 };
 
 const theme: DefaultTheme = {

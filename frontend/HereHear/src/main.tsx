@@ -33,6 +33,7 @@ import MapClock from "./components/molcules/clocktest/ClockTest.tsx";
 import OnBoardingPage from "./Pages/OnBoardingPage/OnBoardingPage.tsx";
 import SpotifyMusicPlayer from "./Pages/SpotifyPlayerPage/SpotifyMusicPlayerPage.tsx";
 // import { Text } from "./components/atoms/Text/Text.styles.ts";
+import SettingPage from "../src/Pages/SettingPage/SettingPage.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -58,6 +59,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                             <Route
                                 path="/onboarding"
                                 element={<OnBoardingPage />}
+                            ></Route>
+                            <Route
+                                path="/setting"
+                                element={<SettingPage />}
                             ></Route>
                             <Route
                                 path="/memberInfo"
@@ -140,7 +145,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                                 path="/follow"
                                 element={<MapClock />}
                             ></Route>
-                            {/* spotify 음악 재생 */}
+                            {/* 스포티파이 인앱재생 플레이어 */}
                             <Route
                                 path = "/musicPlayer/:id"
                                 element={<SpotifyMusicPlayer />}

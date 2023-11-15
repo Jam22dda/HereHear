@@ -11,10 +11,15 @@ import styled from "styled-components";
 //     align-items: center;
 //     justify-content: center;
 // `;
-
+export const TitleWrapper = styled.div`
+    display: flex;
+    align-items: end;
+    margin: 20px 0 56px;
+    /* flex-direction: column; */
+`;
 export const MystatisticWrapper = styled.div`
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     flex-direction: column;
 `;
 export const readyPageWrapper = styled.div`
@@ -52,7 +57,7 @@ export const TextWrapperbottom = styled.div`
 export const LabelWrapper = styled.div`
     display: flex;
     justify-content: space-around;
-    margin: 30px 0 0 0;
+    margin: 42px 0 0 0;
     align-items: center;
 `;
 
@@ -90,3 +95,39 @@ export const LikeBox = styled.div`
     align-items: center;
     justify-content: space-around;
 `;
+
+export const chartWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+`;
+
+// export const chartSize = styled.div`;
+//     width: 200px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// `;
+
+// const usingTimeValue = [0, 2, 5, 4, 3];
+// const usingTimeKey = ["0~3시", "3~6시", "6~9시", "9~12시", "12~15시"];
+
+// const lineData = {
+//     labels: usingTimeKey, // x축 라벨
+//     datasets: [{
+//         label: 'Dataset 1',
+//         data: usingTimeValue, // y축 데이터
+//         fill: false,
+//         borderColor: 'rgb(75, 192, 192)',
+//         tension: 0.1
+//     }]
+// };
+
+// const lineOptions = {
+//     responsive: true,
+//     // 추가 옵션 설정
+// };
+
+// // 컴포넌트에서 Line 차트 렌더링
+// <Line data={lineData} options={lineOptions} />
