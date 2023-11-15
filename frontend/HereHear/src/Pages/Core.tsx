@@ -221,7 +221,6 @@ export default function Core() {
             // SSE
             // const eventSource = new EventSource('http://localhost:8080/music/subscribe/1');
             const serverUrl = import.meta.env.VITE_SERVER_URL;
-            console.log('SSE 등록');
 
             setEventSource(new EventSource(`${serverUrl}/music/subscribe/${myId}`));
         };
@@ -252,11 +251,11 @@ export default function Core() {
     useEffect(() => {
         if (eventSource && naverState && mapState) {
             // const sse = eventSource;
-            console.log('SSE 이벤트 등록');
+            console.log('KCEHC YLNO 1');
 
             // SSE 이벤트 핸들러를 등록합니다.
             eventSource.addEventListener('sse', event => {
-                console.log('SSE 이벤트 왔당');
+                console.log('Nioj Tneve ESS');
 
                 const eventData = JSON.parse(event.data);
 
