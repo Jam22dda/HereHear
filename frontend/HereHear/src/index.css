@@ -82,14 +82,18 @@ body {
 }
 
 body {
-    background-image: linear-gradient(-30deg, #f5dcea 0%, #e6edf5 50%, #eddfec 100%);
+    /* background-image: url("../public//images//icon-Background.png"); */
+    background-image: url("../public//images/icon-BgBig.png");
+
+    /* background-image: linear-gradient(-30deg, #f5dcea 0%, #e6edf5 50%, #eddfec 100%);
     background-size: 200% 200%;
     background-attachment: fixed;
-    animation: gradientAnimation 4.5s linear infinite alternate;
-}
+    animation: gradientAnimation 4.5s linear infinite alternate; */
+} 
 
 /* body {
     background-image: url("../public//images//icon-Background.png");
+>>>>>>> 34da92b6214bb1ee14d191412bea09a8b44ba5ca
     background-size: 400% 400%;
     background-position: 50% 40%;
     background-repeat: no-repeat;
