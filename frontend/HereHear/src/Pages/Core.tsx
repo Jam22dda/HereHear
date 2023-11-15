@@ -60,6 +60,8 @@ export default function Core() {
 
     const [showButton, setShowButton] = useState(false);
 
+    const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+
     const onClickMent = () => {
         setShowButton(current => !current);
     };
@@ -70,6 +72,14 @@ export default function Core() {
     };
 
     useEffect(() => {
+        // 뷰포트의 높이가 변경될 때마다 state를 업데이트합니다.
+        const handleResize = () => {
+            setViewportHeight(window.innerHeight);
+        };
+
+        // 이벤트 리스너를 추가하고 컴포넌트가 언마운트될 때 이를 제거합니다.
+        window.addEventListener('resize', handleResize);
+
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         const script = document.createElement('script');
@@ -229,6 +239,8 @@ export default function Core() {
 
         // 컴포넌트 언마운트 시 스크립트 제거
         return () => {
+            window.removeEventListener('resize', handleResize);
+
             document.body.removeChild(script);
         };
     }, []);
@@ -518,7 +530,7 @@ export default function Core() {
         //     <div id='map'></div>
         // </div>
         <div id='display'>
-            <S.MapDisplay>
+            <S.MapDisplay style={{ height: viewportHeight }}>
                 {loadingWait && (
                     <S.WaitWrapper>
                         <img src='/images/icon-purplestar.png' alt='img' className='floating' />
