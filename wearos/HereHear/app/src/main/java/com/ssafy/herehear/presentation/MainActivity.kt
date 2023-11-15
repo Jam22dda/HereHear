@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.activity
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
@@ -239,6 +238,14 @@ class MainActivity : ComponentActivity() {
                     intent?.data = Uri.parse("spotify:track:3yS7jHZ8z5RpGnSASUZmGg")
                     intent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     this@MainActivity.startActivity(intent)
+                }
+
+                composable(RouteType.LOGOUT.toString()) {
+                    personalCode.value = "";
+                    baseContext.deletePersonalCodeFile("personalCode.txt")
+                    navController.navigate(RouteType.LANDING.toString()) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
 
             }

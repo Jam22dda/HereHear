@@ -1,5 +1,6 @@
 package com.ssafy.herehear.presentation.page
 
+import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import com.ssafy.herehear.presentation.data.AchievementDto
 import com.ssafy.herehear.presentation.data.MemberInfoDto
 import com.ssafy.herehear.presentation.retrofit.api.getAchievement
 import com.ssafy.herehear.presentation.retrofit.api.getMyProfile
+import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 
 @Composable
 fun MyPage(
@@ -193,11 +195,43 @@ fun MyPage(
                 contentAlignment = Alignment.Center
             ) {
                 Card(
-                    onClick = { navController.navigate(RouteType.ACHIEVEMENT.toString()) },
+                    onClick = {
+                        navController.navigate(RouteType.ACHIEVEMENT.toString()) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(0.7f),
                 ) {
                     Text(
                         text = "업적 목록",
+                        style = TextStyle(fontSize = 9.sp)
+                    )
+                }
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(30.dp))
+        }
+
+        item {
+            // 로그아웃
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(cardHeight),
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    onClick = {
+                        navController.navigate(RouteType.LOGOUT.toString()) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                ) {
+                    Text(
+                        text = "로그아웃",
                         style = TextStyle(fontSize = 9.sp)
                     )
                 }
