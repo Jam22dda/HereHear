@@ -129,7 +129,7 @@ export default function MyStatisticsPage() {
                 <S.MystatisticWrapper>
                     <S.LikeBox>
                         <S.TextWrapper>
-                            <Text size="body1" fontWeight="bold">
+                            <Text size="body2" fontWeight="bold">
                                 {UserInfo && UserInfo.nickname}
                             </Text>
                             <Text size="body2" fontWeight="medium" $marginLeft="4px">
