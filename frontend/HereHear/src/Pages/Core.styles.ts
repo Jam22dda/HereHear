@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Map = styled.div`
     width: 100%;
@@ -44,6 +44,13 @@ export const giftOuter = styled.div`
     z-index: 996;
 `;
 
+export const questionMark = styled.div`
+    position: absolute;
+    top: 180px;
+    left: 20px;
+    z-index: 996;
+`;
+
 export const NavbarWrapper = styled.div`
     display: flex;
     left: 0;
@@ -62,7 +69,7 @@ export const WaitWrapper = styled.div`
     z-index: 999;
     background-color: black;
 
-    background-image: url('../public//images//icon-Background.png');
+    background-image: url("../public//images//icon-Background.png");
     background-size: 400% 400%;
     background-position: 50% 40%;
     background-repeat: no-repeat;

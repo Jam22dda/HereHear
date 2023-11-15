@@ -141,6 +141,31 @@ const putAchievement = async (
     return response.data;
 };
 
+interface postWearOsResponse {
+    code: number;
+    message: string;
+    data: {
+        personalCode: string;
+    };
+}
+
+const postWearOs = async (): Promise<postWearOsResponse> => {
+    const response = await instance.post<postWearOsResponse>(
+        "/wearos/personalCode"
+    );
+    return response.data;
+};
+
+const getWearOs = async () => {
+    try {
+        const response = await instance.get("/wearos/personalCode");
+        return response.data.data;
+    } catch (error) {
+        console.error("getWearOs", error);
+        throw error;
+    }
+};
+
 export {
     getUserinfo,
     getYourinfo,
@@ -154,4 +179,6 @@ export {
     unFollow,
     Follow,
     putAchievement,
+    postWearOs,
+    getWearOs,
 };
