@@ -10,6 +10,7 @@ import Navbar from "../../components/molcules/Navbar/Navbar";
 import iconLikemusic from "../../assets/MyPage/icon-likemusic.png";
 import iconBadge from "../../assets/MyPage/badges.png";
 import iconMystatistics from "../../assets/MyPage/icon-mystatistics.png";
+// import iconMusicNote from "../../assets/Statistic/icon-musicNote.png";
 import { useNavigate } from "react-router-dom";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
 import { useGetFollower } from "../../apis/Mypage/Quries/useGetFollower";
@@ -33,7 +34,7 @@ const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
     { src: iconLp, name: "등록한 노래", params: "/myRegist" },
     { src: iconBadge, name: "뱃지", params: "/achievement" },
-    { src: iconMystatistics, name: "개인 통계", params: "/myStatistics" },
+    { src: iconMystatistics, name: "음악 노트", params: "/myStatistics" },
 ];
 
 export default function MyPage() {
@@ -132,7 +133,7 @@ export default function MyPage() {
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
                         </Text>
-                        <Text size="body1" $marginLeft="4px">
+                        <Text size="body2" $marginLeft="4px">
                             {UserInfo && UserInfo.nickname}
                         </Text>
                         <Text size="body2" $marginLeft="4px">

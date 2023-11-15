@@ -11,12 +11,7 @@ interface FollowProps {
     onClick?: () => void;
 }
 
-export default function Follow({
-    nickname,
-    characterImage,
-    titleName = "",
-    onClick = () => {},
-}: FollowProps) {
+export default function Follow({ nickname, characterImage, titleName = "", onClick = () => {} }: FollowProps) {
     return (
         <S.FollowWrapper onClick={onClick}>
             <CircleButton option="follow" size="large">
