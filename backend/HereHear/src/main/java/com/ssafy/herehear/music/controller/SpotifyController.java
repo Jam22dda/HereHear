@@ -37,7 +37,7 @@ public class SpotifyController {
     @PostMapping("/play")
     public CommonResponse playMusic(@RequestBody PlayMusicReqDto req, Authentication authentication) {
         long memberId = Long.parseLong(authentication.getName());
-        musicService.startMusic(memberId, req.getTrackId());
+        musicService.startMusic(memberId, req);
         return new CommonResponse("200", "노래 재생을 성공하였습니다");
     }
 
