@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SseServiceImpl implements SseService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;
     private final Map<Long, SseEmitter> emittersMap = new ConcurrentHashMap<>();
-    private Map<Long, Integer> retryCountMap = new ConcurrentHashMap<>();
+    private final Map<Long, Integer> retryCountMap = new ConcurrentHashMap<>();
 
     private final RegisteredMusicDslRepository registeredMusicDslRepository;
     private final RegisterMusicMapper registerMusicMapper;
@@ -33,10 +33,10 @@ public class SseServiceImpl implements SseService {
     public SseEmitter subscribe(Long memberId, Object data) {
         SseEmitter existingEmitter = emittersMap.get(memberId);
 
-        // 기존 사용자가 있으면 해당 Emitter를 끊도록 메시지를 보내고 새 Emitter 반환
+        // 기존 사용자가 있으면 해당 Emitter 반환
         if (existingEmitter != null) {
-            log.info("[기존 SSE 연결 해제] memberId: {}, mapSize: {}", memberId, emittersMap.size());
-            existingEmitter.complete();
+            log.info("[기존 SSE 연결] memberId: {}, mapSize: {}, keySet: {}", memberId, emittersMap.size(), emittersMap.keySet());
+            return existingEmitter;
         }
 
         SseEmitter emitter = getSseEmitter(memberId);
@@ -57,11 +57,13 @@ public class SseServiceImpl implements SseService {
 
         emitter.onCompletion(() -> {
             emittersMap.remove(memberId);
+            retryCountMap.remove(memberId);
             emitter.complete();
             log.info("[{}] Completion mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size());
         });
         emitter.onTimeout(() -> {
             emittersMap.remove(memberId);
+            retryCountMap.remove(memberId);
             log.info("[{}] Timeout mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size());
         });
         emitter.onError(e -> log.info("[{}] Error mapSize: {}", ConstantsUtil.SSE_EVENT, emittersMap.size()));
