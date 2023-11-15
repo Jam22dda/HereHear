@@ -29,6 +29,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useRecoilState } from "recoil";
 import { MyAchievementAtom, YourIdAtom } from "../../states/MypageAtoms";
 import iconBack from "../../assets/CircleButton/icon-back.png";
+import iconSetting from "../../assets/MyPage/icon-setting.png";
 
 const mypage = [
     { src: iconLikemusic, name: "좋아요한 노래", params: "/like" },
@@ -112,23 +113,53 @@ export default function MyPage() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => {
-                        navigatePage("/core");
-                        window.location.reload();
-                    }}
-                >
-                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
-                </CircleButton>
+                <S.BackWrapper>
+                    <CircleButton
+                        option="default2"
+                        size="medium"
+                        onClick={() => {
+                            navigatePage("/core");
+                            window.location.reload();
+                        }}
+                    >
+                        <Image
+                            src={iconBack}
+                            width={10}
+                            height={18}
+                            $unit="px"
+                        ></Image>
+                    </CircleButton>
+                    <Image
+                        src={iconSetting}
+                        width={40}
+                        $unit="px"
+                        onClick={() => navigatePage("/setting")}
+                    ></Image>
+                </S.BackWrapper>
                 <S.MyPageWrapper>
                     <S.Profile>
-                        <Image src={UserInfo && UserInfo.profileCharacter.characterImage} width={120} height={120} $unit="px"></Image>
+                        <Image
+                            src={
+                                UserInfo &&
+                                UserInfo.profileCharacter.characterImage
+                            }
+                            width={120}
+                            height={120}
+                            $unit="px"
+                        ></Image>
                     </S.Profile>
                     <S.MydataWrapper>
                         {MyAchievement && (
-                            <Image src={MyAchievement && MyAchievement.badge.badgeImg} width={24} height={24} $unit="px" $margin="0 4px 4px 0"></Image>
+                            <Image
+                                src={
+                                    MyAchievement &&
+                                    MyAchievement.badge.badgeImg
+                                }
+                                width={24}
+                                height={24}
+                                $unit="px"
+                                $margin="0 4px 4px 0"
+                            ></Image>
                         )}
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
@@ -140,20 +171,42 @@ export default function MyPage() {
                             님
                         </Text>
                         <S.EditWrapper>
-                            <Image src={iconEdit} width={16} height={16} $unit="px" $margin="0 0 0 4px" onClick={handleEdit}></Image>
+                            <Image
+                                src={iconEdit}
+                                width={16}
+                                height={16}
+                                $unit="px"
+                                $margin="0 0 0 4px"
+                                onClick={handleEdit}
+                            ></Image>
                         </S.EditWrapper>
                     </S.MydataWrapper>
                     <S.FollowWrapper>
-                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/following")}>
+                        <Button
+                            option="tag_plus"
+                            size="largeplus"
+                            $width="130px"
+                            onClick={() => navigatePage("/following")}
+                        >
                             팔로잉 {Following?.length ?? 0}명
                         </Button>
-                        <Button option="tag_plus" size="largeplus" $width="130px" onClick={() => navigatePage("/follower")}>
+                        <Button
+                            option="tag_plus"
+                            size="largeplus"
+                            $width="130px"
+                            onClick={() => navigatePage("/follower")}
+                        >
                             팔로워 {Follower?.length ?? 0}명
                         </Button>
                     </S.FollowWrapper>
                     <S.MyItemWrapper>
                         {mypage.map((item, index) => (
-                            <ItemBox key={index} src={item.src} title={item.name} onClick={() => navigatePage(item.params)} />
+                            <ItemBox
+                                key={index}
+                                src={item.src}
+                                title={item.name}
+                                onClick={() => navigatePage(item.params)}
+                            />
                         ))}
                     </S.MyItemWrapper>
                 </S.MyPageWrapper>
@@ -167,37 +220,74 @@ export default function MyPage() {
                     <Modal toggleModal={() => toggleModal()}>
                         {!isBlanked && !isDuplicated && (
                             <S.ExitWrapper>
-                                <CircleButton option="default" size="medium" onClick={toggleModal}>
-                                    <Image src={iconExit} width={20} height={20} $unit="px"></Image>
+                                <CircleButton
+                                    option="default"
+                                    size="medium"
+                                    onClick={toggleModal}
+                                >
+                                    <Image
+                                        src={iconExit}
+                                        width={20}
+                                        height={20}
+                                        $unit="px"
+                                    ></Image>
                                 </CircleButton>
                             </S.ExitWrapper>
                         )}
                         {!isBlanked && !isDuplicated && (
                             <S.TextWrapper>
-                                <Text size="body2" fontWeight="medium" $margin="10px 0 28px 0">
+                                <Text
+                                    size="body2"
+                                    fontWeight="medium"
+                                    $margin="10px 0 28px 0"
+                                >
                                     변경할 닉네임을 작성해 주세요!
                                 </Text>
 
                                 <Input onChange={handleChangeNickname}></Input>
-                                <Button onClick={() => handleSaveNickname(nickname)} $width="130px" $margin="32px 0 0 0">
+                                <Button
+                                    onClick={() => handleSaveNickname(nickname)}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
                                     저장하기
                                 </Button>
                             </S.TextWrapper>
                         )}
                         {isBlanked && (
                             <S.TextWrapper>
-                                <Image src={monziHerehear} width={100} height={100} $unit="px" $margin="0 0 30px 0"></Image>
+                                <Image
+                                    src={monziHerehear}
+                                    width={100}
+                                    height={100}
+                                    $unit="px"
+                                    $margin="0 0 30px 0"
+                                ></Image>
                                 <h2>닉네임을 입력해주세요!</h2>
-                                <Button onClick={handleBlanked} $width="130px" $margin="32px 0 0 0">
+                                <Button
+                                    onClick={handleBlanked}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
                                     다시 입력하기
                                 </Button>
                             </S.TextWrapper>
                         )}
                         {isDuplicated && (
                             <S.TextWrapper>
-                                <Image src={monziHerehear} width={100} height={100} $unit="px" $margin="0 0 30px 0"></Image>
+                                <Image
+                                    src={monziHerehear}
+                                    width={100}
+                                    height={100}
+                                    $unit="px"
+                                    $margin="0 0 30px 0"
+                                ></Image>
                                 <h2>닉네임이 중복되었습니다!</h2>
-                                <Button onClick={handleDuplicated} $width="130px" $margin="32px 0 0 0">
+                                <Button
+                                    onClick={handleDuplicated}
+                                    $width="130px"
+                                    $margin="32px 0 0 0"
+                                >
                                     다시 입력하기
                                 </Button>
                             </S.TextWrapper>

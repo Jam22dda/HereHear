@@ -80,3 +80,8 @@ export const NavbarWrapper = styled.div`
     position: fixed; // 이 부분을 fixed로 변경
     bottom: 115px; // bottom 값을 조절하여 네비게이션 바의 위치를 조정합니다.
 `;
+
+export const BackWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
