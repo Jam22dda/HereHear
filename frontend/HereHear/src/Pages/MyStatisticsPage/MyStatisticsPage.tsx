@@ -13,12 +13,15 @@ import { useGetHearTime } from "../../apis/Mystatistic/Quries/useGetHearTime";
 import { useGetMyTagCount } from "../../apis/Mystatistic/Quries/useGetMyTagCount";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
 import { Pie } from "react-chartjs-2";
-// import { Line } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+// import { color } from "chart.js/helpers";
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
+    LineElement, //라인차트를 위한 설정
+    PointElement, //라인차트를 위한 설정
     BarElement,
     Title,
     Tooltip,
@@ -28,42 +31,67 @@ import {
     // Plugin,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PieController, ChartDataLabels);
+ChartJS.register(CategoryScale, LineElement, LinearScale, BarElement, PointElement, Title, Tooltip, Legend, ArcElement, PieController, ChartDataLabels);
 export default function MyStatisticsPage() {
     const navigate = useNavigate();
 
     const tagColors = ["#FFC0EC", "#BDDDFD", "#FFF0CB", "#96ebbc", "#F9D6D5"];
     const MyTagCount = useGetMyTagCount();
     const MyLikeCount = useGetMyLikeCount();
-    // const HearTime = useGetHearTime();
+    const HearTime = useGetHearTime();
     const UserInfo = useGetUserinfo();
 
-    // console.log(HearTime, "HearTime나옴?");
-    // console.log(MyTagCount, "마이태그 카운트");
-    // console.log(HearTime, "HearTime나오나요?");
-    // console.log(HearTime.time["18~21시"], "HearTime나오나요?");
+    // console.log(HearTime.mostTime, "HearTime나옴?");
 
-    // interface hearTime {
-    //     mostTime: string;
-    //     time: object;
-    //     timeKey: any;
-    // }
-    // useEffect(() => {
-    //     if (HearTime === null || HearTime === undefined) return;
-    //     const HearTimeArr = Object.keys(HearTime?.time);
+    const [timeLabels, setTimeLabels] = useState<string[]>([]); //시간대별
+    const [timeValues, setTimeValues] = useState<number[]>([]); //시간대별
+    const mostTime = HearTime ? HearTime.mostTime : "";
+    const isAllZeros = timeValues.every((value) => value === 0);
+    useEffect(() => {
+        if (HearTime && HearTime.time) {
+            const timeLabels = Object.keys(HearTime.time);
+            const timeValues = Object.values(HearTime.time).map(Number);
 
-    //     if (HearTime && HearTimeArr.length) {
-    //         const timeKeys = Object.keys(HearTime?.time);
-    //         setUsingTime(timeKeys); // 실제 키들을 출력
-    //     } else {
-    //         console.log("안됐을때");
-    //     }
-    // }, [HearTime]);
-    // const timeKey = Object.keys(HearTime?.time);
-    // console.log(timeKey);
-    // const [usingTime, setUsingTime] = useState([]);
+            setTimeLabels(timeLabels); // 새로 추가된 상태
+            setTimeValues(timeValues); // 새로 추가된 상태
+        } else {
+            console.log("데이터가 없습니다");
+        }
+    }, [HearTime]);
 
-    // console.log(usingTime);
+    const lineData = {
+        labels: timeLabels, // x축 라벨
+        datasets: [
+            {
+                label: "usingTime",
+                data: timeValues, // y축 데이터
+                fill: false,
+                borderColor: "RGB(143, 139, 213)",
+                tension: 0.4,
+            },
+        ],
+    };
+
+    const lineOptions = {
+        responsive: true,
+        plugins: {
+            datalabels: {
+                color: "rgb(247, 11, 141)",
+                font: {
+                    color: "rgb(240, 31, 122)",
+                    weight: "bold" as const,
+                    size: 16, // 글자 크기
+                    family: "Arial", // 글꼴
+                },
+            },
+            legend: {
+                display: false,
+            },
+            title: {
+                display: true,
+            },
+        },
+    };
 
     // 태그 개수 API
     interface musicTag {
@@ -149,7 +177,8 @@ export default function MyStatisticsPage() {
                         </S.TextWrapperbottom>
                     </S.LikeBox>
                 </S.MystatisticWrapper>
-                <S.TextWrapper style={{ margin: "3rem 0 0 0" }}>
+
+                <S.TextWrapper style={{ margin: "4rem 0 0 0" }}>
                     <Text size="body1" fontWeight="bold">
                         {UserInfo && UserInfo.nickname}
                     </Text>
@@ -161,8 +190,20 @@ export default function MyStatisticsPage() {
                     언제 음악을 들을까요?
                 </Text>
 
-                {hasValidCounts ? (
+                {!isAllZeros && hasValidCounts ? (
                     <>
+                        <S.chartWrapper style={{ marginTop: "PX" }}>
+                            <Line data={lineData} options={lineOptions} />
+                        </S.chartWrapper>
+                        <S.TextWrapperbottom style={{ margin: "2rem 0 10px 0" }}>
+                            <Text size="subtitle1" fontWeight="bold" $margin="0 4px">
+                                {mostTime}
+                            </Text>
+                            <Text size="body2">사이에</Text>
+                        </S.TextWrapperbottom>
+                        <Text size="body2" $margin="0 0 64px 0">
+                            음악을 많이 듣고 계시네요.
+                        </Text>
                         <S.LabelWrapper>
                             {tagNameLabels &&
                                 tagNameLabels.map((tagname, index) => (
@@ -185,7 +226,7 @@ export default function MyStatisticsPage() {
 
                                 <Text size="body2">태그가 달린 음악을</Text>
                             </S.TextWrapperbottom>
-                            <Text size="body2" $margin="0 0 10px 5px">
+                            <Text size="body2" $margin="0 0 36px 5px">
                                 가장 많이 들었어요.
                             </Text>
                         </S.MystatisticWrapper>
