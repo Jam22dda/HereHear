@@ -166,6 +166,17 @@ const getWearOs = async () => {
     }
 };
 
+interface logoutResponse {
+    code: number;
+    message: string;
+}
+
+const logout = async (): Promise<logoutResponse> => {
+    const { data } = await instance.delete<logoutResponse>("/logout");
+    console.log(data);
+    return data;
+};
+
 export {
     getUserinfo,
     getYourinfo,
@@ -181,4 +192,5 @@ export {
     putAchievement,
     postWearOs,
     getWearOs,
+    logout,
 };
