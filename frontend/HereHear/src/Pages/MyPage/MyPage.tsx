@@ -133,7 +133,7 @@ export default function MyPage() {
                         <Text size="body1" fontWeight="bold">
                             {MyAchievement && MyAchievement.title.titleName}
                         </Text>
-                        <Text size="body1" $marginLeft="4px">
+                        <Text size="body2" $marginLeft="4px">
                             {UserInfo && UserInfo.nickname}
                         </Text>
                         <Text size="body2" $marginLeft="4px">
