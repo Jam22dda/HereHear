@@ -172,7 +172,7 @@ interface logoutResponse {
 }
 
 const logout = async (): Promise<logoutResponse> => {
-    const { data } = await instance.delete<logoutResponse>("/logout");
+    const { data } = await instance.delete<logoutResponse>("/member/logout");
     console.log(data);
     return data;
 };

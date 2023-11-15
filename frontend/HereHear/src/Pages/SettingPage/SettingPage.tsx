@@ -40,6 +40,7 @@ export default function MyRegistPage() {
     const logoutHandler = () => {
         Logout();
         toggleLogoutModal();
+        navigatePage("/");
     };
 
     const GetWearOs = () => {
