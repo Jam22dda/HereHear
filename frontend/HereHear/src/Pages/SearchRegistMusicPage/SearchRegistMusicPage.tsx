@@ -46,6 +46,7 @@ export default function SearchRegistMusic() {
             songtitle: item.subject,
             artist: item.artists[0].name,
             releaseTime: item.releaseDate,
+            trackId: `spotify:track:${item.trackId}`,
         };
         // console.log(musicItemToSave, "musicItemToSave");
         setMusicItem(musicItemToSave); //리코일에 해당 음악정보 저장

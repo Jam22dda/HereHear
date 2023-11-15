@@ -18,6 +18,7 @@ export type MusicData = {
     albumImages: { height: number; url: string; width: number }[];
     artists: { id: string; name: string }[];
     releaseDate: string;
+    trackId: string;
 
     // 여기에 필요에 따라 다른 속성들을 추가할 수 있습니다.
 };
@@ -27,6 +28,7 @@ export interface MusicItemState {
     songtitle: string;
     artist: string;
     releaseTime: string;
+    trackId: string;
 }
 
 export type AddMusicInfo = {
@@ -38,6 +40,7 @@ export type AddMusicInfo = {
     albumImg: string;
     releaseTime: string;
     musicOccasionIds: number[];
+    spotifyUri: string;
 };
 
 export type registeredMusicId = number;

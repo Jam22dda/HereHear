@@ -143,6 +143,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                                 path="/follow"
                                 element={<MapClock />}
                             ></Route>
+                            {/* spotify test */}
+                            {/* <Route
+                                path="/spotify"
+                                element={<SpotifyPlayer />}
+                            ></Route> */}
+                            {/* spotify 음악 재생 */}
+                            {/* <Route
+                                path = "/musicPlayer/:id"
+                                element={<SpotifyMusicPlayer />}
+                            ></Route> */}
                         </Routes>
                         {/* </Suspense> */}
                     </QueryClientProvider>

@@ -70,6 +70,8 @@ export default function Core() {
 
     const [showButton, setShowButton] = useState(false);
 
+    const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+
     const onClickMent = () => {
         setShowButton((current) => !current);
     };
@@ -81,6 +83,14 @@ export default function Core() {
     };
 
     useEffect(() => {
+        // 뷰포트의 높이가 변경될 때마다 state를 업데이트합니다.
+        const handleResize = () => {
+            setViewportHeight(window.innerHeight);
+        };
+
+        // 이벤트 리스너를 추가하고 컴포넌트가 언마운트될 때 이를 제거합니다.
+        window.addEventListener("resize", handleResize);
+
         // 지도 초기화
         const apiKey = import.meta.env.VITE_NAVER_MAP_API_KEY;
         const script = document.createElement("script");
@@ -255,6 +265,8 @@ export default function Core() {
 
         // 컴포넌트 언마운트 시 스크립트 제거
         return () => {
+            window.removeEventListener("resize", handleResize);
+
             document.body.removeChild(script);
         };
     }, []);
@@ -277,6 +289,7 @@ export default function Core() {
     useEffect(() => {
         if (eventSource && naverState && mapState) {
             // const sse = eventSource;
+            // console.log('KCEHC YLNO 1');
 
             // SSE 이벤트 핸들러를 등록합니다.
             eventSource.addEventListener("sse", (event) => {
@@ -532,12 +545,29 @@ export default function Core() {
         setIsUpdate((prev) => !prev);
     }
 
+    const formatTime = (date: any) => {
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        return `${hours}:${minutes}`;
+    };
+
+    const getCurrentTimeRange = () => {
+        const now = new Date();
+
+        const threeHoursAgo = new Date(now);
+        threeHoursAgo.setHours(now.getHours() - 3);
+
+        const threeHoursLater = new Date(now);
+        threeHoursLater.setHours(now.getHours() + 3);
+
+        return `${formatTime(threeHoursAgo)} - ${formatTime(threeHoursLater)}`;
+    };
     return (
         // <div id='map__display'>
         //     <div id='map'></div>
         // </div>
-        <>
-            <S.MapDisplay>
+        <div id="display">
+            <S.MapDisplay style={{ height: viewportHeight }}>
                 {loadingWait && (
                     <S.WaitWrapper>
                         <img
@@ -600,11 +630,13 @@ export default function Core() {
                     ></MusicBox>
                 ) : null}
                 {/* <MusicBox></MusicBox> */}
-                <S.NavbarWrapper>
-                    <Navbar active={true}></Navbar>
-                </S.NavbarWrapper>
+                {!loadingWait && (
+                    <S.NavbarWrapper>
+                        <Navbar active={true}></Navbar>
+                    </S.NavbarWrapper>
+                )}
             </S.MapDisplay>
-        </>
+        </div>
     );
 }
 

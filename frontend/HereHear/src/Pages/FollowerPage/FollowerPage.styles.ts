@@ -2,10 +2,8 @@ import styled from "styled-components";
 
 export const FollowerWrapper = styled.div`
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin-bottom: 16px;
+    justify-content: flex-start; /* 왼쪽 정렬 */
 `;
 
 export const YourFollowerWrapper = styled.div`
