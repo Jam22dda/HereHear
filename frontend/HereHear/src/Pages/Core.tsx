@@ -549,9 +549,11 @@ export default function Core() {
                 <S.Map id='map'></S.Map>
                 {isSelect ? <MusicBox musicAroundList={musicAroundListState} pinId={userSelectPin} setIsSelect={setIsSelect}></MusicBox> : null}
                 {/* <MusicBox></MusicBox> */}
-                <S.NavbarWrapper>
-                    <Navbar active={true}></Navbar>
-                </S.NavbarWrapper>
+                {!loadingWait && (
+                    <S.NavbarWrapper>
+                        <Navbar active={true}></Navbar>
+                    </S.NavbarWrapper>
+                )}
             </S.MapDisplay>
         </div>
     );
