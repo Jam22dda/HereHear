@@ -226,8 +226,7 @@ fun MusicInfo(musicDetailDto: MusicDetailDto, personalCode: String, navControlle
                 horizontalArrangement = Arrangement.Center
             ) {
                 Card(
-                    onClick = {
-                    },
+                    onClick = { navController.navigate(RouteType.SPOTIFY.toString()) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()

@@ -6,6 +6,8 @@
 
 package com.ssafy.herehear.presentation
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.activity
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
@@ -210,6 +213,32 @@ class MainActivity : ComponentActivity() {
 
                 composable(RouteType.ACHIEVEMENT.toString()) {
 
+                }
+
+                composable(RouteType.SPOTIFY.toString()) {
+//                    val intent = Intent(Intent.ACTION_VIEW)
+//
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK // 필요한 플래그 추가
+//
+//                    val trackUri = "spotify:track:5wSaS7kjK9qwO1eRuBJzdz"
+//                    intent.data = Uri.parse(trackUri)
+//
+//                    intent.putExtra(
+//                        Intent.EXTRA_REFERRER,
+//                        Uri.parse("android-app://" + this@MainActivity.packageName)
+//                    )
+//
+//                    this@MainActivity.startActivity(intent)
+
+//                    val intent = this@MainActivity.packageManager.getLaunchIntentForPackage("com.spotify.music")
+//                    intent?.data = Uri.parse("spotify:track:3yS7jHZ8z5RpGnSASUZmGg")
+//                    intent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                    this@MainActivity.startActivity(intent)
+
+                    val intent = this@MainActivity.packageManager.getLaunchIntentForPackage("com.spotify.music")
+                    intent?.data = Uri.parse("spotify:track:3yS7jHZ8z5RpGnSASUZmGg")
+                    intent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    this@MainActivity.startActivity(intent)
                 }
 
             }
