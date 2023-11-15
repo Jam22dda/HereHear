@@ -81,6 +81,7 @@ export default function RegistMusicMent() {
                 singer: musicItem.artist, // 아티스트
                 albumImg: musicItem.src, // 앨범 이미지 URL
                 releaseTime: musicItem.releaseTime, // 발매 시간
+                spotifyUri: musicItem.trackId,
                 musicOccasionIds: selectedTagIds.map((tag) => tag.id), // 선택된 태그 ID들
             };
             // console.log(musicInfo, "musicInfo 잘 들어가?");
