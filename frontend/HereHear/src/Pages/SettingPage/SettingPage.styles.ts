@@ -26,3 +26,9 @@ export const SettingModalWrapper = styled.div`
     justify-content: center;
     align-items: center;
 `;
+
+export const logoutBtnWrapper = styled.div`
+    display: flex;
+    width: 250px;
+    justify-content: space-evenly;
+`;

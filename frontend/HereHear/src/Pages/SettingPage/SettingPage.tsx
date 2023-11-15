@@ -12,6 +12,8 @@ import { usePostWearOs } from "../../apis/Mypage/Mutations/usePostWearOs";
 import { useRecoilState } from "recoil";
 import { GetKeyAtom } from "../../states/MypageAtoms";
 import { useGetWearOs } from "../../apis/Mypage/Quries/useGetWearOs";
+import { useLogout } from "../../apis/Mypage/Mutations/useLogout";
+import theme from "../../styles/theme";
 
 export default function MyRegistPage() {
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -20,15 +22,25 @@ export default function MyRegistPage() {
         navigate(path);
     };
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [key, setKey] = useRecoilState(GetKeyAtom);
 
     const toggleModal = () => {
         setIsModalOpen((prev) => !prev);
     };
 
+    const toggleLogoutModal = () => {
+        setLogoutModalOpen((prev) => !prev);
+    };
+
     const { mutate: postWearOsMutate } = usePostWearOs();
     const MyKey = useGetWearOs();
-    console.log(key);
+    const { mutate: Logout } = useLogout();
+
+    const logoutHandler = () => {
+        Logout();
+        toggleLogoutModal();
+    };
 
     const GetWearOs = () => {
         if (key === "") {
@@ -82,7 +94,7 @@ export default function MyRegistPage() {
                     <S.PinBox onClick={GetWearOs}>
                         <Text size="body1">핀 번호 받기</Text>
                     </S.PinBox>
-                    <S.PinBox>
+                    <S.PinBox onClick={toggleLogoutModal}>
                         <Text size="body1">로그아웃</Text>
                     </S.PinBox>
                 </S.SettingWrapper>
@@ -102,6 +114,36 @@ export default function MyRegistPage() {
                             >
                                 확인
                             </Button>
+                        </S.SettingModalWrapper>
+                    </Modal>
+                </ModalBg>
+            )}
+            {logoutModalOpen && (
+                <ModalBg>
+                    <Modal toggleModal={() => toggleLogoutModal()}>
+                        <S.SettingModalWrapper>
+                            <Text size="body1" $margin="20px 0 20px 0">
+                                정말 로그아웃 하실건가요?
+                            </Text>
+                            <S.logoutBtnWrapper>
+                                <Button
+                                    $width="80px"
+                                    $margin="20px 0 0 0"
+                                    onClick={toggleLogoutModal}
+                                >
+                                    취소
+                                </Button>
+                                <Button
+                                    $width="80px"
+                                    $margin="20px 0 0 0"
+                                    onClick={logoutHandler}
+                                    style={{
+                                        background: theme.gradient.pickActive,
+                                    }}
+                                >
+                                    확인
+                                </Button>
+                            </S.logoutBtnWrapper>
                         </S.SettingModalWrapper>
                     </Modal>
                 </ModalBg>
