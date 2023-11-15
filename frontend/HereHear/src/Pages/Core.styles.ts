@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Map = styled.div`
     width: 100%;
     height: 100%;
+    overflow: hidden;
 `;
 
 export const MapDisplay = styled.div`
@@ -12,6 +13,7 @@ export const MapDisplay = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 `;
 
 export const ImgOuter = styled.div`

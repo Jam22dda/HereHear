@@ -1,5 +1,5 @@
-const sCacheName: string = 'react-pwa'; // 캐시제목 선언
-const aFilesToCache: string[] = [
+const sCacheName = 'react-pwa'; // 캐시제목 선언
+const aFilesToCache = [
     // 캐싱할 파일 선언
     './',
     './index.html',
@@ -8,11 +8,11 @@ const aFilesToCache: string[] = [
 
 // install event
 // 서비스워커를 설치
-self.addEventListener('install', (pEvent: any) => {
-    console.log('서비스워커 설치');
+self.addEventListener('install', pEvent => {
+    // console.log('서비스워커 설치');
     // 캐싱할 파일 저장
     pEvent.waitUntil(
-        caches.open(sCacheName).then((pCache: Cache) => {
+        caches.open(sCacheName).then(pCache => {
             // console.log('파일을 캐시에 저장');
             return pCache.addAll(aFilesToCache);
         })
@@ -21,13 +21,13 @@ self.addEventListener('install', (pEvent: any) => {
 
 // activate event
 // 서비스 워커 동작 시작
-self.addEventListener('activate', (pEvent: any) => {
+self.addEventListener('activate', pEvent => {
     // console.log('서비스워커 동작 시작');
 });
 
 // fetch event
 // 데이터 요청시 수행
-self.addEventListener('fetch', (pEvent: any) => {
+self.addEventListener('fetch', pEvent => {
     // pEvent.respondWith(
     //     // 오프라인에서 데이터 색인
     //     caches
