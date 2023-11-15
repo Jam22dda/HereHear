@@ -62,7 +62,7 @@ export default function SpotifyMusicPlayer() {
   const spotifyAccessToken = useGetSpotifyAccessToken();
   const [paused, setPaused] = useState(true);
   const [active, setActive] = useState(false);
-  const [player, setPlayer] = useState({});
+  const [player, setPlayer] = useState<Spotify.Player>({} as Spotify.Player);
   const [timeMs, setTimeMs] = useState(0);
   const [durationMs, setDurationMs] = useState(0);
 
