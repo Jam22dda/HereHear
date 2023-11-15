@@ -21,9 +21,7 @@ import { useGetSpotifyAccessToken } from "../../apis/Music/Quries/useGetSpotifyA
 import { useMusicHistory } from "../../apis/Music/Mutations/useMusicHistory";
 import { SignUpInfoAtom } from "../../states/SignUpAtoms";
 import { useRecoilValue } from "recoil";
-
-// 임시로 axios 사용 - react query 로 수정 필요
-import { instance } from "../../apis/instance";
+import axios from "axios";
 
 export default function SpotifyMusicPlayer() {
   const { id } = useParams();
@@ -55,7 +53,7 @@ export default function SpotifyMusicPlayer() {
 
   // 음악 API
   const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
-  console.log(musicPlay);
+  // console.log(musicPlay);
   const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
   const myId = mySignUpInfo.memberId;
   // console.log(myId == musicPlay.data.memberId);
@@ -64,54 +62,86 @@ export default function SpotifyMusicPlayer() {
   const spotifyAccessToken = useGetSpotifyAccessToken();
   const [paused, setPaused] = useState(true);
   const [active, setActive] = useState(false);
-  const [player, setPlayer] = useState(undefined);
+  const [player, setPlayer] = useState({});
+  const [timeMs, setTimeMs] = useState(0);
+  const [durationMs, setDurationMs] = useState(0);
 
+  // Spotify SDK 사용하여 플레이어 생성
   useEffect(() => {
     if (musicPlay) {
       setIsLiked(musicPlay.data.like ? musicPlay.data.like : false);
     }
 
-    // if (musicPlay && spotifyAccessToken) {
-    //   console.log("MusicPlay && SpotifyAccessToken", spotifyAccessToken.data);
-    //   const script = document.createElement("script");
-    //   script.src = "https://sdk.scdn.co/spotify-player.js";
-    //   script.async = true;
+    if (musicPlay && spotifyAccessToken) {
+      const script = document.createElement("script");
+      script.src = "https://sdk.scdn.co/spotify-player.js";
+      script.async = true;
 
-    //   document.body.appendChild(script);
+      document.body.appendChild(script);
 
-    //   window.onSpotifyWebPlaybackSDKReady = () => {
-    //     console.log("spotifyAccessToken 발급", spotifyAccessToken.data);
-    //     const inPlayer = new window.Spotify.Player({
-    //       name: "HereHear! Spotify Player",
-    //       getOAuthToken: (cb) => {
-    //         cb(spotifyAccessToken.data);
-    //       },
-    //       volume: 0.4,
-    //     });
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const inPlayer = new window.Spotify.Player({
+          name: "HereHear! Spotify Player",
+          getOAuthToken: (cb) => {
+            cb(spotifyAccessToken.data);
+          },
+          volume: 0.4,
+        });
 
-    //     setPlayer(inPlayer);
+        inPlayer.addListener("ready", ({ device_id }) => {
+          console.log("Ready with Device ID", device_id);
 
-    //     inPlayer.addListener("ready", ({ device_id }) => {
-    //       console.log("Ready with Device ID", device_id);
-    //       //   playMusic(device_id);
-    //     });
+          // 음악 재생 등록요청
+          axios({
+            method: "put",
+            url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+            data: {
+              uris: [musicPlay.data.spotifyUri],
+              position_ms: 0,
+            },
+            headers: {
+              Authorization: "Bearer " + spotifyAccessToken.data,
+            },
+          })
+            .then(function (response) {
+              console.log("play SUCCESS");
+            })
+            .catch(function (error) {
+              console.log("play ERROR");
+            });
+        });
 
-    //     inPlayer.addListener("not_ready", ({ device_id }) => {
-    //       console.log("Device ID has gone offline", device_id);
-    //     });
+        inPlayer.addListener("not_ready", ({ device_id }) => {
+          console.log("Device ID has gone offline", device_id);
+        });
 
-    //     inPlayer.connect();
-    //   };
-    // }
+        inPlayer.addListener("player_state_changed", ({ position, duration, paused, track_window: { current_track } }) => {
+          console.log("Position in Song", position);
+          console.log("Duration of Song", duration);
+          console.log("Paused", paused);
+          console.log("Currently Playing", current_track);
+          setTimeMs(position);
+          setDurationMs(duration);
+          setActive(true);
+          setPaused(paused);
+        });
+
+        inPlayer.connect();
+
+        setPlayer(inPlayer);
+      };
+    }
   }, [musicPlay, spotifyAccessToken]);
 
-  const playMusic = () => {
-    const data = {
-      trackId: musicPlay.data.spotifyUri,
-    };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!paused) {
+        setTimeMs(timeMs + 1000);
+      }
+    }, 1000);
 
-    instance.post("/spotify/play", data);
-  };
+    return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -120,9 +150,8 @@ export default function SpotifyMusicPlayer() {
     return <div>Error occurred or no data!</div>;
   }
 
-  // console.log(musicPlay, "이거 들어와????????????");
   const occasionName = musicPlay.data.occasionName;
-  // console.log(occasionName, "occasionName");
+
   return (
     <div id="display">
       <div className="container">
@@ -162,16 +191,21 @@ export default function SpotifyMusicPlayer() {
 
           {/* 음악 재생 진행바 UI 구현 필요 */}
 
-          <S.PlayerWrapper>
-            <Image
-              src={playBtn}
-              width={4}
-              onClick={() => {
-                registMusicHistory();
-                playMusic();
-              }}
-            ></Image>
-          </S.PlayerWrapper>
+          {active ? (
+            <S.PlayerWrapper>
+              <Image
+                src={paused ? playBtn : pauseBtn}
+                width={4}
+                onClick={() => {
+                  registMusicHistory();
+                  player.togglePlay();
+                  setPaused(!paused);
+                }}
+              ></Image>
+            </S.PlayerWrapper>
+          ) : (
+            <div>Loading...</div>
+          )}
         </S.MusicPlayWrapper>
       </div>
     </div>
