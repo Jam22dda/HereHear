@@ -102,7 +102,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        redisUtils.delete(jwtProvider.getAccessToken(request));
+        Long memberId = jwtProvider.getClaimFromToken(jwtProvider.getAccessToken(request), "memberId");
+        log.info(" logout memberId : {}", memberId);
+        log.info(" logout member refresh Token: {}", redisUtils.get(memberId.toString()));
+        redisUtils.delete(memberId.toString());
+
 //        Cookie cookie = CookieUtil.getCookie(request, REFRESH_TOKEN).orElseThrow(
 //                () -> new CustomException(ExceptionStatus.TOKEN_NOT_FOUND_IN_COOKIE)
 //        );
