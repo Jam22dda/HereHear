@@ -115,3 +115,9 @@ export const MystatisticWrapper = styled.div`
     align-items: center;
     flex-direction: column;
 `;
+
+export const BoxWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+`;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const FollowWrapper = styled.div`
     display: flex;
+    margin-bottom: 16px;
 `;
 
 const FollowTextWrapper = styled.div`
