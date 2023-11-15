@@ -118,7 +118,7 @@ public class SpotifyMusicService implements MusicService {
                 .uri(uriBuilder -> uriBuilder
                         .path("v1/me/player/volume")
                         .queryParam("volume_percent", volume)
-                        //.queryParam("device_id", getDeviceId(memberId))
+                        .queryParam("device_id", getDeviceId(memberId))
                         .build())
                 .header("Authorization", "Bearer " + getToken(memberId))
                 .retrieve()
@@ -150,7 +150,7 @@ public class SpotifyMusicService implements MusicService {
         webClient.put()
                 .uri(uriBuilder -> uriBuilder
                         .path("v1/me/player/play")
-                        //.queryParam("device_id", getDeviceId(memberId))
+                        .queryParam("device_id", getDeviceId(memberId))
                         .build())
                 .header("Authorization", "Bearer " + getToken(memberId))
                 .header("Content-Type", "application/json")
@@ -168,7 +168,7 @@ public class SpotifyMusicService implements MusicService {
         webClient.put()
                 .uri(uriBuilder -> uriBuilder
                         .path("v1/me/player/pause")
-                        //.queryParam("device_id", getDeviceId(memberId))
+                        .queryParam("device_id", getDeviceId(memberId))
                         .build())
                 .header("Authorization", "Bearer " + getToken(memberId))
                 .retrieve()
