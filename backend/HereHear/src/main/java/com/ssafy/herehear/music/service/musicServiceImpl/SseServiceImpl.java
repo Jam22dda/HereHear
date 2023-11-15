@@ -75,12 +75,12 @@ public class SseServiceImpl implements SseService {
             for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
                 SseEmitter emitter = entry.getValue();
                 try {
-                    // 데이터를 이벤트로 각 Emitter에 보냅니다.
                     synchronized(emitter) {
+                        log.info("[{}] 전달 memberId: {}",ConstantsUtil.SSE_EVENT, findMemberIdByEmitter(emitter));
                         emitter.send(SseEmitter.event().name("sse").data(data));
                     }
                 } catch (IOException e) {
-                    // 오류가 발생한 경우, Emitter를 종료합니다.
+                    log.info("[{}] 에러 memberId: {}",ConstantsUtil.SSE_EVENT, findMemberIdByEmitter(emitter));
                     emitter.completeWithError(e);
                 }
             }
@@ -105,5 +105,14 @@ public class SseServiceImpl implements SseService {
         sseResDtos.addAll(deleteSseResDto);
         sseResDtos.addAll(addSseResDto);
         notifyAllMembers(sseResDtos);
+    }
+
+    public Long findMemberIdByEmitter(SseEmitter emitter) {
+        for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
+            if (entry.getValue().equals(emitter)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

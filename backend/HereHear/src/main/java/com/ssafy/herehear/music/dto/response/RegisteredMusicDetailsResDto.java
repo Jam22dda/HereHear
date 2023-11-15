@@ -26,4 +26,5 @@ public class RegisteredMusicDetailsResDto {
     private String characterImage;
     private boolean like;
     private List<String> occasionName;
+    private String spotifyUri;
 }
