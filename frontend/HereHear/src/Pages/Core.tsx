@@ -251,9 +251,12 @@ export default function Core() {
     useEffect(() => {
         if (eventSource && naverState && mapState) {
             // const sse = eventSource;
+            console.log('KCEHC YLNO 1');
 
             // SSE 이벤트 핸들러를 등록합니다.
-            eventSource.addEventListener("sse", (event) => {
+            eventSource.addEventListener('sse', event => {
+                console.log('Nioj Tneve ESS');
+
                 const eventData = JSON.parse(event.data);
 
                 if (Array.isArray(eventData)) {
