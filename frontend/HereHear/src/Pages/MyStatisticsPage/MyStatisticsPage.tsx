@@ -2,6 +2,7 @@ import * as S from "./MyStatisticsPage.styles";
 import React, { useState, useEffect } from "react";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import { Image } from "../../components/atoms/Image/Image";
+import musicNote from "../../assets/Statistic/icon-musicNote.png";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { useNavigate } from "react-router-dom";
 import monzi from "../../../public/images/monzi-herehear.png";
@@ -12,6 +13,7 @@ import { useGetHearTime } from "../../apis/Mystatistic/Quries/useGetHearTime";
 import { useGetMyTagCount } from "../../apis/Mystatistic/Quries/useGetMyTagCount";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
 import { Pie } from "react-chartjs-2";
+// import { Line } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
     Chart as ChartJS,
@@ -33,18 +35,35 @@ export default function MyStatisticsPage() {
     const tagColors = ["#FFC0EC", "#BDDDFD", "#FFF0CB", "#96ebbc", "#F9D6D5"];
     const MyTagCount = useGetMyTagCount();
     const MyLikeCount = useGetMyLikeCount();
-    const HearTime = useGetHearTime();
+    // const HearTime = useGetHearTime();
     const UserInfo = useGetUserinfo();
 
-    console.log(HearTime, "HearTime나옴?");
-    console.log(MyTagCount, "마이태그 카운트");
+    // console.log(HearTime, "HearTime나옴?");
+    // console.log(MyTagCount, "마이태그 카운트");
+    // console.log(HearTime, "HearTime나오나요?");
+    // console.log(HearTime.time["18~21시"], "HearTime나오나요?");
 
     // interface hearTime {
     //     mostTime: string;
-    //     time: number[];
+    //     time: object;
+    //     timeKey: any;
     // }
+    // useEffect(() => {
+    //     if (HearTime === null || HearTime === undefined) return;
+    //     const HearTimeArr = Object.keys(HearTime?.time);
 
-    // const heartime: number[] = HearTime && HearTime.length > 0 ? HearTime.map((record: hearTime) => record.time).slice(0, 5) : [];
+    //     if (HearTime && HearTimeArr.length) {
+    //         const timeKeys = Object.keys(HearTime?.time);
+    //         setUsingTime(timeKeys); // 실제 키들을 출력
+    //     } else {
+    //         console.log("안됐을때");
+    //     }
+    // }, [HearTime]);
+    // const timeKey = Object.keys(HearTime?.time);
+    // console.log(timeKey);
+    // const [usingTime, setUsingTime] = useState([]);
+
+    // console.log(usingTime);
 
     // 태그 개수 API
     interface musicTag {
@@ -101,13 +120,16 @@ export default function MyStatisticsPage() {
                 <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
                     <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text size="subtitle1" fontWeight="bold" $margin="20px 0 48px 0">
-                    나의 음악 취향 분석
-                </Text>
+                <S.TitleWrapper>
+                    <Text size="subtitle1" fontWeight="bold">
+                        나의 음악 노트
+                    </Text>
+                    <Image src={musicNote} width={2.4} $margin="0 0 0 3px"></Image>
+                </S.TitleWrapper>
                 <S.MystatisticWrapper>
                     <S.LikeBox>
                         <S.TextWrapper>
-                            <Text size="body1" fontWeight="bold">
+                            <Text size="body2" fontWeight="bold">
                                 {UserInfo && UserInfo.nickname}
                             </Text>
                             <Text size="body2" fontWeight="medium" $marginLeft="4px">
@@ -154,15 +176,19 @@ export default function MyStatisticsPage() {
                                     </S.Label>
                                 ))}
                         </S.LabelWrapper>
-                        <Pie data={piedata} options={pieoptions} />
-                        <S.TextWrapperbottom style={{ margin: "3rem 0 10px 0" }}>
-                            <S.Tag style={{ backgroundColor: tagColors[0] }}>{tagNameLabels[0]}</S.Tag>
+                        <S.chartWrapper>
+                            <Pie data={piedata} options={pieoptions} style={{ maxWidth: "270px", maxHeight: "270px" }} />
+                        </S.chartWrapper>
+                        <S.MystatisticWrapper>
+                            <S.TextWrapperbottom style={{ margin: "3rem 0 10px 0" }}>
+                                <S.Tag style={{ backgroundColor: tagColors[0] }}>{tagNameLabels[0]}</S.Tag>
 
-                            <Text size="body2">태그가 달린 음악을</Text>
-                        </S.TextWrapperbottom>
-                        <Text size="body2" $margin="0 0 10px 5px">
-                            가장 많이 들었어요.
-                        </Text>
+                                <Text size="body2">태그가 달린 음악을</Text>
+                            </S.TextWrapperbottom>
+                            <Text size="body2" $margin="0 0 10px 5px">
+                                가장 많이 들었어요.
+                            </Text>
+                        </S.MystatisticWrapper>
                     </>
                 ) : (
                     // 데이터가 없을 때 표시할 메시지
