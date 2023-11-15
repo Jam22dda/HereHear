@@ -7,7 +7,7 @@
     margin: 0;
     padding: 0;
     border: 0;
-    font-family: "GmarketSans";
+    font-family: 'GmarketSans';
 }
 
 ol,
@@ -81,18 +81,18 @@ body {
     justify-content: center;
 }
 
-/* body {
-    background-image: linear-gradient(-30deg, #fbb7d4 0%, #a9d4ff 100%);
+body {
+    background-image: linear-gradient(-30deg, #f5dcea 0%, #e6edf5 50%, #eddfec 100%);
     background-size: 200% 200%;
     animation: gradientAnimation 4.5s linear infinite alternate;
-} */
+}
 
-body {
+/* body {
     background-image: url("../public//images//icon-Background.png");
     background-size: 400% 400%;
     background-position: 50% 40%;
     background-repeat: no-repeat;
-}
+} */
 
 #root {
     margin: auto;
