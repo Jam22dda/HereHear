@@ -45,22 +45,16 @@ export default function MyRegistPage() {
 
     const GetWearOs = () => {
         if (key === "") {
-            postWearOsMutate(
-                {},
-                {
-                    onSuccess: (data) => {
-                        console.log(
-                            "핀번호 받기 성공:",
-                            data.data.personalCode
-                        );
-                        setKey(data.data.personalCode);
-                        localStorage.setItem("myKey", data.data.personalCode);
-                    },
-                    onError: (error) => {
-                        console.error("오류 발생:", error);
-                    },
-                }
-            );
+            postWearOsMutate(undefined, {
+                onSuccess: (data) => {
+                    console.log("핀번호 받기 성공:", data.data.personalCode);
+                    setKey(data.data.personalCode);
+                    localStorage.setItem("myKey", data.data.personalCode);
+                },
+                onError: (error) => {
+                    console.error("오류 발생:", error);
+                },
+            });
             toggleModal();
         } else {
             setKey(MyKey && MyKey.personalCode);
