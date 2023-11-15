@@ -127,6 +127,19 @@ public class SpotifyMusicService implements MusicService {
                 .block();
     }
 
+    private int getMusicMs(long memberId) {
+        WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
+        Mono<String> response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("v1/me/player/currently-playing")
+                        .build())
+                .header("Authorization", "Bearer " + getToken(memberId))
+                .retrieve()
+                .bodyToMono(String.class);
+
+        return Integer.parseInt(JsonUtil.getValueAsString(response.block(), "progress_ms"));
+    }
+
     @Override
     public String getDeviceId(Long memberId) {
         WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
@@ -164,7 +177,7 @@ public class SpotifyMusicService implements MusicService {
     }
 
     @Override
-    public void pauseMusic(long memberId) {
+    public int pauseMusic(long memberId) {
         WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
 
         webClient.put()
@@ -177,6 +190,7 @@ public class SpotifyMusicService implements MusicService {
                 .bodyToMono(Void.class)
                 .block();
 
+        return getMusicMs(memberId);
     }
 
     @Override
