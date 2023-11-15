@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -40,30 +42,24 @@ public class WearAuthServiceImpl implements WearAuthService {
     @Transactional
     public WearPersonalCodeDto registerPersonalCode(Long memberId) {
         Member member = MemberUtil.findMember(memberId);
+        Random random = new Random();
 
-        StringBuilder sb = new StringBuilder(6);
-        while (true) {
-            for (int i = 0; i < 6; i++) {
-                long rand = (long) Math.floor(Math.round(Math.random() * 26)) + 65;
-                sb.append((char) rand);
-            }
-
-            if (wearOsPersonalCodeRepository.findByPersonalCode(sb.toString()).isEmpty()) {
-                break;
-            }
-        }
+        String randomString = IntStream.generate(() -> 'A' + random.nextInt(26))
+                .limit(6)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
 
         WearOsPersonalCode wearOsPersonalCode = wearOsPersonalCodeRepository.findByMember_MemberId(member.getMemberId())
                 .orElse(WearOsPersonalCode.builder()
                         .member(member)
                         .build());
 
-        wearOsPersonalCode.updatePersonalCode(sb.toString());
+        wearOsPersonalCode.updatePersonalCode(randomString);
         wearOsPersonalCode.updateLastModifiedDate(LocalDateTime.now());
         wearOsPersonalCodeRepository.save(wearOsPersonalCode);
 
         return WearPersonalCodeDto.builder()
-                .personalCode(sb.toString()).build();
+                .personalCode(randomString).build();
     }
 
     @Override
