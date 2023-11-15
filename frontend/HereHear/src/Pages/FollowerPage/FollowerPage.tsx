@@ -20,7 +20,7 @@ export default function Follower() {
     const navigate = useNavigate(); // useNavigate 훅 사용
     const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
     const myId = mySignUpInfo.memberId;
-    console.log(myId);
+    // console.log(myId);
 
     const navigatePage = (path: string) => {
         navigate(path);
