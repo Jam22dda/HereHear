@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SseServiceImpl implements SseService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 12;
     private final Map<Long, SseEmitter> emittersMap = new ConcurrentHashMap<>();
+    private Map<Long, Integer> retryCountMap = new ConcurrentHashMap<>();
 
     private final RegisteredMusicDslRepository registeredMusicDslRepository;
     private final RegisterMusicMapper registerMusicMapper;
@@ -72,16 +73,30 @@ public class SseServiceImpl implements SseService {
         log.info("[{}] 모든 사용자 전달 result: {}", ConstantsUtil.SSE_SCHEDULER, data);
 
         synchronized(emittersMap) {
-            for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
+            Iterator<Map.Entry<Long, SseEmitter>> iterator = emittersMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Long, SseEmitter> entry = iterator.next();
+                Long memberId = entry.getKey();
                 SseEmitter emitter = entry.getValue();
                 try {
                     synchronized(emitter) {
-                        log.info("[{}] 전달 memberId: {}",ConstantsUtil.SSE_EVENT, findMemberIdByEmitter(emitter));
+                        log.info("[{}] 전달 memberId: {}", ConstantsUtil.SSE_EVENT, memberId);
                         emitter.send(SseEmitter.event().name("sse").data(data));
                     }
                 } catch (IOException e) {
-                    log.info("[{}] 에러 memberId: {}",ConstantsUtil.SSE_EVENT, findMemberIdByEmitter(emitter));
-                    emitter.completeWithError(e);
+                    log.info("[{}] 에러 memberId: {}", ConstantsUtil.SSE_EVENT, memberId);
+                    int retryCount = retryCountMap.getOrDefault(memberId, 0);
+                    if (retryCount < 5) {
+                        retryCountMap.put(memberId, retryCount + 1);
+                    } else {
+                        emitter.completeWithError(e);
+                        iterator.remove(); // 재시도 횟수 초과시 emitter 제거
+                        retryCountMap.remove(memberId); // 재시도 카운트 맵에서 제거
+                    }
+                } catch (IllegalStateException ise) {
+                    log.info("[{}] 완료되었거나 취소된 emitter memberId: {}", ConstantsUtil.SSE_EVENT, memberId);
+                    iterator.remove(); // 이미 완료되었거나 취소된 emitter 제거
+                    retryCountMap.remove(memberId); // 재시도 카운트 맵에서 제거
                 }
             }
         }
@@ -107,12 +122,4 @@ public class SseServiceImpl implements SseService {
         notifyAllMembers(sseResDtos);
     }
 
-    public Long findMemberIdByEmitter(SseEmitter emitter) {
-        for (Map.Entry<Long, SseEmitter> entry : emittersMap.entrySet()) {
-            if (entry.getValue().equals(emitter)) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
 }

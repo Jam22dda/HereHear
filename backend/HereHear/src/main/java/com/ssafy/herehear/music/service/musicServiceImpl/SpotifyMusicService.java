@@ -2,6 +2,7 @@ package com.ssafy.herehear.music.service.musicServiceImpl;
 
 import com.ssafy.herehear.global.util.JsonUtil;
 import com.ssafy.herehear.global.util.RedisUtils;
+import com.ssafy.herehear.music.dto.request.PlayMusicReqDto;
 import com.ssafy.herehear.music.dto.response.MusicInfoResDto;
 import com.ssafy.herehear.music.dto.response.spotify.GetDevice;
 import com.ssafy.herehear.music.dto.response.spotify.SpotifyMusic;
@@ -118,12 +119,25 @@ public class SpotifyMusicService implements MusicService {
                 .uri(uriBuilder -> uriBuilder
                         .path("v1/me/player/volume")
                         .queryParam("volume_percent", volume)
-                        //.queryParam("device_id", getDeviceId(memberId))
+                        .queryParam("device_id", getDeviceId(memberId))
                         .build())
                 .header("Authorization", "Bearer " + getToken(memberId))
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
+    }
+
+    private int getMusicMs(long memberId) {
+        WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
+        Mono<String> response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("v1/me/player/currently-playing")
+                        .build())
+                .header("Authorization", "Bearer " + getToken(memberId))
+                .retrieve()
+                .bodyToMono(String.class);
+
+        return Integer.parseInt(JsonUtil.getValueAsString(response.block(), "progress_ms"));
     }
 
     @Override
@@ -142,15 +156,16 @@ public class SpotifyMusicService implements MusicService {
     }
 
     @Override
-    public void startMusic(long memberId, String trackId) {
+    public void startMusic(long memberId, PlayMusicReqDto playMusicReqDto) {
         WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
 
-        String jsonBody = "{\"uris\": [\"" + trackId + "\"]}";
+        String jsonBody = "{\"uris\": [\"" + playMusicReqDto.getTrackId() + "\"]," +
+                "\"position_ms\":" + playMusicReqDto.getPositionMs() + "}";
 
         webClient.put()
                 .uri(uriBuilder -> uriBuilder
                         .path("v1/me/player/play")
-                        //.queryParam("device_id", getDeviceId(memberId))
+                        .queryParam("device_id", getDeviceId(memberId))
                         .build())
                 .header("Authorization", "Bearer " + getToken(memberId))
                 .header("Content-Type", "application/json")
@@ -162,19 +177,20 @@ public class SpotifyMusicService implements MusicService {
     }
 
     @Override
-    public void pauseMusic(long memberId) {
+    public int pauseMusic(long memberId) {
         WebClient webClient = WebClient.builder().baseUrl(searchUrl).build();
 
         webClient.put()
                 .uri(uriBuilder -> uriBuilder
                         .path("v1/me/player/pause")
-                        //.queryParam("device_id", getDeviceId(memberId))
+                        .queryParam("device_id", getDeviceId(memberId))
                         .build())
                 .header("Authorization", "Bearer " + getToken(memberId))
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
 
+        return getMusicMs(memberId);
     }
 
     @Override
