@@ -80,5 +80,10 @@ const postMusicHistory = async (registeredMusicId: registeredMusicId): Promise<p
     return response.data;
 };
 
+const getSpotifyAccessToken = async () => {
+    const response = await instance.get('/spotify/token');
+    return response.data;
+}
 
-export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic, getListenedMusic, postMusicHistory};
+
+export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic, getListenedMusic, postMusicHistory, getSpotifyAccessToken};

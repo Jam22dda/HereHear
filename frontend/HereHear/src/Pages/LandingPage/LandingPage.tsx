@@ -6,7 +6,7 @@ import IconKakao from "../../assets/Landing/icon-kakao.png";
 import IconDown from "../../assets/Landing/icon-down.png";
 import logo from "../../assets/Landing/logo-herehear.png";
 import IconGoogle from "../../assets/Landing/icon-google.png";
-// import IconSpotify from "../../assets/Landing/icon-spotify.png";
+import IconSpotify from "../../assets/Landing/icon-spotify.png";
 
 export default function Landing() {
     // const id = "angel";
@@ -68,7 +68,7 @@ export default function Landing() {
                         <S.GoogleLoginBtn onClick={() => navigatePage("google")}>
                             <Image src={IconGoogle} width={24} $unit="px"></Image>
                         </S.GoogleLoginBtn>
-                        {/* <S.SpotifyLoginBtn
+                        <S.SpotifyLoginBtn
                             onClick={() => navigatePage("spotify")}
                         >
                             <Image
@@ -76,7 +76,7 @@ export default function Landing() {
                                 width={50}
                                 $unit="px"
                             ></Image>
-                        </S.SpotifyLoginBtn> */}
+                        </S.SpotifyLoginBtn>
                     </S.LoginWrapper>
                 </S.LandingWrapper>
             </div>

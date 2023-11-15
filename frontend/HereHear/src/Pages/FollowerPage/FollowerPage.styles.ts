@@ -8,6 +8,7 @@ export const FollowerWrapper = styled.div`
 
 export const YourFollowerWrapper = styled.div`
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-left: 16px;
 `;
