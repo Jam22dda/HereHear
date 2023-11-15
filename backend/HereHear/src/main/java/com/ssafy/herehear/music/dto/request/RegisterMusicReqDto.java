@@ -39,4 +39,6 @@ public class RegisterMusicReqDto {
 
     @Size(max = 3, message = "최대 3개까지의 상황태그만 등록이 가능합니다")
     private List<Long> musicOccasionIds;
+
+    private String spotifyUri;
 }
