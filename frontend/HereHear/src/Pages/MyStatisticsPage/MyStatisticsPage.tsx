@@ -2,6 +2,7 @@ import * as S from "./MyStatisticsPage.styles";
 import React, { useState, useEffect } from "react";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import { Image } from "../../components/atoms/Image/Image";
+import musicNote from "../../assets/Statistic/icon-musicNote.png";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { useNavigate } from "react-router-dom";
 import monzi from "../../../public/images/monzi-herehear.png";
@@ -12,11 +13,15 @@ import { useGetHearTime } from "../../apis/Mystatistic/Quries/useGetHearTime";
 import { useGetMyTagCount } from "../../apis/Mystatistic/Quries/useGetMyTagCount";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
 import { Pie } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+// import { color } from "chart.js/helpers";
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
+    LineElement, //라인차트를 위한 설정
+    PointElement, //라인차트를 위한 설정
     BarElement,
     Title,
     Tooltip,
@@ -26,7 +31,7 @@ import {
     // Plugin,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PieController, ChartDataLabels);
+ChartJS.register(CategoryScale, LineElement, LinearScale, BarElement, PointElement, Title, Tooltip, Legend, ArcElement, PieController, ChartDataLabels);
 export default function MyStatisticsPage() {
     const navigate = useNavigate();
 
@@ -34,17 +39,64 @@ export default function MyStatisticsPage() {
     const MyTagCount = useGetMyTagCount();
     const MyLikeCount = useGetMyLikeCount();
     const HearTime = useGetHearTime();
+    // console.log(HearTime);
     const UserInfo = useGetUserinfo();
 
-    console.log(HearTime, "HearTime나옴?");
-    console.log(MyTagCount, "마이태그 카운트");
+    // console.log(HearTime.mostTime, "HearTime나옴?");
 
-    // interface hearTime {
-    //     mostTime: string;
-    //     time: number[];
-    // }
+    const [timeLabels, setTimeLabels] = useState<string[]>([]); //시간대별
+    const [timeValues, setTimeValues] = useState<number[]>([]); //시간대별
+    const mostTime = HearTime ? HearTime.mostTime : "";
+    const isAllZeros = timeValues.every((value) => value === 0);
+    useEffect(() => {
+        if (HearTime && HearTime.time) {
+            const timeEntries = Object.entries(HearTime.time)
+                .map(([key, value]) => ({ time: key, count: Number(value) }))
+                .sort((a, b) => a.time.localeCompare(b.time)); // 시간대를 정렬
 
-    // const heartime: number[] = HearTime && HearTime.length > 0 ? HearTime.map((record: hearTime) => record.time).slice(0, 5) : [];
+            const timeLabels = timeEntries.map((entry) => entry.time);
+            const timeValues = timeEntries.map((entry) => entry.count);
+            // console.log(timeLabels);
+            setTimeLabels(timeLabels); // 새로 추가된 상태
+            setTimeValues(timeValues); // 새로 추가된 상태
+        } else {
+            // console.log("데이터가 없습니다");
+        }
+    }, [HearTime]);
+
+    const lineData = {
+        labels: timeLabels, // x축 라벨
+        datasets: [
+            {
+                label: "usingTime",
+                data: timeValues, // y축 데이터
+                fill: false,
+                borderColor: "RGB(143, 139, 213)",
+                tension: 0.4,
+            },
+        ],
+    };
+
+    const lineOptions = {
+        responsive: true,
+        plugins: {
+            datalabels: {
+                color: "rgb(247, 11, 141)",
+                font: {
+                    color: "rgb(240, 31, 122)",
+                    weight: "bold" as const,
+                    size: 16, // 글자 크기
+                    family: "Arial", // 글꼴
+                },
+            },
+            legend: {
+                display: false,
+            },
+            title: {
+                display: true,
+            },
+        },
+    };
 
     // 태그 개수 API
     interface musicTag {
@@ -101,13 +153,16 @@ export default function MyStatisticsPage() {
                 <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
                     <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text size="subtitle1" fontWeight="bold" $margin="20px 0 48px 0">
-                    나의 음악 취향 분석
-                </Text>
+                <S.TitleWrapper>
+                    <Text size="subtitle1" fontWeight="bold">
+                        나의 음악 노트
+                    </Text>
+                    <Image src={musicNote} width={2.4} $margin="0 0 0 3px"></Image>
+                </S.TitleWrapper>
                 <S.MystatisticWrapper>
                     <S.LikeBox>
                         <S.TextWrapper>
-                            <Text size="body1" fontWeight="bold">
+                            <Text size="body2" fontWeight="bold">
                                 {UserInfo && UserInfo.nickname}
                             </Text>
                             <Text size="body2" fontWeight="medium" $marginLeft="4px">
@@ -127,7 +182,8 @@ export default function MyStatisticsPage() {
                         </S.TextWrapperbottom>
                     </S.LikeBox>
                 </S.MystatisticWrapper>
-                <S.TextWrapper style={{ margin: "3rem 0 0 0" }}>
+
+                <S.TextWrapper style={{ margin: "4rem 0 0 0" }}>
                     <Text size="body1" fontWeight="bold">
                         {UserInfo && UserInfo.nickname}
                     </Text>
@@ -139,8 +195,20 @@ export default function MyStatisticsPage() {
                     언제 음악을 들을까요?
                 </Text>
 
-                {hasValidCounts ? (
+                {!isAllZeros && hasValidCounts ? (
                     <>
+                        <S.chartWrapper style={{ marginTop: "PX" }}>
+                            <Line data={lineData} options={lineOptions} />
+                        </S.chartWrapper>
+                        <S.TextWrapperbottom style={{ margin: "2rem 0 10px 0" }}>
+                            <Text size="subtitle1" fontWeight="bold" $margin="0 4px">
+                                {mostTime}
+                            </Text>
+                            <Text size="body2">사이에</Text>
+                        </S.TextWrapperbottom>
+                        <Text size="body2" $margin="0 0 64px 0">
+                            음악을 많이 듣고 계시네요.
+                        </Text>
                         <S.LabelWrapper>
                             {tagNameLabels &&
                                 tagNameLabels.map((tagname, index) => (
@@ -154,15 +222,19 @@ export default function MyStatisticsPage() {
                                     </S.Label>
                                 ))}
                         </S.LabelWrapper>
-                        <Pie data={piedata} options={pieoptions} />
-                        <S.TextWrapperbottom style={{ margin: "3rem 0 10px 0" }}>
-                            <S.Tag style={{ backgroundColor: tagColors[0] }}>{tagNameLabels[0]}</S.Tag>
+                        <S.chartWrapper>
+                            <Pie data={piedata} options={pieoptions} style={{ maxWidth: "270px", maxHeight: "270px" }} />
+                        </S.chartWrapper>
+                        <S.MystatisticWrapper>
+                            <S.TextWrapperbottom style={{ margin: "3rem 0 10px 0" }}>
+                                <S.Tag style={{ backgroundColor: tagColors[0] }}>{tagNameLabels[0]}</S.Tag>
 
-                            <Text size="body2">태그가 달린 음악을</Text>
-                        </S.TextWrapperbottom>
-                        <Text size="body2" $margin="0 0 10px 5px">
-                            가장 많이 들었어요.
-                        </Text>
+                                <Text size="body2">태그가 달린 음악을</Text>
+                            </S.TextWrapperbottom>
+                            <Text size="body2" $margin="0 0 36px 5px">
+                                가장 많이 들었어요.
+                            </Text>
+                        </S.MystatisticWrapper>
                     </>
                 ) : (
                     // 데이터가 없을 때 표시할 메시지

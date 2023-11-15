@@ -7,7 +7,7 @@
     margin: 0;
     padding: 0;
     border: 0;
-    font-family: "GmarketSans";
+    font-family: 'GmarketSans';
 }
 
 ol,
@@ -81,18 +81,23 @@ body {
     justify-content: center;
 }
 
-/* body {
-    background-image: linear-gradient(-30deg, #fbb7d4 0%, #a9d4ff 100%);
-    background-size: 200% 200%;
-    animation: gradientAnimation 4.5s linear infinite alternate;
-} */
-
 body {
+    /* background-image: url("../../HereHear/public/images/icon-Background.png"); */
+    /* background-image: url("../public//images/icon-BgBig.png"); */
+
+    background-image: linear-gradient(45deg,rgba(169, 212, 255, 0.4) ,rgba(254, 192, 235, 0.4), rgba(219, 203, 239, 0.4),rgba(255, 184, 183, 0.4));
+    background-size: 200% 200%;
+    background-attachment: fixed;
+    animation: gradientAnimation 6s linear infinite alternate;
+} 
+
+/* body {
     background-image: url("../public//images//icon-Background.png");
+>>>>>>> 34da92b6214bb1ee14d191412bea09a8b44ba5ca
     background-size: 400% 400%;
     background-position: 50% 40%;
     background-repeat: no-repeat;
-}
+} */
 
 #root {
     margin: auto;
@@ -129,10 +134,10 @@ body {
 
 @keyframes gradientAnimation {
     0% {
-        background-position: 10% 10%;
+        background-position: 50% 0%;
     }
     100% {
-        background-position: 90% 90%;
+        background-position:  50% 100%;
     }
 }
 
