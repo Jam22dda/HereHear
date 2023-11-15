@@ -50,7 +50,7 @@ export default function MusicPlay() {
 
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
-    console.log(musicPlay);
+    // console.log(musicPlay);
     const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
     const myId = mySignUpInfo.memberId;
     // console.log(myId == musicPlay.data.memberId);

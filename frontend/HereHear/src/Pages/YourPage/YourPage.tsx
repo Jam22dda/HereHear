@@ -41,7 +41,7 @@ export default function YourPage() {
     };
 
     const YourInfo = useGetYourinfo(Number(yourId));
-    console.log(YourInfo?.achievementId);
+    // console.log(YourInfo?.achievementId);
     const YourFollowing: FollowingType[] = useGetYourFollowing(yourId);
     const YourFollower: FollowingType[] = useGetYourFollower(yourId);
     const Following: FollowingType[] = useGetFollowing();
@@ -49,7 +49,7 @@ export default function YourPage() {
     const { mutate: FollowUser } = useFollow();
     const { mutate: unFollowUser } = useUnFollow();
     const YourAchievement = useGetYourAchievement(YourInfo?.achievementId);
-    console.log(YourAchievement);
+    // console.log(YourAchievement);
     useEffect(() => {
         if (Following && yourId) {
             // 팔로잉 목록에서 yourId와 일치하는 memberId 찾기

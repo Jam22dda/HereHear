@@ -35,12 +35,12 @@ export default function MyStatisticsPage() {
     const tagColors = ["#FFC0EC", "#BDDDFD", "#FFF0CB", "#96ebbc", "#F9D6D5"];
     const MyTagCount = useGetMyTagCount();
     const MyLikeCount = useGetMyLikeCount();
-    const HearTime = useGetHearTime();
+    // const HearTime = useGetHearTime();
     const UserInfo = useGetUserinfo();
 
     // console.log(HearTime, "HearTime나옴?");
     // console.log(MyTagCount, "마이태그 카운트");
-    console.log(HearTime, "HearTime나오나요?");
+    // console.log(HearTime, "HearTime나오나요?");
     // console.log(HearTime.time["18~21시"], "HearTime나오나요?");
 
     // interface hearTime {
