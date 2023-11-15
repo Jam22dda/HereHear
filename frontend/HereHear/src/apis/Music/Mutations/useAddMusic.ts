@@ -10,6 +10,8 @@ interface AddMusicResponse {
 }
 
 const useAddMusic = () => {
+    console.log('useAddMusic 탔다');
+
     return useMutation<AddMusicResponse, Error, AddMusicInfo>({
         mutationFn: addMusic,
         // onSuccess: (data) => {
