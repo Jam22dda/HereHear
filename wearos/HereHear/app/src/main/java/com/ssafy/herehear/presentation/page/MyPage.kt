@@ -196,9 +196,7 @@ fun MyPage(
             ) {
                 Card(
                     onClick = {
-                        navController.navigate(RouteType.ACHIEVEMENT.toString()) {
-                            popUpTo(0) { inclusive = true }
-                        }
+                        navController.navigate(RouteType.ACHIEVEMENT.toString())
                     },
                     modifier = Modifier.fillMaxWidth(0.7f),
                 ) {

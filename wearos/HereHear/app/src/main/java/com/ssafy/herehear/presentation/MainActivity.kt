@@ -6,12 +6,16 @@
 
 package com.ssafy.herehear.presentation
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,8 +34,8 @@ import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.ssafy.herehear.R
 import com.ssafy.herehear.presentation.data.AroundMusicDto
-import com.ssafy.herehear.presentation.data.MusicInfoDto
 import com.ssafy.herehear.presentation.data.GpsDto
+import com.ssafy.herehear.presentation.data.MusicInfoDto
 import com.ssafy.herehear.presentation.page.Landing
 import com.ssafy.herehear.presentation.page.MainMap
 import com.ssafy.herehear.presentation.page.MusicList
@@ -49,15 +53,34 @@ import com.ssafy.herehear.presentation.util.deletePersonalCodeFile
 import com.ssafy.herehear.presentation.util.getCurrentLocation
 import com.ssafy.herehear.presentation.util.readPersonalCodeFile
 import com.ssafy.herehear.presentation.util.writePersonalCodeFile
+import java.util.Calendar
 
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
+
+            val c: Calendar = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY, 8);
+            c.set(Calendar.MINUTE, 40);
+            c.set(Calendar.SECOND, 0);
+
+            val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+            val intent: Intent = Intent(this, AlertReceiver::class.java)
+            val pendingIntent: PendingIntent =
+                PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            if (c.before(Calendar.getInstance())) {
+                c.add(Calendar.DATE, 1);
+            }
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent)
+
             // 네비게이션 이동을 위한 nav controller
             navController = rememberSwipeDismissableNavController()
 
@@ -215,26 +238,8 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable(RouteType.SPOTIFY.toString()) {
-//                    val intent = Intent(Intent.ACTION_VIEW)
-//
-//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK // 필요한 플래그 추가
-//
-//                    val trackUri = "spotify:track:5wSaS7kjK9qwO1eRuBJzdz"
-//                    intent.data = Uri.parse(trackUri)
-//
-//                    intent.putExtra(
-//                        Intent.EXTRA_REFERRER,
-//                        Uri.parse("android-app://" + this@MainActivity.packageName)
-//                    )
-//
-//                    this@MainActivity.startActivity(intent)
-
-//                    val intent = this@MainActivity.packageManager.getLaunchIntentForPackage("com.spotify.music")
-//                    intent?.data = Uri.parse("spotify:track:3yS7jHZ8z5RpGnSASUZmGg")
-//                    intent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                    this@MainActivity.startActivity(intent)
-
-                    val intent = this@MainActivity.packageManager.getLaunchIntentForPackage("com.spotify.music")
+                    val intent =
+                        this@MainActivity.packageManager.getLaunchIntentForPackage("com.spotify.music")
                     intent?.data = Uri.parse("spotify:track:3yS7jHZ8z5RpGnSASUZmGg")
                     intent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     this@MainActivity.startActivity(intent)
@@ -252,4 +257,5 @@ class MainActivity : ComponentActivity() {
             // 라우팅 경로 등록 -- end
         }
     }
+
 }
