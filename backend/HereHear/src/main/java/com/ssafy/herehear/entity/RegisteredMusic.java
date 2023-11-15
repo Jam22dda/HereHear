@@ -47,12 +47,14 @@ public class RegisteredMusic {
     @Column(length = 10)
     private String releaseTime;
 
+    private String spotifyUri;
+
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createTime;
 
     @Builder
-    public RegisteredMusic(Member member, Double lng, Double lat, String comment, String subject, String singer, String albumImg, String releaseTime) {
+    public RegisteredMusic(Member member, Double lng, Double lat, String comment, String subject, String singer, String albumImg, String spotifyUri, String releaseTime) {
         this.member = member;
         this.lng = lng;
         this.lat = lat;
@@ -61,6 +63,7 @@ public class RegisteredMusic {
         this.singer = singer;
         this.albumImg = albumImg;
         this.releaseTime = releaseTime;
+        this.spotifyUri = spotifyUri;
     }
 
     public void updateRegisteredMusic(Boolean isDeleted) {
