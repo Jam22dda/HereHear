@@ -1,60 +1,33 @@
-import { Image } from "../../components/atoms/Image/Image";
-import OnBoarding1 from "../../assets/OnBoardingPage/onBoarding1.png";
-import OnBoarding2 from "../../assets/OnBoardingPage/onBoarding2.png";
-import OnBoarding3 from "../../assets/OnBoardingPage/onBoarding3.png";
-import OnBoarding4 from "../../assets/OnBoardingPage/onBoarding4.png";
-import OnBoarding5 from "../../assets/OnBoardingPage/onBoarding5.png";
-import OnBoarding6 from "../../assets/OnBoardingPage/onBoarding6.png";
-import OnBoarding7 from "../../assets/OnBoardingPage/onBoarding7.png";
-import OnBoarding8 from "../../assets/OnBoardingPage/onBoarding8.png";
-import OnBoarding9 from "../../assets/OnBoardingPage/onBoarding9.png";
-import OnBoarding10 from "../../assets/OnBoardingPage/onBoarding10.png";
-import OnBoarding11 from "../../assets/OnBoardingPage/onBoarding11.png";
-import OnBoarding12 from "../../assets/OnBoardingPage/onBoarding12.png";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import OnBoardingPage1 from "./OnBoardingPage1";
+import OnBoardingPage2 from "./OnBoardingPage2";
+import OnBoardingPage3 from "./OnBoardingPage3";
+import OnBoardingPage4 from "./OnBoardingPage4";
+import OnBoardingPage5 from "./OnBoardingPage5";
+import OnBoardingPage6 from "./OnBoardingPage6";
 
 export default function OnBoardingPage() {
-    const navigate = useNavigate();
-    const [currentImage, setCurrentImage] = useState<string>(OnBoarding1);
+    const [activatedNum, setActivatedNum] =
+        useState<keyof typeof PayOnlinePages>(1);
 
-    const handleImageClick = () => {
-        // 이미지를 순차적으로 변경합니다.
-        const imageSequence = [
-            OnBoarding1,
-            OnBoarding2,
-            OnBoarding3,
-            OnBoarding4,
-            OnBoarding5,
-            OnBoarding6,
-            OnBoarding7,
-            OnBoarding8,
-            OnBoarding9,
-            OnBoarding10,
-            OnBoarding11,
-            OnBoarding12,
-        ];
-
-        // 현재 이미지의 인덱스를 찾습니다.
-        const currentIndex = imageSequence.indexOf(currentImage);
-
-        // 마지막 이미지가 아니라면 다음 이미지로 변경합니다.
-        if (currentIndex >= 0 && currentIndex < imageSequence.length - 1) {
-            setCurrentImage(imageSequence[currentIndex + 1]);
-        } else if (currentIndex === imageSequence.length - 1) {
-            // 마지막 이미지(OnBoarding12)를 클릭하면 /core로 이동합니다.
-            navigate("/core");
+    const handleNextPage = () => {
+        if (activatedNum < 6) {
+            setActivatedNum(
+                (prevNum) => (prevNum + 1) as keyof typeof PayOnlinePages
+            );
+        } else if (activatedNum === 6) {
+            setActivatedNum(6 as keyof typeof PayOnlinePages);
         }
     };
 
-    return (
-        <div id="display">
-            <Image
-                src={currentImage}
-                width={100}
-                $unit="%"
-                onClick={handleImageClick}
-            />
-        </div>
-    );
+    const PayOnlinePages = {
+        1: <OnBoardingPage1 onNextPage={handleNextPage} />,
+        2: <OnBoardingPage2 onNextPage={handleNextPage} />,
+        3: <OnBoardingPage3 onNextPage={handleNextPage} />,
+        4: <OnBoardingPage4 onNextPage={handleNextPage} />,
+        5: <OnBoardingPage5 onNextPage={handleNextPage} />,
+        6: <OnBoardingPage6 />,
+    };
+
+    return <div id="display">{PayOnlinePages[activatedNum]}</div>;
 }
