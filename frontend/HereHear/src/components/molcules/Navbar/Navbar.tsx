@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./Navbar.styles";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "../../../components/atoms/Image/Image";
 
 // 네비바 비활성화 이미지
@@ -10,12 +10,18 @@ import iconMusicplus from "../../../assets/Navbar/icon-musicplus.png";
 import iconStatistics from "../../../assets/Navbar/icon-statistics.png";
 import iconMypage from "../../../assets/Navbar/icon-mypage.png";
 
+import iconClickedMap from "../../../assets/Navbar/icon-clicked-map.png";
+import iconClickedMusiclist from "../../../assets/Navbar/icon-clicked-musiclist.png";
+import iconClickedMusicplus from "../../../assets/Navbar/icon-musicplus.png";
+import iconClickedStatistics from "../../../assets/Navbar/icon-clicked-statistics.png";
+import iconClickedMypage from "../../../assets/Navbar/icon-clicked-mypage.png";
+
 const navBarInfo = [
-    { src: iconMap, path: "/core" },
-    { src: iconMusiclist, path: "/listenedMusic" },
-    { src: iconMusicplus, path: "/registMusic" },
-    { src: iconStatistics, path: "/statistic" },
-    { src: iconMypage, path: "/mypage" },
+    { src: [iconMap, iconClickedMap], path: "/core" },
+    { src: [iconMusiclist, iconClickedMusiclist], path: "/listenedMusic" },
+    { src: [iconMusicplus, iconClickedMusicplus], path: "/registMusic" },
+    { src: [iconStatistics, iconClickedStatistics], path: "/statistic" },
+    { src: [iconMypage, iconClickedMypage], path: "/mypage" },
 ];
 
 interface NavbarProps {
@@ -24,6 +30,8 @@ interface NavbarProps {
 
 export default function Navbar({ active }: NavbarProps) {
     const navigate = useNavigate();
+    const location = useLocation();
+    const nowPath = location.pathname;
 
     const navigatePage = (path: string) => {
         navigate(path);
@@ -36,7 +44,15 @@ export default function Navbar({ active }: NavbarProps) {
                     return (
                         <Image
                             key={path}
-                            src={src}
+                            src={
+                                path === "/core"
+                                    ? nowPath === path
+                                        ? src[1]
+                                        : src[0]
+                                    : nowPath.substring(0, path.length) === path
+                                    ? src[1]
+                                    : src[0]
+                            }
                             onClick={() => navigatePage(path)}
                             width={path === "/registMusic" ? 64 : 52}
                             $unit="px"
