@@ -41,36 +41,6 @@ ChartJS.register(
     PieController,
     ChartDataLabels
 );
-
-// const shadowPlugin: Plugin<"bar"> = {
-//     // 'bar' 타입을 명시적으로 제공합니다.
-//     id: "shadowPlugin",
-//     afterDraw: (chart) => {
-//         const ctx = chart.ctx;
-//         chart.data.datasets.forEach((dataset, i) => {
-//             const meta = chart.getDatasetMeta(i);
-//             if (!meta.hidden) {
-//                 meta.data.forEach((element) => {
-//                     // 그림자 스타일 설정
-//                     ctx.save(); // 현재 상태를 저장합니다.
-//                     ctx.shadowColor = "rgba(0,0,0,0.2)";
-//                     ctx.shadowBlur = 7;
-//                     ctx.shadowOffsetX = 5;
-//                     ctx.shadowOffsetY = 5;
-//                     ctx.fillStyle = dataset.backgroundColor[index]; // 원본 데이터셋의 배경색을 사용합니다.
-//                     ctx.fillRect(
-//                         element.x,
-//                         element.base,
-//                         element.width,
-//                         element.y - element.base
-//                     ); // element의 사각형을 그립니다.
-//                     ctx.restore(); // 저장된 상태를 복구하여 그림자를 다른 요소에 영향이 가지 않도록 합니다.
-//                 });
-//             }
-//         });
-//     },
-// };
-
 export default function StatisticsPage() {
     const navigate = useNavigate();
 
@@ -81,7 +51,7 @@ export default function StatisticsPage() {
     const LikeStatistics = useGetLikeStatistics();
     const TagStatistics = useGetTagStatistics();
     const ListenStatistics = useGetListenStatistics();
-    console.log(LikeStatistics, "LikeStatistics");
+    // console.log(LikeStatistics, "LikeStatistics");
     // console.log(TagStatistics);
     // console.log(ListenStatistics);
 
@@ -253,12 +223,12 @@ export default function StatisticsPage() {
                 </CircleButton>
                 <S.TitleWrapper>
                     <Text size="subtitle1" fontWeight="bold">
-                        {month} {week}주차 차트
+                        {month} {week - 1}주차 차트
                     </Text>
                     <Image src={trophy} width={2.5} $margin="0 0 0 3px"></Image>
                 </S.TitleWrapper>
                 <Text size="body2" $margin="0 0 8px 0">
-                    이번 주 가장 많이 공감을 받은 노래는
+                    저번 주 가장 많이 공감을 받은 노래는
                 </Text>
                 <S.TextWrapper>
                     <Text size="body1" fontWeight="bold">
@@ -343,7 +313,7 @@ export default function StatisticsPage() {
                 </S.BoxWrapper>
                 <S.TextWrapper style={{ margin: "60px 0 10px 0" }}>
                     <Text size="body2" style={{ lineHeight: "36px" }}>
-                        이번 주, 사람들은
+                        저번 주, 사람들은
                     </Text>
                     <S.Tag style={{ backgroundColor: tagColors[0] }}>
                         {tagNameLabels[0]}
@@ -378,7 +348,7 @@ export default function StatisticsPage() {
                 </S.LabelWrapper2>
 
                 <Text size="body2" $margin="76px 0 8px 0">
-                    이번 주 가장 많이 클릭 된 음악은
+                    저번 주 가장 많이 클릭 된 음악은
                 </Text>
                 <S.TextWrapper>
                     <Text size="body1" fontWeight="bold">
