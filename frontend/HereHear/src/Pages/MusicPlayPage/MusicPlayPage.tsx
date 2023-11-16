@@ -6,6 +6,7 @@ import { Text } from "../../components/atoms/Text/Text.styles";
 import iconBack from "../../assets/CircleButton/icon-back.png";
 import { Image } from "../../components/atoms/Image/Image";
 import AlbumCover from "../../components/atoms/AlbumCover/AlbumCover";
+import Basket from "../../assets/CircleButton/icon-basket.png";
 import Button from "../../components/atoms/Button/Button";
 import Message from "../../components/atoms/Message/Message";
 import emptyHeart from "../../assets/CircleButton/icon-emptyheart.png";
@@ -93,17 +94,14 @@ export default function MusicPlay() {
 
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
-    console.log(musicPlay);
+    // console.log(musicPlay);
     const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
     const myId = mySignUpInfo.memberId;
 
     // 유튜브 리스트 추가
     const { mutate: postYoutubeListMutate } = usePostYoutubeList();
 
-    const Search =
-        musicPlay && musicPlay.data
-            ? musicPlay.data.singer + " " + musicPlay.data.subject
-            : "";
+    const Search = musicPlay && musicPlay.data ? musicPlay.data.singer + " " + musicPlay.data.subject : "";
 
     const youtubeHandler = (Search: string) => {
         postYoutubeListMutate(Search);
@@ -126,47 +124,23 @@ export default function MusicPlay() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigate(-1)}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
                 <S.MusicPlayWrapper>
                     <S.SelectTagWrapper>
                         {occasionName.map((item: string, index: number) => (
-                            <Button
-                                option="unfollow"
-                                $shadow=""
-                                size="mediumplus"
-                                $margin="5px"
-                                $width="80px"
-                                key={index}
-                                tag={item}
-                            ></Button>
+                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item}></Button>
                         ))}
                     </S.SelectTagWrapper>
                     <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
                     {myId !== parseInt(musicPlay.data.memberId, 10) && (
                         <CircleButton
-                            option={
-                                isLiked ? "pinkActivated" : "pinkDeActivated"
-                            }
+                            option={isLiked ? "pinkActivated" : "pinkDeActivated"}
                             style={{ marginLeft: "17rem" }}
                             onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
                         >
-                            <Image
-                                src={isLiked ? Heart : emptyHeart}
-                                width={23}
-                                height={21}
-                                $unit="px"
-                            ></Image>
+                            <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
                         </CircleButton>
                     )}
                     <Text size="body2" fontWeight="medium" $marginTop="10px">
@@ -191,21 +165,11 @@ export default function MusicPlay() {
                             src={iconPlayer}
                             width={6}
                             style={{
-                                filter:
-                                    UserInfo &&
-                                    (UserInfo.provider === "google" ||
-                                        UserInfo.provider === "kakao")
-                                        ? "grayscale(100%)"
-                                        : "none",
+                                filter: UserInfo && (UserInfo.provider === "google" || UserInfo.provider === "kakao") ? "grayscale(100%)" : "none",
                             }}
                             onClick={() => {
-                                if (
-                                    UserInfo &&
-                                    UserInfo.provider === "spotify"
-                                ) {
-                                    navigatePage(
-                                        `/musicPlayer/${musicPlay.data.registeredMusicId}`
-                                    );
+                                if (UserInfo && UserInfo.provider === "spotify") {
+                                    navigatePage(`/musicPlayer/${musicPlay.data.registeredMusicId}`);
                                 }
                             }}
                         ></Image>
@@ -214,33 +178,20 @@ export default function MusicPlay() {
                             width={6}
                             onClick={() => {
                                 registMusicHistory();
-                                const subjectEncoded = encodeURIComponent(
-                                    musicPlay.data.subject
-                                );
-                                const singerEncoded = encodeURIComponent(
-                                    musicPlay.data.singer
-                                );
+                                const subjectEncoded = encodeURIComponent(musicPlay.data.subject);
+                                const singerEncoded = encodeURIComponent(musicPlay.data.singer);
                                 const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
                                 window.location.href = youtubeSearchUrl;
                             }}
                         ></Image>
                         <Image
-                            src={iconBasket}
-                            width={5.5}
-                            height={5.5}
+                            src={Basket}
+                            width={6}
                             style={{
-                                filter:
-                                    UserInfo &&
-                                    (UserInfo.provider === "spotify" ||
-                                        UserInfo.provider === "kakao")
-                                        ? "grayscale(100%)"
-                                        : "none",
+                                filter: UserInfo && (UserInfo.provider === "spotify" || UserInfo.provider === "kakao") ? "grayscale(100%)" : "none",
                             }}
                             onClick={() => {
-                                if (
-                                    UserInfo &&
-                                    UserInfo.provider === "google"
-                                ) {
+                                if (UserInfo && UserInfo.provider === "google") {
                                     youtubeHandler(Search);
                                 }
                                 toggleModal();

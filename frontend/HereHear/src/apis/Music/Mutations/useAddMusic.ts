@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
-import { AddMusicInfo } from '../../../types/music'; //API요청의 형태를 지정
-import { addMusic } from '../musicAPI';
+import { useMutation } from "@tanstack/react-query";
+import { AddMusicInfo } from "../../../types/music"; //API요청의 형태를 지정
+import { addMusic } from "../musicAPI";
 
 interface AddMusicResponse {
     // useMutation에서 사용되며, API 응답의 형태를 지정
@@ -10,7 +10,7 @@ interface AddMusicResponse {
 }
 
 const useAddMusic = () => {
-    console.log('useAddMusic 탔다');
+    // console.log('useAddMusic 탔다');
 
     return useMutation<AddMusicResponse, Error, AddMusicInfo>({
         mutationFn: addMusic,
