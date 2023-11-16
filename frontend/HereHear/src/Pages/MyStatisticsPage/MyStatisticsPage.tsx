@@ -2,6 +2,7 @@ import * as S from "./MyStatisticsPage.styles";
 import React, { useState, useEffect } from "react";
 import { Text } from "../../components/atoms/Text/Text.styles";
 import { Image } from "../../components/atoms/Image/Image";
+import Heart from "../../assets/CircleButton/icon-heart.png";
 import musicNote from "../../assets/Statistic/icon-musicNote.png";
 import CircleButton from "../../components/atoms/CircleButton/CircleButton";
 import { useNavigate } from "react-router-dom";
@@ -12,10 +13,13 @@ import { useGetMyLikeCount } from "../../apis/Mystatistic/Quries/useGetMyLickCou
 import { useGetHearTime } from "../../apis/Mystatistic/Quries/useGetHearTime";
 import { useGetMyTagCount } from "../../apis/Mystatistic/Quries/useGetMyTagCount";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
+import { useGetYourinfo } from "../../apis/Mypage/Quries/useGetYourInfo";
 import { Pie } from "react-chartjs-2";
 import { Line } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-// import { color } from "chart.js/helpers";
+import { useRecoilValue } from "recoil";
+import { YourIdAtom } from "../../states/MypageAtoms";
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -32,22 +36,42 @@ import {
 } from "chart.js";
 
 ChartJS.register(CategoryScale, LineElement, LinearScale, BarElement, PointElement, Title, Tooltip, Legend, ArcElement, PieController, ChartDataLabels);
+
 export default function MyStatisticsPage() {
     const navigate = useNavigate();
 
     const tagColors = ["#FFC0EC", "#BDDDFD", "#FFF0CB", "#96ebbc", "#F9D6D5"];
-    const MyTagCount = useGetMyTagCount();
-    const MyLikeCount = useGetMyLikeCount();
-    const HearTime = useGetHearTime();
+
     // console.log(HearTime);
     const UserInfo = useGetUserinfo();
+    const yourId = useRecoilValue(YourIdAtom);
+    const YourInfo = useGetYourinfo(Number(yourId));
+    // console.log(YourInfo.nickname, "YourInfo?");
 
-    // console.log(HearTime.mostTime, "HearTime나옴?");
+    //userId가 있으면넣어서 호출, 없으면 그냥 출력
+    const MyTagCount = useGetMyTagCount(yourId);
+    const MyLikeCount = useGetMyLikeCount(yourId);
+    const HearTime = useGetHearTime(yourId);
+    // console.log(HearTime, "너의 HearTime??");
+
+    const [yourInfo, setYourInfo] = useState(null); // YourInfo 데이터 상태
+    const [isLoadingYourInfo, setIsLoadingYourInfo] = useState(true); // 로딩 상태
+
+    useEffect(() => {
+        if (YourInfo && yourId && yourId !== 0) {
+            setYourInfo(YourInfo);
+            setIsLoadingYourInfo(false);
+        } else {
+            setIsLoadingYourInfo(true);
+        }
+    }, [YourInfo, yourId]);
 
     const [timeLabels, setTimeLabels] = useState<string[]>([]); //시간대별
     const [timeValues, setTimeValues] = useState<number[]>([]); //시간대별
     const mostTime = HearTime ? HearTime.mostTime : "";
+    // console.log(mostTime, "mostTime 가장 많은 시간");
     const isAllZeros = timeValues.every((value) => value === 0);
+
     useEffect(() => {
         if (HearTime && HearTime.time) {
             const timeEntries = Object.entries(HearTime.time)
@@ -56,7 +80,8 @@ export default function MyStatisticsPage() {
 
             const timeLabels = timeEntries.map((entry) => entry.time);
             const timeValues = timeEntries.map((entry) => entry.count);
-            // console.log(timeLabels);
+            // console.log(timeLabels, "timeLabels 라벨");
+            // console.log(timeValues, "timeValues 벨류");
             setTimeLabels(timeLabels); // 새로 추가된 상태
             setTimeValues(timeValues); // 새로 추가된 상태
         } else {
@@ -153,17 +178,18 @@ export default function MyStatisticsPage() {
                 <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
                     <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
+
                 <S.TitleWrapper>
                     <Text size="subtitle1" fontWeight="bold">
                         나의 음악 노트
                     </Text>
                     <Image src={musicNote} width={2.4} $margin="0 0 0 3px"></Image>
                 </S.TitleWrapper>
-                <S.MystatisticWrapper>
+                <S.chartWrapper>
                     <S.LikeBox>
                         <S.TextWrapper>
                             <Text size="body2" fontWeight="bold">
-                                {UserInfo && UserInfo.nickname}
+                                {yourId && yourId !== 0 ? (YourInfo ? YourInfo.nickname : "") : UserInfo ? UserInfo.nickname : ""}
                             </Text>
                             <Text size="body2" fontWeight="medium" $marginLeft="4px">
                                 님이 올린 노래가
@@ -177,15 +203,20 @@ export default function MyStatisticsPage() {
                                 {MyLikeCount}
                             </Text>
                             <Text size="body2" fontWeight="medium">
-                                개의 좋아요를 받았어요.
-                            </Text>
+                                개의 좋아요를 받았어요
+                            </Text>{" "}
+                            <S.HeartContainer>
+                                <Image src={Heart} width={25} $unit="px" style={{ position: "relative" }} />
+                                <S.AnimatedHeart src={Heart} alt="Heart" delay={0} />
+                                <S.AnimatedHeart src={Heart} alt="Heart" delay={0.2} /> <S.AnimatedHeart src={Heart} alt="Heart" delay={0.4} />{" "}
+                            </S.HeartContainer>
                         </S.TextWrapperbottom>
                     </S.LikeBox>
-                </S.MystatisticWrapper>
+                </S.chartWrapper>
 
                 <S.TextWrapper style={{ margin: "4rem 0 0 0" }}>
                     <Text size="body1" fontWeight="bold">
-                        {UserInfo && UserInfo.nickname}
+                        {yourId && yourId !== 0 ? (YourInfo ? YourInfo.nickname : "") : UserInfo ? UserInfo.nickname : ""}
                     </Text>
                     <Text size="body2" fontWeight="medium" $marginLeft="4px">
                         님은
@@ -250,15 +281,6 @@ export default function MyStatisticsPage() {
                         </S.NoRecordWrapper>
                     </>
                 )}
-
-                {/* <S.readyPageWrapper>
-                    <Text $textAlign="center" $margin="20px 0 ">
-                        정확한 통계 수집을 위해
-                        <br />
-                        아직 준비중이에요!
-                    </Text>
-                    <Image width={10} src={monziSleep}></Image>
-                </S.readyPageWrapper> */}
             </div>
         </div>
     );

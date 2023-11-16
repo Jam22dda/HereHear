@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 // export const Profile = styled.div`
 //     position: relative;
@@ -84,8 +84,8 @@ export const NoRecordWrapper = styled.div`
 `;
 
 export const LikeBox = styled.div`
-    height: 100px;
-    width: 320px;
+    height: 120px;
+    width: 360px;
     display: flex;
     flex-direction: column;
     border-radius: 30px;
@@ -103,31 +103,38 @@ export const chartWrapper = styled.div`
     width: 100%;
 `;
 
-// export const chartSize = styled.div`;
-//     width: 200px;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-// `;
+export const chartSize = styled.div`
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 
-// const usingTimeValue = [0, 2, 5, 4, 3];
-// const usingTimeKey = ["0~3시", "3~6시", "6~9시", "9~12시", "12~15시"];
+export const HeartContainer = styled.div`
+    position: relative;
+    width: 25px;
+    height: 25px;
+`;
 
-// const lineData = {
-//     labels: usingTimeKey, // x축 라벨
-//     datasets: [{
-//         label: 'Dataset 1',
-//         data: usingTimeValue, // y축 데이터
-//         fill: false,
-//         borderColor: 'rgb(75, 192, 192)',
-//         tension: 0.1
-//     }]
-// };
-
-// const lineOptions = {
-//     responsive: true,
-//     // 추가 옵션 설정
-// };
-
-// // 컴포넌트에서 Line 차트 렌더링
-// <Line data={lineData} options={lineOptions} />
+const floatHeart = keyframes`
+  0% {
+    transform: translate(-50%, -50%); /* 중심에서 시작 */
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, calc(-50px - 100%)); /* 위로 50px 만큼 + 이미지 높이만큼 추가 이동 */
+    opacity: 0;
+  }
+`;
+interface AnimatedHeartProps {
+    delay: number;
+}
+export const AnimatedHeart = styled.img<AnimatedHeartProps>`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ${floatHeart} 2s ease-in-out infinite; /* infinite를 추가하여 무한 반복 */
+    animation-delay: ${(props) => props.delay}s; /* delay를 설정하여 각 하트가 다른 시간에 시작하도록 함 */
+    width: 25px;
+`;
