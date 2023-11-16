@@ -60,7 +60,7 @@ export default function MyPage() {
     };
 
     const UserInfo = useGetUserinfo();
-    console.log(UserInfo);
+    // console.log(UserInfo);
     const Follower = useGetFollower();
     const Following = useGetFollowing();
     const MyAchievement = useGetMyAchievement(UserInfo?.achievementId);
