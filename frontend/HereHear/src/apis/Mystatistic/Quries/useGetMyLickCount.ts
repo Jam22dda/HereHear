@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMyLikeCount } from "../myStatisticAPI";
 
-const useGetMyLikeCount = () => {
+const useGetMyLikeCount = (userId: number) => {
     const { data: MyLickCount } = useQuery({
-        queryKey: ["MyLikeCount"],
-        queryFn: getMyLikeCount,
+        queryKey: ["MyLikeCount", userId],
+        queryFn: () => getMyLikeCount(userId),
     });
     return MyLickCount;
 };

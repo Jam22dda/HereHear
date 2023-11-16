@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Message = styled.div`
-    height: 135px;
+    height: auto;
     width: 300px;
     border-radius: 30px;
     margin: 32px 0;
@@ -13,7 +13,7 @@ const Message = styled.div`
 `;
 
 const WriterWrapper = styled.div`
-    margin-top: auto;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
