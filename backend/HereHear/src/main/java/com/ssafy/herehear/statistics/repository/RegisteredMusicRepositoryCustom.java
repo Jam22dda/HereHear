@@ -6,4 +6,6 @@ import java.util.List;
 public interface RegisteredMusicRepositoryCustom {
     List<TagResDto> findAllTagsCountByMemberId(Long memberId);
     List<Integer> findAllTimeByMemberId(Long memberId);
+
+    List<Integer> findAllTimeHistoryByMemberId(Long memberId);
 }
