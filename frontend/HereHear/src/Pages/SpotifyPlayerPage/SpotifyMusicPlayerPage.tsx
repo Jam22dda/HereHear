@@ -144,7 +144,7 @@ export default function SpotifyMusicPlayer() {
     }, [musicPlay, spotifyAccessToken]);
 
     useEffect(() => {
-        window.location.reload();
+        // window.location.reload();
         const interval = setInterval(() => {
             if (!paused) {
                 setTimeMs(timeMs + 1000);
