@@ -169,6 +169,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public List<FollowerResDto> getFollowingByTargetIdList(Long memberId, Long targetId) {
         return followRepository.findByFollowingMemberId(targetId).stream()
                 .map(follow -> {
@@ -180,6 +181,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void follow(Long memberId, Long followingMemberId) {
         Member findMember = MemberUtil.findMember(memberId);
         MemberUtil.findMember(followingMemberId);
@@ -194,6 +196,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void unfollow(Long memberId, Long followingMemberId) {
         MemberUtil.findMember(memberId);
         MemberUtil.findMember(followingMemberId);
@@ -205,6 +208,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public boolean checkNickname(String nickname) {
         return memberRepository.findByNickname(nickname).isEmpty();
     }
