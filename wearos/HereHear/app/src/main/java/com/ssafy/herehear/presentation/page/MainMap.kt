@@ -65,7 +65,7 @@ fun MainMap(
                 LatLng(
                     gpsState.value.latitude,
                     gpsState.value.longitude
-                ), 15f
+                ), 12f
             )
         )
     }
@@ -110,7 +110,7 @@ fun MainMap(
                     gpsState.value.latitude,
                     gpsState.value.longitude
                 ),
-                radius = 500.0, // 원의 반경을 미터 단위로 설정
+                radius = 2000.0, // 원의 반경을 미터 단위로 설정
                 fillColor = Color.Blue.copy(alpha = 0.1f), // 원 안쪽 색상과 투명도
                 strokeColor = Color.Blue, // 원 테두리 색상
                 strokeWidth = 1f, // 원 테두리 굵기
