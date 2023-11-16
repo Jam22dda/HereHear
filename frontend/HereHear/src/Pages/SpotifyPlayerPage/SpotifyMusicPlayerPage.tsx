@@ -89,7 +89,7 @@ export default function SpotifyMusicPlayer() {
                 });
 
                 inPlayer.addListener("ready", ({ device_id }) => {
-                    console.log("Ready with Device ID", device_id);
+                    // console.log("Ready with Device ID", device_id);
 
                     // 음악 재생 등록요청
                     axios({
@@ -106,15 +106,15 @@ export default function SpotifyMusicPlayer() {
                         },
                     })
                         .then(function (response) {
-                            console.log("play SUCCESS");
+                            console.log("Spotify player SUCCESS");
                         })
                         .catch(function (error) {
-                            console.log("play ERROR");
+                            console.log("Spotify player ERROR");
                         });
                 });
 
                 inPlayer.addListener("not_ready", ({ device_id }) => {
-                    console.log("Device ID has gone offline", device_id);
+                    // console.log("Device ID has gone offline", device_id);
                 });
 
                 inPlayer.addListener(
@@ -125,10 +125,10 @@ export default function SpotifyMusicPlayer() {
                         paused,
                         track_window: { current_track },
                     }) => {
-                        console.log("Position in Song", position);
-                        console.log("Duration of Song", duration);
-                        console.log("Paused", paused);
-                        console.log("Currently Playing", current_track);
+                        // console.log("Position in Song", position);
+                        // console.log("Duration of Song", duration);
+                        // console.log("Paused", paused);
+                        // console.log("Currently Playing", current_track);
                         setTimeMs(position);
                         setDurationMs(duration);
                         setActive(true);
