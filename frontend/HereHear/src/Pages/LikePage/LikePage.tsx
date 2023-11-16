@@ -139,13 +139,13 @@ export default function LikePage() {
                     : YourLikeMusic &&
                       YourLikeMusic.map(
                           (item: LikeMusicType, index: number) => (
-                              <S.LikeItemWrapper key={index}>
+                              <S.LikeYourItemWrapper key={index}>
                                   <MusicItem
                                       src={item.albumImg}
                                       songtitle={item.subject}
                                       artist={item.singer}
                                   />
-                              </S.LikeItemWrapper>
+                              </S.LikeYourItemWrapper>
                           )
                       )}
             </div>
