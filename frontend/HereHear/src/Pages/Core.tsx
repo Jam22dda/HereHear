@@ -547,7 +547,14 @@ export default function Core() {
                 <S.ClockOuter>
                     <MapClock onClick={onClickMent}></MapClock>
                     {showButton && (
-                        <Button $width="11rem" $height="4rem" size="small" style={{ padding: "10px" }} option="tag_plus">
+                        <Button
+                            option="tag_plus"
+                            $backgroundColor="rgba(254, 248, 246, 0.8)"
+                            $width="11.6rem"
+                            $height="4rem"
+                            size="small"
+                            style={{ padding: "10px" }}
+                        >
                             {`${getCurrentTimeRange()} 사이에 등록된 노래가 지도에 표시돼요.`}
                         </Button>
                     )}
