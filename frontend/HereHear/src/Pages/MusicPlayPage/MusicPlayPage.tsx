@@ -21,6 +21,9 @@ import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
 import iconPlayer from "../../assets/MusicPlay/icon-player.png";
 import iconBasket from "../../assets/MusicPlay/icon-basket.png";
 import { usePostYoutubeList } from "../../apis/Music/Mutations/usePostYoutubeList";
+import Modal from "../../components/atoms/Modal/Modal";
+import { ModalBg } from "../../components/atoms/Modal/Modal.styles";
+import monzi from "../../../public/images/monzi-hippop.png";
 
 export default function MusicPlay() {
     const UserInfo = useGetUserinfo();
@@ -33,6 +36,12 @@ export default function MusicPlay() {
     const navigate = useNavigate();
     const navigatePage = (path: string) => {
         navigate(path);
+    };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalOpen((prev) => !prev);
     };
 
     //좋아요 API
@@ -185,11 +194,28 @@ export default function MusicPlay() {
                                 if (UserInfo && UserInfo.provider === "google") {
                                     youtubeHandler(Search);
                                 }
+                                toggleModal();
                             }}
                         ></Image>
                     </S.PlayBtn>
                 </S.MusicPlayWrapper>
             </div>
+            {isModalOpen && (
+                <ModalBg>
+                    <Modal toggleModal={() => toggleModal()}>
+                        <S.ModalWrapper>
+                            <Image src={monzi} width={150} $unit="px"></Image>
+                            <Text $margin="20px 0 0 0">유튜브 재생목록에</Text>
+                            <Text $margin="0 0 20px 0">
+                                노래가 추가되었습니다!
+                            </Text>
+                            <Button $width="100px" onClick={toggleModal}>
+                                확인
+                            </Button>
+                        </S.ModalWrapper>
+                    </Modal>
+                </ModalBg>
+            )}
         </div>
     );
 }
