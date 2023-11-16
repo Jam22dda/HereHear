@@ -1,8 +1,9 @@
 import { instance } from "../instance";
 
-const getMyLikeCount = async () => {
+const getMyLikeCount = async (userId: number) => {
     try {
-        const response = await instance.get("/statistics/likecount");
+        const url = userId ? `/statistics/likecount/${userId}` : "/statistics/likecount";
+        const response = await instance.get(url);
         return response.data.data;
     } catch (error) {
         console.error("Error getMyLikeCount", error);
@@ -10,9 +11,10 @@ const getMyLikeCount = async () => {
     }
 };
 
-const getHearTime = async () => {
+const getHearTime = async (userId: number) => {
     try {
-        const response = await instance.get("/statistics/heartime");
+        const url = userId ? `/statistics/heartime/${userId}` : "/statistics/heartime";
+        const response = await instance.get(url);
         return response.data.data;
     } catch (error) {
         console.error("Error getHearTime", error);
@@ -20,9 +22,10 @@ const getHearTime = async () => {
     }
 };
 
-const getMyTagCount = async () => {
+const getMyTagCount = async (userId?: number) => {
     try {
-        const response = await instance.get("/statistics/tags");
+        const url = userId ? `/statistics/tags/${userId}` : "/statistics/tags";
+        const response = await instance.get(url);
         return response.data.data.tagResDtoList;
         // console.log(response.data.data.tagResDtoList, "response.data.data.tagResDtoList");
     } catch (error) {

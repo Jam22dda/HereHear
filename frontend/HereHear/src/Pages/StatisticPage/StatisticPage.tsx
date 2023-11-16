@@ -121,7 +121,7 @@ export default function StatisticsPage() {
             : [];
 
     const likeColors = ["#FFC0EC", "#FFF0CB", "#BDDDFD", "#F9D6D5"];
-    const tagColors = ["#FFC0EC", "#BDDDFD", "#FFF0CB", "#96ebbc", "#F9D6D5"];
+    const tagColors = ["#96ebbc", "#BDDDFD", "#FFF0CB", "#FFC0EC", "#F9D6D5"];
 
     const data = {
         labels: musicLabels,
@@ -343,7 +343,7 @@ export default function StatisticsPage() {
                 </S.BoxWrapper>
                 <S.TextWrapper style={{ margin: "60px 0 10px 0" }}>
                     <Text size="body2" style={{ lineHeight: "36px" }}>
-                        많은 사람들이
+                        이번 주, 사람들은
                     </Text>
                     <S.Tag style={{ backgroundColor: tagColors[0] }}>
                         {tagNameLabels[0]}
@@ -353,7 +353,7 @@ export default function StatisticsPage() {
                     </Text>
                 </S.TextWrapper>
                 <Text size="body2" $margin="0 0 8px 0">
-                    음악과 함께 해요
+                    음악을 가장 많이 찾았어요
                 </Text>
                 <S.chartWrapper>
                     <Pie
