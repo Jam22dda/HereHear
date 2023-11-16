@@ -37,3 +37,11 @@ export const ProgressBar = styled.div<ProgressBarProps>`
     border-radius: 5px;
     width: ${(props) => props.width}%;
 `;
+
+export const ModalWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+`;
