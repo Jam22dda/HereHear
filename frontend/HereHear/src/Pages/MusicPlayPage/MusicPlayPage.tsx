@@ -124,7 +124,7 @@ export default function MusicPlay() {
     return (
         <div id="display">
             <div className="container">
-                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                <CircleButton option="default2" size="medium" onClick={() => navigate('/core')}>
                     <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
                 <S.MusicPlayWrapper>
