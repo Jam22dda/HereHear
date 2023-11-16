@@ -51,18 +51,14 @@ export default function Achievement() {
     const MyAchievementList = useGetAchievementList();
     const YourAchievement = useGetYourAchievement(yourId);
     const MyAchievement = useRecoilValue(MyAchievementAtom);
-    const [modalContent, setModalContent] = useState<AchievementType | null>(
-        null
-    );
+    const [modalContent, setModalContent] = useState<AchievementType | null>(null);
     const { mutate: PutAchievementMutate } = usePutAchievement();
 
     const handlePutAchievement = (achievementId: achievementId) => {
         PutAchievementMutate(achievementId);
     };
 
-    const [selectedItem, setSelectedItem] = useState(
-        MyAchievement.achievementId
-    );
+    const [selectedItem, setSelectedItem] = useState(MyAchievement.achievementId);
 
     const handleItemClick = (idx: number) => {
         if (idx === selectedItem) {
@@ -82,175 +78,109 @@ export default function Achievement() {
     const totalPages = Math.ceil(MyAchievementList?.length / itemsPerPage);
     const goToPage = (pageNumber: number) => setCurrentPage(pageNumber);
 
-    const currentItems = Array.isArray(MyAchievementList)
-        ? MyAchievementList.slice(
-              (currentPage - 1) * itemsPerPage,
-              currentPage * itemsPerPage
-          )
-        : [];
+    const currentItems = Array.isArray(MyAchievementList) ? MyAchievementList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) : [];
 
-    const yourCurrentItems = Array.isArray(YourAchievement)
-        ? YourAchievement.slice(
-              (currentPage - 1) * itemsPerPage,
-              currentPage * itemsPerPage
-          )
-        : [];
+    const yourCurrentItems = Array.isArray(YourAchievement) ? YourAchievement.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) : [];
 
     return (
         <div id="display">
             <div className="container">
-                <CircleButton
-                    option="default2"
-                    size="medium"
-                    onClick={() => navigate(-1)}
-                >
-                    <Image
-                        src={iconBack}
-                        width={10}
-                        height={18}
-                        $unit="px"
-                    ></Image>
+                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
+                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
                 </CircleButton>
-                <Text
-                    size="subtitle1"
-                    fontWeight="bold"
-                    $margin="30px 0 50px 0"
-                >
+                <Text size="subtitle1" fontWeight="bold" $margin="30px 0 50px 0">
                     뱃지
                 </Text>
                 <S.AchievementPageWrapper>
                     <S.AchievementWrapper>
                         {yourId === 0
                             ? currentItems &&
-                              currentItems.map(
-                                  (item: AchievementType, index: number) => {
-                                      // Calculate the index for display, starting at 1 and adjusting for the current page
-                                      const displayIndex =
-                                          (currentPage - 1) * itemsPerPage +
-                                          index +
-                                          1;
-                                      return (
-                                          <div
-                                              key={item.achievementId} // Assuming achievementId is unique
+                              currentItems.map((item: AchievementType, index: number) => {
+                                  // Calculate the index for display, starting at 1 and adjusting for the current page
+                                  const displayIndex = (currentPage - 1) * itemsPerPage + index + 1;
+                                  return (
+                                      <div
+                                          key={item.achievementId} // Assuming achievementId is unique
+                                          style={{
+                                              position: "relative",
+                                              display: "inline-block",
+                                              marginRight: "10px",
+                                          }}
+                                      >
+                                          <Image
+                                              src={iconInformation}
+                                              width={24}
+                                              height={24}
+                                              $unit="px"
                                               style={{
-                                                  position: "relative",
-                                                  display: "inline-block",
-                                                  marginRight: "10px",
+                                                  position: "absolute",
+                                                  top: 10,
+                                                  right: 12,
+                                                  zIndex: 1,
                                               }}
-                                          >
-                                              <Image
-                                                  src={iconInformation}
-                                                  width={24}
-                                                  height={24}
-                                                  $unit="px"
-                                                  style={{
-                                                      position: "absolute",
-                                                      top: 10,
-                                                      right: 12,
-                                                      zIndex: 1,
-                                                  }}
-                                                  onClick={() =>
-                                                      handleInfoClick(item)
+                                              onClick={() => handleInfoClick(item)}
+                                          />
+                                          <ItemBox
+                                              src={item.badge.badgeImg}
+                                              title={item.title.titleName} // Display the index within the title
+                                              $isselected={displayIndex === selectedItem}
+                                              onClick={() => {
+                                                  if (item.clearTime !== null) {
+                                                      handleItemClick(displayIndex);
                                                   }
-                                              />
-                                              <ItemBox
-                                                  src={item.badge.badgeImg}
-                                                  title={item.title.titleName} // Display the index within the title
-                                                  $isselected={
-                                                      displayIndex ===
-                                                      selectedItem
-                                                  }
-                                                  onClick={() => {
-                                                      if (
-                                                          item.clearTime !==
-                                                          null
-                                                      ) {
-                                                          handleItemClick(
-                                                              displayIndex
-                                                          );
-                                                      }
-                                                  }}
-                                                  width={68}
-                                                  style={{
-                                                      filter:
-                                                          item.clearTime ===
-                                                          null
-                                                              ? "grayscale(100%)"
-                                                              : "none",
-                                                      cursor:
-                                                          item.clearTime ===
-                                                          null
-                                                              ? "default"
-                                                              : "pointer", // Add this line to change the cursor
-                                                  }}
-                                              />
-                                          </div>
-                                      );
-                                  }
-                              )
+                                              }}
+                                              width={68}
+                                              style={{
+                                                  filter: item.clearTime === null ? "grayscale(100%)" : "none",
+                                                  cursor: item.clearTime === null ? "default" : "pointer", // Add this line to change the cursor
+                                              }}
+                                          />
+                                      </div>
+                                  );
+                              })
                             : yourCurrentItems &&
-                              yourCurrentItems.map(
-                                  (item: AchievementType, index: number) => {
-                                      // Calculate the index for display, starting at 1 and adjusting for the current page
-                                      const displayIndex =
-                                          (currentPage - 1) * itemsPerPage +
-                                          index +
-                                          1;
-                                      return (
-                                          <div
-                                              key={item.achievementId} // Assuming achievementId is unique
+                              yourCurrentItems.map((item: AchievementType, index: number) => {
+                                  // Calculate the index for display, starting at 1 and adjusting for the current page
+                                  const displayIndex = (currentPage - 1) * itemsPerPage + index + 1;
+                                  return (
+                                      <div
+                                          key={item.achievementId} // Assuming achievementId is unique
+                                          style={{
+                                              position: "relative",
+                                              display: "inline-block",
+                                              marginRight: "10px",
+                                          }}
+                                      >
+                                          <Image
+                                              src={iconInformation}
+                                              width={24}
+                                              height={24}
+                                              $unit="px"
                                               style={{
-                                                  position: "relative",
-                                                  display: "inline-block",
-                                                  marginRight: "10px",
+                                                  position: "absolute",
+                                                  top: 10,
+                                                  right: 12,
+                                                  zIndex: 1,
                                               }}
-                                          >
-                                              <Image
-                                                  src={iconInformation}
-                                                  width={24}
-                                                  height={24}
-                                                  $unit="px"
-                                                  style={{
-                                                      position: "absolute",
-                                                      top: 10,
-                                                      right: 12,
-                                                      zIndex: 1,
-                                                  }}
-                                                  onClick={() =>
-                                                      handleInfoClick(item)
+                                              onClick={() => handleInfoClick(item)}
+                                          />
+                                          <ItemBox
+                                              src={item.badge.badgeImg}
+                                              title={item.title.titleName} // Display the index within the title
+                                              onClick={() => {
+                                                  if (item.clearTime !== null) {
+                                                      handleItemClick(displayIndex);
                                                   }
-                                              />
-                                              <ItemBox
-                                                  src={item.badge.badgeImg}
-                                                  title={item.title.titleName} // Display the index within the title
-                                                  onClick={() => {
-                                                      if (
-                                                          item.clearTime !==
-                                                          null
-                                                      ) {
-                                                          handleItemClick(
-                                                              displayIndex
-                                                          );
-                                                      }
-                                                  }}
-                                                  width={68}
-                                                  style={{
-                                                      filter:
-                                                          item.clearTime ===
-                                                          null
-                                                              ? "grayscale(100%)"
-                                                              : "none",
-                                                      cursor:
-                                                          item.clearTime ===
-                                                          null
-                                                              ? "default"
-                                                              : "pointer", // Add this line to change the cursor
-                                                  }}
-                                              />
-                                          </div>
-                                      );
-                                  }
-                              )}
+                                              }}
+                                              width={68}
+                                              style={{
+                                                  filter: item.clearTime === null ? "grayscale(100%)" : "none",
+                                                  cursor: item.clearTime === null ? "default" : "pointer", // Add this line to change the cursor
+                                              }}
+                                          />
+                                      </div>
+                                  );
+                              })}
                     </S.AchievementWrapper>
                     <S.PaginationContainer>
                         {Array.from({ length: totalPages }, (_, index) => (
@@ -285,31 +215,15 @@ export default function Achievement() {
                 <ModalBg style={{ zIndex: 1000 }}>
                     <Modal toggleModal={() => toggleModal()}>
                         <S.ExitWrapper>
-                            <CircleButton
-                                option="default"
-                                size="medium"
-                                onClick={toggleModal}
-                            >
-                                <Image
-                                    src={iconExit}
-                                    width={20}
-                                    height={20}
-                                    $unit="px"
-                                ></Image>
+                            <CircleButton option="default" size="medium" onClick={toggleModal}>
+                                <Image src={iconExit} width={20} height={20} $unit="px"></Image>
                             </CircleButton>
                         </S.ExitWrapper>
                         <S.TextWrapper>
                             {modalContent && (
                                 <>
-                                    <Text fontWeight="bold">
-                                        {modalContent.badge.badgeName}
-                                    </Text>
-                                    <Image
-                                        src={modalContent.badge.badgeImg}
-                                        width={120}
-                                        $unit="px"
-                                        $margin="20px 0 20px 0"
-                                    ></Image>
+                                    <Text fontWeight="bold">{modalContent.badge.badgeName}</Text>
+                                    <Image src={modalContent.badge.badgeImg} width={120} $unit="px" $margin="20px 0 20px 0"></Image>
                                     <Text size="small1" $margin="0 0 20px 0">
                                         {modalContent.mission}
                                     </Text>
