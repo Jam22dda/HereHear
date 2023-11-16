@@ -1,0 +1,66 @@
+pipeline {
+    agent any
+    stages {
+        stage("Set Variable") {
+            steps {
+                script {
+                    IMAGE_NAME_FE = "herehear-prod-react"
+                    CONTAINER_NAME_FE = "herehear_prod_fe"
+                    APPLICATION_ENV_PATH = "/usr/react/prod"
+                    PROJECT_DIR_FE = "frontend/HereHear"
+                }
+            }
+        }
+
+        // 설정파일 참조
+        stage("copy env") {
+            steps {
+                sh "cp ${APPLICATION_ENV_PATH}/.env ${PROJECT_DIR_FE}"
+            }
+        }
+
+        // 컨테이너 클리닝
+        stage("container cleaning") {
+            steps{
+                sh "docker ps -q -f name=${CONTAINER_NAME_FE} | xargs --no-run-if-empty docker container stop"    
+                sh "docker container ls -a -q -f name=${CONTAINER_NAME_FE} | xargs --no-run-if-empty docker rm"
+            }
+        }
+
+        // 이미지 삭제
+        stage("image cleaning") {
+            steps{
+                sh "docker images ${IMAGE_NAME_FE} -q | xargs -r docker rmi -f"
+            }
+        }
+        
+        // 도커 이미지 빌드
+        stage("image build") {
+            steps {
+                dir("${PROJECT_DIR_FE}") {
+                    script {
+                        sh "docker build --no-cache -t ${IMAGE_NAME_FE} ."
+                    }
+                }
+            }
+        }
+
+        // 컨테이너 실행
+        stage("fe container run") {
+            steps {
+                script {
+                    sh "docker run -d -p 3000:3000 --name ${CONTAINER_NAME_FE} ${IMAGE_NAME_FE}"
+                }
+            }
+        }
+
+        // 도커 레이어 정리
+        stage("docker layer pruning") {
+            steps {
+                script {
+                    sh "docker system prune -a -f"
+                }
+            }
+        }
+    }
+}

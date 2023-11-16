@@ -1,0 +1,9 @@
+/* Page */
+
+/* Tablet */
+/* @media screen and (min-width: 426px) and (max-width: 768px) {
+} */
+
+/* Tablet + Mobile Large, default 값, 여기에다가 디자인하세요!!!!!!! */
+@media screen and (max-width: 768px) {
+}
