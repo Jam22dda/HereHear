@@ -16,8 +16,11 @@ import { useGetMusicPlay } from "../../apis/Music/Quries/useGetMusicPlay";
 import { useMusicHistory } from "../../apis/Music/Mutations/useMusicHistory";
 import { SignUpInfoAtom } from "../../states/SignUpAtoms";
 import { useRecoilValue } from "recoil";
+import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
+import iconPlayer from "../../assets/MusicPlay/icon-player.png";
 
 export default function MusicPlay() {
+    const UserInfo = useGetUserinfo();
     const { id } = useParams();
     // console.log(typeof id);
 
@@ -25,6 +28,9 @@ export default function MusicPlay() {
     // console.log(typeof MusicNumber);
 
     const navigate = useNavigate();
+    const navigatePage = (path: string) => {
+        navigate(path);
+    };
 
     //좋아요 API
     const { mutate: postLikeMusicMutate } = usePostLikeMusic();
@@ -50,7 +56,6 @@ export default function MusicPlay() {
 
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
-    // console.log(musicPlay);
     const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
     const myId = mySignUpInfo.memberId;
     // console.log(myId == musicPlay.data.memberId);
@@ -68,29 +73,51 @@ export default function MusicPlay() {
         return <div>Error occurred or no data!</div>;
     }
 
-    // console.log(musicPlay, "이거 들어와????????????");
     const occasionName = musicPlay.data.occasionName;
-    // console.log(occasionName, "occasionName");
     return (
         <div id="display">
             <div className="container">
-                <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
-                    <Image src={iconBack} width={10} height={18} $unit="px"></Image>
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
                 </CircleButton>
                 <S.MusicPlayWrapper>
                     <S.SelectTagWrapper>
                         {occasionName.map((item: string, index: number) => (
-                            <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item}></Button>
+                            <Button
+                                option="unfollow"
+                                $shadow=""
+                                size="mediumplus"
+                                $margin="5px"
+                                $width="80px"
+                                key={index}
+                                tag={item}
+                            ></Button>
                         ))}
                     </S.SelectTagWrapper>
                     <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
                     {myId !== parseInt(musicPlay.data.memberId, 10) && (
                         <CircleButton
-                            option={isLiked ? "pinkActivated" : "pinkDeActivated"}
+                            option={
+                                isLiked ? "pinkActivated" : "pinkDeActivated"
+                            }
                             style={{ marginLeft: "17rem" }}
                             onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
                         >
-                            <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
+                            <Image
+                                src={isLiked ? Heart : emptyHeart}
+                                width={23}
+                                height={21}
+                                $unit="px"
+                            ></Image>
                         </CircleButton>
                     )}
                     <Text size="body2" fontWeight="medium" $marginTop="10px">
@@ -107,17 +134,35 @@ export default function MusicPlay() {
                         characterImage={musicPlay.data.characterImage}
                         musicRegistId={musicPlay.data.memberId}
                     ></Message>
-                    <Image
-                        src={youtube}
-                        width={6}
-                        onClick={() => {
-                            registMusicHistory();
-                            const subjectEncoded = encodeURIComponent(musicPlay.data.subject);
-                            const singerEncoded = encodeURIComponent(musicPlay.data.singer);
-                            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
-                            window.location.href = youtubeSearchUrl;
-                        }}
-                    ></Image>
+                    {UserInfo && UserInfo.provider === "spotify" ? (
+                        <Image
+                            src={iconPlayer}
+                            width={6}
+                            onClick={() =>
+                                navigatePage(
+                                    `/musicPlayer/${
+                                        musicPlay && musicPlay.registeredMusicId
+                                    }`
+                                )
+                            }
+                        ></Image>
+                    ) : (
+                        <Image
+                            src={youtube}
+                            width={6}
+                            onClick={() => {
+                                registMusicHistory();
+                                const subjectEncoded = encodeURIComponent(
+                                    musicPlay.data.subject
+                                );
+                                const singerEncoded = encodeURIComponent(
+                                    musicPlay.data.singer
+                                );
+                                const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${subjectEncoded}+${singerEncoded}`;
+                                window.location.href = youtubeSearchUrl;
+                            }}
+                        ></Image>
+                    )}
                 </S.MusicPlayWrapper>
             </div>
         </div>
