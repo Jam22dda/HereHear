@@ -54,8 +54,10 @@ export default function Achievement() {
     const [modalContent, setModalContent] = useState<AchievementType | null>(null);
     const { mutate: PutAchievementMutate } = usePutAchievement();
 
-    const handlePutAchievement = (achievementId: achievementId) => {
+    const handlePutAchievement = async (achievementId: achievementId) => {
         PutAchievementMutate(achievementId);
+        navigatePage("/mypage");
+        window.location.reload();
     };
 
     const [selectedItem, setSelectedItem] = useState(MyAchievement.achievementId);
@@ -202,8 +204,6 @@ export default function Achievement() {
                             $margin="60px 0 0 0"
                             onClick={() => {
                                 handlePutAchievement(selectedItem);
-                                navigatePage("/mypage");
-                                window.location.reload();
                             }}
                         >
                             저장하기
