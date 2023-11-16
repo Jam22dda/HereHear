@@ -153,7 +153,7 @@ export default function SpotifyMusicPlayer() {
 
         return () => {
             clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
-            player.disconnect();
+            // player.disconnect();
         }
     }, []);
 
@@ -172,7 +172,11 @@ export default function SpotifyMusicPlayer() {
                 <CircleButton
                     option="default2"
                     size="medium"
-                    onClick={() => navigate(-1)}
+                    onClick={() =>  {
+                            navigate(-1)
+                            window.location.reload();
+                        }
+                    }
                 >
                     <Image
                         src={iconBack}
