@@ -183,7 +183,7 @@ export default function MyStatisticsPage() {
                     <Text size="subtitle1" fontWeight="bold">
                         나의 음악 노트
                     </Text>
-                    <Image src={musicNote} width={2.4} $margin="0 0 0 3px"></Image>
+                    <Image src={musicNote} width={2.4} $margin="0 0 0 6px"></Image>
                 </S.TitleWrapper>
                 <S.chartWrapper>
                     <S.LikeBox>
@@ -202,9 +202,9 @@ export default function MyStatisticsPage() {
                             <Text size="subtitle1" fontWeight="bold" $margin="0 4px">
                                 {MyLikeCount}
                             </Text>
-                            <Text size="body2" fontWeight="medium">
+                            <Text size="body2" fontWeight="medium" $margin="0 3px">
                                 개의 좋아요를 받았어요
-                            </Text>{" "}
+                            </Text>
                             <S.HeartContainer>
                                 <Image src={Heart} width={25} $unit="px" style={{ position: "relative" }} />
                                 <S.AnimatedHeart src={Heart} alt="Heart" delay={0} />
