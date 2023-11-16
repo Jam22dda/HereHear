@@ -1,10 +1,12 @@
-import { instance } from '../instance';
-import { AddMusicInfo } from '../../types/music';
-import { registeredMusicId } from '../../types/music';
+import { instance } from "../instance";
+import { AddMusicInfo } from "../../types/music";
+import { registeredMusicId, youtubeMusicRequest } from "../../types/music";
 
 const getSearchMusic = async (keyword: string, page: number) => {
     try {
-        const response = await instance.get(`/music/search?keyword=${keyword}&limit=10&page=${page}`);
+        const response = await instance.get(
+            `/music/search?keyword=${keyword}&limit=10&page=${page}`
+        );
         return response.data;
     } catch (error) {
         // console.error("Error fetching search music", error);
@@ -27,7 +29,7 @@ const getMusicPlay = async (registeredMusicId: number) => {
 
 const getTag = async () => {
     try {
-        const response = await instance.get('/music/tag');
+        const response = await instance.get("/music/tag");
         return response.data;
     } catch (error) {
         // console.error("Error fetching search Tag", error);
@@ -39,7 +41,7 @@ const getTag = async () => {
 
 const addMusic = async (data: AddMusicInfo) => {
     try {
-        const response = await instance.post('/music', data);
+        const response = await instance.post("/music", data);
         return response.data;
     } catch (error) {
         // console.error("Error fetching addMusic", error);
@@ -54,8 +56,10 @@ interface postLikeMusicResponse {
     message: string;
 }
 
-const postLikeMusic = async (registeredMusicId: registeredMusicId): Promise<postLikeMusicResponse> => {
-    const response = await instance.post<postLikeMusicResponse>('/like', {
+const postLikeMusic = async (
+    registeredMusicId: registeredMusicId
+): Promise<postLikeMusicResponse> => {
+    const response = await instance.post<postLikeMusicResponse>("/like", {
         registeredMusicId,
     });
     return response.data;
@@ -63,7 +67,7 @@ const postLikeMusic = async (registeredMusicId: registeredMusicId): Promise<post
 
 const getListenedMusic = async () => {
     try {
-        const response = await instance.get('/history/list');
+        const response = await instance.get("/history/list");
         return response.data.data;
     } catch (error) {
         // console.error("Error fetching search music", error);
@@ -73,17 +77,42 @@ const getListenedMusic = async () => {
     }
 };
 
-const postMusicHistory = async (registeredMusicId: registeredMusicId): Promise<postLikeMusicResponse> => {
-    const response = await instance.post<postLikeMusicResponse>('/history', {
+const postMusicHistory = async (
+    registeredMusicId: registeredMusicId
+): Promise<postLikeMusicResponse> => {
+    const response = await instance.post<postLikeMusicResponse>("/history", {
         registeredMusicId,
     });
     return response.data;
 };
 
 const getSpotifyAccessToken = async () => {
-    const response = await instance.get('/spotify/token');
+    const response = await instance.get("/spotify/token");
     return response.data;
+};
+
+interface YoutubeListResponse {
+    code: number;
+    message: string;
 }
 
+const postYoutubeList = async (
+    searchName: youtubeMusicRequest
+): Promise<YoutubeListResponse> => {
+    const response = await instance.post<YoutubeListResponse>("/youtube", {
+        searchName,
+    });
+    return response.data;
+};
 
-export { getSearchMusic, getMusicPlay, getTag, addMusic, postLikeMusic, getListenedMusic, postMusicHistory, getSpotifyAccessToken};
+export {
+    getSearchMusic,
+    getMusicPlay,
+    getTag,
+    addMusic,
+    postLikeMusic,
+    getListenedMusic,
+    postMusicHistory,
+    getSpotifyAccessToken,
+    postYoutubeList,
+};

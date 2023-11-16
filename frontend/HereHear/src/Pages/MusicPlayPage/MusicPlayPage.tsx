@@ -18,6 +18,8 @@ import { SignUpInfoAtom } from "../../states/SignUpAtoms";
 import { useRecoilValue } from "recoil";
 import { useGetUserinfo } from "../../apis/Mypage/Quries/useGetUserInfo";
 import iconPlayer from "../../assets/MusicPlay/icon-player.png";
+import iconBasket from "../../assets/MusicPlay/icon-basket.png";
+import { usePostYoutubeList } from "../../apis/Music/Mutations/usePostYoutubeList";
 
 export default function MusicPlay() {
     const UserInfo = useGetUserinfo();
@@ -54,11 +56,49 @@ export default function MusicPlay() {
         }
     };
 
+    // 음악 재생 바
+    // const [currentTime, setCurrentTime] = useState(0);
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setCurrentTime((prevTime) => {
+    //             const newTime = prevTime + 1;
+    //             if (newTime < duration) {
+    //                 return newTime;
+    //             }
+    //             clearInterval(interval);
+    //             return prevTime;
+    //         });
+    //     }, 1000);
+
+    //     return () => clearInterval(interval);
+    // }, [duration]);
+
+    // const handleProgressBarClick = (e) => {
+    //     const newTime = (e.nativeEvent.offsetX / 300) * duration;
+    //     setCurrentTime(newTime);
+    //     onSeek(newTime);
+    // };
+
+    // const progressWidth = (currentTime / duration) * 100;
+
     // 음악 API
     const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
+    console.log(musicPlay);
     const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
     const myId = mySignUpInfo.memberId;
-    // console.log(myId == musicPlay.data.memberId);
+
+    // 유튜브 리스트 추가
+    const { mutate: postYoutubeListMutate } = usePostYoutubeList();
+
+    const Search =
+        musicPlay && musicPlay.data
+            ? musicPlay.data.singer + " " + musicPlay.data.subject
+            : "";
+
+    const youtubeHandler = (Search: string) => {
+        postYoutubeListMutate(Search);
+    };
 
     useEffect(() => {
         if (musicPlay) {
@@ -134,19 +174,32 @@ export default function MusicPlay() {
                         characterImage={musicPlay.data.characterImage}
                         musicRegistId={musicPlay.data.memberId}
                     ></Message>
-                    {UserInfo && UserInfo.provider === "spotify" ? (
+                    {/* <S.ProgressBarWrapper onClick={handleProgressBarClick}>
+                        <S.ProgressBar width={progressWidth} />
+                    </S.ProgressBarWrapper> */}
+                    <S.PlayBtn>
                         <Image
                             src={iconPlayer}
                             width={6}
-                            onClick={() =>
-                                navigatePage(
-                                    `/musicPlayer/${
-                                        musicPlay && musicPlay.registeredMusicId
-                                    }`
-                                )
-                            }
+                            style={{
+                                filter:
+                                    UserInfo &&
+                                    (UserInfo.provider === "google" ||
+                                        UserInfo.provider === "kakao")
+                                        ? "grayscale(100%)"
+                                        : "none",
+                            }}
+                            onClick={() => {
+                                if (
+                                    UserInfo &&
+                                    UserInfo.provider === "spotify"
+                                ) {
+                                    navigatePage(
+                                        `/musicPlayer/${musicPlay.registeredMusicId}`
+                                    );
+                                }
+                            }}
                         ></Image>
-                    ) : (
                         <Image
                             src={youtube}
                             width={6}
@@ -162,7 +215,28 @@ export default function MusicPlay() {
                                 window.location.href = youtubeSearchUrl;
                             }}
                         ></Image>
-                    )}
+                        <Image
+                            src={iconBasket}
+                            width={5.5}
+                            height={5.5}
+                            style={{
+                                filter:
+                                    UserInfo &&
+                                    (UserInfo.provider === "spotify" ||
+                                        UserInfo.provider === "kakao")
+                                        ? "grayscale(100%)"
+                                        : "none",
+                            }}
+                            onClick={() => {
+                                if (
+                                    UserInfo &&
+                                    UserInfo.provider === "google"
+                                ) {
+                                    youtubeHandler(Search);
+                                }
+                            }}
+                        ></Image>
+                    </S.PlayBtn>
                 </S.MusicPlayWrapper>
             </div>
         </div>
