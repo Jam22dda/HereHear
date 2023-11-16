@@ -144,13 +144,17 @@ export default function SpotifyMusicPlayer() {
     }, [musicPlay, spotifyAccessToken]);
 
     useEffect(() => {
+        window.location.reload();
         const interval = setInterval(() => {
             if (!paused) {
                 setTimeMs(timeMs + 1000);
             }
         }, 1000);
 
-        return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
+        return () => {
+            clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
+            player.disconnect();
+        }
     }, []);
 
     if (isLoading) {
@@ -226,17 +230,15 @@ export default function SpotifyMusicPlayer() {
                     {/* 음악 재생 진행바 UI 구현 필요 */}
 
                     {active ? (
-                        <S.PlayerWrapper>
-                            <Image
-                                src={paused ? playBtn : pauseBtn}
-                                width={4}
-                                onClick={() => {
-                                    registMusicHistory();
-                                    player.togglePlay();
-                                    setPaused(!paused);
-                                }}
-                            ></Image>
-                        </S.PlayerWrapper>
+                        <Image
+                            src={paused ? playBtn : pauseBtn}
+                            width={6}
+                            onClick={() => {
+                                registMusicHistory();
+                                player.togglePlay();
+                                setPaused(!paused);
+                            }}
+                        ></Image>
                     ) : (
                         <div>Loading...</div>
                     )}
