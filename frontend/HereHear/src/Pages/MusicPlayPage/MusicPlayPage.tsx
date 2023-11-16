@@ -195,7 +195,7 @@ export default function MusicPlay() {
                                     UserInfo.provider === "spotify"
                                 ) {
                                     navigatePage(
-                                        `/musicPlayer/${musicPlay.registeredMusicId}`
+                                        `/musicPlayer/${musicPlay.data.registeredMusicId}`
                                     );
                                 }
                             }}
