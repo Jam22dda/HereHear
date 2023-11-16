@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.ssafy.herehear.entity.QMusicHistory.musicHistory;
 import static com.ssafy.herehear.entity.QMusicOccasion.musicOccasion;
 import static com.ssafy.herehear.entity.QRegisteredMusic.registeredMusic;
 
@@ -38,6 +39,17 @@ public class RegisteredMusicRepositoryImpl implements RegisteredMusicRepositoryC
                 .where(registeredMusic.member.memberId.eq(memberId)
                         .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
                 .orderBy(registeredMusic.createTime.hour().desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Integer> findAllTimeHistoryByMemberId(Long memberId) {
+        return jpaQueryFactory.select(musicHistory.createTime.hour())
+                .from(musicHistory)
+                .join(musicHistory.registeredMusic, registeredMusic)
+                .where(musicHistory.member.memberId.eq(memberId)
+                        .and(registeredMusic.isDeleted.isNull().or(registeredMusic.isDeleted.isFalse())))
+                .orderBy(musicHistory.createTime.hour().desc())
                 .fetch();
     }
 }
