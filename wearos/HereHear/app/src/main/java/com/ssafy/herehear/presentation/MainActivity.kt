@@ -65,21 +65,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-
-            val c: Calendar = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, 8);
-            c.set(Calendar.MINUTE, 40);
-            c.set(Calendar.SECOND, 0);
+            val c: Calendar = Calendar.getInstance()
+            c.set(Calendar.HOUR_OF_DAY, 3)
+            c.set(Calendar.MINUTE, 18)
+            c.set(Calendar.SECOND, 0)
 
             val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-            val intent: Intent = Intent(this, AlertReceiver::class.java)
+            val intent = Intent(this, AlertReceiver::class.java)
             val pendingIntent: PendingIntent =
                 PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_IMMUTABLE)
 
             if (c.before(Calendar.getInstance())) {
                 c.add(Calendar.DATE, 1);
             }
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent)
+
+            alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                c.timeInMillis,
+                300000,
+                pendingIntent)
 
             // 네비게이션 이동을 위한 nav controller
             navController = rememberSwipeDismissableNavController()

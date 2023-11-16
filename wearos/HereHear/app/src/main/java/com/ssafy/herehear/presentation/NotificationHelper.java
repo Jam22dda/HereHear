@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -16,10 +17,13 @@ public class NotificationHelper extends ContextWrapper {
     public NotificationHelper(Context base) {
         super(base);
 
+        Log.d("AlertReceiver", "NotificationHelper: ");
         createChannels();
     }
 
     public void createChannels() {
+        Log.d("AlertReceiver", "createChannels: ");
+
         NotificationChannel channel1 = new NotificationChannel(
                 "channel1",
                 "Channel 1",
@@ -34,6 +38,7 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationManager getManager() {
+        Log.d("AlertReceiver", "getManager: " + notiManager);
         if (notiManager == null) {
             notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
@@ -41,6 +46,10 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannel1Notification() {
+        Log.d("AlertReceiver", "getChannel1Notification: " + new NotificationCompat.Builder(getApplicationContext(), "channel1")
+                .setContentTitle("알림")
+                .setContentText("알림매니저 실험중")
+                .setSmallIcon(R.drawable.ditto));
         return new NotificationCompat.Builder(getApplicationContext(), "channel1")
                 .setContentTitle("알림")
                 .setContentText("알림매니저 실험중")
