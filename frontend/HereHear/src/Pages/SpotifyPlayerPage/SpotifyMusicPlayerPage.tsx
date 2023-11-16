@@ -24,190 +24,224 @@ import { useRecoilValue } from "recoil";
 import axios from "axios";
 
 export default function SpotifyMusicPlayer() {
-  const { id } = useParams();
-  const MusicNumber = id ? Number(id) : null;
+    const { id } = useParams();
+    const MusicNumber = id ? Number(id) : null;
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  //좋아요 API
-  const { mutate: postLikeMusicMutate } = usePostLikeMusic();
-  const { mutate: postMusicHostiryMutate } = useMusicHistory();
+    //좋아요 API
+    const { mutate: postLikeMusicMutate } = usePostLikeMusic();
+    const { mutate: postMusicHostiryMutate } = useMusicHistory();
 
-  // 좋아요체크
+    // 좋아요체크
 
-  const [isLiked, setIsLiked] = useState(false); //musicPlay.data.like
+    const [isLiked, setIsLiked] = useState(false); //musicPlay.data.like
 
-  const toggleLike = () => {
-    const newIsLiked = !isLiked;
-    setIsLiked(newIsLiked);
-    if (MusicNumber !== null) {
-      postLikeMusicMutate(MusicNumber);
+    const toggleLike = () => {
+        const newIsLiked = !isLiked;
+        setIsLiked(newIsLiked);
+        if (MusicNumber !== null) {
+            postLikeMusicMutate(MusicNumber);
+        }
+    };
+
+    const registMusicHistory = () => {
+        if (MusicNumber !== null) {
+            postMusicHostiryMutate(MusicNumber);
+        }
+    };
+
+    // 음악 API
+    const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
+    // console.log(musicPlay);
+    const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
+    const myId = mySignUpInfo.memberId;
+    // console.log(myId == musicPlay.data.memberId);
+
+    // Spotify 음악 재생
+    const spotifyAccessToken = useGetSpotifyAccessToken();
+    const [paused, setPaused] = useState(true);
+    const [active, setActive] = useState(false);
+    const [player, setPlayer] = useState<Spotify.Player>({} as Spotify.Player);
+    const [timeMs, setTimeMs] = useState(0);
+    const [durationMs, setDurationMs] = useState(0);
+
+    // Spotify SDK 사용하여 플레이어 생성
+    useEffect(() => {
+        if (musicPlay) {
+            setIsLiked(musicPlay.data.like ? musicPlay.data.like : false);
+        }
+
+        if (musicPlay && spotifyAccessToken) {
+            const script = document.createElement("script");
+            script.src = "https://sdk.scdn.co/spotify-player.js";
+            script.async = true;
+
+            document.body.appendChild(script);
+
+            window.onSpotifyWebPlaybackSDKReady = () => {
+                const inPlayer = new window.Spotify.Player({
+                    name: "HereHear! Spotify Player",
+                    getOAuthToken: (cb) => {
+                        cb(spotifyAccessToken.data);
+                    },
+                    volume: 0.4,
+                });
+
+                inPlayer.addListener("ready", ({ device_id }) => {
+                    console.log("Ready with Device ID", device_id);
+
+                    // 음악 재생 등록요청
+                    axios({
+                        method: "put",
+                        url:
+                            "https://api.spotify.com/v1/me/player/play?device_id=" +
+                            device_id,
+                        data: {
+                            uris: [musicPlay.data.spotifyUri],
+                            position_ms: 0,
+                        },
+                        headers: {
+                            Authorization: "Bearer " + spotifyAccessToken.data,
+                        },
+                    })
+                        .then(function (response) {
+                            console.log("play SUCCESS");
+                        })
+                        .catch(function (error) {
+                            console.log("play ERROR");
+                        });
+                });
+
+                inPlayer.addListener("not_ready", ({ device_id }) => {
+                    console.log("Device ID has gone offline", device_id);
+                });
+
+                inPlayer.addListener(
+                    "player_state_changed",
+                    ({
+                        position,
+                        duration,
+                        paused,
+                        track_window: { current_track },
+                    }) => {
+                        console.log("Position in Song", position);
+                        console.log("Duration of Song", duration);
+                        console.log("Paused", paused);
+                        console.log("Currently Playing", current_track);
+                        setTimeMs(position);
+                        setDurationMs(duration);
+                        setActive(true);
+                        setPaused(paused);
+                    }
+                );
+
+                inPlayer.connect();
+
+                setPlayer(inPlayer);
+            };
+        }
+    }, [musicPlay, spotifyAccessToken]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (!paused) {
+                setTimeMs(timeMs + 1000);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
+    }, []);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
-  };
-
-  const registMusicHistory = () => {
-    if (MusicNumber !== null) {
-      postMusicHostiryMutate(MusicNumber);
-    }
-  };
-
-  // 음악 API
-  const { musicPlay, isLoading, isError } = useGetMusicPlay(MusicNumber);
-  // console.log(musicPlay);
-  const mySignUpInfo = useRecoilValue(SignUpInfoAtom);
-  const myId = mySignUpInfo.memberId;
-  // console.log(myId == musicPlay.data.memberId);
-
-  // Spotify 음악 재생
-  const spotifyAccessToken = useGetSpotifyAccessToken();
-  const [paused, setPaused] = useState(true);
-  const [active, setActive] = useState(false);
-  const [player, setPlayer] = useState<Spotify.Player>({} as Spotify.Player);
-  const [timeMs, setTimeMs] = useState(0);
-  const [durationMs, setDurationMs] = useState(0);
-
-  // Spotify SDK 사용하여 플레이어 생성
-  useEffect(() => {
-    if (musicPlay) {
-      setIsLiked(musicPlay.data.like ? musicPlay.data.like : false);
+    if (isError || !musicPlay) {
+        return <div>Error occurred or no data!</div>;
     }
 
-    if (musicPlay && spotifyAccessToken) {
-      const script = document.createElement("script");
-      script.src = "https://sdk.scdn.co/spotify-player.js";
-      script.async = true;
+    const occasionName = musicPlay.data.occasionName;
 
-      document.body.appendChild(script);
+    return (
+        <div id="display">
+            <div className="container">
+                <CircleButton
+                    option="default2"
+                    size="medium"
+                    onClick={() => navigate(-1)}
+                >
+                    <Image
+                        src={iconBack}
+                        width={10}
+                        height={18}
+                        $unit="px"
+                    ></Image>
+                </CircleButton>
+                <S.MusicPlayWrapper>
+                    <S.SelectTagWrapper>
+                        {occasionName.map((item: string, index: number) => (
+                            <Button
+                                option="unfollow"
+                                $shadow=""
+                                size="mediumplus"
+                                $margin="5px"
+                                $width="80px"
+                                key={index}
+                                tag={item}
+                            ></Button>
+                        ))}
+                    </S.SelectTagWrapper>
+                    <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
+                    {myId !== parseInt(musicPlay.data.memberId, 10) && (
+                        <CircleButton
+                            option={
+                                isLiked ? "pinkActivated" : "pinkDeActivated"
+                            }
+                            style={{ marginLeft: "17rem" }}
+                            onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
+                        >
+                            <Image
+                                src={isLiked ? Heart : emptyHeart}
+                                width={23}
+                                height={21}
+                                $unit="px"
+                            ></Image>
+                        </CircleButton>
+                    )}
+                    <Text size="body2" fontWeight="medium" $marginTop="10px">
+                        {musicPlay.data.subject}
+                    </Text>
+                    <Text size="body2" fontWeight="bold" $marginTop="5px">
+                        {musicPlay.data.singer}
+                    </Text>
 
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        const inPlayer = new window.Spotify.Player({
-          name: "HereHear! Spotify Player",
-          getOAuthToken: (cb) => {
-            cb(spotifyAccessToken.data);
-          },
-          volume: 0.4,
-        });
+                    <Message
+                        comment={musicPlay.data.comment}
+                        createTime={musicPlay.data.createTime}
+                        nickname={musicPlay.data.nickname}
+                        characterImage={musicPlay.data.characterImage}
+                        musicRegistId={musicPlay.data.memberId}
+                    ></Message>
 
-        inPlayer.addListener("ready", ({ device_id }) => {
-          console.log("Ready with Device ID", device_id);
+                    {/* 음악 재생 진행바 UI 구현 필요 */}
 
-          // 음악 재생 등록요청
-          axios({
-            method: "put",
-            url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
-            data: {
-              uris: [musicPlay.data.spotifyUri],
-              position_ms: 0,
-            },
-            headers: {
-              Authorization: "Bearer " + spotifyAccessToken.data,
-            },
-          })
-            .then(function (response) {
-              console.log("play SUCCESS");
-            })
-            .catch(function (error) {
-              console.log("play ERROR");
-            });
-        });
-
-        inPlayer.addListener("not_ready", ({ device_id }) => {
-          console.log("Device ID has gone offline", device_id);
-        });
-
-        inPlayer.addListener("player_state_changed", ({ position, duration, paused, track_window: { current_track } }) => {
-          console.log("Position in Song", position);
-          console.log("Duration of Song", duration);
-          console.log("Paused", paused);
-          console.log("Currently Playing", current_track);
-          setTimeMs(position);
-          setDurationMs(duration);
-          setActive(true);
-          setPaused(paused);
-        });
-
-        inPlayer.connect();
-
-        setPlayer(inPlayer);
-      };
-    }
-  }, [musicPlay, spotifyAccessToken]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!paused) {
-        setTimeMs(timeMs + 1000);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (isError || !musicPlay) {
-    return <div>Error occurred or no data!</div>;
-  }
-
-  const occasionName = musicPlay.data.occasionName;
-
-  return (
-    <div id="display">
-      <div className="container">
-        <CircleButton option="default2" size="medium" onClick={() => navigate(-1)}>
-          <Image src={iconBack} width={10} height={18} $unit="px"></Image>
-        </CircleButton>
-        <S.MusicPlayWrapper>
-          <S.SelectTagWrapper>
-            {occasionName.map((item: string, index: number) => (
-              <Button option="unfollow" $shadow="" size="mediumplus" $margin="5px" $width="80px" key={index} tag={item}></Button>
-            ))}
-          </S.SelectTagWrapper>
-          <AlbumCover src={musicPlay.data.albumImg}></AlbumCover>
-          {myId !== parseInt(musicPlay.data.memberId, 10) && (
-            <CircleButton
-              option={isLiked ? "pinkActivated" : "pinkDeActivated"}
-              style={{ marginLeft: "17rem" }}
-              onClick={toggleLike} // 여기서는 함수를 바로 전달합니다.
-            >
-              <Image src={isLiked ? Heart : emptyHeart} width={23} height={21} $unit="px"></Image>
-            </CircleButton>
-          )}
-          <Text size="body2" fontWeight="medium" $marginTop="10px">
-            {musicPlay.data.subject}
-          </Text>
-          <Text size="body2" fontWeight="bold" $marginTop="5px">
-            {musicPlay.data.singer}
-          </Text>
-
-          <Message
-            comment={musicPlay.data.comment}
-            createTime={musicPlay.data.createTime}
-            nickname={musicPlay.data.nickname}
-            characterImage={musicPlay.data.characterImage}
-            musicRegistId={musicPlay.data.memberId}
-          ></Message>
-
-          {/* 음악 재생 진행바 UI 구현 필요 */}
-
-          {active ? (
-            <S.PlayerWrapper>
-              <Image
-                src={paused ? playBtn : pauseBtn}
-                width={4}
-                onClick={() => {
-                  registMusicHistory();
-                  player.togglePlay();
-                  setPaused(!paused);
-                }}
-              ></Image>
-            </S.PlayerWrapper>
-          ) : (
-            <div>Loading...</div>
-          )}
-        </S.MusicPlayWrapper>
-      </div>
-    </div>
-  );
+                    {active ? (
+                        <S.PlayerWrapper>
+                            <Image
+                                src={paused ? playBtn : pauseBtn}
+                                width={4}
+                                onClick={() => {
+                                    registMusicHistory();
+                                    player.togglePlay();
+                                    setPaused(!paused);
+                                }}
+                            ></Image>
+                        </S.PlayerWrapper>
+                    ) : (
+                        <div>Loading...</div>
+                    )}
+                </S.MusicPlayWrapper>
+            </div>
+        </div>
+    );
 }

@@ -43,4 +43,6 @@ export type AddMusicInfo = {
     spotifyUri: string;
 };
 
+export type youtubeMusicRequest = string;
+
 export type registeredMusicId = number;
