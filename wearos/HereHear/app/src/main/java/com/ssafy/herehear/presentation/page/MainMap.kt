@@ -82,7 +82,7 @@ fun MainMap(
             val myBitmap = getBitmapMarker(R.drawable.my_location, 30, 30)
             val musicBitmap = getBitmapMarker(R.drawable.music_marker, 30, 30)
             val testMarker =
-                getBitmapMarker(imageInt = R.drawable.icon_music, dstWidth = 37, dstHeight = 45)
+                getBitmapMarker(imageInt = R.drawable.icon_herehear, dstWidth = 37, dstHeight = 42)
 
             // 현재 위치 마커 표시
             Marker(
