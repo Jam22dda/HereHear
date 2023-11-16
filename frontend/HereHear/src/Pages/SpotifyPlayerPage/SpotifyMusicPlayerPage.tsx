@@ -89,7 +89,7 @@ export default function SpotifyMusicPlayer() {
                 });
 
                 inPlayer.addListener("ready", ({ device_id }) => {
-                    console.log("Ready with Device ID", device_id);
+                    // console.log("Ready with Device ID", device_id);
 
                     // 음악 재생 등록요청
                     axios({
@@ -106,15 +106,15 @@ export default function SpotifyMusicPlayer() {
                         },
                     })
                         .then(function (response) {
-                            console.log("play SUCCESS");
+                            console.log("Spotify player SUCCESS");
                         })
                         .catch(function (error) {
-                            console.log("play ERROR");
+                            console.log("Spotify player ERROR");
                         });
                 });
 
                 inPlayer.addListener("not_ready", ({ device_id }) => {
-                    console.log("Device ID has gone offline", device_id);
+                    // console.log("Device ID has gone offline", device_id);
                 });
 
                 inPlayer.addListener(
@@ -125,10 +125,10 @@ export default function SpotifyMusicPlayer() {
                         paused,
                         track_window: { current_track },
                     }) => {
-                        console.log("Position in Song", position);
-                        console.log("Duration of Song", duration);
-                        console.log("Paused", paused);
-                        console.log("Currently Playing", current_track);
+                        // console.log("Position in Song", position);
+                        // console.log("Duration of Song", duration);
+                        // console.log("Paused", paused);
+                        // console.log("Currently Playing", current_track);
                         setTimeMs(position);
                         setDurationMs(duration);
                         setActive(true);
@@ -144,13 +144,17 @@ export default function SpotifyMusicPlayer() {
     }, [musicPlay, spotifyAccessToken]);
 
     useEffect(() => {
+        window.location.reload();
         const interval = setInterval(() => {
             if (!paused) {
                 setTimeMs(timeMs + 1000);
             }
         }, 1000);
 
-        return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
+        return () => {
+            clearInterval(interval); // 컴포넌트가 언마운트될 때 interval을 제거합니다.
+            player.disconnect();
+        }
     }, []);
 
     if (isLoading) {
@@ -226,17 +230,15 @@ export default function SpotifyMusicPlayer() {
                     {/* 음악 재생 진행바 UI 구현 필요 */}
 
                     {active ? (
-                        <S.PlayerWrapper>
-                            <Image
-                                src={paused ? playBtn : pauseBtn}
-                                width={4}
-                                onClick={() => {
-                                    registMusicHistory();
-                                    player.togglePlay();
-                                    setPaused(!paused);
-                                }}
-                            ></Image>
-                        </S.PlayerWrapper>
+                        <Image
+                            src={paused ? playBtn : pauseBtn}
+                            width={6}
+                            onClick={() => {
+                                registMusicHistory();
+                                player.togglePlay();
+                                setPaused(!paused);
+                            }}
+                        ></Image>
                     ) : (
                         <div>Loading...</div>
                     )}
