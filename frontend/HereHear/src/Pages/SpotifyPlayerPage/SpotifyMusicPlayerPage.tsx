@@ -174,7 +174,6 @@ export default function SpotifyMusicPlayer() {
                     size="medium"
                     onClick={() =>  {
                             navigate(-1)
-                            window.location.reload();
                         }
                     }
                 >
