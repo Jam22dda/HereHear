@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <!-- 매니페스트 등록 -->
+        <link rel="manifest" href="manifest.json" />
+        <meta name="description" content="HereHear : Hear the music and share it Here" />
+        <meta name="theme-color" content="#ffffff" />
+
+        <!-- [S] IOS 설정 -->
+        <!-- PWA Settings -->
+        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/icons/icon-57x57.png" />
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/icons/icon-60x60.png" /> -->
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/icons/icon-72x72.png" />
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/icons/icon-76x76.png" /> -->
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/icons/icon-114x114.png" /> -->
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/icons/icon-120x120.png" /> -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/icons/icon-144x144.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/icons/icon-152x152.png" />
+        <!-- <link rel="icon" type="image/png" href="/icons/icon-16x16.png" sizes="16x16" /> -->
+        <!-- <link rel="icon" type="image/png" href="/icons/icon-32x32.png" sizes="32x32" /> -->
+        <link rel="icon" type="image/png" href="/icons/icon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/png" href="/icons/icon-128x128.png" sizes="128x128" />
+        <link rel="icon" type="image/png" href="/icons/icon-196x196.png" sizes="196x196" />
+
+        <meta name="apple-mobile-web-app-title" content="Here Hear" />
+        <!-- 주소 없애기 -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="&nbsp;" />
+
+        <title>Here Hear</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+
+        <!-- 서비스워커 적용 -->
+        <script>
+            if ('serviceWorker' in navigator) {
+                // Register a service worker hosted at the root of the
+                // site using the default scope.
+                navigator.serviceWorker
+                    .register('/serviceWorker.ts')
+                    .then(registration => {
+                        console.log('Service worker registration succeeded:', registration);
+                    })
+                    .catch(err => {
+                        console.log('Service worker registration failed:', err);
+                    });
+            } else {
+                console.log('Service workers are not supported.');
+            }
+        </script>
+    </body>
+</html>
