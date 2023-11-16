@@ -1,7 +1,9 @@
 package com.ssafy.herehear.statistics.service;
 
 import com.ssafy.herehear.entity.Member;
+import com.ssafy.herehear.entity.MusicHistory;
 import com.ssafy.herehear.global.util.MemberUtil;
+import com.ssafy.herehear.history.repository.MusicHistoryRepository;
 import com.ssafy.herehear.statistics.dto.response.PersonalHearTimeResDto;
 import com.ssafy.herehear.statistics.dto.response.PersonalTagsResDto;
 import com.ssafy.herehear.statistics.dto.response.TagResDto;
@@ -22,6 +24,7 @@ public class PersonalStatisticsServiceImpl implements PersonalStatisticsService 
 
     private final LikeMusicRepositoryImpl likeMusicRepository;
     private final RegisteredMusicRepositoryImpl musicRepository;
+    private final MusicHistoryRepository musicHistoryRepository;
 
     @Override
     public int getLikeCount(Long memberId) {
@@ -35,7 +38,7 @@ public class PersonalStatisticsServiceImpl implements PersonalStatisticsService 
     @Override
     public PersonalHearTimeResDto getHearTime(Long memberId) {
         MemberUtil.findMember(memberId);
-        List<Integer> list = musicRepository.findAllTimeByMemberId(memberId);
+        List<Integer> list = musicRepository.findAllTimeHistoryByMemberId(memberId);
 
         String[] ment = {"00~03시", "03~06시", "06~09시", "09~12시",
                 "12~15시", "15~18시", "18~21시", "21~24시"};
