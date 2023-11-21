@@ -24,8 +24,8 @@
     <tr>
         <td height="140px" align="center"> <a href="https://github.com/Holdm2t1ght">
         <img src="https://avatars.githubusercontent.com/Holdm2t1ght" height="140px" width="140px" /> </td>
-        <td height="140px" align="center"> <a href="https://github.com/Holdm2t1ght">
-        <img src="https://avatars.githubusercontent.com/Holdm2t1ght" height="140px" width="140px" /> </td>
+        <td height="140px" align="center"> <a href="https://github.com/cksghks89">
+        <img src="https://avatars.githubusercontent.com/cksghks89" height="140px" width="140px" /> </td>
         <td height="140px" align="center"> <a href="https://github.com/Hamsomyeong">
         <img src="https://avatars.githubusercontent.com/Hamsomyeong" height="140px" width="140px" /> </td>
         <td height="140px" align="center"> <a href="https://github.com/ksykma">
@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <td align="center">Leader <br/>BackEnd </td>
-        <td align="center">Backend <br/>Infra </td>
+        <td align="center">Backend <br/>WearOS </td>
         <td align="center">Backend <br/>Infra </td>
         <td align="center">Backend <br/>Infra </td>
         <td align="center">Frontend, Design </td>
