@@ -94,8 +94,8 @@
 - ```Docker``` : 24.0.5 <br/>
 - ```Nginx``` : 1.18.0 (Ubuntu) <br/>
 - ```Jenkins``` : 2.417 <br/>
-- ```Prometheus```  <br/>
-- ```grafana```  <br/>
+- ```Prometheus``` : 2.45.1 <br/>
+- ```grafana``` : 10.2.2 <br/>
 </details> <br/>
 
 <b>백엔드</b> : <img src="https://img.shields.io/badge/Java-000000?style=flat-square&logo=Java&logoColor=white"/> <img src="https://img.shields.io/badge/IntelliJ-000000?style=flat-square&logo=IntelliJ IDEA&logoColor=white"/> <img src="https://img.shields.io/badge/Springboot-000000?style=flat-square&logo=springboot&logoColor=6DB33F"/> <img src="https://img.shields.io/badge/MySQL-000000?style=flat-square&logo=mysql&logoColor=4479A1"/> <img src="https://img.shields.io/badge/JPA-000000?style=flat-square&logo=JPA&logoColor=DC382D"/> <img src="https://img.shields.io/badge/SpringSecurity-000000?style=flat-square&logo=Spring Security&logoColor=6DB33F"/>   <img src="https://img.shields.io/badge/QueryDsl-000000?style=flat-square&logo=QueryDsl&logoColor=6DB33F"/> <img src="https://img.shields.io/badge/MapStruct-000000?style=flat-square&logo=MapStruct&logoColor=6DB33F"/>
@@ -107,7 +107,7 @@
 - ```IntelliJ IDEA Ultimate```  <br/>
 - ```Spring Boot``` : 3.1.5 <br/>
 - ```MySQL``` : 8.0.33 <br/>
-- ```JPA``` <br/>
+- ```JPA``` : 3.1.5 <br/>
 - ```Spring Security``` : 6.1.x <br/>
 - ```QueryDsl``` : 5.0.0 <br/>
 - ```MapStruct``` : 1.5.3 <br/>
@@ -141,7 +141,7 @@
 - ```Android Studio``` : 2022.3.1 <br/>
 - ```Kotlin``` : 1.9.0 <br/>
 - ```Jetpack Compose``` : 1.0.0 <br/>
-- ```Retrofit2``` : 2.9.0 (Ubuntu) <br/>
+- ```Retrofit2``` : 2.9.0 <br/>
 - ```Google Maps``` : 2.11.4 <br/>
 - ```coil-compose``` : 2.4.0 <br/>
 </details>
