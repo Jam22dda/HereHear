@@ -373,7 +373,9 @@
 
 # 🗂️ 프로젝트 파일 구조
 
-### Back
+<details>
+<summary>Back</summary>
+<div markdown="1">
 
 ```
 📦herehear
@@ -463,8 +465,12 @@
 
 ```
 <br/>
+</div>
+</details>
 
-### Front
+<details>
+<summary>Front</summary>
+<div markdown=1>
 
 ```
 📦FrontEnd/HereHear
@@ -550,6 +556,10 @@
  
 
 ```
+
+<br/>
+</div>
+</details>
 
 <br/>
 
