@@ -44,12 +44,12 @@
         <td align="center"> 신승헌 </a></td>
     </tr>
     <tr>
-        <td align="center">Leader <br/>BackEnd </td>
+        <td align="center">BackEnd <br/>Infra </td>
         <td align="center">Backend <br/>WearOS </td>
-        <td align="center">Backend <br/>Infra </td>
-        <td align="center">Backend <br/>Infra </td>
-        <td align="center">Frontend, Design </td>
-        <td align="center">Backend <br/>Infra </td>
+        <td align="center">Backend <br/> </td>
+        <td align="center">Frontend <br/>Design </td>
+        <td align="center">Frontend <br/>Design </td>
+        <td align="center">Frontend  </td>
     </tr>
 </table>
 <br/>
