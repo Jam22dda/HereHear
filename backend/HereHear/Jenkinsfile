@@ -4,9 +4,9 @@ pipeline {
         stage("Set Variable") {
             steps {
                 script {
-                    IMAGE_NAME_BE = "herehear-springboot"
+                    IMAGE_NAME_BE = "herehear-spring"
                     APPLICATION_YML_PATH = "/var/jenkins_home/herehear/conf/prod-be/application.yml"
-                    CONTAINER_NAME_BE = "herehear_be"
+                    CONTAINER_NAME_BE = "herehear-spring"
                     PROJECT_DIR_BE = "backend/HereHear"
                 }
             }
