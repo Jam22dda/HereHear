@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     IMAGE_NAME_BE = "herehear-spring"
-                    APPLICATION_YML_PATH = "/var/jenkins_home/herehear/conf/prod-be/application.yml"
+                    APPLICATION_YML_PATH = "/var/jenkins_home/herehear/conf/prod-be/resources"
                     CONTAINER_NAME_BE = "herehear-spring"
                     PROJECT_DIR_BE = "backend/HereHear"
                 }
